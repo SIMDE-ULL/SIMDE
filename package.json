@@ -1,0 +1,22 @@
+{
+  "name": "simde",
+  "version": "0.0.1",
+  "description": "Educational superescalar and vliw simulator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianabreu/SIMDE.git"
+  },
+  "author": "Adrian Abreu Gonzalez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adrianabreu/SIMDE/issues"
+  },
+  "homepage": "https://github.com/adrianabreu/SIMDE#readme",
+  "dependencies": {
+    "lex": "^1.7.9"
+  }
+}
