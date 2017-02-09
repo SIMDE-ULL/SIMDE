@@ -1,0 +1,4 @@
+ gcc -c simdeLex.c
+ g++ -c main.cpp
+ g++ main.o simdeLex.o
+ ./a.out
