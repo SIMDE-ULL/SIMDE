@@ -23,22 +23,22 @@ export class Parser {
         this._lexer.addRule(/^[0-9]+/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.LINESNUMBER;
-        }).addRule(/#[+-]?[0-9]+/i, function (lexeme) {
-            this.yytext = lexeme;
-            return LEX.INMEDIATE;
-        }).addRule(/^[0-9]+/i, function (lexeme) {
+        }).addRule(/[Ff][0-9]+/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.REGFP;
         }).addRule(/[Rr][0-9]+/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.REGGP;
-        }).addRule(/[A-Za-z_][A-Za-z0-9_]*/i, function (lexeme) {
+        }).addRule(/#[+-]?[0-9]+/i, function (lexeme) {
             this.yytext = lexeme;
-            return LEX.ID;
-        }).addRule(/[A-Za-z_][A-Za-z0-9_]*:/i, function (lexeme) {
+            return LEX.INMEDIATE;
+        }).addRule(/[A-Za-z][A-Za-z0-9]*\:/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.LABEL;
-        }).addRule(/[+-]?[0-9]*"("[Rr][0-9]+")"/i, function (lexeme) {
+        }).addRule(/[A-Za-z][A-Za-z0-9]*/i, function (lexeme) {
+            this.yytext = lexeme;
+            return LEX.ID;
+        }).addRule(/[+-]?[0-9]*\([Rr][0-9]+\)/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.ADDRESS;
         }).addRule(/^[0-9]+/i, function (lexeme) {
@@ -46,6 +46,8 @@ export class Parser {
         }).addRule(/[ \t\v\f]+/i, function (lexeme) {
             return;
         }).addRule(/(.|\n)/i, function (lexeme) {
+            return;
+        }).addRule(/\/\/.*/, function (lexeme) {
             return;
         });
     }

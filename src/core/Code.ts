@@ -40,7 +40,7 @@ export class Code {
         this._parser = new Parser();
     }
 
-    checkLabel(label: string, actual: BasicBlock): number {
+    checkLabel(str: string, actual: BasicBlock): number {
         let index: number;
         let basicBlock: BasicBlock;
         let nextSucessor: SuccessorBlock = new SuccessorBlock();
@@ -48,16 +48,26 @@ export class Code {
         actual.successor.next = null;
 
         // TODO Why + ':'?
-        index = this._labels.indexOf(label + ':');
+        str += ':';
+        for (let i = 0; i < this._labels.length; i++) {
+            if (this._labels[i].name === str) {
+                index = i;
+                i = this._labels.length + 1;
+            }
+        }
 
         if (index != -1) {
-            basicBlock
+            basicBlock = this._labels[index].blocks;
         } else {
             basicBlock = new BasicBlock();
             basicBlock.next = null;
             basicBlock.successor = null;
             basicBlock.id = -1;
+            let label: Label = new Label();
+            label.name = str;
+            label.blocks = basicBlock;
             this._labels.push(label);
+            index = this._labels.length - 1;
         }
 
         return index;
@@ -115,7 +125,7 @@ export class Code {
         for (let i = 0; i < this._lines; i++) {
             if (this._instructions[i].opcode === Opcodes.BNE
                 || this._instructions[i].opcode === Opcodes.BEQ) {
-                let basicBlock: BasicBlock = new BasicBlock();
+                let basicBlock: BasicBlock = this._labels[this._instructions[i].getOperand(2)].blocks
                 if (basicBlock.lineNumber === -1) {
                     return -1;
                 }
@@ -133,8 +143,7 @@ export class Code {
         lexema = this._parser.lex();
 
         if (lexema.value !== LEX.LINESNUMBER) {
-            console.log('Error parsing lines number');
-            // throw;
+            throw 'Error parsing lines number';
         }
         this._lines = +lexema.yytext;
 
@@ -145,7 +154,6 @@ export class Code {
             lexema = this._parser.lex();
             if (lexema.value === LEX.LABEL) {
                 this._numberOfBlocks++;
-                // this._instructions[i].stringLabel = lexema.yytext;
                 actual = this.addLabel(lexema.yytext, i, actual);
                 if (actual == null) {
                     console.log('Error');
@@ -153,7 +161,6 @@ export class Code {
                 }
                 lexema = this._parser.lex();
             } else {
-                // this._instructions[i].stringLabel = '';
                 if (newBlock) {
                     this._numberOfBlocks++;
                     let basicBlock: BasicBlock = new BasicBlock();
@@ -234,7 +241,7 @@ export class Code {
                 case Opcodes.SF:
                 case Opcodes.LF:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP);
+                    this.checkLexema(lexema.value, LEX.REGFP);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
                     this.checkLexema(lexema.value, LEX.ADDRESS);
@@ -283,21 +290,21 @@ export class Code {
         if (position === 1) {
             result[0] = 0;
         } else {
-            result[0] = +stringAddress.substring(1, position - 1);
+            result[0] = +stringAddress.substring(0, position - 1);
         }
         // TODO substr or substring?
-        result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length));
+        result[1] = this.stringToRegister(stringAddress.substr(position, stringAddress.length));
         return result;
     }
 
     private stringToRegister(stringRegister: string): number {
         // TODO Cohercion vs Number.parse?
-        return +stringRegister.substring(2, stringRegister.length);
+        return +stringRegister.substring(1, stringRegister.length);
     }
 
     private stringToInmediate(stringInmediate: string): number {
         // TODO Cohercion vs Number.parse?
-        return +stringInmediate.substring(2, stringInmediate.length);
+        return +stringInmediate.substring(1, stringInmediate.length);
     }
 
     private checkLexema(value: number, expectedLexema: number) {
@@ -335,4 +342,49 @@ export class Code {
             default: return FunctionalUnitType.INTEGERSUM;
         }
     }
+
+    public get instructions(): Instruction[] {
+        return this._instructions;
+    }
+
+    public set instructions(value: Instruction[]) {
+        this._instructions = value;
+    }
+
+
+    public get lines(): number {
+        return this._lines;
+    }
+
+    public set lines(value: number) {
+        this._lines = value;
+    }
+
+
+    public get labels(): Label[] {
+        return this._labels;
+    }
+
+    public set labels(value: Label[]) {
+        this._labels = value;
+    }
+
+
+    public get numberOfBlocks(): number {
+        return this._numberOfBlocks;
+    }
+
+    public set numberOfBlocks(value: number) {
+        this._numberOfBlocks = value;
+    }
+
+
+    public get basicBlocks(): BasicBlock {
+        return this._basicBlocks;
+    }
+
+    public set basicBlocks(value: BasicBlock) {
+        this._basicBlocks = value;
+    }
+
 }

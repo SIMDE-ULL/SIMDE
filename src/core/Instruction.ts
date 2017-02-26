@@ -10,6 +10,7 @@ export class Instruction {
     constructor() {
         this._breakPoint = false;
         this._color = 'white';
+        this._operands = new Array(3);
     }
 
     copy(other: Instruction) {
