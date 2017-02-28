@@ -6,7 +6,6 @@ export class Status {
     private _stall: number;
 
     constructor() {
-
     }
 
     public get instructionNumber(): number {

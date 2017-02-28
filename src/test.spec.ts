@@ -1,3 +1,4 @@
+import { test } from 'ava';
 import { Parser } from './core/Parser';
 import { Code } from './core/Code';
 
@@ -18,12 +19,20 @@ BNE	R2 R5 LOOP
 
 
 
-let code: Code = new Code();
-code.load(input);
-console.log('Lines', code.lines);
-console.log('Instructions', code.instructions);
-console.log('Basic block', code.numberOfBlocks);
-console.log('Basic block', code.basicBlocks);
+
+// console.log('Lines', code.lines);
+// console.log('Instructions', code.instructions);
+// console.log('Basic block', code.numberOfBlocks);
+// console.log('Basic block', code.basicBlocks);
+
+test('Lines are parsed properly', t => {
+    let code: Code = new Code();
+    code.load(input);
+    t.deepEqual(2, code.lines, 'Lines message should have been 2');
+    code = new Code();
+    code.load(input2)
+    t.deepEqual(1, code.lines, 'Lines message should have been 1');
+})
 
 // code = new Code();
 // code.load(input2);
