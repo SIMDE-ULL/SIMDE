@@ -10,12 +10,12 @@ export class Instruction {
     constructor() {
         this._breakPoint = false;
         this._color = 'white';
-        this._operands = new Array(3);        
+        this._operands = new Array(3);
     }
 
     copy(other: Instruction) {
         // TODO Check this
-        Object.assign(this, other);
+        // Object.assign(this, other);
         this._id = other._id;
         this._basicBlock = other._basicBlock;
         this._opcode = other._opcode;

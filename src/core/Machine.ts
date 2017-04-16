@@ -8,20 +8,20 @@ import { MachineStatus } from './MachineStatus';
 export class Machine {
 
     // Const propierties
-    private static LAT_MAX: number[] = [100, 100, 100, 100, 100, 100];
-    private static LAT_MIN: number[] = [1, 1, 1, 1, 1, 1];
-    private static LAT_DEF: number[] = [1, 2, 4, 6, 4, 2];
-    private static NUF_MAX: number[] = [10, 10, 10, 10, 10, 10];
-    private static NUF_MIN: number[] = [1, 1, 1, 1, 1, 1];
-    private static NUF_DEF: number[] = [2, 2, 2, 2, 2, 1];
+    protected static LAT_MAX: number[] = [100, 100, 100, 100, 100, 100];
+    protected static LAT_MIN: number[] = [1, 1, 1, 1, 1, 1];
+    protected static LAT_DEF: number[] = [1, 2, 4, 6, 4, 2];
+    protected static NUF_MAX: number[] = [10, 10, 10, 10, 10, 10];
+    protected static NUF_MIN: number[] = [1, 1, 1, 1, 1, 1];
+    protected static NUF_DEF: number[] = [2, 2, 2, 2, 2, 1];
 
-    private static MEMORYFAILLATENCYDEF = 9;
-    private static MEMORYFAILLATENCYMIN = 0;
-    private static MEMORYFAILLATENCYMAX = 100;
+    protected static MEMORYFAILLATENCYDEF = 9;
+    protected static MEMORYFAILLATENCYMIN = 0;
+    protected static MEMORYFAILLATENCYMAX = 100;
 
-    private static WORD_SIZE: number = 32;
-    private static NGP: number = 64;
-    private static NFP: number = 64;
+    protected static WORD_SIZE: number = 32;
+    protected static NGP: number = 64;
+    protected static NFP: number = 64;
 
     protected _functionalUnitNumbers: number[];
     protected _functionalUnitLatencies: number[];
@@ -80,11 +80,10 @@ export class Machine {
     }
 
     reset() {
+        // TODO Check this values, are always fixed?
         this.gpr.content = new Array(Machine.NGP).fill(0);
-        this.gpr.content = new Array(Machine.NGP).fill(0);
-
-        // this.fpr.setReg(0);
-        // this.memory.setMem(0);
+        this.fpr.content = new Array(Machine.NFP).fill(0);
+        this.memory.setMem(0);
     }
 
     public getTotalFunctionalUnit(): number {

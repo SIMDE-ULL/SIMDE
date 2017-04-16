@@ -4,7 +4,7 @@ import { BasicBlock, SuccessorBlock } from './Blocks';
 import { LEX, Parser } from './Parser';
 import { Label } from './Label';
 
-enum Opcodes {
+export enum Opcodes {
     NOP = 0,
     ADD,
     ADDF,
@@ -270,7 +270,7 @@ export class Code {
         this.replaceLabels();
     }
 
-    private stringToOpcode(stringOpcode: string): number {
+    public stringToOpcode(stringOpcode: string): number {
         let opcode: number = this.OpcodesNames.indexOf(stringOpcode);
         if (opcode !== -1) {
             // TODO Is necessary cohercion here?
@@ -284,7 +284,7 @@ export class Code {
         }
     }
 
-    private stringToAddress(stringAddress: string): number[] {
+    public stringToAddress(stringAddress: string): number[] {
         let result: number[] = new Array(2);
         let position = stringAddress.indexOf('(');
         if (position === 1) {
@@ -297,24 +297,24 @@ export class Code {
         return result;
     }
 
-    private stringToRegister(stringRegister: string): number {
+    public stringToRegister(stringRegister: string): number {
         // TODO Cohercion vs Number.parse?
         return +stringRegister.substring(1, stringRegister.length);
     }
 
-    private stringToInmediate(stringInmediate: string): number {
+    public stringToInmediate(stringInmediate: string): number {
         // TODO Cohercion vs Number.parse?
         return +stringInmediate.substring(1, stringInmediate.length);
     }
 
-    private checkLexema(value: number, expectedLexema: number) {
+    public checkLexema(value: number, expectedLexema: number) {
         if (value !== expectedLexema) {
             console.log('Error in lexema');
             throw 'Error in lexema, expected ' + expectedLexema + ' got: ' + value;
         }
     }
 
-    private getBasicBlockInstruction(basicBlockIndex: number) {
+    public getBasicBlockInstruction(basicBlockIndex: number) {
         if (basicBlockIndex > this._numberOfBlocks) {
             return -1;
         }
@@ -326,7 +326,7 @@ export class Code {
         return actual.lineNumber;
     }
 
-    private getFunctionalUnitType(index: number): number {
+    public getFunctionalUnitType(index: number): number {
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI: return FunctionalUnitType.INTEGERSUM;

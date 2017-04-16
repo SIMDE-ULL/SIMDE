@@ -60,6 +60,10 @@ export class Tail {
         return (this.last >= this.first) ? (this.last - this.first) : (this.last + this.size - this.first);
     }
 
+    public end() {
+        return this.last;
+    }
+
     public init(n: number) {
         this.size = n + 1;
         this.elements = new Array(n + 1).fill(null);

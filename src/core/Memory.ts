@@ -44,7 +44,7 @@ export class Memory {
     }
 
     setMem(datum: number) {
-        this.data = new Array(Memory.MEMORY_NUMBER).fill(datum);
+        this.data.fill(datum);
     }
 
     public get data(): number[] {

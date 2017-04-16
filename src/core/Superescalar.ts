@@ -1,11 +1,13 @@
 import { Machine } from './Machine';
-import { Code } from './Code';
+import { Opcodes, Code } from './Code';
 
 import { ReorderBufferEntry } from './ReorderBufferEntry';
 import { PrefetchEntry } from './PrefetchEntry';
 import { DecoderEntry } from './DecoderEntry';
 import { ReserveStationEntry } from './ReserveStationEntry';
-import { FunctionalUnit } from './FunctionalUnit';
+import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from './FunctionalUnit';
+import { Tail } from './Tail';
+import { Instruction } from './Instruction';
 
 export enum CommitStatus {
     SUPER_COMMITOK = 0,
@@ -34,100 +36,142 @@ export class Superescalar extends Machine {
     private static const NBITSTABLAPRED = 4;
     private static const TAMANOTABLAPRED = 1 << 4;
 
+    private static const ISSUE_DEF = 4;
+    private static const ISSUE_MIN = 2;
+    private static const ISSUE_MAX = 16;
+
     private issue: number;
     private code: Code;
 
     private ROBGpr: number[];
     private ROBFpr: number[];
     private reserveStationEntry: ReserveStationEntry[];
-    private reorderBuffer: any;
-    private prefetchUnit: any;
-    private decoder: any;
+    private reorderBuffer: Tail;
+    private prefetchUnit: Tail;
+    private decoder: Tail;
     private aluMem: FunctionalUnit[];
 
     private jumpPrediction: number[];
 
     constructor() {
         super();
+        this.issue = Superescalar.ISSUE_DEF;
+
+        this.ROBFpr = new Array(Machine.NFP).fill(-1);
+        this.ROBGpr = new Array(Machine.NGP).fill(-1);
+        this.jumpPrediction = new Array(Superescalar.NBITSTABLAPRED).fill(0);
+
+        // Calculate total ROB size
+        let total = 0;
+
+        // TODO Can I remove this piece of code?
+
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            // Wtf es esto, ¿Y este metodo?
+            this.reserveStationEntry[i] = new ReserveStationEntry();
+            // total += this.getReserveStationEntrySize(i);
+        }
+        this.reorderBuffer = new Tail();
+        this.prefetchUnit = new Tail();
+        this.decoder = new Tail();
+
+        this.reorderBuffer.init(total);
+        this.decoder.init(this.issue);
+        this.prefetchUnit.init(2 * this.issue);
+        this.code = null;
+
+        this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
+
+        for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
+            this.aluMem[j].type = FunctionalUnitType.INTEGERSUM;
+            this.aluMem[j].latency = this.functionalUnitLatencies[FunctionalUnitType.INTEGERSUM];
+        }
     }
 
     init(reset: boolean) {
-        Machine.init(reset);
+        super.init(reset);
         // Clean Gpr, Fpr, predSalto
-
+        this.ROBFpr.fill(-1);
+        this.ROBFpr.fill(-1);
+        this.jumpPrediction.fill(0);
         // Calculate ROB size
         let total = 0;
-        for (let i = 0; i < Machine.; i++) {
 
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            this.reserveStationEntry[i] = new ReserveStationEntry();
+            // total += this.getReserveStationEntrySize(i);           
+        }
+        this.reorderBuffer.init(total);
+        this.decoder.init(this.issue);
+        this.prefetchUnit.init(2 * this.issue);
+        this.code = null;
+
+        this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
+
+        for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
+            this.aluMem[j].type = FunctionalUnitType.INTEGERSUM;
+            this.aluMem[j].latency = this.functionalUnitLatencies[FunctionalUnitType.INTEGERSUM];
         }
     }
 
     ticPrefetch(): number {
-        while (!this.prefetchUnit.isFull() && (this.PC < this.codigo.) {
-            TEntradaPrefetch aux = new TEntradaPrefetch;
+        while (!this.prefetchUnit.isFull() && (this.pc < this.code.lines)) {
+            let aux: PrefetchEntry = new PrefetchEntry();
             // Importante: Hago una copia de la instrucción original para distinguir
             // las distintas apariciones de una misma inst.
-            aux ->instruccion = new TInstruccion(*codigo ->getInstruccion(PC));
-            if ((TCodigo::op2UF(aux ->instruccion ->getOpcode()) == SALTO) && prediccion(PC))
-            PC = codigo ->getInstruccionBB(aux ->instruccion ->getOp(2));
-        else
-    PC++;
-    prefetchUnit.add(aux);
-}
-return prefetchUnit.getCount();
-}
+            aux.instruction = Object.assign({}, this.code[this.pc]);
+            // TODO Opcode constant??
+            if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE) && this.jumpPrediction[this.pc])) {
+                this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
+            } else {
+                this.pc++;
+            }
+            this.prefetchUnit.add(aux);
+        }
+        return this.prefetchUnit.getCount();
+    }
 
-/******************************************************************************
- * ticDecoder: Lee las "emision" primeras intrucciones de la unidad de Prefetch
- * y las pone en el Decodificador
- * Devuelve:
- *  - El número de instrucciones que se han podido introducir en el
- *  decodificador
- ******************************************************************************/
-// int TMaquinaSuper::ticDecoder() {
-//     TPrefetchUnit::iterator it = prefetchUnit.begin();
-//     for (; (!decoder.isFull()) && (it != prefetchUnit.end()); it++) {
-//         TEntradaPrefetch * aux = it.remove();
-//         TEntradaDecoder * nuevaDec = new TEntradaDecoder;
-//         nuevaDec ->instruccion = aux ->instruccion;
-//         decoder.add(nuevaDec);
-//         delete aux;
-//     }
-//     return decoder.getCount();
-// }
-// /******************************************************************************
-//  * chkRegistro: Comprueba la disponibilidad del valor de un registro
-//  * Parámetros:
-//  *  - reg: Número de registro a comprobar
-//  *  - fp: Verdadero indica que es un FPR; si no, es un GPR
-//  *  - v: Referencia al campo Vj/Vk de la estación de reserva donde hace falta
-//  *       ese valor
-//  *  - q: Referencia al campo Qj/Qk de la estación de reserva donde hace falta
-//  *       ese valor
-//  ******************************************************************************/
-// void TMaquinaSuper::chkRegistro(int reg, bool fp, float & v, int & q) {
-//     q = -1;
-//     v = 0;
-//     if (fp) {
-//         // El registro tiene su valor listo
-//         if (!fpr.getBusy(reg))
-//             v = fpr.getReg(reg);
-//         // El registro no está listo pero el valor ya está en el ROB
-//         else if (ROB[ROBFpr[reg]] ->listo)
-//             v = ROB[ROBFpr[reg]] ->valor;
-//         // El valor aún está calculándose
-//         else
-//             q = ROBFpr[reg];
-//     }
-//     else {
-//         if (!gpr.getBusy(reg))
-//             v = gpr.getReg(reg);
-//         else if (ROB[ROBGpr[reg]] ->listo)
-//             v = ROB[ROBGpr[reg]] ->valor;
-//         else
-//             q = ROBGpr[reg];
-//     }
-// }
+    ticDecoder(): number {
+        for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i != this.prefetchUnit.end(); i++) {
+            let aux: PrefetchEntry = this.prefetchUnit.elements[i];
+            this.prefetchUnit.remove(i);
+            let newDecoderEntry = new DecoderEntry();
+            newDecoderEntry.instruction = aux.instruction;
+            this.decoder.add(newDecoderEntry);
+        }
+        return this.decoder.getCount();
+    }
+
+    checkRegister(register: number, fp: boolean, v: number, q: number) {
+        q = -1;
+        v = 0;
+
+        if (fp) {
+            // El registro tiene su valor listo
+            if (!this.fpr.busy[register]) {
+                v = this.fpr.content[register];
+            } else if (ROB[ROBFpr[reg]] ->listo) {
+
+            } else {
+
+            }
+        // El registro no está listo pero el valor ya está en el ROB
+        else if 
+            v = ROB[ROBFpr[reg]] ->valor;
+            // El valor aún está calculándose
+            else
+                q = ROBFpr[reg];
+        }
+        else {
+            if (!gpr.getBusy(reg))
+                v = gpr.getReg(reg);
+            else if (ROB[ROBGpr[reg]] ->listo)
+                v = ROB[ROBGpr[reg]] ->valor;
+            else
+                q = ROBGpr[reg];
+        }
+    }
+}
 // /******************************************************************************
 //  * emitirInstruccion: Resuelve la etapa de emisión para una instrucción
 //  * Parámetros:
