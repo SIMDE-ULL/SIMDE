@@ -10,18 +10,19 @@ export enum FunctionalUnitType {
     JUMP
 }
 
+export const FUNCTIONALUNITTYPESQUANTITY = FunctionalUnitType.JUMP - FunctionalUnitType.INTEGERSUM + 1;
+
 export class FunctionalUnit {
 
     private _status: Status;
 
     private _type: FunctionalUnitType;
     private _latency: number;
-    // TODO Cauce?
-    private _cauce: Instruction[];
+    private _flow: Instruction[];
 
 
     constructor() {
-        this._cauce = null;
+        this._flow = null;
         this._status = new Status();
         this._status.lastInstruction = 0;
         this._status.stall = 0;
@@ -54,22 +55,22 @@ export class FunctionalUnit {
         this._latency = value;
         this._status.lastInstruction = value - 1;
         this._status.instructionNumber = 0;
-        this._cauce = new Array(value);
+        this._flow = new Array(value).fill(null);
     }
 
 
-    public get cauce(): Instruction[] {
-        return this._cauce;
+    public get flow(): Instruction[] {
+        return this._flow;
     }
 
-    public set cauce(value: Instruction[]) {
-        this._cauce = value;
+    public set flow(value: Instruction[]) {
+        this._flow = value;
     }
 
     tic() {
         if (this._status.stall === 0) {
-            if (this._cauce[this._status.lastInstruction] != null) {
-                this._cauce[this._status.lastInstruction] = null;
+            if (this._flow[this._status.lastInstruction] != null) {
+                this._flow[this._status.lastInstruction] = null;
                 this._status.instructionNumber--;
             }
             // WTF is this line?
@@ -80,8 +81,8 @@ export class FunctionalUnit {
 
     }
 
-    fillCauce(instruction: Instruction): number {
-        this._cauce[(this._status.lastInstruction + 1) % this._latency] = instruction;
+    fillFlow(instruction: Instruction): number {
+        this._flow[(this._status.lastInstruction + 1) % this._latency] = instruction;
         if (instruction != null) {
             this._status.instructionNumber++;
         }
@@ -90,17 +91,17 @@ export class FunctionalUnit {
     }
 
     clean() {
-        this._cauce = new Array(this._latency);
+        this._flow = new Array(this._latency);
         this._status.lastInstruction = this._latency - 1;
         this._status.stall = 0;
         this._status.instructionNumber = 0;
     }
 
     getTopInstruction(): Instruction {
-        return this._cauce[this._status.lastInstruction];
+        return this._flow[this._status.lastInstruction];
     }
 
     getInstructionByIndex(index: number): Instruction {
-        return this._cauce[(this._status.lastInstruction + index + 1) % this._latency];
+        return this._flow[(this._status.lastInstruction + index + 1) % this._latency];
     }
 }
