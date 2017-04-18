@@ -97,11 +97,19 @@ export class FunctionalUnit {
         this._status.instructionNumber = 0;
     }
 
+    isFree(): boolean {
+        return (this.flow[(this.status.lastInstruction + 1) % this.latency] == null);
+    }
+
     getTopInstruction(): Instruction {
         return this._flow[this._status.lastInstruction];
     }
 
     getInstructionByIndex(index: number): Instruction {
         return this._flow[(this._status.lastInstruction + index + 1) % this._latency];
+    }
+
+    getLast(): number {
+        return this.status.lastInstruction;
     }
 }

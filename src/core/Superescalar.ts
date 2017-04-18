@@ -8,44 +8,24 @@ import { ReserveStationEntry } from './ReserveStationEntry';
 import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from './FunctionalUnit';
 import { Tail } from './Tail';
 import { Instruction } from './Instruction';
-
-export enum CommitStatus {
-    SUPER_COMMITOK = 0,
-    SUPER_COMMITEND,
-    SUPER_COMMITMISS,
-    SUPER_COMMITNO
-}
-
-export enum SuperStage {
-    SUPER_ISSUE = 0,
-    SUPER_EXECUTE,
-    SUPER_WRITERESULT,
-    SUPER_COMMIT
-}
-
-export enum SuperescalarStatus {
-    SUPER_ENDEXE = -2,
-    SUPER_BREAKPOINT = -1,
-    SUPER_OK = 0
-}
-
+import { CommitStatus, SuperStage, SuperescalarStatus } from './SuperescalarEnums';
 
 export class Superescalar extends Machine {
 
-    private static const NBITSPRED = 2;
-    private static const NBITSTABLAPRED = 4;
-    private static const TAMANOTABLAPRED = 1 << 4;
+    private static NBITSPRED = 2;
+    private static NBITSTABLAPRED = 4;
+    private static TAMANOTABLAPRED = 1 << 4;
 
-    private static const ISSUE_DEF = 4;
-    private static const ISSUE_MIN = 2;
-    private static const ISSUE_MAX = 16;
+    private static ISSUE_DEF = 4;
+    private static ISSUE_MIN = 2;
+    private static ISSUE_MAX = 16;
 
     private issue: number;
     private code: Code;
 
     private ROBGpr: number[];
     private ROBFpr: number[];
-    private reserveStationEntry: ReserveStationEntry[];
+    private reserveStationEntry: ReserveStationEntry[][];
     private reorderBuffer: Tail;
     private prefetchUnit: Tail;
     private decoder: Tail;
@@ -60,16 +40,14 @@ export class Superescalar extends Machine {
         this.ROBFpr = new Array(Machine.NFP).fill(-1);
         this.ROBGpr = new Array(Machine.NGP).fill(-1);
         this.jumpPrediction = new Array(Superescalar.NBITSTABLAPRED).fill(0);
-
+        this.reserveStationEntry = new Array(FUNCTIONALUNITTYPESQUANTITY).fill(null);
         // Calculate total ROB size
         let total = 0;
-
         // TODO Can I remove this piece of code?
-
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             // Wtf es esto, ¿Y este metodo?
-            this.reserveStationEntry[i] = new ReserveStationEntry();
-            // total += this.getReserveStationEntrySize(i);
+            this.reserveStationEntry[i] = new Array();
+            total += this.getReserveStationSize(i);
         }
         this.reorderBuffer = new Tail();
         this.prefetchUnit = new Tail();
@@ -98,7 +76,7 @@ export class Superescalar extends Machine {
         let total = 0;
 
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            this.reserveStationEntry[i] = new ReserveStationEntry();
+            this.reserveStationEntry[i] = new Array();
             // total += this.getReserveStationEntrySize(i);           
         }
         this.reorderBuffer.init(total);
@@ -131,8 +109,12 @@ export class Superescalar extends Machine {
         return this.prefetchUnit.getCount();
     }
 
+    getReserveStationSize(type: FunctionalUnitType): number {
+        return this.functionalUnitNumbers[type] * (this._functionalUnitLatencies[type] + 1);
+    }
+
     ticDecoder(): number {
-        for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i != this.prefetchUnit.end(); i++) {
+        for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i++) {
             let aux: PrefetchEntry = this.prefetchUnit.elements[i];
             this.prefetchUnit.remove(i);
             let newDecoderEntry = new DecoderEntry();
@@ -171,7 +153,7 @@ export class Superescalar extends Machine {
     issueInstruction(instruction: Instruction, type: number, robIndex: number) {
         this.reserveStationEntry[type][-1].instruction = instruction;
         this.reserveStationEntry[type][-1].ROB = robIndex;
-        this.reserveStationEntry[type][-1].numUF = -1;
+        this.reserveStationEntry[type][-1].FUNum = -1;
         this.reserveStationEntry[type][-1].A = -1;
         switch (instruction.opcode) {
             case Opcodes.ADD:
@@ -243,411 +225,388 @@ export class Superescalar extends Machine {
 
     ticIssue(): number {
         let cont = 0;
-        for (let i = this.decoder.first; i != this.decoder.end(); i++ , cont++) {
+        for (let i = this.decoder.first; i !== this.decoder.end(); i++ , cont++) {
             let instruction: Instruction = this.decoder.elements[i].instruction;
             if (this.reorderBuffer.isFull()) {
                 break;
             }
-            let fuType: FunctionalUnitType = instruction.opcode
-            TTipoUF tipoUF = TCodigo::op2UF(inst ->getOpcode());
-            if (ER[tipoUF].size() == getTamER(tipoUF))
+            let fuType: FunctionalUnitType = Code.opcodeToFunctionalUnitType(instruction.opcode);
+            if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType))
                 break;
-            TEntradaROB * nuevaROB = new TEntradaROB;
-            nuevaROB ->valor = 0.0;
-            nuevaROB ->destino = -1;
-            nuevaROB.address = -1;
-            int posROB = ROB.add(nuevaROB);
-            TEntradaER nuevaER;
-            ER[tipoUF].push_back(nuevaER);
-            emitirInstruccion(inst, tipoUF, posROB);
-            ROB[posROB] ->instruccion = inst;
-            ROB[posROB] ->listo = false;
-            ROB[posROB] ->etapa = SUPER_ISSUE;
-            TEntradaDecoder * auxDec = it.remove();
-            delete auxDec;
+            let newROB: ReorderBufferEntry = new ReorderBufferEntry();
+            newROB.value = 0.0;
+            newROB.destinyRegister = -1.
+            newROB.address = -1;
+            let robPos = this.reorderBuffer.add(newROB);
+            let newER: ReserveStationEntry = new ReserveStationEntry();
+            this.reserveStationEntry[fuType].push(newER);
+            this.issueInstruction(instruction, fuType, robPos);
+            this.reorderBuffer.elements[robPos].instruction = instruction;
+            this.reorderBuffer.elements[robPos].ready = false;
+            this.reorderBuffer.elements[robPos].issue = SuperStage.SUPER_ISSUE;
+            this.decoder.remove(i);
         }
 
         return cont;
     }
 
-    // /******************************************************************************
-    //  * chkStore: Comprueba que no haya ningún store anterior en el cauce del ROB que
-    //  * no tenga calculada su dirección destino o tenga la misma dirección que la
-    //  * pasada por param.
-    //  * Parámetros:
-    //  *  - robIndex: Indice en el ROB de la instrucción con la que se compara
-    //  *  - dir: Dirección con la que se compara
-    //  ******************************************************************************/
-    // bool TMaquinaSuper::chkStore(int indROB, int dir) {
-    //     // Compruebo que no haya algún store anterior...
-    //     TReorderBuffer::iterator itROB = ROB.begin();
-    //     for (; itROB != ROB.position(indROB); itROB++) {
-    //         int opcode = itROB ->instruccion ->getOpcode();
-    //         if ((opcode == TCodigo::SW) || (opcode == TCodigo::SF)) {
-    //             //... sin la dir. calculada...
-    //             if (itROB ->direccion == -1)
-    //                 break;
-    //             // ...o con la misma dir.
-    //             else if (itROB ->direccion == dir)
-    //                 break;
-    //         }
-    //     }
-    //     return (itROB == ROB.position(indROB));
-    // }
-    // /******************************************************************************
-    //  * ejecutarInstruccion: Comprueba si una instrucción está lista para ser
-    //  * ejecutada
-    //  * Parámetros:
-    //  *  - tipo: Tipo de UF
-    //  *  - num: Número de UF de ese tipo libre
-    //  * Comentarios: Lo que se hace es comprobar si los operandos están disponibles.
-    //  ******************************************************************************/
-    // void TMaquinaSuper::ejecutarInstruccion(TTipoUF tipo, int num) {
-    //     TEstacionReserva::iterator it = ER[tipo].begin();
+    checkStore(robIndex: number, address: number): boolean {
+        // Compruebo que no haya algún store anterior...
+        let i;
+        for (i = this.reorderBuffer.first; i !== robIndex; i++) {
+            let opcode: number = this.reorderBuffer.elements[i].instruction.getOpcode();
+            if ((opcode === Opcodes.SW) || (opcode === Opcodes.SF)) {
+                //... sin la dir. calculada...
+                if (this.reorderBuffer.elements[i].address === -1) {
+                    break;
+                    // ...o con la misma dir.
+                } else if (this.reorderBuffer.elements[i].address === address) {
+                    break;
+                }
+            }
+        }
+        return i === robIndex;
+    }
 
-    //     switch (tipo) {
-    //         case SUMAENT:
-    //         case MULTENT:
-    //         case SUMAFLOT:
-    //         case MULTFLOT:
-    //         case SALTO:
-    //             // Operandos disponibles
-    //             while (it != ER[tipo].end() && !((it ->Qj == -1) && (it ->Qk == -1) && (it ->numUF == -1)))
-    //                 ++it;
-    //             if (it != ER[tipo].end()) {
-    //                 it ->numUF = num;
-    //                 it ->posUF = UF[tipo][num].rellenarCauce(it ->instruccion);
-    //                 ROB[it ->ROB] ->etapa = SUPER_EXECUTE;
-    //             }
-    //             break;
-    //         case MEM:
-    //             // Fase 2 (Sólo los LOAD): Poner a ejecutar
-    //             for (; it != ER[tipo].end(); it++) {
-    //                 int opcode = it ->instruccion ->getOpcode();
-    //                 if (((opcode == TCodigo::LW) || (opcode == TCodigo::LF)) // Es un LOAD
-    //                     && ((it ->numUF == -1)   // No se está ejecutando
-    //                     && (ROB[it ->ROB] ->direccion != -1))    // Dir. ya calculada
-    //                     && chkStore(it ->ROB, ROB[it ->ROB] ->direccion))  // Comprobación de orden
-    //                 break;
-    //             }
-    //             if (it != ER[tipo].end()) {
-    //                 it ->numUF = num;
-    //                 it ->posUF = UF[tipo][num].rellenarCauce(it ->instruccion);
-    //             }
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-    // /******************************************************************************
-    //  * ticExecute: Solamente marca aquellas instrucciones que están listas para ser
-    //  * ejecutadas
-    //  * Comentarios: En esta parte del código realmente NO se ejecuta nada
-    //  ******************************************************************************/
-    // int TMaquinaSuper::ticExecute() {
 
-    //     for (int i = 0; i < NTIPOSUF; i++)
-    //     for (int j = 0; j < nUF[i]; j++)
-    //     if (UF[i][j].estaLibre())
-    //         ejecutarInstruccion(i, j);
+    executeInstruction(type: FunctionalUnitType, num: number) {
+        let i = 0;
+        switch (type) {
+            case FunctionalUnitType.INTEGERSUM:
+            case FunctionalUnitType.INTEGERMULTIPLY:
+            case FunctionalUnitType.FLOATINGSUM:
+            case FunctionalUnitType.FLOATINGMULTIPLY:
+            case FunctionalUnitType.JUMP:
+                // Operandos disponibles
+                while (i !== this.reserveStationEntry[type].length &&
+                    !((this.reserveStationEntry[type][i].Qj === -1)
+                        && (this.reserveStationEntry[type][i].Qk == -1) &&
+                        (this.reserveStationEntry[type][i].FUNum == -1))) {
+                    i++;
+                }
+                if (i !== this.reserveStationEntry[type].length) {
+                    this.reserveStationEntry[type][i].FUNum = num;
+                    this.reserveStationEntry[type][i].FUPos =
+                        this.functionalUnit[type][num].fillFlow(this.reserveStationEntry[type][i].instruction);
+                    this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].stage = SuperStage.SUPER_EXECUTE;
+                }
+                break;
+            case FunctionalUnitType.MEMORY:
+                // Fase 2 (Sólo los LOAD): Poner a ejecutar
+                for (; i !== this.reserveStationEntry[type].length; i++) {
+                    let opcode = this.reserveStationEntry[type][i].instruction.opcode;
+                    if ((opcode === Opcodes.LW || opcode == Opcodes.LF)
+                        && (this.reserveStationEntry[type][i].FUNum === -1)
+                        && this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].address !== 1
+                        && this.checkStore(this.reserveStationEntry[type][i].ROB, this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].address)) {
+                        break;
+                    }
+                }
+                if (i !== this.reserveStationEntry[type].length) {
+                    this.reserveStationEntry[type][i].FUNum = num;
+                    this.reserveStationEntry[type][i].FUPos = this.functionalUnit[type][num].fillFlow(this.reserveStationEntry[type][i].instruction);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-    //     // Después de pasar por todas las UF me encargo de las UF de cálculo de dir.
-    //     // Fase 1b: Cálculo de la dirección
-    //     // Primero termino la ejecución del cálculo de dir. en la ALU
-    //     for (int i = 0; i < nUF[MEM]; i++) {
-    //         if (aluMem[i].getTopInstruccion() != NULL) {
-    //             // Busco la entrada de la ER que coincide con esa instrucción
-    //             TEstacionReserva::iterator it = ER[MEM].begin();
-    //             while ((it ->numUF != nUF[MEM] + i) || (it ->posUF != aluMem[i].getUltima()))
-    //                 it++;
-    //             ROB[it ->ROB] ->direccion = it ->Vk + it ->A;
-    //             it ->A = ROB[it ->ROB] ->direccion;
-    //             it ->numUF = -1; // Vuelve a no tener una UF asociada
-    //         }
-    //         aluMem[i].tic();
-    //     }
-    //     // Fase 1a: Cálculo de la dirección
-    //     // Relleno la ALU de cálculo de direcciones asociada a esta UF
-    //     for (int i = 0; i < nUF[MEM]; i++) {
-    //         TEstacionReserva::iterator it = ER[MEM].begin();
-    //         for (; it != ER[MEM].end(); it++)
-    //             if ((it ->Qk == -1) // Valor del operando disponible
-    //                 && (ROB[it ->ROB] ->direccion == -1)  // Dirección todavía no calculada...
-    //                 && (it ->numUF == -1))    // ...y no está calculándose ahora mismo
-    //                 break;
-    //         if (it != ER[MEM].end()) {
-    //             it ->numUF = i + nUF[MEM];  // Así las distingo de las UF de Memoria
-    //             it ->posUF = aluMem[i].rellenarCauce(it ->instruccion);
-    //             ROB[it ->ROB] ->etapa = SUPER_EXECUTE;
-    //         }
-    //     }
-    // }
+    ticExecute(): void {
 
-    // /******************************************************************************
-    //  * escribirInstruccion: Resuelve la etapa de escritura de resultados de una
-    //  * instrucción.
-    //  * Parámetros:
-    //  *  - tipo: Tipo de UF
-    //  *  - num: Número de UF de ese tipo
-    //  * Comentarios: Lo único que se hace es recoger el resultado de la instrucción
-    //  * (si hay una instrucción lista en esa UF) y difundirlo entre todas las ER que
-    //  * lo requieran como resultado.
-    //  ******************************************************************************/
-    // void TMaquinaSuper::escribirInstruccion(TTipoUF tipo, int num) {
-    //     float resul;
-    //     TInstruccion * inst = UF[tipo][num].getTopInstruccion();
-    //     if (inst != NULL) {
-    //         TEstacionReserva::iterator it = ER[tipo].begin();
-    //         while ((it ->numUF != num) || (it ->posUF != UF[tipo][num].getUltima()))
-    //             it++;   // NOTA: si esto no para es q la he cagao en algún paso anterior
-    //         int opcode = inst ->getOpcode();
-    //         switch (opcode) {
-    //             case TCodigo::ADD:
-    //             case TCodigo::ADDI:
-    //             case TCodigo::ADDF:
-    //                 resul = it ->Vj + it ->Vk;
-    //                 break;
-    //             case TCodigo::MULT:
-    //             case TCodigo::MULTF:
-    //                 resul = it ->Vj * it ->Vk;
-    //                 break;
-    //             // En esta fase no se hace nada con los STORES
-    //             case TCodigo::LW:
-    //             case TCodigo::LF:
-    //                 if (!memoria.getDato(it ->A, resul))
-    //                     UF[tipo][num].setStall(latFalloMem - UF[tipo][num].getLatencia());
-    //                 break;
-    //             case TCodigo::BEQ:
-    //                 resul = (it ->Vj == it ->Vk) ? 1 : 0;
-    //                 break;
-    //             case TCodigo::BNE:
-    //                 resul = (it ->Vj != it ->Vk) ? 1 : 0;
-    //                 break;
-    //         }
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++)
+            for (let j = 0; j < this.functionalUnitNumbers[i]; j++)
+                if (this.functionalUnit[i][j].isFree())
+                    this.executeInstruction(i, j);
+        // Después de pasar por todas las UF me encargo de las UF de cálculo de dir.
+        // Fase 1b: Cálculo de la dirección
+        // Primero termino la ejecución del cálculo de dir. en la ALU
+        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            if (this.aluMem[i].getTopInstruction() !== null) {
+                // Busco la entrada de la ER que coincide con esa instrucción
+                // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
+                let i = 0;
+                while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum !== this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i)
+                    || (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUPos !== this.aluMem[i].getLast())) {
+                    i++;
+                }
 
-    //         // Finalizó la ejecución de la instrucción
-    //         if (UF[tipo][num].getStall() == 0) {
-    //             if ((opcode != TCodigo::BNE) && (opcode != TCodigo::BEQ)) {
-    //                 // Actualizo todas las ER
-    //                 for (int i = 0; i < NTIPOSUF; i++) {
-    //                     TEstacionReserva::iterator itER = ER[i].begin();
-    //                     for (; itER != ER[i].end(); itER++) {
-    //                         if (itER ->Qj == it ->ROB) {
-    //                             itER ->Vj = resul;
-    //                             itER ->Qj = -1;
-    //                         }
-    //                         if (itER ->Qk == it ->ROB) {
-    //                             itER ->Vk = resul;
-    //                             itER ->Qk = -1;
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //             ROB[it ->ROB] ->valor = resul;
-    //             ROB[it ->ROB] ->etapa = SUPER_WRITERESULT;
-    //             ROB[it ->ROB] ->listo = true;
-    //             // Elimino la entrada de la ER
-    //             ER[tipo].erase(it);
-    //         }
-    //     }
-    // }
+                this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vk + this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A;
+                this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A = this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address;
+                this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum = -1; // Vuelve a no tener una UF asociada
+            }
+            this.aluMem[i].tic();
+        }
+        // Fase 1a: Cálculo de la dirección
+        // Relleno la ALU de cálculo de direcciones asociada a esta UF
+        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
+            let i = 0;
+            for (; i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; i++) {
+                if ((this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qk === -1) // Valor del operando disponible
+                    && (this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address === -1)  // Dirección todavía no calculada...
+                    && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum === -1))    // ...y no está calculándose ahora mismo
+                    break;
+            }
+            if (i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
+                this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum = i + this.functionalUnitNumbers[FunctionalUnitType.MEMORY];  // Así las distingo de las UF de Memoria
+                this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUPos = this.aluMem[i].fillFlow(this.reserveStationEntry[FunctionalUnitType.MEMORY][i].instruction);
+                this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].stage = SuperStage.SUPER_EXECUTE;
+            }
+        }
+    }
 
-    // /******************************************************************************
-    //  * ticWriteResult: Coge las instrucciones marcadas como ejecutadas y actualiza
-    //  * su resultado
-    //  * Comentarios: En esta parte del código es donde se efectúa realmente la
-    //  * ejecución
-    //  ******************************************************************************/
-    // int TMaquinaSuper::ticWriteResult() {
-    //     // En primer lugar compruebo si hay STORES listos
-    //     TEstacionReserva::iterator it = ER[MEM].begin();
-    //     while (it != ER[MEM].end()) {
-    //         int opcode = ROB[it ->ROB] ->instruccion ->getOpcode();
-    //         if (((opcode == TCodigo::SW) || (opcode == TCodigo::SF)) && (it ->Qj == -1) && (ROB[it ->ROB] ->direccion != -1)) {
-    //             ROB[it ->ROB] ->valor = it ->Vj;
-    //             // NOTA: Lo pongo o no?
-    //             ROB[it ->ROB] ->etapa = SUPER_WRITERESULT;
-    //             ROB[it ->ROB] ->listo = true;
-    //             // Elimino la entrada de la ER
-    //             if (it == ER[MEM].begin()) {
-    //                 ER[MEM].erase(it);
-    //                 it = ER[MEM].begin();
-    //             }
-    //             else {
-    //                 TEstacionReserva::iterator itAux = it;
-    //                 it--;
-    //                 ER[MEM].erase(itAux);
-    //                 it++;
-    //             }
-    //         }
-    //         else
-    //         it++;
-    //     }
 
-    //     // Después recorro todas las UF para recoger los resultados
-    //     for (int i = 0; i < NTIPOSUF; i++)
-    //     for (int j = 0; j < nUF[i]; j++) {
-    //         if (UF[i][j].getStall() == 0)
-    //             escribirInstruccion(i, j);
-    //         // Avanzo el reloj de esa UF
-    //         UF[i][j].tic();
-    //     }
-    // }
+    writeInstruction(type: FunctionalUnitType, num: number) {
+        let resul;
+        let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
+        if (inst != null) {
+            // TEstacionReserva::iterator it = ER[type].begin();
+            let i = 0;
+            while ((this.reserveStationEntry[type][i].FUNum != num) ||
+                (this.reserveStationEntry[type][i].FUPos !== this.functionalUnit[type][num].getLast()))
+                i++;   // NOTA: si esto no para es q la he cagao en algún paso anterior
+            let opcode = inst.opcode;
+            switch (opcode) {
+                case Opcodes.ADD:
+                case Opcodes.ADDI:
+                case Opcodes.ADDF:
+                    resul = this.reserveStationEntry[type][i].Vj + this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.MULT:
+                case Opcodes.MULTF:
+                    resul = this.reserveStationEntry[type][i].Vj * this.reserveStationEntry[type][i].Vk;
+                    break;
+                // En esta fase no se hace nada con los STORES
+                case Opcodes.LW:
+                case Opcodes.LF:
+                    let a = this.memory.getDatum(this.reserveStationEntry[type][i].A);
+                    resul = a.datum;
+                    if (!a.got) {
+                        this.functionalUnit[type][num].status.stall = this.memoryFailLatency - this.functionalUnit[type][num].latency;
+                    }
+                    break;
+                case Opcodes.BEQ:
+                    resul = (this.reserveStationEntry[type][i].Vj == this.reserveStationEntry[type][i].Vk) ? 1 : 0;
+                    break;
+                case Opcodes.BNE:
+                    resul = (this.reserveStationEntry[type][i].Vj !== this.reserveStationEntry[type][i].Vk) ? 1 : 0;
+                    break;
+            }
 
-    // /******************************************************************************
-    //  * chkSalto: Comprueba si la especulación en la ejecución realizada a partir de
-    //  * una instrucción de salto fue correcta o no en el momento de graduarla.
-    //  * Parámetros:
-    //  *  - rob: Entrada del ROB que contiene la instrucción de salto
-    //  * Comentarios: En caso de ser una predicción correcta se deja todo como está.
-    //  * En caso contrario, hay que vaciar todo el flujo de ejecución.
-    //  * En cualquiera de los casos hay que actualizar el valor de la tabla de
-    //  * predicción de saltos.
-    //  ******************************************************************************/
-    // checkSalto(ReorderBufferEntry rob): boolean {
-    //     // Se comprueba si la predicción acertó
-    //     if (prediccion(rob ->instruccion ->getId()) ^ (bool) rob->valor) {
-    //         cambiarPrediccion(rob ->instruccion ->getId(), (bool) rob->valor);
-    //         // Se cambia el PC
-    //         if ((bool) rob->valor)
-    //         PC = codigo ->getInstruccionBB(rob ->instruccion ->getOp(2));
-    //         else
-    //         PC = rob ->instruccion ->getId() + 1;
-    //         // Se limpia el ROB
-    //         TReorderBuffer::iterator itROB = ROB.begin();
-    //         for (; itROB != ROB.end(); itROB++) {
-    //             TEntradaROB * aux = itROB.remove();
-    //             delete aux ->instruccion;
-    //             delete aux;
-    //         }
-    //         //        ROB.clear();
-    //         // Y libero la memoria de la entrada del ROB q contenía el salto
-    //         delete rob ->instruccion;
-    //         delete rob;
-    //         // Se limpian las UF y ER
-    //         for (int i = 0; i < NTIPOSUF; i++)
-    //         for (int j = 0; j < nUF[i]; j++) {
-    //             UF[i][j].limpiar();
-    //             ER[i].clear();
-    //         }
-    //         // y las UF de cálculo de direcciones
-    //         for (int i = 0; i < nUF[MEM]; i++)
-    //         aluMem[i].limpiar();
-    //         // Se limpia el decoder
-    //         TDecoder::iterator itDec = decoder.begin();
-    //         for (; itDec != decoder.end(); itDec++) {
-    //             TEntradaDecoder * aux = itDec.remove();
-    //             delete aux ->instruccion;
-    //             delete aux;
-    //         }
-    //         //        decoder.clear();
-    //         // Se limpia la unidad de Prefetch
-    //         TPrefetchUnit::iterator itPre = prefetchUnit.begin();
-    //         for (; itPre != prefetchUnit.end(); itPre++) {
-    //             TEntradaPrefetch * aux = itPre.remove();
-    //             delete aux ->instruccion;
-    //             delete aux;
-    //         }
-    //         //        prefetchUnit.clear();
-    //         // Limpio también las estructuras asociadas a los registros
-    //         memset(this.ROBGpr, -1, sizeof(int) * NGP);
-    //         memset(ROBFpr, -1, sizeof(int) * NFP);
-    //         this.gpr.setBusy(false);
-    //         fpr.setBusy(false);
-    //         return false;
-    //     }
-    //     cambiarPrediccion(rob ->instruccion ->getId(), (bool) rob->valor);
-    //     return true;
-    // }
-    // /******************************************************************************
-    //  * ticCommit: Simula la etapa de "Commit" (graduación)
-    //  * Devuelve:
-    //  *  - SUPER_COMMITOK: Se pudieron graduar las "emision" instrucciones
-    //  *  - SUPER_COMMITNO: Faltaron algunas instruciones por graduar porque aún no
-    //  *    estaban listas
-    //  *  - SUPER_COMMITEND: Se vació el ROB
-    //  *  - SUPER_COMMITMISS: Se vacío el ROB a causa de un fallo de predicción de
-    //  *    salto
-    //  * Comentarios: La graduación se realiza de manera secuencial, para asegurar el
-    //  * orden del programa.
-    //  ******************************************************************************/
-    // TCommitStatus TMaquinaSuper::ticCommit() {
-    //     for (int i = 0; i < emision; i++) {
-    //         if (ROB.isEmpty())
-    //             return SUPER_COMMITEND;
-    //         else if (!ROB.top() ->listo)
-    //             return SUPER_COMMITNO;
-    //         else {
-    //             int h = ROB.getFirst();
-    //             TEntradaROB * aux = ROB.remove();
-    //             switch (aux ->instruccion ->getOpcode()) {
-    //                 case TCodigo::SW:
-    //                 case TCodigo::SF:
-    //                     memoria.setDato(aux ->direccion, aux ->valor);
-    //                     break;
-    //                 case TCodigo::BEQ:
-    //                 case TCodigo::BNE:
-    //                     if (!chkSalto(aux))
-    //                         return SUPER_COMMITMISS;
-    //                     break;
-    //                 case TCodigo::ADD:
-    //                 case TCodigo::ADDI:
-    //                 case TCodigo::MULT:
-    //                 case TCodigo::LW:
-    //                     gpr.setReg(aux ->destino, aux ->valor, false);
-    //                     // Pase lo que pase R0 vale 0
-    //                     gpr.setReg(0, 0, false);
-    //                     if (ROBGpr[aux ->destino] == h)
-    //                         gpr.setBusy(aux ->destino, false);
-    //                     break;
-    //                 case TCodigo::ADDF:
-    //                 case TCodigo::MULTF:
-    //                 case TCodigo::LF:
-    //                     fpr.setReg(aux ->destino, aux ->valor, false);
-    //                     if (ROBFpr[aux ->destino] == h)
-    //                         fpr.setBusy(aux ->destino, false);
-    //                     break;
-    //                 default:
-    //                     break;
-    //             }
-    //             // Importante: Elimino la instrucción copia de la original
-    //             delete aux ->instruccion;
-    //             delete aux;
-    //         }
-    //     }
-    //     return SUPER_COMMITOK;
-    // }
-    // /******************************************************************************
-    //  * tic: Avanza un ciclo el reloj de la máquina y realiza la simulación
-    //  * Devuelve:
-    //  *  - SUPER_ENDEXE: Finalizó la ejecución del programa.
-    //  *  - SUPER_BREAKPOINT: La ejecución se encontró con un breakpoint
-    //  *  - SUPER_OK: Este ciclo de reloj finalizo sin problemas
-    //  ******************************************************************************/
-    // TSuperscalarStatus TMaquinaSuper::tic() {
-    //     status.ciclo++;
-    //     // ETAPA DE COMMIT
-    //     TCommitStatus comm = ticCommit();
-    //     if ((comm != SUPER_COMMITEND) && (comm != SUPER_COMMITMISS)) {
-    //         // ETAPA DE WRITE RESULT
-    //         ticWriteResult();
-    //         // ETAPA DE EXECUTE
-    //         ticExecute();
-    //     }
-    //     // ETAPA DE ISSUE
-    //     int resulIssue = ticIssue();
-    //     // ETAPA DE DECODER
-    //     int resulDecoder = ticDecoder();
-    //     // ETAPA DE PREFETCH
-    //     int resulPrefetch = ticPrefetch();
-    //     if ((resulIssue + resulDecoder + resulPrefetch == 0) && (comm == SUPER_COMMITEND))
-    //         return SUPER_ENDEXE;
-    //     TPrefetchUnit::iterator it = prefetchUnit.begin();
-    //     for (; it != prefetchUnit.end(); it++)
-    //         if (it ->instruccion ->getBreakPoint()) {
-    //             status.breakPoint = true;
-    //             return SUPER_BREAKPOINT;
-    //         }
-    //     return SUPER_OK;
-    // }
+            // Finalizó la ejecución de la instrucción
+            if (this.functionalUnit[type][num].status.stall == 0) {
+                if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ)) {
+                    // Actualizo todas las ER
+                    for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+                        let j = 0;
+                        // TEstacionReserva::iterator itER = ER[i].begin();
+                        for (; j !== this.reserveStationEntry[i].length; i++) {
+                            if (this.reserveStationEntry[i][j].Qj === this.reserveStationEntry[type][i].ROB) {
+                                this.reserveStationEntry[i][j].Vj = resul;
+                                this.reserveStationEntry[i][j].Qj = -1;
+                            }
+                            if (this.reserveStationEntry[i][j].Qk === this.reserveStationEntry[type][i].ROB) {
+                                this.reserveStationEntry[i][j].Vk = resul;
+                                this.reserveStationEntry[i][j].Qk = -1;
+                            }
+                        }
+                    }
+                }
+                this.reorderBuffer[this.reserveStationEntry[type][i].ROB].value = resul;
+                this.reorderBuffer[this.reserveStationEntry[type][i].ROB].stage = SuperStage.SUPER_WRITERESULT;
+                this.reorderBuffer[this.reserveStationEntry[type][i].ROB].ready = true;
+                // Elimino la entrada de la ER
+                this.reserveStationEntry[type].splice(i, 1);
+            }
+        }
+    }
+
+
+    ticWriteResult(): void {
+        // En primer lugar compruebo si hay STORES listos
+        // let i = this.reserveStationEntry[FunctionalUnitType.MEMORY].begin();
+        let i = 0;
+        while (i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
+            let opcode = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].instruction.opcode;
+            if (((opcode === Opcodes.SW) || (opcode === Opcodes.SF))
+                && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qj === -1)
+                && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].adress !== -1)) {
+                this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].value = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vj;
+                // NOTA: Lo pongo o no?
+                this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].stage = SuperStage.SUPER_WRITERESULT;
+                this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].ready = true;
+                // Elimino la entrada de la ER
+                if (i === 0) {
+                    // TODO BEGIN
+                    this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
+                    i = 0;
+                } else {
+                    // TODO FIX THIS
+                    let j = i;
+                    i--;
+                    this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
+                    i++;
+                }
+            } else {
+                i++;
+            }
+        }
+
+        // Después recorro todas las UF para recoger los resultados
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++)
+            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+                if (this.functionalUnit[i][j].status.stall == 0)
+                    this.writeInstruction(i, j);
+                // Avanzo el reloj de esa UF
+                this.functionalUnit[i][j].tic();
+            }
+    }
+
+    checkJump(rob: ReorderBufferEntry): boolean {
+        // Se comprueba si la predicción acertó
+        // Typescript does not support ^ operator for boolean
+        if (+this.prediction(rob.instruction.id) ^ +!!rob.value) {
+            this.changePrediction(rob.instruction.id, !!rob.value);
+            // Se cambia el PC
+            if (!!rob.value) {
+                this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+            } else {
+                this.pc = rob.instruction.id + 1;
+            }
+            // Se limpia el ROB
+            // let i = 0;
+            // TReorderBuffer::iterator itROB = ROB.begin();
+            for (let i = 0; i !== this.reorderBuffer.end(); i++) {
+                let aux: ReorderBufferEntry = this.reorderBuffer.remove(i);
+            }
+            // Se limpian las UF y ER
+            for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+                for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+                    this.functionalUnit[i][j].clean();
+                    this.reserveStationEntry[i].fill(null);
+                }
+            }
+            // y las UF de cálculo de direcciones
+            for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+                this.aluMem[i].clean();
+            }
+            // Se limpia el decoder
+            // TDecoder::iterator itDec = decoder.begin();
+            for (let i = 0; i !== this.decoder.end(); i++) {
+                let aux: DecoderEntry = this.decoder.remove(i);
+                // delete aux.instruction;
+                // delete aux;
+            }
+            //        decoder.clear();
+            // Se limpia la unidad de Prefetch
+            // TPrefetchUnit::iterator itPre = prefetchUnit.begin();
+
+            for (let i = 0; i !== this.prefetchUnit.end(); i++) {
+                let aux: PrefetchEntry = this.prefetchUnit.remove(i);
+                // delete aux.instruction;
+                // delete aux;
+            }
+            //        prefetchUnit.clear();
+            // Limpio también las estructuras asociadas a los registros
+            this.ROBGpr.fill(-1);
+            this.ROBFpr.fill(-1);
+            this.gpr.setAllBusy(false);
+            this.fpr.setAllBusy(false);
+            return false;
+        }
+        // CHECK !! AS (BOOL CAST)
+        this.changePrediction(rob.instruction.id, !!rob.value);
+        return true;
+    }
+
+
+
+    ticCommit(): CommitStatus {
+        for (let i = 0; i < this.issue; i++) {
+            if (this.reorderBuffer.isEmpty())
+                return CommitStatus.SUPER_COMMITEND;
+            else if (!this.reorderBuffer.top().ready)
+                return CommitStatus.SUPER_COMMITNO;
+            else {
+                let h = this.reorderBuffer.first;
+                let aux: ReorderBufferEntry = this.reorderBuffer.remove();
+                switch (aux.instruction.opcode) {
+                    case Opcodes.SW:
+                    case Opcodes.SF:
+                        this.memory.setDatum(aux.address, aux.address);
+                        break;
+                    case Opcodes.BEQ:
+                    case Opcodes.BNE:
+                        if (!this.checkJump(aux))
+                            return CommitStatus.SUPER_COMMITMISS;
+                        break;
+                    case Opcodes.ADD:
+                    case Opcodes.ADDI:
+                    case Opcodes.MULT:
+                    case Opcodes.LW:
+                        this.gpr.setContent(aux.destinyRegister, aux.address, false);
+                        // Pase lo que pase R0 vale 0
+                        this.gpr.setContent(0, 0, false);
+                        if (this.ROBGpr[aux.destinyRegister] == h)
+                            this.gpr.setBusy(aux.destinyRegister, false);
+                        break;
+                    case Opcodes.ADDF:
+                    case Opcodes.MULTF:
+                    case Opcodes.LF:
+                        this.fpr.setContent(aux.destinyRegister, aux.address, false);
+                        if (this.ROBFpr[aux.destinyRegister] == h)
+                            this.fpr.setBusy(aux.destinyRegister, false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        return CommitStatus.SUPER_COMMITOK;
+    }
+
+    tic(): SuperescalarStatus {
+        this.status.cycle++;
+        // COMMi stage 
+        let commit = this.ticCommit();
+        if (commit !== CommitStatus.SUPER_COMMITEND && commit !== CommitStatus.SUPER_COMMITMISS) {
+            // WRITE RESULT STAGE 
+            this.ticWriteResult();
+            // EXECUTE STAGE 
+            this.ticExecute();
+        }
+        // ISSUE STAGE 
+        let resultIssue = this.ticIssue();
+        // DECODER STAGE 
+        let resultDecoder = this.ticDecoder();
+        // PREFETCH STAGE 
+        let resultPrefetch = this.ticPrefetch();
+
+        if ((resultIssue + resultDecoder + resultPrefetch === 0) && (commit === CommitStatus.SUPER_COMMITEND)) {
+            return SuperescalarStatus.SUPER_ENDEXE;
+        }
+        for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.last; i++) {
+            if (this.prefetchUnit.elements[i].instruction.breakpoint) {
+                this.status.breakPoint = true;
+                return SuperescalarStatus.SUPER_BREAKPOINT;
+            }
+        }
+        return SuperescalarStatus.SUPER_OK;
+    }
+
+    changePrediction(address: number, result: boolean) {
+        address = address % Superescalar.TAMANOTABLAPRED;
+        switch (this.jumpPrediction[address]) {
+            case 0: this.jumpPrediction[address] = (result) ? 1 : 0; break;
+            case 1: this.jumpPrediction[address] = (result) ? 3 : 0; break;
+            case 2: this.jumpPrediction[address] = (result) ? 3 : 0; break;
+            case 3: this.jumpPrediction[address] = (result) ? 3 : 2; break;
+            default: this.jumpPrediction[address] = 0; break;
+        }
+    }
+
+    prediction(address: number): boolean {
+        return (this.jumpPrediction[address % Superescalar.TAMANOTABLAPRED] >= 2);
+    }
 }

@@ -56,7 +56,7 @@ export class Code {
             }
         }
 
-        if (index != -1) {
+        if (index !== -1) {
             basicBlock = this._labels[index].blocks;
         } else {
             basicBlock = new BasicBlock();
@@ -84,7 +84,7 @@ export class Code {
             }
         }
 
-        if (index != -1) {
+        if (index !== -1) {
             basicBlock = this._labels[index].blocks;
             if (basicBlock.lineNumber !== -1) {
                 // Repeated label
@@ -385,6 +385,23 @@ export class Code {
 
     public set basicBlocks(value: BasicBlock) {
         this._basicBlocks = value;
+    }
+
+    public static opcodeToFunctionalUnitType(opcode: number): FunctionalUnitType {
+        switch (opcode) {
+            case Opcodes.ADD:
+            case Opcodes.ADDI: return FunctionalUnitType.INTEGERSUM;
+            case Opcodes.ADDF: return FunctionalUnitType.FLOATINGSUM;
+            case Opcodes.MULT: return FunctionalUnitType.INTEGERMULTIPLY;
+            case Opcodes.MULTF: return FunctionalUnitType.FLOATINGMULTIPLY;
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.LW:
+            case Opcodes.LF: return FunctionalUnitType.MEMORY;
+            case Opcodes.BNE:
+            case Opcodes.BEQ: return FunctionalUnitType.JUMP;
+            default: return FunctionalUnitType.INTEGERSUM;
+        }
     }
 
 }
