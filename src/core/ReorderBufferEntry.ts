@@ -6,6 +6,6 @@ export class ReorderBufferEntry {
     private value: number;
     private destinyRegister: number;
     private address: number;
-    private superStage: struct;
+    // private superStage: struct;
 
 }

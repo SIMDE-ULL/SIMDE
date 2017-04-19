@@ -8,17 +8,35 @@ ADD     R3 R0 R2
 `
 
 const input2 = `1
-LF	F0 (R4)
+LF F0 (R4)
 `
 const input3 = `3
-LF 	F1 (R2)
+LF F1 (R2)
 LOOP:
 ADDF F1 F1 F0
 BNE	R2 R5 LOOP
 `;
 
+const input4 = `3
+LF F1 (R2)
+LOOP:
+ADDF F1 F1 H0
+BNE	R2 R5 LOOP
+`;
 
+const input5 = `3
+LF F1 (R-2)
+LOOP:
+ADDF F1 F1 H0
+BNE	R2 R5 LOOP
+`;
 
+const input6 = `3
+LF F1 (R2)
+LOOP:
+ADF F1 F1 H0
+BNE	R2 R5 LOOP
+`;
 
 // console.log('Lines', code.lines);
 // console.log('Instructions', code.instructions);
@@ -32,6 +50,18 @@ test('Lines are parsed properly', t => {
     code = new Code();
     code.load(input2)
     t.deepEqual(1, code.lines, 'Lines message should have been 1');
+})
+
+test('Errors parsing are throwing', t => {
+    let code: Code = new Code();
+    let error = t.throws(() => code.load(input4));
+    t.is(error, 'Error in lexema at line 2, expected REGFP got: ID');
+    code = new Code();
+    let error2 = t.throws(() => code.load(input5));
+    t.is(error2, 'Error in lexema at line 1, expected ADDRESS got: ID');
+    code = new Code();
+    let error3 = t.throws(() => code.load(input6));
+    t.is(error3, 'Error at line 2 unknown opcode ADF');
 })
 
 // code = new Code();

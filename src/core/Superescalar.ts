@@ -28,54 +28,54 @@ export enum SuperescalarStatus {
 }
 
 
-export class Superescalar extends Machine {
+// export class Superescalar extends Machine {
 
-    private static const NBITSPRED = 2;
-    private static const NBITSTABLAPRED = 4;
-    private static const TAMANOTABLAPRED = 1 << 4;
+//     private static const NBITSPRED = 2;
+//     private static const NBITSTABLAPRED = 4;
+//     private static const TAMANOTABLAPRED = 1 << 4;
 
-    private issue: number;
-    private code: Code;
+//     private issue: number;
+//     private code: Code;
 
-    private ROBGpr: number[];
-    private ROBFpr: number[];
-    private reserveStationEntry: ReserveStationEntry[];
-    private reorderBuffer: any;
-    private prefetchUnit: any;
-    private decoder: any;
-    private aluMem: FunctionalUnit[];
+//     private ROBGpr: number[];
+//     private ROBFpr: number[];
+//     private reserveStationEntry: ReserveStationEntry[];
+//     private reorderBuffer: any;
+//     private prefetchUnit: any;
+//     private decoder: any;
+//     private aluMem: FunctionalUnit[];
 
-    private jumpPrediction: number[];
+//     private jumpPrediction: number[];
 
-    constructor() {
-        super();
-    }
+//     constructor() {
+//         super();
+//     }
 
-    init(reset: boolean) {
-        Machine.init(reset);
-        // Clean Gpr, Fpr, predSalto
+//     init(reset: boolean) {
+//         Machine.init(reset);
+//         // Clean Gpr, Fpr, predSalto
 
-        // Calculate ROB size
-        let total = 0;
-        for (let i = 0; i < Machine.; i++) {
+//         // Calculate ROB size
+//         let total = 0;
+//         for (let i = 0; i < Machine.; i++) {
 
-        }
-    }
+//         }
+//     }
 
-    ticPrefetch(): number {
-        while (!this.prefetchUnit.isFull() && (this.PC < this.codigo.) {
-            TEntradaPrefetch aux = new TEntradaPrefetch;
-            // Importante: Hago una copia de la instrucción original para distinguir
-            // las distintas apariciones de una misma inst.
-            aux ->instruccion = new TInstruccion(*codigo ->getInstruccion(PC));
-            if ((TCodigo::op2UF(aux ->instruccion ->getOpcode()) == SALTO) && prediccion(PC))
-            PC = codigo ->getInstruccionBB(aux ->instruccion ->getOp(2));
-        else
-    PC++;
-    prefetchUnit.add(aux);
-}
-return prefetchUnit.getCount();
-}
+//     ticPrefetch(): number {
+//         while (!this.prefetchUnit.isFull() && (this.PC < this.codigo.) {
+//             TEntradaPrefetch aux = new TEntradaPrefetch;
+//             // Importante: Hago una copia de la instrucción original para distinguir
+//             // las distintas apariciones de una misma inst.
+//             aux ->instruccion = new TInstruccion(*codigo ->getInstruccion(PC));
+//             if ((TCodigo::op2UF(aux ->instruccion ->getOpcode()) == SALTO) && prediccion(PC))
+//             PC = codigo ->getInstruccionBB(aux ->instruccion ->getOp(2));
+//         else
+//     PC++;
+//     prefetchUnit.add(aux);
+// }
+// return prefetchUnit.getCount();
+// }
 
 /******************************************************************************
  * ticDecoder: Lee las "emision" primeras intrucciones de la unidad de Prefetch
@@ -620,4 +620,3 @@ return prefetchUnit.getCount();
 //         }
 //     return SUPER_OK;
 // }
-}
