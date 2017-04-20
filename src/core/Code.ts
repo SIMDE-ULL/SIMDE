@@ -156,8 +156,7 @@ export class Code {
                 this._numberOfBlocks++;
                 actual = this.addLabel(lexema.yytext, i, actual);
                 if (actual == null) {
-                    console.log('Error');
-                    // throw;
+                    throw `Error at line ${i + 1 + this.numberOfBlocks}, label ${lexema.yytext} already exists`;
                 }
                 lexema = this._parser.lex();
             } else {
@@ -182,7 +181,7 @@ export class Code {
                 }
             }
             newBlock = false;
-            this.checkLexema(lexema.value, LEX.ID, i);
+            this.checkLexema(lexema, LEX.ID, i);
             let opcode = this.stringToOpcode(lexema.yytext);
             this._instructions[i].opcode = opcode;
             this._instructions[i].basicBlock = this._numberOfBlocks - 1;
@@ -195,45 +194,45 @@ export class Code {
                 case Opcodes.ADD:
                 case Opcodes.MULT:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext));
                     break;
                 case Opcodes.ADDF:
                 case Opcodes.MULTF:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGFP, i);
+                    this.checkLexema(lexema, LEX.REGFP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGFP, i);
+                    this.checkLexema(lexema, LEX.REGFP, i);
                     this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGFP, i);
+                    this.checkLexema(lexema, LEX.REGFP, i);
                     this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext));
                     break;
                 case Opcodes.ADDI:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.INMEDIATE, i);
+                    this.checkLexema(lexema, LEX.INMEDIATE, i);
                     this._instructions[i].setOperand(2, this.stringToInmediate(lexema.yytext));
                     break;
                 case Opcodes.SW:
                 case Opcodes.LW:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.ADDRESS, i);
+                    this.checkLexema(lexema, LEX.ADDRESS, i);
                     let result: number[] = this.stringToAddress(lexema.yytext);
                     this._instructions[i].setOperand(1, result[0]);
                     this._instructions[i].setOperand(2, result[1]);
@@ -241,10 +240,10 @@ export class Code {
                 case Opcodes.SF:
                 case Opcodes.LF:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGFP, i);
+                    this.checkLexema(lexema, LEX.REGFP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.ADDRESS, i);
+                    this.checkLexema(lexema, LEX.ADDRESS, i);
                     let result2: number[] = this.stringToAddress(lexema.yytext);
                     this._instructions[i].setOperand(1, result2[0]);
                     this._instructions[i].setOperand(2, result2[1]);
@@ -252,19 +251,19 @@ export class Code {
                 case Opcodes.BNE:
                 case Opcodes.BEQ:
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.REGGP, i);
+                    this.checkLexema(lexema, LEX.REGGP, i);
                     this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
                     lexema = this._parser.lex();
-                    this.checkLexema(lexema.value, LEX.ID, i);
+                    this.checkLexema(lexema, LEX.ID, i);
                     this._instructions[i].setOperand(2, this.checkLabel(lexema.yytext, actual));
                     newBlock = true;
                     break;
                 case Opcodes.OPERROR:
                 default:
-                    throw `Error at line ${i + 1} unknown opcode ${lexema.yytext}`;
+                    throw `Error at line ${i + 1 + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`;
             }
         }
         this.replaceLabels();
@@ -307,9 +306,10 @@ export class Code {
         return +stringInmediate.substring(1, stringInmediate.length);
     }
 
-    public checkLexema(value: number, expectedLexema: number, i: number) {
-        if (value !== expectedLexema) {
-            throw `Error in lexema at line ${i + 1}, expected ${LEX[expectedLexema]} got: ${LEX[value]}`;
+    // TODO CREAR LEXEMA TYPE
+    public checkLexema(lexema: any, expectedLexema: number, i: number) {
+        if (lexema.value !== expectedLexema) {
+            throw `Error at line ${i + 1 + this.numberOfBlocks + 1}, expected: ${LEX[expectedLexema]} got: ${lexema.yytext}`;
         }
     }
 

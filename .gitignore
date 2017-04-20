@@ -3,3 +3,6 @@ node_modules/
 *.o
 build/
 dist/
+.nyc_output/
+legacy/
+coverage/
