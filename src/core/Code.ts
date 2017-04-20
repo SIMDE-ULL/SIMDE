@@ -1,7 +1,7 @@
 import { Instruction } from './Instruction';
 import { FunctionalUnit, FunctionalUnitType } from './FunctionalUnit';
 import { BasicBlock, SuccessorBlock } from './Blocks';
-import { LEX, Parser } from './Parser';
+import { LEX, Lexema, Parser } from './Parser';
 import { Label } from './Label';
 
 enum Opcodes {
@@ -136,7 +136,7 @@ export class Code {
 
     load(input: string) {
         this._parser.setInput(input);
-        let lexema;
+        let lexema: Lexema;
         let actual: BasicBlock;
         let newBlock: boolean = false;
         // First we need the number of code lines
@@ -306,8 +306,7 @@ export class Code {
         return +stringInmediate.substring(1, stringInmediate.length);
     }
 
-    // TODO CREAR LEXEMA TYPE
-    public checkLexema(lexema: any, expectedLexema: number, i: number) {
+    public checkLexema(lexema: Lexema, expectedLexema: number, i: number) {
         if (lexema.value !== expectedLexema) {
             throw `Error at line ${i + 1 + this.numberOfBlocks + 1}, expected: ${LEX[expectedLexema]} got: ${lexema.yytext}`;
         }

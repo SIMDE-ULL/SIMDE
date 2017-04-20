@@ -1,5 +1,10 @@
 import * as Lexer from "lex";
 
+export interface Lexema {
+    value?: any,
+    yytext?: any
+}
+
 export enum LEX {
     INMEDIATE = 1,
     REGFP,
@@ -56,7 +61,7 @@ export class Parser {
         this._lexer.input = input;
     }
 
-    lex() {
+    lex(): Lexema {
         let value = this._lexer.lex();
         return {
             value: value,
