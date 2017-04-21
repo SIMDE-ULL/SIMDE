@@ -3,14 +3,14 @@ export class Instruction {
     private _basicBlock: number;
     private _opcode: number;
     private _operands: number[];
-
+    private _label: string;
     private _breakPoint: boolean;
     private _color: string;
 
     constructor() {
         this._breakPoint = false;
         this._color = 'white';
-        this._operands = new Array(3);        
+        this._operands = new Array(3);
     }
 
     copy(other: Instruction) {
@@ -99,4 +99,13 @@ export class Instruction {
     public set operands(value: number[]) {
         this._operands = value;
     }
+
+    public get label(): string {
+        return this._label;
+    }
+
+    public set label(value: string) {
+        this._label = value;
+    }
+
 }
