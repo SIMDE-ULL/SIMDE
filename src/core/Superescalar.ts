@@ -20,8 +20,10 @@ export class Superescalar extends Machine {
     private static ISSUE_MIN = 2;
     private static ISSUE_MAX = 16;
 
+
     private issue: number;
     private code: Code;
+
 
     private ROBGpr: number[];
     private ROBFpr: number[];
@@ -31,7 +33,9 @@ export class Superescalar extends Machine {
     private decoder: Tail;
     private aluMem: FunctionalUnit[];
 
+
     private jumpPrediction: number[];
+
 
     constructor() {
         super();

@@ -2,6 +2,7 @@ import { Instruction } from './Instruction';
 import { SuperStage } from './SuperescalarEnums';
 
 export class ReorderBufferEntry {
+
     private _instruction: Instruction;
     private _ready: boolean;
     private _value: number;
