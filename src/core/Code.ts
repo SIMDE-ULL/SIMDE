@@ -7,9 +7,10 @@ import { Label } from './Label';
 export enum Opcodes {
     NOP = 0,
     ADD,
+    ADDI,
     SUB,
     ADDF,
-    ADDI,
+    SUBF,
     MULT,
     MULTF,
     OR,
@@ -38,7 +39,7 @@ export class Code {
     private _parser: Parser;
 
     private OpcodesNames: string[] =
-    ['NOP', 'ADD', 'SUB', 'ADDF', 'ADDI', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
+    ['NOP', 'ADD', 'ADDI', 'SUB', 'ADDF', 'SUBF', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
 
     constructor() {
         this._labels = new Array();
@@ -225,6 +226,7 @@ export class Code {
                     this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext));
                     break;
                 case Opcodes.ADDF:
+                case Opcodes.SUBF:
                 case Opcodes.MULTF:
                     lexema = this._parser.lex();
                     this.checkLexema(lexema, LEX.REGFP, i);
@@ -345,8 +347,14 @@ export class Code {
     public getFunctionalUnitType(index: number): number {
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
-            case Opcodes.ADDI: return FunctionalUnitType.INTEGERSUM;
-            case Opcodes.ADDF: return FunctionalUnitType.FLOATINGSUM;
+            case Opcodes.ADDI:
+            case Opcodes.SUB:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR: return FunctionalUnitType.INTEGERSUM;
+            case Opcodes.ADDF:
+            case Opcodes.SUBF: return FunctionalUnitType.FLOATINGSUM;
             case Opcodes.MULT: return FunctionalUnitType.INTEGERMULTIPLY;
             case Opcodes.MULTF: return FunctionalUnitType.FLOATINGMULTIPLY;
             case Opcodes.SW:
@@ -354,7 +362,8 @@ export class Code {
             case Opcodes.LW:
             case Opcodes.LF: return FunctionalUnitType.MEMORY;
             case Opcodes.BNE:
-            case Opcodes.BEQ: return FunctionalUnitType.JUMP;
+            case Opcodes.BEQ:
+            case Opcodes.BGT: return FunctionalUnitType.JUMP;
             default: return FunctionalUnitType.INTEGERSUM;
         }
     }
@@ -406,8 +415,16 @@ export class Code {
     public static opcodeToFunctionalUnitType(opcode: number): FunctionalUnitType {
         switch (opcode) {
             case Opcodes.ADD:
-            case Opcodes.ADDI: return FunctionalUnitType.INTEGERSUM;
-            case Opcodes.ADDF: return FunctionalUnitType.FLOATINGSUM;
+            case Opcodes.ADDI:
+            case Opcodes.SUB:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV: return FunctionalUnitType.INTEGERSUM;
+            case Opcodes.ADDF:
+            case Opcodes.SUBF: return FunctionalUnitType.FLOATINGSUM;
             case Opcodes.MULT: return FunctionalUnitType.INTEGERMULTIPLY;
             case Opcodes.MULTF: return FunctionalUnitType.FLOATINGMULTIPLY;
             case Opcodes.SW:
@@ -415,7 +432,8 @@ export class Code {
             case Opcodes.LW:
             case Opcodes.LF: return FunctionalUnitType.MEMORY;
             case Opcodes.BNE:
-            case Opcodes.BEQ: return FunctionalUnitType.JUMP;
+            case Opcodes.BEQ:
+            case Opcodes.BGT: return FunctionalUnitType.JUMP;
             default: return FunctionalUnitType.INTEGERSUM;
         }
     }

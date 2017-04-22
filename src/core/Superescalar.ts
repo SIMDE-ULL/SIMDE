@@ -103,7 +103,7 @@ export class Superescalar extends Machine {
             // las distintas apariciones de una misma inst.
             aux.instruction = Object.assign({}, this.code[this.pc]);
             // TODO Opcode constant??
-            if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE) && this.jumpPrediction[this.pc])) {
+            if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE || aux.instruction.opcode === Opcodes.BGT) && this.jumpPrediction[this.pc])) {
                 this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
             } else {
                 this.pc++;
@@ -161,7 +161,14 @@ export class Superescalar extends Machine {
         this.reserveStationEntry[type][-1].A = -1;
         switch (instruction.opcode) {
             case Opcodes.ADD:
+            case Opcodes.SUB:
             case Opcodes.MULT:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV:
                 this.checkRegister(instruction.getOperand(1), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
                 this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
                 this.ROBGpr[instruction.getOperand(0)] = robIndex;
@@ -177,6 +184,7 @@ export class Superescalar extends Machine {
                 this.reorderBuffer.elements[robIndex].destiny = instruction.getOperand(0);
                 break;
             case Opcodes.ADDF:
+            case Opcodes.SUBF:
             case Opcodes.MULTF:
                 this.checkRegister(instruction.getOperand(1), true, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
                 this.checkRegister(instruction.getOperand(2), true, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
@@ -218,6 +226,7 @@ export class Superescalar extends Machine {
                 break;
             case Opcodes.BEQ:
             case Opcodes.BNE:
+            case Opcodes.BGT:
                 this.checkRegister(instruction.getOperand(0), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
                 this.checkRegister(instruction.getOperand(1), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
                 this.reserveStationEntry[type][-1].A = instruction.getOperand(2);
@@ -342,7 +351,7 @@ export class Superescalar extends Machine {
             this.aluMem[i].tic();
         }
         // Fase 1a: Cálculo de la dirección
-        // Relleno la ALU de cálculo de direcciones asociada a esta UF
+        // Relleno la ALU de cálculo de direcciones asociagda a esta UF
         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
             // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
             let i = 0;
@@ -377,6 +386,28 @@ export class Superescalar extends Machine {
                 case Opcodes.ADDF:
                     resul = this.reserveStationEntry[type][i].Vj + this.reserveStationEntry[type][i].Vk;
                     break;
+                case Opcodes.SUB:
+                case Opcodes.SUBF:
+                    resul = this.reserveStationEntry[type][i].Vj - this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.OR:
+                    resul = this.reserveStationEntry[type][i].Vj | this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.AND:
+                    resul = this.reserveStationEntry[type][i].Vj & this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.XOR:
+                    resul = this.reserveStationEntry[type][i].Vj ^ this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.NOR:
+                    resul = ~(this.reserveStationEntry[type][i].Vj | this.reserveStationEntry[type][i].Vk);
+                    break;
+                case Opcodes.SRLV:
+                    resul = this.reserveStationEntry[type][i].Vj >> this.reserveStationEntry[type][i].Vk;
+                    break;
+                case Opcodes.SLLV:
+                    resul = this.reserveStationEntry[type][i].Vj << this.reserveStationEntry[type][i].Vk;
+                    break;
                 case Opcodes.MULT:
                 case Opcodes.MULTF:
                     resul = this.reserveStationEntry[type][i].Vj * this.reserveStationEntry[type][i].Vk;
@@ -391,16 +422,19 @@ export class Superescalar extends Machine {
                     }
                     break;
                 case Opcodes.BEQ:
-                    resul = (this.reserveStationEntry[type][i].Vj == this.reserveStationEntry[type][i].Vk) ? 1 : 0;
+                    resul = (this.reserveStationEntry[type][i].Vj === this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                     break;
                 case Opcodes.BNE:
                     resul = (this.reserveStationEntry[type][i].Vj !== this.reserveStationEntry[type][i].Vk) ? 1 : 0;
+                    break;
+                case Opcodes.BGT:
+                    resul = (this.reserveStationEntry[type][i].Vj > this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                     break;
             }
 
             // Finalizó la ejecución de la instrucción
             if (this.functionalUnit[type][num].status.stall == 0) {
-                if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ)) {
+                if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                     // Actualizo todas las ER
                     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
                         let j = 0;
@@ -542,11 +576,19 @@ export class Superescalar extends Machine {
                         break;
                     case Opcodes.BEQ:
                     case Opcodes.BNE:
+                    case Opcodes.BGT:
                         if (!this.checkJump(aux))
                             return CommitStatus.SUPER_COMMITMISS;
                         break;
                     case Opcodes.ADD:
                     case Opcodes.ADDI:
+                    case Opcodes.SUB:
+                    case Opcodes.OR:
+                    case Opcodes.AND:
+                    case Opcodes.NOR:
+                    case Opcodes.XOR:
+                    case Opcodes.SLLV:
+                    case Opcodes.SRLV:
                     case Opcodes.MULT:
                     case Opcodes.LW:
                         this.gpr.setContent(aux.destinyRegister, aux.address, false);
@@ -557,6 +599,7 @@ export class Superescalar extends Machine {
                         break;
                     case Opcodes.ADDF:
                     case Opcodes.MULTF:
+                    case Opcodes.SUBF:
                     case Opcodes.LF:
                         this.fpr.setContent(aux.destinyRegister, aux.address, false);
                         if (this.ROBFpr[aux.destinyRegister] == h)
