@@ -1,14 +1,14 @@
 import { Instruction } from './Instruction';
 
 export class DecoderEntry {
-    private _instruction: Instruction;
+   private _instruction: Instruction;
 
-    public get instruction(): Instruction {
-        return this._instruction;
-    }
+   public get instruction(): Instruction {
+      return this._instruction;
+   }
 
-    public set instruction(value: Instruction) {
-        this._instruction = value;
-    }
+   public set instruction(value: Instruction) {
+      this._instruction = value;
+   }
 
 }

@@ -1,3 +1,17 @@
 {
-  "extends": "tslint-config-standard"
+   "extends": "tslint-config-standard",
+   "rules": {
+      "semicolon": [
+         true,
+         "always"
+      ],
+      "max-line-length": [
+         100
+      ],
+      "ter-indent": [
+         true,
+         3,
+         {}
+      ]
+   }
 }
