@@ -14,14 +14,14 @@ test('Queue size behaces as expected', (t) => {
 });
 
 test('Queue has fixed size', (t) => {
-   let queue = new Queue<number>();
+   let queue = new Queue<number>(1);
 
    queue.add(1);
    queue.add(2);
    queue.add(3);
 
-   // Size should be 3 + 1
-   t.is(queue.size, 4);
+   // Size should be 1 + 1
+   t.is(queue.size, 2);
 });
 
 test('Queue does not let you add extra elements', (t) => {
@@ -33,8 +33,7 @@ test('Queue does not let you add extra elements', (t) => {
 
 
    // Size should be 3 + 1
-   let error = t.throws(() => queue.add(4));
-   t.is(error, 'Queue is full');
+   t.is(queue.add(3), -1);
 });
 
 test('Queue keeps its size after removing elements', (t) => {
@@ -52,6 +51,14 @@ test('Queue keeps its size after removing elements', (t) => {
 test('Queue standard behavior', (t) => {
    let queue = new Queue<number>(3);
 
-   queue.add(1);
-   t.is(queue.first, 1);
+   let index = queue.add(1);
+   t.is(index, 0);
 });
+
+test('Queue behavior', (t) => {
+   let queue = new Queue<number>(2);
+
+   queue.add(1);
+   queue.add(2);
+   t.is(queue.top(), 1);
+})

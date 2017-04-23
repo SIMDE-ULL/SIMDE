@@ -58,7 +58,7 @@ export class Queue<T> {
       return (this.last >= this.first) ? (this.last - this.first) : (this.last + this.size - this.first);
    }
 
-   public end() {
+   public end(): number {
       return this.last;
    }
 
@@ -69,12 +69,12 @@ export class Queue<T> {
       this.last = 0;
    }
 
-   public add(object: T): number {
-      if (this.isFull) {
+   public add(value: T): number {
+      if (this.isFull()) {
          return -1;
       }
       let oldLast = this.last;
-      this._elements[this.last] = object;
+      this._elements[this.last] = value;
       this.last = (this.last + 1) % this.size;
       return oldLast;
 
