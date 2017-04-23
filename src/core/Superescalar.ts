@@ -22,7 +22,7 @@ export class Superescalar extends Machine {
 
 
    private issue: number;
-   private code: Code;
+   private _code: Code;
 
 
    private ROBGpr: number[];
@@ -58,7 +58,7 @@ export class Superescalar extends Machine {
       this.reorderBuffer.init(total);
       this.decoder.init(this.issue);
       this.prefetchUnit.init(2 * this.issue);
-      this.code = null;
+      this._code = null;
 
       this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
 
@@ -85,7 +85,7 @@ export class Superescalar extends Machine {
       this.reorderBuffer.init(total);
       this.decoder.init(this.issue);
       this.prefetchUnit.init(2 * this.issue);
-      this.code = null;
+      this._code = null;
 
       this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
 
@@ -97,14 +97,14 @@ export class Superescalar extends Machine {
    }
 
    ticPrefetch(): number {
-      while (!this.prefetchUnit.isFull() && (this.pc < this.code.lines)) {
+      while (!this.prefetchUnit.isFull() && (this.pc < this._code.lines)) {
          let aux: PrefetchEntry = new PrefetchEntry();
          // Importante: Hago una copia de la instrucción original para distinguir
          // las distintas apariciones de una misma inst.
          aux.instruction = new Instruction();
-         aux.instruction.copy(this.code[this.pc]);
+         aux.instruction.copy(this._code[this.pc]);
          if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE || aux.instruction.opcode === Opcodes.BGT) && this.jumpPrediction[this.pc])) {
-            this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
+            this.pc = this._code.getBasicBlockInstruction(aux.instruction.getOperand(2));
          } else {
             this.pc++;
          }
@@ -517,7 +517,7 @@ export class Superescalar extends Machine {
          this.changePrediction(rob.instruction.id, !!rob.value);
          // Se cambia el PC
          if (!!rob.value) {
-            this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+            this.pc = this._code.getBasicBlockInstruction(rob.instruction.getOperand(2));
          } else {
             this.pc = rob.instruction.id + 1;
          }
@@ -664,5 +664,13 @@ export class Superescalar extends Machine {
 
    prediction(address: number): boolean {
       return (this.jumpPrediction[address % Superescalar.PREDTABLESIZE] >= Superescalar.PREDBITS);
+   }
+
+   public get code(): Code {
+      return this._code;
+   }
+
+   public set code(value: Code) {
+      this._code = value;
    }
 }
