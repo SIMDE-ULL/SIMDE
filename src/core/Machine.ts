@@ -42,8 +42,8 @@ export class Machine {
       this.memoryFailLatency = Machine.MEMORYFAILLATENCYDEF;
 
       // TODO: Check this
-      this.gpr = new Register();
-      this.fpr = new Register();
+      this._gpr = new Register();
+      this._fpr = new Register();
       this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY).fill(null);
       this.init(true);
    }
@@ -100,7 +100,6 @@ export class Machine {
       this._functionalUnitNumbers = value;
    }
 
-
    public get functionalUnitLatencies(): number[] {
       return this._functionalUnitLatencies;
    }
@@ -108,7 +107,6 @@ export class Machine {
    public set functionalUnitLatencies(value: number[]) {
       this._functionalUnitLatencies = value;
    }
-
 
    public get memoryFailLatency(): number {
       return this._memoryFailLatency;
@@ -118,32 +116,25 @@ export class Machine {
       this._memoryFailLatency = value;
    }
 
-
-   public get gpr(): Register {
-      if (ind >= NGP || ind < 0)
-         return -1;
-      else
-         return gpr.getReg(ind);
+   public getGpr(index: number): number {
+      return (index >= Machine.NGP || index < 0) ? -1 : this._gpr.getContent(index);
    }
 
-   public set gpr(value: Register) {
-      if (ind < NGP && ind >= 0)
-         gpr.setReg(ind, val, false);
+   public setGpr(index: number, value: number) {
+      if (index < Machine.NGP && index >= 0) {
+         this._gpr.setContent(index, value, false);
+      }
    }
 
-
-   public get fpr(): Register {
-      if (ind >= NFP || ind < 0)
-         return -1;
-      else
-         return fpr.getReg(ind);
+   public getFpr(index: number): number {
+      return (index >= Machine.NGP || index < 0) ? -1 : this._fpr.getContent(index);
    }
 
-   public set fpr(value: Register) {
-      if (ind < NGP && ind >= 0)
-         fpr.setReg(ind, val, false);
+   public setFpr(index: number, value: number) {
+      if (index < Machine.NGP && index >= 0) {
+         this._fpr.setContent(index, value, false);
+      }
    }
-
 
    public get functionalUnit(): FunctionalUnit[][] {
       return this._functionalUnit;
@@ -153,7 +144,6 @@ export class Machine {
       this._functionalUnit = value;
    }
 
-
    public get memory(): Memory {
       return this._memory;
    }
@@ -161,7 +151,6 @@ export class Machine {
    public set memory(value: Memory) {
       this._memory = value;
    }
-
 
    public get pc(): number {
       return this._pc;

@@ -12,6 +12,7 @@
          true,
          3,
          {}
-      ]
+      ],
+      "space-before-function-paren": false
    }
 }

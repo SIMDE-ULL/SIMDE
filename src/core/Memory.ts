@@ -1,5 +1,10 @@
 import { randomNumber } from './utils/Random';
 
+export interface Datum {
+   datum: number;
+   got: boolean;
+}
+
 export class Memory {
 
    private static MEMORY_NUMBER: number = 1024;
@@ -16,7 +21,7 @@ export class Memory {
    }
 
    // TODO: Create an interface
-   getDatum(address: number): any {
+   getDatum(address: number): Datum {
       if (address < 0) {
          address = 0;
       }
@@ -40,7 +45,7 @@ export class Memory {
       if (address < 0) {
          address = 0;
       }
-      this.data[0] = value;
+      this.data[address] = value;
    }
 
    setMem(datum: number) {
