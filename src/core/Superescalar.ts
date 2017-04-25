@@ -246,7 +246,10 @@ export class Superescalar extends Machine {
 
    ticIssue(): number {
       let cont = 0;
-      for (let i = this.decoder.first; i !== this.decoder.end(); i++ , cont++) {
+      // TODO REVFISAR ESTE < QUE
+      for (let i = this.decoder.first; i < this.decoder.last; i++ , cont++) {
+         console.log('Decoder?', this.decoder.elements, this.decoder.first, this.decoder.last);
+         // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
          if (this.reorderBuffer.isFull()) {
             break;
@@ -263,10 +266,11 @@ export class Superescalar extends Machine {
          let newER: ReserveStationEntry = new ReserveStationEntry();
          this.reserveStationEntry[fuType].push(newER);
          this.issueInstruction(instruction, fuType, robPos);
+         console.log('ROB?', this.reorderBuffer.elements[robPos]);
          this.reorderBuffer.elements[robPos].instruction = instruction;
          this.reorderBuffer.elements[robPos].ready = false;
          this.reorderBuffer.elements[robPos].superStage = SuperStage.SUPER_ISSUE;
-         this.decoder.remove(i);
+         this.decoder.remove(i);;
       }
 
       return cont;
@@ -450,21 +454,24 @@ export class Superescalar extends Machine {
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                // Actualizo todas las ER
-               for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-                  let j = 0;
+               console.log(this.reserveStationEntry[type]);
+               for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   // TEstacionReserva::iterator itER = ER[i].begin();
-                  for (; j !== this.reserveStationEntry[i].length; j++) {
-                     if (this.reserveStationEntry[i][j].Qj === this.reserveStationEntry[type][i].ROB) {
-                        this.reserveStationEntry[i][j].Vj = resul;
-                        this.reserveStationEntry[i][j].Qj = -1;
+                  for (let k = 0; k !== this.reserveStationEntry[j].length; k++) {
+                     console.log(type, i, this.reserveStationEntry[type][i]);
+                     if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
+                        this.reserveStationEntry[j][k].Vj = resul;
+                        this.reserveStationEntry[j][k].Qj = -1;
                      }
-                     if (this.reserveStationEntry[i][j].Qk === this.reserveStationEntry[type][i].ROB) {
-                        this.reserveStationEntry[i][j].Vk = resul;
-                        this.reserveStationEntry[i][j].Qk = -1;
+                     if (this.reserveStationEntry[j][k].Qk === this.reserveStationEntry[type][i].ROB) {
+                        this.reserveStationEntry[j][k].Vk = resul;
+                        this.reserveStationEntry[j][k].Qk = -1;
                      }
                   }
                }
             }
+            console.log(i, type);
+            console.log(this.reserveStationEntry[type][i]);
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;

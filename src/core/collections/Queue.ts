@@ -82,6 +82,7 @@ export class Queue<T> {
 
    // Check those return null
    public remove(position?: number): T {
+      console.log('Amos a remover', position);
       if (position != null) {
          if (position === this.first) {
             return this.removeFirst();

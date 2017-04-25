@@ -71,12 +71,21 @@ BNE	R2 R5 LOOP</textarea>
          <!-- SUPERESCALAR DEMO -->
          <div class="row">
             <div class="col-sm-6">
+               Registros Generasles
                <pre id="registros"></pre>
             </div>
             <div class="col-sm-6">
+               Registros Flotantes
+               <pre id="registrosf"></pre>
             </div>
             <!-- PONER CODIGO DE PRUEBA, MAQUINA Y MOSTRAR STATUS -->
             <!-- DOS BOTONES, CARGAR Y EJECUTAR -->
+         </div>
+         <div class="row">
+            <div class="col-sm-4">
+               PC
+               <pre id="pc"></pre>
+            </div>
          </div>
          <div class="row">
             <div class="col-sm-12">
@@ -84,9 +93,13 @@ BNE	R2 R5 LOOP</textarea>
                <button type="button" class="btn btn-primary" onClick="pasoSuper()">Ejecutar</button>
             </div>
          </div>
-         <textarea id="demo_super">2
-ADDI	R2 R0 #50
-ADD     R3 R0 R2
+         <textarea id="demo_super">5
+        LF F1 (R2)
+        ADDI R5 R0 #3
+        LOOP:
+        ADDF F2 F1 F0
+        ADDI R2 R2 #1
+        BNE	R2 R5 LOOP
          </textarea>
       </div>
    </div>

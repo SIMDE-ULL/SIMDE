@@ -33,6 +33,8 @@ let superexe = () => {
 let pasoSuper = () => {
    let resul = superescalar.tic();
    document.getElementById('registros').innerText = superescalar.gpr.content;
+   document.getElementById('registrosf').innerText = superescalar.fpr.content;
+   document.getElementById('pc').innerText = superescalar.pc;
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('SE ACABOOO');
    }
@@ -43,6 +45,7 @@ let loadSuper = () => {
    code.load(document.getElementById('demo_super').value);
    superexe();
    superescalar.code = code;
+   superescalar.memory.setDatum(0, 20);
 }
 
 
