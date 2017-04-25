@@ -119,7 +119,6 @@ export class Superescalar extends Machine {
 
    ticDecoder(): number {
       for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i++) {
-         console.log('Decodder', i, this.prefetchUnit.end(), this.prefetchUnit.elements[i]);
          let aux: PrefetchEntry = this.prefetchUnit.elements[i];
          this.prefetchUnit.remove(i);
          let newDecoderEntry = new DecoderEntry();
@@ -132,7 +131,6 @@ export class Superescalar extends Machine {
    checkRegister(register: number, fp: boolean, reserveStationEntry: ReserveStationEntry, j: boolean) {
       let q = -1;
       let v = 0;
-
       if (fp) {
          // El registro tiene su valor listo
          if (!this._fpr.busy[register]) {
@@ -259,7 +257,7 @@ export class Superescalar extends Machine {
          }
          let newROB: ReorderBufferEntry = new ReorderBufferEntry();
          newROB.value = 0.0;
-         newROB.destinyRegister = -1.
+         newROB.destinyRegister = -1;
          newROB.address = -1;
          let robPos = this.reorderBuffer.add(newROB);
          let newER: ReserveStationEntry = new ReserveStationEntry();
@@ -302,16 +300,13 @@ export class Superescalar extends Machine {
          case FunctionalUnitType.FLOATINGMULTIPLY:
          case FunctionalUnitType.JUMP:
             // Operandos disponibles
-            console.log(this.reserveStationEntry[type]);
             while (i !== this.reserveStationEntry[type].length &&
                !((this.reserveStationEntry[type][i].Qj === -1)
                   && (this.reserveStationEntry[type][i].Qk === -1) &&
                   (this.reserveStationEntry[type][i].FUNum === -1))) {
                i++;
             }
-            console.log('Executeeeeeee', i, this.reserveStationEntry[type].length);
             if (i !== this.reserveStationEntry[type].length) {
-               console.log('paso el if!');
                this.reserveStationEntry[type][i].FUNum = num;
                this.reserveStationEntry[type][i].FUPos = this.functionalUnit[type][num].fillFlow(this.reserveStationEntry[type][i].instruction);
                this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_EXECUTE;
@@ -389,11 +384,9 @@ export class Superescalar extends Machine {
 
 
    writeInstruction(type: FunctionalUnitType, num: number) {
-      console.log('Tiempo de escribir la instruction!');
       let resul;
-      console.log(type, num);
       let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
-      console.log('Inst', inst);
+
       if (inst != null) {
          // TEstacionReserva::iterator it = ER[type].begin();
          let i = 0;
@@ -453,7 +446,6 @@ export class Superescalar extends Machine {
                resul = (this.reserveStationEntry[type][i].Vj > this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
          }
-
          // Finalizó la ejecución de la instrucción
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
@@ -473,7 +465,7 @@ export class Superescalar extends Machine {
                   }
                }
             }
-            console.log('Hora de poner la lol· shit.');
+            console.log('escribiremos en el rob:', this.reserveStationEntry[type][i].ROB);
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;
@@ -587,21 +579,18 @@ export class Superescalar extends Machine {
 
    ticCommit(): CommitStatus {
       for (let i = 0; i < this.issue; i++) {
-         console.log('Empty?', this.reorderBuffer.isEmpty());
-         if (this.reorderBuffer.top())
-            console.log(this.reorderBuffer.top().ready);
-         if (this.reorderBuffer.isEmpty())
+         if (this.reorderBuffer.isEmpty()) {
             return CommitStatus.SUPER_COMMITEND;
-         else if (!this.reorderBuffer.top().ready)
+         } else if (!this.reorderBuffer.top().ready) {
             return CommitStatus.SUPER_COMMITNO;
-         else {
+         } else {
+            console.log('Es tiempo de emitir');
             let h = this.reorderBuffer.first;
             let aux: ReorderBufferEntry = this.reorderBuffer.remove();
-            console.log('Instruction to commit', aux);
             switch (aux.instruction.opcode) {
                case Opcodes.SW:
                case Opcodes.SF:
-                  this.memory.setDatum(aux.address, aux.address);
+                  this.memory.setDatum(aux.address, aux.value);
                   break;
                case Opcodes.BEQ:
                case Opcodes.BNE:
@@ -620,7 +609,7 @@ export class Superescalar extends Machine {
                case Opcodes.SRLV:
                case Opcodes.MULT:
                case Opcodes.LW:
-                  this._gpr.setContent(aux.destinyRegister, aux.address, false);
+                  this._gpr.setContent(aux.destinyRegister, aux.value, false);
                   // Pase lo que pase R0 vale 0
                   this._gpr.setContent(0, 0, false);
                   if (this.ROBGpr[aux.destinyRegister] === h)
@@ -630,7 +619,7 @@ export class Superescalar extends Machine {
                case Opcodes.MULTF:
                case Opcodes.SUBF:
                case Opcodes.LF:
-                  this._fpr.setContent(aux.destinyRegister, aux.address, false);
+                  this._fpr.setContent(aux.destinyRegister, aux.value, false);
                   if (this.ROBFpr[aux.destinyRegister] === h)
                      this._fpr.setBusy(aux.destinyRegister, false);
                   break;
@@ -643,6 +632,7 @@ export class Superescalar extends Machine {
    }
 
    tic(): SuperescalarStatus {
+      console.log(this.reorderBuffer.elements);
       this.status.cycle++;
       // COMMi stage
       let commit = this.ticCommit();
@@ -658,7 +648,6 @@ export class Superescalar extends Machine {
       let resultDecoder = this.ticDecoder();
       // PREFETCH STAGE
       let resultPrefetch = this.ticPrefetch();
-      console.log(resultIssue, resultDecoder, resultPrefetch, commit);
       if ((resultIssue + resultDecoder + resultPrefetch === 0) && (commit === CommitStatus.SUPER_COMMITEND)) {
          return SuperescalarStatus.SUPER_ENDEXE;
       }

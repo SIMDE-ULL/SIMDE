@@ -27,11 +27,12 @@ let load = (id) => {
 }
 
 let superexe = () => {
-   superescalar.init(false);
+   superescalar.init(true);
 }
 
 let pasoSuper = () => {
    let resul = superescalar.tic();
+   document.getElementById('registros').innerText = superescalar.gpr.content;
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('SE ACABOOO');
    }

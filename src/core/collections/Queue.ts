@@ -47,6 +47,7 @@ export class Queue<T> {
    }
 
    public isEmpty(): boolean {
+      console.log('Empty?', this.first, this.last);
       return this.first === this.last;
    }
 
@@ -82,6 +83,7 @@ export class Queue<T> {
 
    // Check those return null
    public remove(position?: number): T {
+      console.log('remuevo el first', position, this.first, this.last);
       if (position != null) {
          if (position === this.first) {
             return this.removeFirst();
