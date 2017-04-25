@@ -388,8 +388,8 @@ export class Superescalar extends Machine {
       let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
 
       if (inst != null) {
-         // TEstacionReserva::iterator it = ER[type].begin();
          let i = 0;
+         // TEstacionReserva::iterator it = ER[type].begin();
          while ((this.reserveStationEntry[type][i].FUNum !== num) ||
             (this.reserveStationEntry[type][i].FUPos !== this.functionalUnit[type][num].getLast())) {
             i++;   // NOTA: si esto no para es q la he cagao en algún paso anterior
@@ -453,7 +453,7 @@ export class Superescalar extends Machine {
                for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
                   let j = 0;
                   // TEstacionReserva::iterator itER = ER[i].begin();
-                  for (; j !== this.reserveStationEntry[i].length; i++) {
+                  for (; j !== this.reserveStationEntry[i].length; j++) {
                      if (this.reserveStationEntry[i][j].Qj === this.reserveStationEntry[type][i].ROB) {
                         this.reserveStationEntry[i][j].Vj = resul;
                         this.reserveStationEntry[i][j].Qj = -1;
@@ -465,7 +465,6 @@ export class Superescalar extends Machine {
                   }
                }
             }
-            console.log('escribiremos en el rob:', this.reserveStationEntry[type][i].ROB);
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;
@@ -584,7 +583,6 @@ export class Superescalar extends Machine {
          } else if (!this.reorderBuffer.top().ready) {
             return CommitStatus.SUPER_COMMITNO;
          } else {
-            console.log('Es tiempo de emitir');
             let h = this.reorderBuffer.first;
             let aux: ReorderBufferEntry = this.reorderBuffer.remove();
             switch (aux.instruction.opcode) {
@@ -632,7 +630,6 @@ export class Superescalar extends Machine {
    }
 
    tic(): SuperescalarStatus {
-      console.log(this.reorderBuffer.elements);
       this.status.cycle++;
       // COMMi stage
       let commit = this.ticCommit();
