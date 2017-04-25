@@ -1,10 +1,11 @@
 import { Code } from './core/Code';
 import { Superescalar } from './core/Superescalar';
+import { SuperescalarStatus } from './core/SuperescalarEnums';
 
 declare var document;
 declare var window;
-
-function load(id) {
+let superescalar = new Superescalar();
+let load = (id) => {
 
    let input = document.getElementById(id);
    let code: Code = new Code();
@@ -24,4 +25,27 @@ function load(id) {
    // basicBlocks.innerText = 'Basic Blocks \n' + JSON.stringify(code.basicBlocks);
    // instructions.innerText = 'Instructions \n' + JSON.stringify(code.instructions);
 }
+
+let superexe = () => {
+   superescalar.init(false);
+}
+
+let pasoSuper = () => {
+   let resul = superescalar.tic();
+   if (resul === SuperescalarStatus.SUPER_ENDEXE) {
+      window.alert('SE ACABOOO');
+   }
+}
+let loadSuper = () => {
+   let code = new Code();
+
+   code.load(document.getElementById('demo_super').value);
+   superexe();
+   superescalar.code = code;
+}
+
+
 window.load = load;
+window.loadSuper = loadSuper;
+window.pasoSuper = pasoSuper;
+window.superexe = superexe;

@@ -21,17 +21,17 @@ export class Superescalar extends Machine {
    private static ISSUE_MAX = 16;
 
 
-   private issue: number;
+   private _issue: number;
    private _code: Code;
 
 
-   private ROBGpr: number[];
-   private ROBFpr: number[];
-   private reserveStationEntry: ReserveStationEntry[][];
-   private reorderBuffer: Queue<ReorderBufferEntry>;
-   private prefetchUnit: Queue<PrefetchEntry>;
-   private decoder: Queue<DecoderEntry>;
-   private aluMem: FunctionalUnit[];
+   private _ROBGpr: number[];
+   private _ROBFpr: number[];
+   private _reserveStationEntry: ReserveStationEntry[][];
+   private _reorderBuffer: Queue<ReorderBufferEntry>;
+   private _prefetchUnit: Queue<PrefetchEntry>;
+   private _decoder: Queue<DecoderEntry>;
+   private _aluMem: FunctionalUnit[];
 
 
    private jumpPrediction: number[];
@@ -72,7 +72,7 @@ export class Superescalar extends Machine {
    init(reset: boolean) {
       super.init(reset);
       // Clean Gpr, Fpr, predSalto
-      this.ROBFpr.fill(-1);
+      this.ROBGpr.fill(-1);
       this.ROBFpr.fill(-1);
       this.jumpPrediction.fill(0);
       // Calculate ROB size
@@ -97,14 +97,14 @@ export class Superescalar extends Machine {
    }
 
    ticPrefetch(): number {
-      while (!this.prefetchUnit.isFull() && (this.pc < this._code.lines)) {
+      while (!this.prefetchUnit.isFull() && (this.pc < this.code.lines)) {
          let aux: PrefetchEntry = new PrefetchEntry();
          // Importante: Hago una copia de la instrucción original para distinguir
          // las distintas apariciones de una misma inst.
          aux.instruction = new Instruction();
-         aux.instruction.copy(this._code[this.pc]);
+         aux.instruction.copy(this.code.instructions[this.pc]);
          if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE || aux.instruction.opcode === Opcodes.BGT) && this.jumpPrediction[this.pc])) {
-            this.pc = this._code.getBasicBlockInstruction(aux.instruction.getOperand(2));
+            this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
          } else {
             this.pc++;
          }
@@ -119,7 +119,8 @@ export class Superescalar extends Machine {
 
    ticDecoder(): number {
       for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i++) {
-         let aux: PrefetchEntry = this.prefetchUnit[i];
+         console.log('Decodder', i, this.prefetchUnit.end(), this.prefetchUnit.elements[i]);
+         let aux: PrefetchEntry = this.prefetchUnit.elements[i];
          this.prefetchUnit.remove(i);
          let newDecoderEntry = new DecoderEntry();
          newDecoderEntry.instruction = aux.instruction;
@@ -128,9 +129,9 @@ export class Superescalar extends Machine {
       return this.decoder.getCount();
    }
 
-   checkRegister(register: number, fp: boolean, v: number, q: number) {
-      q = -1;
-      v = 0;
+   checkRegister(register: number, fp: boolean, reserveStationEntry: ReserveStationEntry, j: boolean) {
+      let q = -1;
+      let v = 0;
 
       if (fp) {
          // El registro tiene su valor listo
@@ -152,13 +153,22 @@ export class Superescalar extends Machine {
             q = this.ROBGpr[register];
          }
       }
+
+      if (j) {
+         reserveStationEntry.Qj = q;
+         reserveStationEntry.Vj = v;
+      } else {
+         reserveStationEntry.Qk = q;
+         reserveStationEntry.Vk = v;
+      }
    }
 
    issueInstruction(instruction: Instruction, type: number, robIndex: number) {
-      this.reserveStationEntry[type][-1].instruction = instruction;
-      this.reserveStationEntry[type][-1].ROB = robIndex;
-      this.reserveStationEntry[type][-1].FUNum = -1;
-      this.reserveStationEntry[type][-1].A = -1;
+      let actualReserveStation = this.reserveStationEntry[type];
+      actualReserveStation[actualReserveStation.length - 1].instruction = instruction;
+      actualReserveStation[actualReserveStation.length - 1].ROB = robIndex;
+      actualReserveStation[actualReserveStation.length - 1].FUNum = -1;
+      actualReserveStation[actualReserveStation.length - 1].A = -1;
       switch (instruction.opcode) {
          case Opcodes.ADD:
          case Opcodes.SUB:
@@ -169,16 +179,16 @@ export class Superescalar extends Machine {
          case Opcodes.XOR:
          case Opcodes.SLLV:
          case Opcodes.SRLV:
-            this.checkRegister(instruction.getOperand(1), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
+            this.checkRegister(instruction.getOperand(1), false, actualReserveStation[actualReserveStation.length - 1], true);
+            this.checkRegister(instruction.getOperand(2), false, actualReserveStation[actualReserveStation.length - 1], false);
             this.ROBGpr[instruction.getOperand(0)] = robIndex;
             this._gpr.setBusy(instruction.getOperand(0), true);
             this.reorderBuffer.elements[robIndex].destinyRegister = instruction.getOperand(0);
             break;
          case Opcodes.ADDI:
-            this.checkRegister(instruction.getOperand(1), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.reserveStationEntry[type][-1].Qk = -1;
-            this.reserveStationEntry[type][-1].Vk = instruction.getOperand(2);
+            this.checkRegister(instruction.getOperand(1), false, actualReserveStation[actualReserveStation.length - 1], true);
+            actualReserveStation[actualReserveStation.length - 1].Qk = -1;
+            actualReserveStation[actualReserveStation.length - 1].Vk = instruction.getOperand(2);
             this.ROBGpr[instruction.getOperand(0)] = robIndex;
             this._gpr.setBusy(instruction.getOperand(0), true);
             this.reorderBuffer.elements[robIndex].destinyRegister = instruction.getOperand(0);
@@ -186,39 +196,39 @@ export class Superescalar extends Machine {
          case Opcodes.ADDF:
          case Opcodes.SUBF:
          case Opcodes.MULTF:
-            this.checkRegister(instruction.getOperand(1), true, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.checkRegister(instruction.getOperand(2), true, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
+            this.checkRegister(instruction.getOperand(1), true, actualReserveStation[actualReserveStation.length - 1], true);
+            this.checkRegister(instruction.getOperand(2), true, actualReserveStation[actualReserveStation.length - 1], false);
             this.ROBFpr[instruction.getOperand(0)] = robIndex;
             this._fpr.setBusy(instruction.getOperand(0), true);
             this.reorderBuffer.elements[robIndex].destinyRegister = instruction.getOperand(0);
             break;
          case Opcodes.SW:
-            this.checkRegister(instruction.getOperand(0), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
-            this.reserveStationEntry[type][-1].A = instruction.getOperand(1);
+            this.checkRegister(instruction.getOperand(0), false, actualReserveStation[actualReserveStation.length - 1], true);
+            this.checkRegister(instruction.getOperand(2), false, actualReserveStation[actualReserveStation.length - 1], false);
+            actualReserveStation[actualReserveStation.length - 1].A = instruction.getOperand(1);
             this.reorderBuffer.elements[robIndex].address = -1;
             break;
          case Opcodes.SF:
-            this.checkRegister(instruction.getOperand(0), true, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
-            this.reserveStationEntry[type][-1].A = instruction.getOperand(1);
+            this.checkRegister(instruction.getOperand(0), true, actualReserveStation[actualReserveStation.length - 1], true);
+            this.checkRegister(instruction.getOperand(2), false, actualReserveStation[actualReserveStation.length - 1], false);
+            actualReserveStation[actualReserveStation.length - 1].A = instruction.getOperand(1);
             this.reorderBuffer.elements[robIndex].address = -1;
             break;
          case Opcodes.LW:
-            this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
-            this.reserveStationEntry[type][-1].Qj = -1;
-            this.reserveStationEntry[type][-1].Vj = 0;
-            this.reserveStationEntry[type][-1].A = instruction.getOperand(1);
+            this.checkRegister(instruction.getOperand(2), false, actualReserveStation[actualReserveStation.length - 1], false);
+            actualReserveStation[actualReserveStation.length - 1].Qj = -1;
+            actualReserveStation[actualReserveStation.length - 1].Vj = 0;
+            actualReserveStation[actualReserveStation.length - 1].A = instruction.getOperand(1);
             this.ROBGpr[instruction.getOperand(0)] = robIndex;
             this._gpr.setBusy(instruction.getOperand(0), true);
             this.reorderBuffer.elements[robIndex].destinyRegister = instruction.getOperand(0);
             this.reorderBuffer.elements[robIndex].address = -1;
             break;
          case Opcodes.LF:
-            this.checkRegister(instruction.getOperand(2), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
-            this.reserveStationEntry[type][-1].Qj = -1;
-            this.reserveStationEntry[type][-1].Vj = 0;
-            this.reserveStationEntry[type][-1].A = instruction.getOperand(1);
+            this.checkRegister(instruction.getOperand(2), false, actualReserveStation[actualReserveStation.length - 1], false);
+            actualReserveStation[actualReserveStation.length - 1].Qj = -1;
+            actualReserveStation[actualReserveStation.length - 1].Vj = 0;
+            actualReserveStation[actualReserveStation.length - 1].A = instruction.getOperand(1);
             this.ROBFpr[instruction.getOperand(0)] = robIndex;
             this._fpr.setBusy(instruction.getOperand(0), true);
             this.reorderBuffer.elements[robIndex].destinyRegister = instruction.getOperand(0);
@@ -227,9 +237,9 @@ export class Superescalar extends Machine {
          case Opcodes.BEQ:
          case Opcodes.BNE:
          case Opcodes.BGT:
-            this.checkRegister(instruction.getOperand(0), false, this.reserveStationEntry[type][-1].Vj, this.reserveStationEntry[type][-1].Qj);
-            this.checkRegister(instruction.getOperand(1), false, this.reserveStationEntry[type][-1].Vk, this.reserveStationEntry[type][-1].Qk);
-            this.reserveStationEntry[type][-1].A = instruction.getOperand(2);
+            this.checkRegister(instruction.getOperand(0), false, actualReserveStation[actualReserveStation.length - 1], true);
+            this.checkRegister(instruction.getOperand(1), false, actualReserveStation[actualReserveStation.length - 1], false);
+            actualReserveStation[actualReserveStation.length - 1].A = instruction.getOperand(2);
             break;
          default:
             break;
@@ -292,16 +302,18 @@ export class Superescalar extends Machine {
          case FunctionalUnitType.FLOATINGMULTIPLY:
          case FunctionalUnitType.JUMP:
             // Operandos disponibles
+            console.log(this.reserveStationEntry[type]);
             while (i !== this.reserveStationEntry[type].length &&
                !((this.reserveStationEntry[type][i].Qj === -1)
                   && (this.reserveStationEntry[type][i].Qk === -1) &&
                   (this.reserveStationEntry[type][i].FUNum === -1))) {
                i++;
             }
+            console.log('Executeeeeeee', i, this.reserveStationEntry[type].length);
             if (i !== this.reserveStationEntry[type].length) {
+               console.log('paso el if!');
                this.reserveStationEntry[type][i].FUNum = num;
-               this.reserveStationEntry[type][i].FUPos =
-                  this.functionalUnit[type][num].fillFlow(this.reserveStationEntry[type][i].instruction);
+               this.reserveStationEntry[type][i].FUPos = this.functionalUnit[type][num].fillFlow(this.reserveStationEntry[type][i].instruction);
                this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_EXECUTE;
             }
             break;
@@ -339,7 +351,7 @@ export class Superescalar extends Machine {
       // Fase 1b: Cálculo de la dirección
       // Primero termino la ejecución del cálculo de dir. en la ALU
       for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-         if (this.aluMem[i].getTopInstruction() !== null) {
+         if (this.aluMem[i].getTopInstruction() != null) {
             // Busco la entrada de la ER que coincide con esa instrucción
             // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
             let i = 0;
@@ -349,7 +361,7 @@ export class Superescalar extends Machine {
             }
 
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vk + this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A;
-            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A = this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address;
+            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address;
             this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum = -1; // Vuelve a no tener una UF asociada
          }
          this.aluMem[i].tic();
@@ -362,7 +374,7 @@ export class Superescalar extends Machine {
          for (; i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; i++) {
             // Operand value available AND address not calculated yet AND is being calculated right now
             if ((this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qk === -1)
-               && (this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address === -1)
+               && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address === -1)
                && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum === -1)) {
                break;
             }
@@ -377,8 +389,11 @@ export class Superescalar extends Machine {
 
 
    writeInstruction(type: FunctionalUnitType, num: number) {
+      console.log('Tiempo de escribir la instruction!');
       let resul;
+      console.log(type, num);
       let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
+      console.log('Inst', inst);
       if (inst != null) {
          // TEstacionReserva::iterator it = ER[type].begin();
          let i = 0;
@@ -458,9 +473,10 @@ export class Superescalar extends Machine {
                   }
                }
             }
-            this.reorderBuffer[this.reserveStationEntry[type][i].ROB].value = resul;
-            this.reorderBuffer[this.reserveStationEntry[type][i].ROB].stage = SuperStage.SUPER_WRITERESULT;
-            this.reorderBuffer[this.reserveStationEntry[type][i].ROB].ready = true;
+            console.log('Hora de poner la lol· shit.');
+            this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
+            this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
+            this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;
             // Elimino la entrada de la ER
             this.reserveStationEntry[type].splice(i, 1);
          }
@@ -477,10 +493,10 @@ export class Superescalar extends Machine {
          if (((opcode === Opcodes.SW) || (opcode === Opcodes.SF))
             && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qj === -1)
             && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address !== -1)) {
-            this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].value = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vj;
+            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].value = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vj;
             // NOTA: Lo pongo o no?
-            this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].stage = SuperStage.SUPER_WRITERESULT;
-            this.reorderBuffer[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].ready = true;
+            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
+            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].ready = true;
             // Elimino la entrada de la ER
             if (i === 0) {
                // TODO BEGIN
@@ -517,7 +533,7 @@ export class Superescalar extends Machine {
          this.changePrediction(rob.instruction.id, !!rob.value);
          // Se cambia el PC
          if (!!rob.value) {
-            this.pc = this._code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+            this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
          } else {
             this.pc = rob.instruction.id + 1;
          }
@@ -571,6 +587,9 @@ export class Superescalar extends Machine {
 
    ticCommit(): CommitStatus {
       for (let i = 0; i < this.issue; i++) {
+         console.log('Empty?', this.reorderBuffer.isEmpty());
+         if (this.reorderBuffer.top())
+            console.log(this.reorderBuffer.top().ready);
          if (this.reorderBuffer.isEmpty())
             return CommitStatus.SUPER_COMMITEND;
          else if (!this.reorderBuffer.top().ready)
@@ -578,6 +597,7 @@ export class Superescalar extends Machine {
          else {
             let h = this.reorderBuffer.first;
             let aux: ReorderBufferEntry = this.reorderBuffer.remove();
+            console.log('Instruction to commit', aux);
             switch (aux.instruction.opcode) {
                case Opcodes.SW:
                case Opcodes.SF:
@@ -638,7 +658,7 @@ export class Superescalar extends Machine {
       let resultDecoder = this.ticDecoder();
       // PREFETCH STAGE
       let resultPrefetch = this.ticPrefetch();
-
+      console.log(resultIssue, resultDecoder, resultPrefetch, commit);
       if ((resultIssue + resultDecoder + resultPrefetch === 0) && (commit === CommitStatus.SUPER_COMMITEND)) {
          return SuperescalarStatus.SUPER_ENDEXE;
       }
@@ -673,4 +693,87 @@ export class Superescalar extends Machine {
    public set code(value: Code) {
       this._code = value;
    }
+
+
+   public get issue(): number {
+      return this._issue;
+   }
+
+   public set issue(value: number) {
+      this._issue = value;
+   }
+
+
+   public get ROBGpr(): number[] {
+      return this._ROBGpr;
+   }
+
+   public set ROBGpr(value: number[]) {
+      this._ROBGpr = value;
+   }
+
+
+   public get ROBFpr(): number[] {
+      return this._ROBFpr;
+   }
+
+   public set ROBFpr(value: number[]) {
+      this._ROBFpr = value;
+   }
+
+
+   public get reserveStationEntry(): ReserveStationEntry[][] {
+      return this._reserveStationEntry;
+   }
+
+   public set reserveStationEntry(value: ReserveStationEntry[][]) {
+      this._reserveStationEntry = value;
+   }
+
+
+   public get reorderBuffer(): Queue<ReorderBufferEntry> {
+      return this._reorderBuffer;
+   }
+
+   public set reorderBuffer(value: Queue<ReorderBufferEntry>) {
+      this._reorderBuffer = value;
+   }
+
+
+   public get prefetchUnit(): Queue<PrefetchEntry> {
+      return this._prefetchUnit;
+   }
+
+   public set prefetchUnit(value: Queue<PrefetchEntry>) {
+      this._prefetchUnit = value;
+   }
+
+
+   public get decoder(): Queue<DecoderEntry> {
+      return this._decoder;
+   }
+
+   public set decoder(value: Queue<DecoderEntry>) {
+      this._decoder = value;
+   }
+
+
+   public get aluMem(): FunctionalUnit[] {
+      return this._aluMem;
+   }
+
+   public set aluMem(value: FunctionalUnit[]) {
+      this._aluMem = value;
+   }
+
+
+   public get $jumpPrediction(): number[] {
+      return this.jumpPrediction;
+   }
+
+   public set $jumpPrediction(value: number[]) {
+      this.jumpPrediction = value;
+   }
+
+
 }

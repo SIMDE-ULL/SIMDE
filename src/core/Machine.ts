@@ -41,11 +41,15 @@ export class Machine {
       this.functionalUnitNumbers = Machine.NUF_DEF.slice();
       this.memoryFailLatency = Machine.MEMORYFAILLATENCYDEF;
 
+      // Init val
+      this.status = new MachineStatus();
+      this.memory = new Memory();
+
       // TODO: Check this
       this._gpr = new Register();
       this._fpr = new Register();
       this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY).fill(null);
-      this.init(true);
+      // this.init(true);
    }
 
    init(reset: boolean) {
@@ -166,5 +170,13 @@ export class Machine {
 
    public set status(value: MachineStatus) {
       this._status = value;
+   }
+
+   public get gpr(): Register {
+      return this._gpr;
+   }
+
+   public get fpr(): Register {
+      return this._fpr;
    }
 }

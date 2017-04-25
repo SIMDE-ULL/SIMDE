@@ -14,12 +14,12 @@ export class Instruction {
    }
 
    copy(other: Instruction) {
-      this._id = other._id;
-      this._basicBlock = other._basicBlock;
-      this._opcode = other._opcode;
-      this._operands = other._operands.slice();
-      this._breakPoint = other._breakPoint;
-      this._color = other._color;
+      this._id = other.id;
+      this._basicBlock = other.basicBlock;
+      this._opcode = other.opcode;
+      this._operands = other.operands.slice();
+      this._breakPoint = other.breakPoint;
+      this._color = other.color;
    }
 
    toString(): string {
