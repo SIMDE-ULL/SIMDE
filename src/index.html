@@ -1,77 +1,52 @@
 <!DOCTYPE HTML>
 
 <head>
-    <title>Primera demo SIMDE</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <title>Primera demo SIMDE</title>
+   <meta charset="UTF-8">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <a class="navbar-brand">Simde DEMO</a>
-    </nav>
-    <div class="container-fluid">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h3>Inserte el código</h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <textarea id="input_code" rows="10"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <button type="button" class="btn btn-primary" onClick="load()">Cargar</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-8">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <h3>Resultado del código </h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div id='lines'></div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div id='numberOfBlocks'></div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div id='basicBlocks'></div>
-                        </div>
-                        <div class="col-xs-12">
-                            <div id='instructions'></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="row">
-                        <pre>3
+   <nav class="navbar navbar-default">
+      <a class="navbar-brand">Simde DEMO</a>
+   </nav>
+   <div class="container-fluid">
+      <div class="col-sm-12">
+         <div class="row">
+            <div class="col-xs-4">
+               <div class="row">
+                  <h3>Bad operand</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code" rows="10">3
 LF 	F1 (R2)
 LOOP:
-ADDF F1 F1 F0
-BNE	R2 R5 LOOP</pre>
-                    </div>
-                    <div class="row">
-                        <pre>2
+ADDF F1 F1 H0
+BNE	R2 R5 LOOP</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code')">Cargar</button>
+               </div>
+            </div>
+            <div class="col-xs-4">
+               <div class="row">
+                  <h3>Unkwnown opcode</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code2" rows="10">2
 ADDI	R2 R0 #50
-ADD     R3 R0 R2</pre>
-                    </div>
-                    <div class="row">
-                        <pre>1
-LF	F0 (R4)</pre>
-                    </div>
-                    <div class="row">
-                        <pre>11
+ADDO     R3 R0 R2</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code2')">Cargar</button>
+               </div>
+            </div>
+            <div class="col-xs-4">
+               <div class="row">
+                  <h3>Duplicated label</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code3" rows="10">11
 ADDI	R2 R0 #50
 ADDI	R3 R0 #70
 ADDI	R4 R0 #40
@@ -81,13 +56,17 @@ LOOP:
 LF 	F1 (R2)
 ADDF	F1 F1 F0
 SF	F1 (R3)
+LOOP:
 ADDI 	R2 R2 #1
 ADDI	R3 R3 #1
-BNE	R2 R5 LOOP</pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+BNE	R2 R5 LOOP</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code3')">Cargar</button>
 
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </body>
