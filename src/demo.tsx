@@ -1,6 +1,13 @@
 import { Code } from './core/Code';
 import { Superescalar } from './core/Superescalar';
 import { SuperescalarStatus } from './core/SuperescalarEnums';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import { Hello } from './interface/Hello';
+import App from './interface/App';
+
+
 
 declare var document;
 declare var window;
@@ -49,7 +56,14 @@ let loadSuper = () => {
 }
 
 
+
 window.load = load;
 window.loadSuper = loadSuper;
 window.pasoSuper = pasoSuper;
 window.superexe = superexe;
+
+
+ReactDOM.render(
+   <App machine={superescalar} />,
+   document.getElementById('example')
+);
