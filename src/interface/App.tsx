@@ -22,12 +22,12 @@ class App extends React.Component<any, any> {
                   </div>
                   <div className='col-sm-4'>
                      <div className='row'>
-                        <Register title='RFP' content={this.props.machine.fpr.content} />
+                        {/*<Register title='RFP' content={this.props.machine.fpr.content} />*/}
                      </div>
                   </div>
                   <div className='col-sm-4'>
                      <div className='row'>
-                        <Register title='MEM' content={this.props.machine.memory.data} />
+                        {/*<Register title='MEM' content={this.props.machine.memory.data} />*/}
                      </div>
                   </div>
                </div>

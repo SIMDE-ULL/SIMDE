@@ -12,6 +12,9 @@ import App from './interface/App';
 declare var document;
 declare var window;
 let superescalar = new Superescalar();
+let state: any = {};
+window.state = state;
+
 let load = (id) => {
 
    let input = document.getElementById(id);
@@ -42,6 +45,10 @@ let pasoSuper = () => {
    document.getElementById('registros').innerText = superescalar.gpr.content;
    document.getElementById('registrosf').innerText = superescalar.fpr.content;
    document.getElementById('pc').innerText = superescalar.status.cycle;
+   state.callback({
+      title: 'GPR',
+      content: superescalar.gpr.content
+   });
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('SE ACABOOO');
    }
