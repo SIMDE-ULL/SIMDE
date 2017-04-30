@@ -4,7 +4,6 @@ import { SuperescalarStatus } from './core/SuperescalarEnums';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { Hello } from './interface/Hello';
 import App from './interface/App';
 
 
@@ -45,10 +44,18 @@ let pasoSuper = () => {
    document.getElementById('registros').innerText = superescalar.gpr.content;
    document.getElementById('registrosf').innerText = superescalar.fpr.content;
    document.getElementById('pc').innerText = superescalar.status.cycle;
-   state.callback({
-      title: 'GPR',
-      content: superescalar.gpr.content
-   });
+   // state.callback({
+   //    title: 'GPR',
+   //    content: superescalar.gpr.content
+   // });
+   console.log(state);
+   state['GPR']({ content: superescalar.gpr.content });
+   state['FPR']({ content: superescalar.fpr.content });
+   state['MEM']({ content: superescalar.gpr.content });
+   console.log(superescalar.reserveStationEntry);
+   state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
+   state['FU +Entera']({ content: superescalar.functionalUnit[0] });
+
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('SE ACABOOO');
    }
@@ -59,8 +66,10 @@ let loadSuper = () => {
    code.load(document.getElementById('demo_super').value);
    superexe();
    superescalar.code = code;
+   console.log(code);
+   state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
    superescalar.memory.setDatum(0, 20);
-}
+};
 
 
 

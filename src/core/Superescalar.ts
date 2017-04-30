@@ -162,6 +162,7 @@ export class Superescalar extends Machine {
    }
 
    issueInstruction(instruction: Instruction, type: number, robIndex: number) {
+      // console.log('JUMP?', type);
       let actualReserveStation = this.reserveStationEntry[type];
       actualReserveStation[actualReserveStation.length - 1].instruction = instruction;
       actualReserveStation[actualReserveStation.length - 1].ROB = robIndex;
@@ -248,7 +249,7 @@ export class Superescalar extends Machine {
       let cont = 0;
       // TODO REVFISAR ESTE < QUE
       for (let i = this.decoder.first; i < this.decoder.last; i++ , cont++) {
-         console.log('Decoder?', this.decoder.elements, this.decoder.first, this.decoder.last);
+         // console.log('Decoder?', this.decoder.elements, this.decoder.first, this.decoder.last);
          // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
          if (this.reorderBuffer.isFull()) {
@@ -266,7 +267,7 @@ export class Superescalar extends Machine {
          let newER: ReserveStationEntry = new ReserveStationEntry();
          this.reserveStationEntry[fuType].push(newER);
          this.issueInstruction(instruction, fuType, robPos);
-         console.log('ROB?', this.reorderBuffer.elements[robPos]);
+         // console.log('ROB?', this.reorderBuffer.elements[robPos]);
          this.reorderBuffer.elements[robPos].instruction = instruction;
          this.reorderBuffer.elements[robPos].ready = false;
          this.reorderBuffer.elements[robPos].superStage = SuperStage.SUPER_ISSUE;
@@ -454,11 +455,11 @@ export class Superescalar extends Machine {
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                // Actualizo todas las ER
-               console.log(this.reserveStationEntry[type]);
+               // console.log(this.reserveStationEntry[type]);
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   // TEstacionReserva::iterator itER = ER[i].begin();
                   for (let k = 0; k !== this.reserveStationEntry[j].length; k++) {
-                     console.log(type, i, this.reserveStationEntry[type][i]);
+                     // console.log(type, i, this.reserveStationEntry[type][i]);
                      if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
                         this.reserveStationEntry[j][k].Vj = resul;
                         this.reserveStationEntry[j][k].Qj = -1;
@@ -470,8 +471,8 @@ export class Superescalar extends Machine {
                   }
                }
             }
-            console.log(i, type);
-            console.log(this.reserveStationEntry[type][i]);
+            // console.log(i, type);
+            // console.log(this.reserveStationEntry[type][i]);
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;
@@ -646,6 +647,7 @@ export class Superescalar extends Machine {
          // EXECUTE STAGE
          this.ticExecute();
       }
+
       // ISSUE STAGE
       let resultIssue = this.ticIssue();
       // DECODER STAGE

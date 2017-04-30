@@ -31,6 +31,9 @@ export enum Opcodes {
 
 
 export class Code {
+   public static OpcodesNames: string[] =
+   ['NOP', 'ADD', 'ADDI', 'SUB', 'ADDF', 'SUBF', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
+
    private _lines: number;
    private _instructions: Instruction[];
    private _labels: Label[];
@@ -38,8 +41,6 @@ export class Code {
    private _numberOfBlocks: number;
    private _parser: Parser;
 
-   private OpcodesNames: string[] =
-   ['NOP', 'ADD', 'ADDI', 'SUB', 'ADDF', 'SUBF', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
 
    constructor() {
       this._labels = new Array();
@@ -320,7 +321,7 @@ export class Code {
    }
 
    public stringToOpcode(stringOpcode: string): number {
-      let opcode: number = this.OpcodesNames.indexOf(stringOpcode);
+      let opcode: number = Code.OpcodesNames.indexOf(stringOpcode);
       if (opcode !== -1) {
          return opcode;
       } else {

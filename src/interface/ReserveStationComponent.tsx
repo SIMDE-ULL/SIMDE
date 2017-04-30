@@ -7,20 +7,18 @@ export class ReserveStationComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: [],
-      }
-      this.componentWillMount();
+         content: []
+      };
+      window.state[this.props.title] = (data) => {
+         this.setState(data);
+      };
    }
 
-   componentWillMount() {
-      window.state.callback = (data) => {
-         this.setState(data);
-      }
-   }
+
    render() {
       return (
          <div className='panel panel-default'>
-            <div className='panel-heading'>{this.state.title}</div>
+            <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <thead>
@@ -36,16 +34,14 @@ export class ReserveStationComponent extends React.Component<any, any> {
                   </thead>
                   <tbody>
                      {
-                        this.state.content.map((row, i) => <tr key={i}>
-                           <td key={i + 65}>{i}</td>
-                           <td key={i + 131}>{row}</td>
-                           <td>row.instruction</td>
-                           <td>row.Qj</td>
-                           <td>row.Vj</td>
-                           <td>row.Qk</td>
-                           <td>row.Vk</td>
-                           <td>row.A</td>
-                           <td>row.ROB</td>
+                        this.state.content.map((row, i) => <tr key={`${this.props.title + i}`}>
+                           <td>{row.instruction.id}</td>
+                           <td>{row.Qj}</td>
+                           <td>{row.Vj}</td>
+                           <td>{row.Qk}</td>
+                           <td>{row.Vk}</td>
+                           <td>{row.A}</td>
+                           <td>{row.ROB}</td>
                         </tr>)
                      }
                   </tbody>

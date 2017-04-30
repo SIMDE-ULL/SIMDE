@@ -10,25 +10,22 @@ export class RegisterComponent extends React.Component<any, any> {
          content: [],
          show: [1, 8]
       }
-      this.componentWillMount();
+      window.state[this.props.title] = (data) => {
+         this.setState(data);
+      };
    }
 
-   componentWillMount() {
-      window.state.callback = (data) => {
-         this.setState(data);
-      }
-   }
    render() {
       return (
          <div className='panel panel-default'>
-            <div className='panel-heading'>{this.state.title}</div>
+            <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.content.map((row, i) => <tr key={i}>
-                           <td key={i + 65}>{i}</td>
-                           <td key={i + 131}>{row}</td>
+                        this.state.content.map((row, i) => <tr key={`${this.state.title + i}`}>
+                           <td key={`${this.state.title + i + 65}`}>{i}</td>
+                           <td key={`${this.state.title + i + 131}`}>{row}</td>
                         </tr>)
                      }
                   </tbody>
