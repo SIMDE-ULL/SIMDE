@@ -5,9 +5,6 @@ export class Status {
    private _lastInstruction: number;
    private _stall: number;
 
-   constructor() {
-   }
-
    public get instructionNumber(): number {
       return this._instructionNumber;
    }
@@ -16,7 +13,6 @@ export class Status {
       this._instructionNumber = value;
    }
 
-
    public get lastInstruction(): number {
       return this._lastInstruction;
    }
@@ -24,7 +20,6 @@ export class Status {
    public set lastInstruction(value: number) {
       this._lastInstruction = value;
    }
-
 
    public get stall(): number {
       return this._stall;

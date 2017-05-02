@@ -20,7 +20,6 @@ export class Register {
       this._content = value;
    }
 
-
    public get bufferIn(): number[] {
       return this._bufferIn;
    }
@@ -28,7 +27,6 @@ export class Register {
    public set bufferIn(value: number[]) {
       this._bufferIn = value;
    }
-
 
    public get busy(): boolean[] {
       return this._busy;

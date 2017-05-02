@@ -29,7 +29,6 @@ export enum Opcodes {
    OPERROR
 }
 
-
 export class Code {
    public static OpcodesNames: string[] =
    ['NOP', 'ADD', 'ADDI', 'SUB', 'ADDF', 'SUBF', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
@@ -41,7 +40,6 @@ export class Code {
    private _numberOfBlocks: number;
    private _parser: Parser;
 
-
    constructor() {
       this._labels = new Array();
       this._numberOfBlocks = 0;
@@ -51,6 +49,7 @@ export class Code {
    }
 
    public static opcodeToFunctionalUnitType(opcode: number): FunctionalUnitType {
+      /* tslint:disable:ter-indent */
       switch (opcode) {
          case Opcodes.ADD:
          case Opcodes.ADDI:
@@ -74,6 +73,7 @@ export class Code {
          case Opcodes.BGT: return FunctionalUnitType.JUMP;
          default: return FunctionalUnitType.INTEGERSUM;
       }
+      /* tslint:enable:ter-indent */
    }
 
    checkLabel(str: string, actual: BasicBlock): number {
@@ -98,7 +98,7 @@ export class Code {
          basicBlock = new BasicBlock();
          basicBlock.next = null;
          basicBlock.successor = null;
-         basicBlock.lineNumber = -1
+         basicBlock.lineNumber = -1;
          // Add the label
          let label: Label = new Label();
          label.name = str;
@@ -227,6 +227,7 @@ export class Code {
          let opcode = this.stringToOpcode(lexema.yytext);
          this._instructions[i].opcode = opcode;
          this._instructions[i].basicBlock = this._numberOfBlocks - 1;
+         /* tslint:disable:ter-indent */
          switch (opcode) {
             case Opcodes.NOP:
                this._instructions[i].setOperand(0, 0);
@@ -313,9 +314,11 @@ export class Code {
                newBlock = true;
                break;
             case Opcodes.OPERROR:
+               throw `Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`;
             default:
                throw `Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`;
          }
+         /* tslint:enable:ter-indent */
       }
       this.replaceLabels();
    }
@@ -352,7 +355,6 @@ export class Code {
       return +stringInmediate.substring(1, stringInmediate.length);
    }
 
-
    public checkLexema(lexema: Lexema, expectedLexema: number, i: number) {
       if (lexema.value !== expectedLexema) {
          throw `Error at line ${i + this.numberOfBlocks + 1}, expected: ${LEX[expectedLexema]} got: ${lexema.yytext}`;
@@ -372,6 +374,7 @@ export class Code {
    }
 
    public getFunctionalUnitType(index: number): number {
+      /* tslint:disable:ter-indent */
       switch (this._instructions[index].opcode) {
          case Opcodes.ADD:
          case Opcodes.ADDI:
@@ -393,6 +396,7 @@ export class Code {
          case Opcodes.BGT: return FunctionalUnitType.JUMP;
          default: return FunctionalUnitType.INTEGERSUM;
       }
+      /* tslint:enable:ter-indent */
    }
 
    public get instructions(): Instruction[] {
@@ -403,7 +407,6 @@ export class Code {
       this._instructions = value;
    }
 
-
    public get lines(): number {
       return this._lines;
    }
@@ -412,7 +415,6 @@ export class Code {
       this._lines = value;
    }
 
-
    public get labels(): Label[] {
       return this._labels;
    }
@@ -420,7 +422,6 @@ export class Code {
    public set labels(value: Label[]) {
       this._labels = value;
    }
-
 
    public get numberOfBlocks(): number {
       return this._numberOfBlocks;

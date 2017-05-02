@@ -5,11 +5,11 @@ import { Code } from '../core/Code';
 const input = `2
 ADDI	R2 R0 #50
 ADD     R3 R0 R2
-`
+`;
 
 const input2 = `1
 LF F0 (R4)
-`
+`;
 const input3 = `3
 LF F1 (R2)
 LOOP:
@@ -25,9 +25,9 @@ test('Lines are being parsed properly', t => {
    code.load(input);
    t.deepEqual(2, code.lines, 'Lines message should have been 2');
    code = new Code();
-   code.load(input2)
+   code.load(input2);
    t.deepEqual(1, code.lines, 'Lines message should have been 1');
-})
+});
 
 test('Parsing operand errors are being thrown', t => {
    const input = `3
@@ -39,7 +39,7 @@ test('Parsing operand errors are being thrown', t => {
    let code: Code = new Code();
    let error = t.throws(() => code.load(input));
    t.is(error, 'Error at line 4, expected: REGFP got: H0');
-})
+});
 
 test('Parsing addresses errors are being throw', t => {
    const input = `3
@@ -52,7 +52,7 @@ test('Parsing addresses errors are being throw', t => {
    let code = new Code();
    let error = t.throws(() => code.load(input));
    t.is(error, 'Error at line 2, expected: ADDRESS got: R');
-})
+});
 
 test('Parsing opcodes errors are being thrown', t => {
    const input = `3
@@ -64,7 +64,7 @@ test('Parsing opcodes errors are being thrown', t => {
    let code: Code = new Code();
    let error = t.throws(() => code.load(input));
    t.is(error, 'Error at line 4 unknown opcode ADF');
-})
+});
 
 test('Repeated labels errors are being thrown', t => {
    const input = `3
@@ -77,7 +77,7 @@ test('Repeated labels errors are being thrown', t => {
    let code: Code = new Code();
    let error = t.throws(() => code.load(input));
    t.is(error, 'Error at line 5, label LOOP: already exists');
-})
+});
 
 test('Example code 1 does not throws errors', t => {
    const input = `11
@@ -96,7 +96,7 @@ LOOP:
     `;
    let code: Code = new Code();
    let error = t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 2 does not throws errors', t => {
    const input = `14
@@ -118,7 +118,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 3 does not throws errors', t => {
    const input = `20
@@ -146,7 +146,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 4 does not throws errors', t => {
    const input = `32
@@ -186,7 +186,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 5 does not throws errors', t => {
    const input = `18
@@ -213,7 +213,7 @@ LOOP2:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 6 does not throws errors', t => {
    const input = `8
@@ -229,7 +229,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 7 does not throws errors', t => {
    const input = `18
@@ -257,7 +257,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 8 does not throws errors', t => {
    const input = `27
@@ -294,7 +294,7 @@ LOOP:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 9 does not throws errors', t => {
    const input = `13
@@ -318,7 +318,7 @@ FIN:
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 10 does not throws errors', t => {
    const input = `7
@@ -334,7 +334,7 @@ SUB R6 R2 R3
     `;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});
 
 test('Example code 11 does not throws errors', t => {
    const input = `26
@@ -384,4 +384,4 @@ FIN:
 	ADDI	R0 R0 #0`;
    let code: Code = new Code();
    t.notThrows(() => code.load(input));
-})
+});

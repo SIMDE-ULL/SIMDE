@@ -1,7 +1,6 @@
 import { test } from 'ava';
 import { Queue } from '../core/collections/Queue';
 
-
 test('Queue size behaces as expected', (t) => {
    let queue = new Queue<number>(3);
 
@@ -31,7 +30,6 @@ test('Queue does not let you add extra elements', (t) => {
    queue.add(2);
    queue.add(3);
 
-
    // Size should be 3 + 1
    t.is(queue.add(3), -1);
 });
@@ -60,5 +58,7 @@ test('Queue behavior', (t) => {
 
    queue.add(1);
    queue.add(2);
-   t.is(queue.top(), 1);
-})
+   queue.remove(0);
+   queue.add(3);
+   t.is(queue.top(), 2);
+});

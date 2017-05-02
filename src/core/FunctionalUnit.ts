@@ -20,7 +20,6 @@ export class FunctionalUnit {
    private _latency: number;
    private _flow: Instruction[];
 
-
    constructor() {
       this._flow = null;
       this._status = new Status();
@@ -28,7 +27,6 @@ export class FunctionalUnit {
       this._status.stall = 0;
       this._status.instructionNumber = 0;
    }
-
 
    public get status(): Status {
       return this._status;
@@ -46,7 +44,6 @@ export class FunctionalUnit {
       this._type = value;
    }
 
-
    public get latency(): number {
       return this._latency;
    }
@@ -57,7 +54,6 @@ export class FunctionalUnit {
       this._status.instructionNumber = 0;
       this._flow = new Array(value).fill(null);
    }
-
 
    public get flow(): Instruction[] {
       return this._flow;
@@ -78,7 +74,6 @@ export class FunctionalUnit {
       } else {
          this._status.stall--;
       }
-
    }
 
    fillFlow(instruction: Instruction): number {

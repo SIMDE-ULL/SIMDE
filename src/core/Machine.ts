@@ -3,8 +3,6 @@ import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType } from 
 import { Memory } from './Memory';
 import { MachineStatus } from './MachineStatus';
 
-
-
 export class Machine {
 
    // Const propierties

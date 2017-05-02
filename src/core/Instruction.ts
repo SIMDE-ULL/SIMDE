@@ -51,7 +51,6 @@ export class Instruction {
       this._id = value;
    }
 
-
    public get basicBlock(): number {
       return this._basicBlock;
    }
@@ -59,7 +58,6 @@ export class Instruction {
    public set basicBlock(value: number) {
       this._basicBlock = value;
    }
-
 
    public set opcode(value: number) {
       this._opcode = value;
@@ -69,26 +67,21 @@ export class Instruction {
       this._breakPoint = value;
    }
 
-
    public set color(value: string) {
       this._color = value;
    }
-
 
    public get opcode(): number {
       return this._opcode;
    }
 
-
    public get breakPoint(): boolean {
       return this._breakPoint;
    }
 
-
    public get color(): string {
       return this._color;
    }
-
 
    public get operands(): number[] {
       return this._operands;

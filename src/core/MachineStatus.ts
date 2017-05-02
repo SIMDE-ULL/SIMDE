@@ -3,11 +3,6 @@ export class MachineStatus {
    private _executing: boolean;
    private _breakPoint: boolean;
 
-
-   constructor() {
-   }
-
-
    public get cycle(): number {
       return this._cycle;
    }
@@ -16,7 +11,6 @@ export class MachineStatus {
       this._cycle = value;
    }
 
-
    public get executing(): boolean {
       return this._executing;
    }
@@ -24,7 +18,6 @@ export class MachineStatus {
    public set executing(value: boolean) {
       this._executing = value;
    }
-
 
    public get breakPoint(): boolean {
       return this._breakPoint;

@@ -20,7 +20,6 @@ export class Memory {
       this.failProbability = 0;
    }
 
-   // TODO: Create an interface
    getDatum(address: number): Datum {
       if (address < 0) {
          address = 0;
@@ -31,7 +30,7 @@ export class Memory {
       };
       let failValue = randomNumber(100);
 
-      //There will be a fail only if there wasn't a previous fail on the same position
+      // There will be a fail only if there wasn't a previous fail on the same position
       if ((failValue < this.failProbability) && !this.fail[address]) {
          this.fail[address] = true;
          valueToReturn.got = false;
@@ -60,7 +59,6 @@ export class Memory {
       this._data = value;
    }
 
-
    public get fail(): boolean[] {
       return this._fail;
    }
@@ -68,7 +66,6 @@ export class Memory {
    public set fail(value: boolean[]) {
       this._fail = value;
    }
-
 
    public get failProbability(): number {
       return this._failProbability;

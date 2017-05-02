@@ -20,7 +20,6 @@ export class BasicBlock {
       this._id = value;
    }
 
-
    public get next(): BasicBlock {
       return this._next;
    }
@@ -29,7 +28,6 @@ export class BasicBlock {
       this._next = value;
    }
 
-
    public get successor(): SuccessorBlock {
       return this._successor;
    }
@@ -37,14 +35,11 @@ export class BasicBlock {
    public set successor(value: SuccessorBlock) {
       this._successor = value;
    }
-
-
 }
 
 export class SuccessorBlock {
    private _block: BasicBlock;
    private _next: SuccessorBlock;
-
 
    public get block(): BasicBlock {
       return this._block;
@@ -53,7 +48,6 @@ export class SuccessorBlock {
    public set block(value: BasicBlock) {
       this._block = value;
    }
-
 
    public get next(): SuccessorBlock {
       return this._next;

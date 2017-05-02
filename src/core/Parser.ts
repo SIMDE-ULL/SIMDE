@@ -1,8 +1,8 @@
-import * as Lexer from "lex";
+import * as Lexer from 'lex';
 
 export interface Lexema {
-   value?: any,
-   yytext?: any
+   value?: any;
+   yytext?: any;
 }
 
 export enum LEX {
@@ -23,7 +23,7 @@ export class Parser {
 
    constructor() {
 
-      this._lexer = new Lexer;
+      this._lexer = new Lexer();
 
       this._lexer.addRule(/^[0-9]+/i, function (lexeme) {
          this.yytext = lexeme;
@@ -66,6 +66,6 @@ export class Parser {
       return {
          value: value,
          yytext: this._lexer.yytext
-      }
+      };
    }
 }

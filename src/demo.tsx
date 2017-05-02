@@ -48,11 +48,9 @@ let pasoSuper = () => {
    //    title: 'GPR',
    //    content: superescalar.gpr.content
    // });
-   console.log(state);
    state['GPR']({ content: superescalar.gpr.content });
    state['FPR']({ content: superescalar.fpr.content });
    state['MEM']({ content: superescalar.gpr.content });
-   console.log(superescalar.reserveStationEntry);
    state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
    state['FU +Entera']({ content: superescalar.functionalUnit[0] });
 
@@ -66,7 +64,6 @@ let loadSuper = () => {
    code.load(document.getElementById('demo_super').value);
    superexe();
    superescalar.code = code;
-   console.log(code);
    state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
    superescalar.memory.setDatum(0, 20);
 };

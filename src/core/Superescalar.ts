@@ -20,10 +20,8 @@ export class Superescalar extends Machine {
    private static ISSUE_MIN = 2;
    private static ISSUE_MAX = 16;
 
-
    private _issue: number;
    private _code: Code;
-
 
    private _ROBGpr: number[];
    private _ROBFpr: number[];
@@ -33,9 +31,7 @@ export class Superescalar extends Machine {
    private _decoder: Queue<DecoderEntry>;
    private _aluMem: FunctionalUnit[];
 
-
    private jumpPrediction: number[];
-
 
    constructor() {
       super();
@@ -162,12 +158,12 @@ export class Superescalar extends Machine {
    }
 
    issueInstruction(instruction: Instruction, type: number, robIndex: number) {
-      // console.log('JUMP?', type);
       let actualReserveStation = this.reserveStationEntry[type];
       actualReserveStation[actualReserveStation.length - 1].instruction = instruction;
       actualReserveStation[actualReserveStation.length - 1].ROB = robIndex;
       actualReserveStation[actualReserveStation.length - 1].FUNum = -1;
       actualReserveStation[actualReserveStation.length - 1].A = -1;
+      /* tslint:disable:ter-indent */
       switch (instruction.opcode) {
          case Opcodes.ADD:
          case Opcodes.SUB:
@@ -243,12 +239,14 @@ export class Superescalar extends Machine {
          default:
             break;
       }
+      /* tslint:enable:ter-indent */
    }
 
    ticIssue(): number {
       let cont = 0;
       // TODO REVFISAR ESTE < QUE
       for (let i = this.decoder.first; i < this.decoder.last; i++ , cont++) {
+         // console.log('Tic Issue', this.decoder.first, this.decoder.last);
          // console.log('Decoder?', this.decoder.elements, this.decoder.first, this.decoder.last);
          // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
@@ -295,9 +293,9 @@ export class Superescalar extends Machine {
       return i === robIndex;
    }
 
-
    executeInstruction(type: FunctionalUnitType, num: number) {
       let i = 0;
+      /* tslint:disable:ter-indent */
       switch (type) {
          case FunctionalUnitType.INTEGERSUM:
          case FunctionalUnitType.INTEGERMULTIPLY:
@@ -336,6 +334,7 @@ export class Superescalar extends Machine {
          default:
             break;
       }
+      /* tslint:enable:ter-indent */
    }
 
    ticExecute(): void {
@@ -387,11 +386,10 @@ export class Superescalar extends Machine {
       }
    }
 
-
    writeInstruction(type: FunctionalUnitType, num: number) {
       let resul;
       let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
-
+      // console.log('Write instruction', inst);
       if (inst != null) {
          let i = 0;
          // TEstacionReserva::iterator it = ER[type].begin();
@@ -400,6 +398,7 @@ export class Superescalar extends Machine {
             i++;   // NOTA: si esto no para es q la he cagao en algún paso anterior
          }
          let opcode = inst.opcode;
+         /* tslint:disable:ter-indent */
          switch (opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI:
@@ -445,17 +444,20 @@ export class Superescalar extends Machine {
                resul = (this.reserveStationEntry[type][i].Vj === this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BNE:
+               console.log('Llega la instruccion de salto!');
                resul = (this.reserveStationEntry[type][i].Vj !== this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BGT:
                resul = (this.reserveStationEntry[type][i].Vj > this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
+            /* tslint:enable:ter-indent */
          }
          // Finalizó la ejecución de la instrucción
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                // Actualizo todas las ER
                // console.log(this.reserveStationEntry[type]);
+               // console.log('No era un salto :c');
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   // TEstacionReserva::iterator itER = ER[i].begin();
                   for (let k = 0; k !== this.reserveStationEntry[j].length; k++) {
@@ -481,7 +483,6 @@ export class Superescalar extends Machine {
          }
       }
    }
-
 
    ticWriteResult(): void {
       // En primer lugar compruebo si hay STORES listos
@@ -516,6 +517,10 @@ export class Superescalar extends Machine {
       // Después recorro todas las UF para recoger los resultados
       for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
          for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+            // TODO REMOVE THIS
+            if (i === 5) {
+               console.log('JUMP instruction ready for jump', this.functionalUnit[i][j].status.stall);
+            }
             if (this.functionalUnit[i][j].status.stall === 0) {
                this.writeInstruction(i, j);
             }
@@ -526,12 +531,13 @@ export class Superescalar extends Machine {
    }
 
    checkJump(rob: ReorderBufferEntry): boolean {
+      console.log('Comprobar salto');
       // Se comprueba si la predicción acertó
       // Typescript does not support ^ operator for boolean
       if (+this.prediction(rob.instruction.id) ^ +!!rob.value) {
          this.changePrediction(rob.instruction.id, !!rob.value);
          // Se cambia el PC
-         if (!!rob.value) {
+         if (rob.value) {
             this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
          } else {
             this.pc = rob.instruction.id + 1;
@@ -575,14 +581,14 @@ export class Superescalar extends Machine {
          this.ROBFpr.fill(-1);
          this._gpr.setAllBusy(false);
          this._fpr.setAllBusy(false);
+         console.log('El salto dio false', false);
          return false;
       }
       // CHECK !! AS (BOOL CAST)
+      console.log('Cambiar la preddicion', true);
       this.changePrediction(rob.instruction.id, !!rob.value);
       return true;
    }
-
-
 
    ticCommit(): CommitStatus {
       for (let i = 0; i < this.issue; i++) {
@@ -593,6 +599,7 @@ export class Superescalar extends Machine {
          } else {
             let h = this.reorderBuffer.first;
             let aux: ReorderBufferEntry = this.reorderBuffer.remove();
+            /* tslint:disable ter-indent */
             switch (aux.instruction.opcode) {
                case Opcodes.SW:
                case Opcodes.SF:
@@ -601,8 +608,10 @@ export class Superescalar extends Machine {
                case Opcodes.BEQ:
                case Opcodes.BNE:
                case Opcodes.BGT:
-                  if (!this.checkJump(aux))
+                  console.log('heeey saltito!');
+                  if (!this.checkJump(aux)) {
                      return CommitStatus.SUPER_COMMITMISS;
+                  }
                   break;
                case Opcodes.ADD:
                case Opcodes.ADDI:
@@ -618,20 +627,23 @@ export class Superescalar extends Machine {
                   this._gpr.setContent(aux.destinyRegister, aux.value, false);
                   // Pase lo que pase R0 vale 0
                   this._gpr.setContent(0, 0, false);
-                  if (this.ROBGpr[aux.destinyRegister] === h)
+                  if (this.ROBGpr[aux.destinyRegister] === h) {
                      this._gpr.setBusy(aux.destinyRegister, false);
+                  }
                   break;
                case Opcodes.ADDF:
                case Opcodes.MULTF:
                case Opcodes.SUBF:
                case Opcodes.LF:
                   this._fpr.setContent(aux.destinyRegister, aux.value, false);
-                  if (this.ROBFpr[aux.destinyRegister] === h)
+                  if (this.ROBFpr[aux.destinyRegister] === h) {
                      this._fpr.setBusy(aux.destinyRegister, false);
+                  }
                   break;
                default:
                   break;
             }
+            /* tslint:enable ter-indent */
          }
       }
       return CommitStatus.SUPER_COMMITOK;
@@ -668,6 +680,7 @@ export class Superescalar extends Machine {
 
    changePrediction(address: number, result: boolean) {
       address = address % Superescalar.PREDTABLESIZE;
+      /* tslint:disable ter-indent */
       switch (this.jumpPrediction[address]) {
          case 0: this.jumpPrediction[address] = (result) ? 1 : 0; break;
          case 1: this.jumpPrediction[address] = (result) ? 3 : 0; break;
@@ -675,6 +688,7 @@ export class Superescalar extends Machine {
          case 3: this.jumpPrediction[address] = (result) ? 3 : 2; break;
          default: this.jumpPrediction[address] = 0; break;
       }
+      /* tslint:enable ter-indent */
    }
 
    prediction(address: number): boolean {
@@ -689,7 +703,6 @@ export class Superescalar extends Machine {
       this._code = value;
    }
 
-
    public get issue(): number {
       return this._issue;
    }
@@ -697,7 +710,6 @@ export class Superescalar extends Machine {
    public set issue(value: number) {
       this._issue = value;
    }
-
 
    public get ROBGpr(): number[] {
       return this._ROBGpr;
@@ -707,7 +719,6 @@ export class Superescalar extends Machine {
       this._ROBGpr = value;
    }
 
-
    public get ROBFpr(): number[] {
       return this._ROBFpr;
    }
@@ -715,7 +726,6 @@ export class Superescalar extends Machine {
    public set ROBFpr(value: number[]) {
       this._ROBFpr = value;
    }
-
 
    public get reserveStationEntry(): ReserveStationEntry[][] {
       return this._reserveStationEntry;
@@ -725,7 +735,6 @@ export class Superescalar extends Machine {
       this._reserveStationEntry = value;
    }
 
-
    public get reorderBuffer(): Queue<ReorderBufferEntry> {
       return this._reorderBuffer;
    }
@@ -733,7 +742,6 @@ export class Superescalar extends Machine {
    public set reorderBuffer(value: Queue<ReorderBufferEntry>) {
       this._reorderBuffer = value;
    }
-
 
    public get prefetchUnit(): Queue<PrefetchEntry> {
       return this._prefetchUnit;
@@ -743,7 +751,6 @@ export class Superescalar extends Machine {
       this._prefetchUnit = value;
    }
 
-
    public get decoder(): Queue<DecoderEntry> {
       return this._decoder;
    }
@@ -751,7 +758,6 @@ export class Superescalar extends Machine {
    public set decoder(value: Queue<DecoderEntry>) {
       this._decoder = value;
    }
-
 
    public get aluMem(): FunctionalUnit[] {
       return this._aluMem;
@@ -761,7 +767,6 @@ export class Superescalar extends Machine {
       this._aluMem = value;
    }
 
-
    public get $jumpPrediction(): number[] {
       return this.jumpPrediction;
    }
@@ -769,6 +774,5 @@ export class Superescalar extends Machine {
    public set $jumpPrediction(value: number[]) {
       this.jumpPrediction = value;
    }
-
 
 }
