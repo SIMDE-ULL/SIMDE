@@ -51,6 +51,7 @@ export class Queue<T> {
    }
 
    public isFull(): boolean {
+      console.log('Is full?', (this.last + 1) % this.size === this.first);
       return ((this.last + 1) % this.size === this.first);
    }
 
@@ -60,6 +61,10 @@ export class Queue<T> {
 
    public end(): number {
       return this.last;
+   }
+
+   public nextIterator(i: number): number {
+      return (i + 1) % this.size;
    }
 
    public init(n: number) {
@@ -73,6 +78,7 @@ export class Queue<T> {
       if (this.isFull()) {
          return -1;
       }
+      console.log('Adding', this.last);
       let oldLast = this.last;
       this._elements[this.last] = value;
       this.last = (this.last + 1) % this.size;
@@ -104,6 +110,17 @@ export class Queue<T> {
       }
    }
 
+   public get elements(): T[] {
+      return this._elements;
+   }
+   public set elements(elements: T[]) {
+      this._elements = elements;
+   }
+
+   public getElement(index: number) {
+      return (index >= this.size) ? null : this.elements[index];
+   }
+
    private removeFirst(): T {
       if (this.isEmpty()) {
          return null;
@@ -115,10 +132,4 @@ export class Queue<T> {
       return element;
    }
 
-   public get elements(): T[] {
-      return this._elements;
-   }
-   public set elements(elements: T[]) {
-      this._elements = elements;
-   }
 }

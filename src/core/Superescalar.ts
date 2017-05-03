@@ -114,7 +114,7 @@ export class Superescalar extends Machine {
    }
 
    ticDecoder(): number {
-      for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i++) {
+      for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i = this.prefetchUnit.nextIterator(i)) {
          let aux: PrefetchEntry = this.prefetchUnit.elements[i];
          this.prefetchUnit.remove(i);
          let newDecoderEntry = new DecoderEntry();
@@ -245,9 +245,9 @@ export class Superescalar extends Machine {
    ticIssue(): number {
       let cont = 0;
       // TODO REVFISAR ESTE < QUE
-      for (let i = this.decoder.first; i < this.decoder.last; i++ , cont++) {
+      for (let i = this.decoder.first; i !== this.decoder.end(); i = this.decoder.nextIterator(i), cont++) {
          // console.log('Tic Issue', this.decoder.first, this.decoder.last);
-         // console.log('Decoder?', this.decoder.elements, this.decoder.first, this.decoder.last);
+         console.log('Decoder?', this.decoder.elements, i, this.decoder.first, this.decoder.last);
          // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
          if (this.reorderBuffer.isFull()) {
@@ -651,7 +651,7 @@ export class Superescalar extends Machine {
 
    tic(): SuperescalarStatus {
       this.status.cycle++;
-      // COMMi stage
+      // COMMiT stage
       let commit = this.ticCommit();
       if (commit !== CommitStatus.SUPER_COMMITEND && commit !== CommitStatus.SUPER_COMMITMISS) {
          // WRITE RESULT STAGE
@@ -669,7 +669,7 @@ export class Superescalar extends Machine {
       if ((resultIssue + resultDecoder + resultPrefetch === 0) && (commit === CommitStatus.SUPER_COMMITEND)) {
          return SuperescalarStatus.SUPER_ENDEXE;
       }
-      for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.last; i++) {
+      for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.last; i = this.prefetchUnit.nextIterator(i)) {
          if (this.prefetchUnit.elements[i].instruction.breakPoint) {
             this.status.breakPoint = true;
             return SuperescalarStatus.SUPER_BREAKPOINT;

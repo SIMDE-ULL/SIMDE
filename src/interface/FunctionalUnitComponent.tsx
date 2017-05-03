@@ -10,12 +10,19 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          content: []
       };
       window.state[this.props.title] = (data) => {
+         console.log('Set data', data);
          this.setState(data);
       };
    }
 
-   generateColSize() {
-      return this.state.content[0] ? new Array(this.state.content[0].latency) : new Array();
+   generateColSize(): number[] {
+      console.log('Col size', this.state.content[0]);
+      let toReturn = new Array();
+      if (this.state.content[0]) {
+         toReturn.length = this.state.content[0].latency;
+         toReturn.fill(1);
+      }
+      return toReturn;
    }
 
    getCellContent(element) {
@@ -30,12 +37,13 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
                <table className='table table-bordered'>
                   <tbody>
                      {this.generateColSize().map((element, i) => {
-                        <tr>
-                           {this.state.content.map((functionalUnit) => {
-                              <td>{this.getCellContent(functionalUnit.flow[i])}</td>
+                        <p key={i}>{element}</p>
+                        {/*<tr>
+                           {this.state.content.flow.map((functionalUnit) => {
+                              <td>{this.getCellContent(functionalUnit.flow[i])}</td>;
                            })
                            }
-                        </tr>;
+                        </tr>;*/}
                      })
                      }
                   </tbody>

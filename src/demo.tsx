@@ -1,6 +1,7 @@
 import { Code } from './core/Code';
 import { Superescalar } from './core/Superescalar';
 import { SuperescalarStatus } from './core/SuperescalarEnums';
+import { FunctionalUnitType } from './core/FunctionalUnit';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -52,7 +53,7 @@ let pasoSuper = () => {
    state['FPR']({ content: superescalar.fpr.content });
    state['MEM']({ content: superescalar.gpr.content });
    state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
-   state['FU +Entera']({ content: superescalar.functionalUnit[0] });
+   state['FU +Entera']({ content: superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM] });
 
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('SE ACABOOO');
