@@ -2,11 +2,15 @@ import { Code } from './core/Code';
 import { Superescalar } from './core/Superescalar';
 import { SuperescalarStatus } from './core/SuperescalarEnums';
 import { FunctionalUnitType } from './core/FunctionalUnit';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap.min.js';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import App from './interface/App';
 
+const styles = require('./main.css');
 
 
 declare var document;

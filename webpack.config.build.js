@@ -1,33 +1,51 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader')
 
 module.exports = {
    name: 'app',
    target: 'web',
-   entry: './src/demo.tsx',
+   entry: './src/main.tsx',
    output: {
       path: __dirname + "/dist",
       filename: "bundle.js"
    },
    devtool: "source-map",
    resolve: {
-      extensions: ['.ts', '.tsx'],
+      extensions: ['.js', '.ts', '.jsx', '.tsx'],
    },
    module: {
       loaders: [
          { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-         { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+         { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+         {
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract({
+               fallbackLoader: 'style-loader',
+               loader: {
+                  loader: 'css-loader'
+               }
+            })
+         },
+         {
+            test: /\.(eot|svg|ttf|woff|woff2)$/,
+            loader: 'file-loader?name=public/fonts/[name].[ext]'
+         }
       ],
-   },
-   externals: {
-      "react": "React",
-      "react-dom": "ReactDOM"
    },
    plugins: [
       new HtmlWebpackPlugin({
          title: 'Sinde DEMO',
          template: 'src/index.html'
+      }),
+      new ExtractTextPlugin({
+         filename: '[name].[hash:8].css',
+         allChunks: true
+      }),
+      new webpack.ProvidePlugin({
+         $: "jquery",
+         jQuery: "jquery"
       }),
       new CheckerPlugin()]
 };
