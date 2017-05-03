@@ -83,5 +83,5 @@ window.superexe = superexe;
 
 ReactDOM.render(
    <App machine={superescalar} />,
-   document.getElementById('example')
+   document.getElementById('app')
 );

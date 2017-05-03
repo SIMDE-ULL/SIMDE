@@ -1,2 +1,150 @@
 @import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
 @import url('../node_modules/font-awesome/css/font-awesome.min.css');
+
+body {
+  width: 100%;
+}
+
+#navbar {
+  background-color: white;
+}
+
+#code-zone {
+  height: calc(90vh);
+}
+
+#functional-unit-zone {
+  height: calc(90vh);
+}
+
+#functional-unit-zone > .panel-body{
+  max-height: calc(85vh);
+  padding-right: -10px;
+}
+
+#simulation-zone {
+  height: calc(90vh);
+  background-color: yellow;
+}
+
+#barra-de-herramientas-estandar {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.small-separator {
+    margin: 5px;
+}
+
+.icon-wrapper > i{
+  background-color: white;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.menu-item {
+  text-align: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background-color: gray;
+}
+ 
+#barra-de-acciones {
+  background-color: gray;
+}
+
+.navbar {
+  margin-bottom: 0px;
+  min-height: 0px;
+}
+
+.navbar-nav> li > a {
+  padding-bottom: 0px;
+  padding-top: 5px;
+}
+
+#reserve-station-zone{
+  height: calc(90vh);
+}
+
+#reserve-station-zone > .panel-body{
+  max-height: calc(85vh);
+}
+
+.panel {
+  margin-bottom: 0px !important;
+}
+
+.prefetch-decoder-zone {
+  height: calc(20vh);
+}
+
+.prefetch-decoder-zone > .panel-body{
+   max-height: calc(15vh);
+}
+
+.register-mapper {
+   height: calc(20vh);
+}
+
+.register-mapper > .panel-body {
+   max-height: calc(13vh);
+}
+
+.register-mapper > .panel-footer {
+   padding-top: 5px;
+   padding-bottom: 0px;
+   padding-right: 0px;
+}
+
+#rob-zone {
+  height: calc(20vh);
+}
+
+#reorder-zone {
+  height: calc(50vh);
+}
+
+#reorder-zone > .panel-body{
+  max-height: calc(46vh);
+}
+
+.second-nav {
+  margin-bottom: 15px;
+}
+
+.panel-heading {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #9E9E9E !important;
+  font-weight: bold !important;
+}
+
+.panel .panel-body {
+    overflow-y: scroll;
+}
+
+.panel-body {
+  padding-top: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.panel-body > table {
+  border: 2px solid gray;
+}
+
+a {
+  color: #212121;
+}
+
+.panel .panel-default .register .panel-body {
+   overflow-x: hidden;
+}
+
+.inside-bar > .panel-body {
+   padding-right: 15px;
+}
