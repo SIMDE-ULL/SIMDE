@@ -6,6 +6,9 @@ import { FileBarComponent } from './FileBarComponent';
 import { AccessBarComponent } from './AccessBarComponent';
 import { Superescalar } from '../core/Superescalar';
 import { FunctionalUnitComponent } from './FunctionalUnitComponent';
+import { PrefetchDecoderComponent } from './PrefetchDecoderComponent';
+import { RegisterMapperComponent } from './RegisterMapperComponent';
+import { ReorderBufferComponent } from './ReorderBufferComponent';
 
 class App extends React.Component<any, any> {
 
@@ -23,39 +26,44 @@ class App extends React.Component<any, any> {
                   <div id='home' className='tab-pane fade in active'>
                      <div className='row'>
                         <div className='col-sm-3' id='code-zone'>
-                           <CodeComponent content={this.props.machine.code} />
+                           <div className='row'>
+                              <CodeComponent content={this.props.machine.code} />
+                           </div>
                         </div>
                         <div className='col-sm-9' id='simulation-zone'>
                            <div className='row'>
                               <div className='col-sm-5'>
                                  <div className='row'>
                                     <div className='col-sm-6'>
-                                       {/* prefetch */}
+                                       <div className='row'>
+                                          <PrefetchDecoderComponent title='Prefetch' />
+                                       </div>
                                     </div>
                                     <div className='col-sm-6'>
                                        <div className='row'>
-                                          <div className='col-sm-4'>
-                                             <div className='row'>
-                                                {/* register mapper*/}
-                                             </div>
-                                          </div>
-                                          <div className='col-sm-4'>
-                                             <div className='row'>
-                                                {/* register mapper*/}
-                                             </div>
-                                          </div>
-                                          <div className='col-sm-4'>
-                                             <div className='row'>
-                                                {/* register mapper*/}
-                                             </div>
-                                          </div>
+                                          <PrefetchDecoderComponent title='Decoder' />
                                        </div>
                                     </div>
                                  </div>
                                  <div className='row'>
-                                    <div className='col-sm-12'>
-                                       {/* reorder buffer*/}
+                                    <div className='col-sm-4'>
+                                       <div className='row'>
+                                          <RegisterMapperComponent title='ROB<->GPR' />
+                                       </div>
                                     </div>
+                                    <div className='col-sm-4'>
+                                       <div className='row'>
+                                          <RegisterMapperComponent title='ROB<->FPR' />
+                                       </div>
+                                    </div>
+                                    <div className='col-sm-4'>
+                                       <div className='row'>
+                                          <RegisterMapperComponent title='Jump' />
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div className='row'>
+                                    <ReorderBufferComponent />
                                  </div>
                               </div>
                               <div className='col-sm-5'>
@@ -67,7 +75,12 @@ class App extends React.Component<any, any> {
                                              <div className='panel-body'>
                                                 <div className='row'>
                                                    <div className='panel panel-default'>
-                                                      {/* Reserve stations */}
+                                                      <ReserveStationComponent title='Integer +' />
+                                                      <ReserveStationComponent title='Integer x' />
+                                                      <ReserveStationComponent title='Floating +' />
+                                                      <ReserveStationComponent title='Floating x' />
+                                                      <ReserveStationComponent title='Memoru' />
+                                                      <ReserveStationComponent title='Jump' />
                                                    </div>
                                                 </div>
                                              </div>
@@ -84,7 +97,12 @@ class App extends React.Component<any, any> {
                                              <div className='panel-heading'>U. F.</div>
                                              <div className='panel-body'>
                                                 <div className='row'>
-                                                   { /* Functional Units */}
+                                                   <FunctionalUnitComponent title='+Entera' />
+                                                   <FunctionalUnitComponent title='xEntera' />
+                                                   <FunctionalUnitComponent title='+Flotante' />
+                                                   <FunctionalUnitComponent title='xFlotante' />
+                                                   <FunctionalUnitComponent title='Mem' />
+                                                   <FunctionalUnitComponent title='Jump' />
                                                 </div>
                                              </div>
                                           </div>
@@ -99,150 +117,19 @@ class App extends React.Component<any, any> {
                   <div id='menu1' className='tab-pane fade'>
                      <div className='row'>
                         <div className='col-sm-4'>
-                           <div className='panel panel-default register'>
-                              <div className='panel-heading'>Memoria</div>
-                              <div className='panel-body'>
-                                 <table className='table table-bordered'>
-                                    <tr>
-                                       <td>0</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>1</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>2</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>3</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>4</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>5</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>6</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                 </table>
-                              </div>
-                              <div className='panel-footer'>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
-                                 </button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
-                              </div>
-                           </div>
+                           <RegisterComponent title='Memoria' />
                         </div>
                         <div className='col-sm-4'>
-                           <div className='panel panel-default register'>
-                              <div className='panel-heading'>Registros Generales</div>
-                              <div className='panel-body'>
-                                 <table className='table table-bordered'>
-                                    <tr>
-                                       <td>R0</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R1</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R2</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R3</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R4</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R5</td>
-                                       <td>0</td>
-                                    </tr>
-                                    <tr>
-                                       <td>R6</td>
-                                       <td>0</td>
-                                    </tr>
-
-                                 </table>
-                              </div>
-                              <div className='panel-footer'>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
-                                 </button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
-                              </div>
-                           </div>
+                           <RegisterComponent title='Registros generales' />
                         </div>
                         <div className='col-sm-4'>
-                           <div className='panel panel-default register'>
-                              <div className='panel-heading'>Registros de punto flotante</div>
-                              <div className='panel-body'>
-                                 <table className='table table-bordered'>
-                                    <tr>
-                                       <td>F0</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F1</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F2</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F3</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F4</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F5</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                    <tr>
-                                       <td>F6</td>
-                                       <td>0,00000000000</td>
-                                    </tr>
-                                 </table>
-                              </div>
-                              <div className='panel-footer'>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
-                                 </button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
-                                 <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
-                              </div>
-                           </div >
-                        </div >
-                     </div >
-                  </div >
-
-
-               </div >
-
-
-            </div >
-         </div >
+                           <RegisterComponent title='Registros de punto flotante' />
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       );
    }
 }

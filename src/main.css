@@ -100,15 +100,15 @@ body {
    padding-right: 0px;
 }
 
-#rob-zone {
+.rob-zone {
   height: calc(20vh);
 }
 
-#reorder-zone {
+.reorder-zone {
   height: calc(50vh);
 }
 
-#reorder-zone > .panel-body{
+.reorder-zone > .panel-body{
   max-height: calc(46vh);
 }
 

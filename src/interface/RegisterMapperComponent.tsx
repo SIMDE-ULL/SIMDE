@@ -1,7 +1,7 @@
 import * as React from 'react';
 declare var window: any;
 
-export class RegisterComponent extends React.Component<any, any> {
+export class RegisterMapperComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
@@ -17,7 +17,7 @@ export class RegisterComponent extends React.Component<any, any> {
 
    render() {
       return (
-         <div className='panel panel-default'>
+         <div className='panel panel-default register-mapper'>
             <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
@@ -32,12 +32,12 @@ export class RegisterComponent extends React.Component<any, any> {
                </table>
             </div>
             <div className='panel-footer'>
-               <button type='button' className='btn'><i className='fa fa-plus' aria-hidden='true'></i>
+               <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
                </button>
-               <button type='button' className='btn'><i className='fa fa-minus' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-check' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-times' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
             </div>
          </div>);
    }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 declare var window: any;
 
-export class ReorderBuffer extends React.Component<any, any> {
+export class ReorderBufferComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
@@ -16,7 +16,7 @@ export class ReorderBuffer extends React.Component<any, any> {
 
    render() {
       return (
-         <div className='panel panel-default'>
+         <div className='panel panel-default reorder-zone'>
             <div className='panel-heading'>{'ReorderBuffer'}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
