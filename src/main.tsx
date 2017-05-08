@@ -12,47 +12,33 @@ import App from './interface/App';
 
 const styles = require('./main.css');
 
-
+// Declare browser vars for Typescript
 declare var document;
 declare var window;
+
+// Global objects for binding React to the View
 let superescalar = new Superescalar();
 let state: any = {};
 window.state = state;
 
+// Always use arrow functions for not losing this
 let load = (id) => {
 
    let input = document.getElementById(id);
    let code: Code = new Code();
-   // let superescalar: Superescalar = new Superescalar();
-   // superescalar.code = code;
    try {
       code.load(input.value);
    } catch (err) {
       window.alert(err);
    }
-   // let lines = document.getElementById('lines');
-   // let numberOfBlocks = document.getElementById('numberOfBlocks');
-   // let basicBlocks = document.getElementById('basicBlocks');
-   // let instructions = document.getElementById('instructions');
-   // lines.innerText = 'Lines: ' + code.lines;
-   // numberOfBlocks.innerText = 'Number of blocks: ' + code.numberOfBlocks;
-   // basicBlocks.innerText = 'Basic Blocks \n' + JSON.stringify(code.basicBlocks);
-   // instructions.innerText = 'Instructions \n' + JSON.stringify(code.instructions);
-}
+};
 
-let superexe = () => {
+let superExe = () => {
    superescalar.init(true);
-}
+};
 
-let pasoSuper = () => {
-   let resul = superescalar.tic();
-   document.getElementById('registros').innerText = superescalar.gpr.content;
-   document.getElementById('registrosf').innerText = superescalar.fpr.content;
-   document.getElementById('pc').innerText = superescalar.status.cycle;
-   // state.callback({
-   //    title: 'GPR',
-   //    content: superescalar.gpr.content
-   // });
+let superStep = () => {
+   let resul = superescalar.tic();;
    state['GPR']({ content: superescalar.gpr.content });
    state['FPR']({ content: superescalar.fpr.content });
    state['MEM']({ content: superescalar.gpr.content });
@@ -60,25 +46,68 @@ let pasoSuper = () => {
    state['FU +Entera']({ content: superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM] });
 
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
-      window.alert('SE ACABOOO');
+      window.alert('Done');
    }
-}
+};
+
 let loadSuper = () => {
    let code = new Code();
+   try {
+      code.load(document.getElementById('codeInput').value);
+      superExe();
+      superescalar.code = code;
 
-   code.load(document.getElementById('demo_super').value);
-   superexe();
-   superescalar.code = code;
-   state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
-   superescalar.memory.setDatum(0, 20);
+      // There is no need to update the code with the rest, it should remain the same during all the program execution
+      state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
+      superescalar.memory.setDatum(0, 20);
+   } catch (err) {
+      alert(err);
+   }
+};
+
+
+let componentContent = (title: string): any => {
+   let result;
+   /* tslint:disable */
+   switch (title) {
+      case 'GPR':
+         result = superescalar.gpr.content;
+         break;
+      case 'FPR':
+         result = superescalar.fpr.content;
+         break;
+      case 'RS +Entera':
+         result = superescalar.reserveStationEntry[0];
+         break;
+      case 'FU +Entera':
+         result = superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM];
+         break;
+      case 'FU xEntera':
+         result = superescalar.functionalUnit[FunctionalUnitType.INTEGERMULTIPLY];
+   }
+   /* tslint:enable */
+   return result;
+};
+
+
+let callAllCallbacks = () => {
+
+   // TODO DO NOT CALL CODE!
+   for (let callbackName in state) {
+      if (callbackName !== 'Code') {
+         state[callbackName]({
+            content: componentContent(callbackName)
+         });
+      }
+   }
 };
 
 
 
 window.load = load;
 window.loadSuper = loadSuper;
-window.pasoSuper = pasoSuper;
-window.superexe = superexe;
+window.superStep = superStep;
+window.superExe = superExe;
 
 
 ReactDOM.render(
