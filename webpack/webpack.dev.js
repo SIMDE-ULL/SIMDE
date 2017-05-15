@@ -1,0 +1,16 @@
+const path = require('path');
+const commonConfig = require('./webpack.common.js');
+const webpackMerge = require('webpack-merge');
+const ENV = 'dev';
+
+
+module.exports = webpackMerge(commonConfig({ env: ENV }), {
+   devServer: {
+      contentBase: './target/www'
+   },
+   output: {
+      path: path.resolve('target/www'),
+      filename: '[name].bundle.js',
+      chunkFilename: '[id].chunk.js'
+   },
+});

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+
+<head>
+   <title>Primera demo SIMDE</title>
+   <meta charset="UTF-8">
+<link href="main.e3bd1427.css" rel="stylesheet"></head>
+
+<body>
+   <div id='app'>
+   </div>
+<script type="text/javascript" src="main.bundle.js"></script></body>
+
+<!--<nav class="navbar navbar-default">
+      <a class="navbar-brand">Simde DEMO</a>
+   </nav>
+   <div class="container-fluid">
+      <div class="col-sm-12">
+         <div class="row">
+            <div class="col-xs-3 col-offset-xs-1">
+               <div class="row">
+                  <h3>Bad operand</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code" rows="10">3
+LF 	F1 (R2)
+LOOP:
+ADDF F1 F1 H0
+BNE	R2 R5 LOOP</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code')">Cargar</button>
+               </div>
+            </div>
+            <div class="col-xs-3">
+               <div class="row">
+                  <h3>Unkwnown opcode</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code2" rows="10">2
+ADDI	R2 R0 #50
+ADDO     R3 R0 R2</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code2')">Cargar</button>
+               </div>
+            </div>
+            <div class="col-xs-3">
+               <div class="row">
+                  <h3>Duplicated label</h3>
+               </div>
+               <div class="row">
+                  <textarea id="input_code3" rows="10">11
+ADDI	R2 R0 #50
+ADDI	R3 R0 #70
+ADDI	R4 R0 #40
+LF	F0 (R4)
+ADDI	R5 R2 #16
+LOOP:
+LF 	F1 (R2)
+ADDF	F1 F1 F0
+SF	F1 (R3)
+LOOP:
+ADDI 	R2 R2 #1
+ADDI	R3 R3 #1
+BNE	R2 R5 LOOP</textarea>
+               </div>
+               <div class="row">
+                  <button type="button" class="btn btn-primary" onClick="load('input_code3')">Cargar</button>
+
+               </div>
+            </div>
+         </div>
+
+         <!-- SUPERESCALAR DEMO -->
+<!--<div class="row">
+   <div class="col-sm-6">
+      Registros Generasles
+      <pre id="registros"></pre>
+   </div>
+   <div class="col-sm-6">
+      Registros Flotantes
+      <pre id="registrosf"></pre>
+   </div>
+   <!-- PONER CODIGO DE PRUEBA, MAQUINA Y MOSTRAR STATUS -->
+<!-- DOS BOTONES, CARGAR Y EJECUTAR -->
+<!--</div>
+<div class="row">
+   <div class="col-sm-4">
+      PC
+      <pre id="pc"></pre>
+   </div>
+</div>
+<div class="row">
+   <div class="col-sm-12">
+      <button type="button" class="btn btn-primary" onClick="loadSuper()">Cargar Super</button>
+      <button type="button" class="btn btn-primary" onClick="pasoSuper()">Ejecutar</button>
+   </div>
+</div>
+<textarea id="demo_super">5
+        LF F1 (R2)
+        ADDI R5 R0 #3
+        LOOP:
+        ADDF F2 F1 F0
+        ADDI R2 R2 #1
+        BNE	R2 R5 LOOP
+         </textarea>
+</div>
+</div>
+
+<div id="example">
+</div>-->

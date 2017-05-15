@@ -4,7 +4,6 @@ declare var window: any;
 export class AccessBarComponent extends React.Component<any, any> {
 
    stepBack() {
-      window.
    }
 
    stepFordward() {
