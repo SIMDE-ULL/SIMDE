@@ -6,8 +6,9 @@ import { AccessBarComponent } from './AccessBarComponent';
 
 import { GeneralTabComponent } from './tab/GeneralTabComponent';
 import { RegisterTabComponent } from './tab/RegistersTabComponent';
-import { LoadModalComponent } from './modal/LoadModalComponent';
 
+import { LoadModalComponent } from './modal/LoadModalComponent';
+import { SuperescalarConfigModalComponent } from './modal/SuperescalarConfigModalComponent';
 declare var window: any;
 
 class App extends React.Component<any, any> {
@@ -30,6 +31,7 @@ class App extends React.Component<any, any> {
                </div>
             </div>
             < LoadModalComponent />
+            <SuperescalarConfigModalComponent />
          </div >
       );
    }

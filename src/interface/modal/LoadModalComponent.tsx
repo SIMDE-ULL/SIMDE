@@ -7,7 +7,7 @@ export class LoadModalComponent extends React.Component<any, any> {
    }
 
    render() {
-      return (<div id='myModal' className='modal fade' role='dialog'>
+      return (<div id='codeModal' className='modal fade' role='dialog'>
          <div className='modal-dialog'>
             <div className='modal-content'>
                <div className='modal-header'>

@@ -3,33 +3,53 @@ declare var window: any;
 
 export class AccessBarComponent extends React.Component<any, any> {
 
+   stepBack() {
+      window.
+   }
+
+   stepFordward() {
+
+   }
+
+   play() {
+
+   }
+
+   pause() {
+
+   }
+
+   stop() {
+
+   }
+
    render() {
       return (<div className='row second-nav'>
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li>
                   <a href='#'>
-                     <i className='fa fa-play' aria-hidden='true'></i>
+                     <i className='fa fa-play' aria-hidden='true' onClick={this.play}></i>
                   </a>
                </li>
                <li>
                   <a href='#'>
-                     <i className='fa fa-pause' aria-hidden='true'></i>
+                     <i className='fa fa-pause' aria-hidden='true' onClick={this.pause}></i>
                   </a>
                </li>
                <li>
                   <a href='#'>
-                     <i className='fa fa-stop' aria-hidden='true'></i>
+                     <i className='fa fa-stop' aria-hidden='true' onClick={this.stop}></i>
                   </a>
                </li>
                <li>
                   <a href='#'>
-                     <i className='fa fa-step-backward' aria-hidden='true'></i>
+                     <i className='fa fa-step-backward' aria-hidden='true' onClick={this.stepBack}></i>
                   </a>
                </li>
                <li>
                   <a href='#'>
-                     <i className='fa fa-step-forward' aria-hidden='true'></i>
+                     <i className='fa fa-step-forward' aria-hidden='true' onClick={this.stepFordward}></i>
                   </a>
                </li>
                <li>
@@ -42,7 +62,7 @@ export class AccessBarComponent extends React.Component<any, any> {
                   <a href='#'>
                      <div className='speed'>
                         <label htmlFor='velocidad'>Velocidad</label>
-                        <input type='number' id='velocidad' value='0' max='10'></input>
+                        <input type='number' id='velocidad' defaultValue={'0'} max='10'></input>
                      </div>
                   </a>
                </li>
