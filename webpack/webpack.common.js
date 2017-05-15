@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader')
@@ -9,7 +10,7 @@ module.exports = function (options) {
       target: 'web',
       entry: './src/main.tsx',
       output: {
-         path: __dirname + "/dist",
+         path: path.resolve("./dist"),
          filename: "bundle.js"
       },
       devtool: "source-map",
