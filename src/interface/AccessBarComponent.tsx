@@ -3,23 +3,34 @@ declare var window: any;
 
 export class AccessBarComponent extends React.Component<any, any> {
 
-   stepBack() {
+   constructor(props: any) {
+      super(props);
+      this.stepForward = this.stepForward.bind(this);
+      this.stepBack = this.stepBack.bind(this);
+      this.play = this.play.bind(this);
+      this.pause = this.pause.bind(this);
+      this.stop = this.stop.bind(this);
    }
 
-   stepFordward() {
+   stepForward() {
+      console.log(window.superStep);
+      window.superStep();
+   }
 
+   stepBack() {
+      window.stepBack();
    }
 
    play() {
-
+      window.play();
    }
 
    pause() {
-
+      window.pause();
    }
 
    stop() {
-
+      window.stop();
    }
 
    render() {
@@ -48,7 +59,7 @@ export class AccessBarComponent extends React.Component<any, any> {
                </li>
                <li>
                   <a href='#'>
-                     <i className='fa fa-step-forward' aria-hidden='true' onClick={this.stepFordward}></i>
+                     <i className='fa fa-step-forward' aria-hidden='true' onClick={() => { this.stepForward() }}></i>
                   </a>
                </li>
                <li>

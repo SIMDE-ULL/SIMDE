@@ -23,7 +23,7 @@ window.state = state;
 
 // Always use arrow functions for not losing this
 let load = (id) => {
-
+   console.log('Time to load the code');
    let input = document.getElementById(id);
    let code: Code = new Code();
    try {
@@ -38,12 +38,14 @@ let superExe = () => {
 };
 
 let superStep = () => {
+   console.log('Super step!');
+   console.log(state);
    let resul = superescalar.tic();;
-   state['GPR']({ content: superescalar.gpr.content });
-   state['FPR']({ content: superescalar.fpr.content });
-   state['MEM']({ content: superescalar.gpr.content });
-   state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
-   state['FU +Entera']({ content: superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM] });
+   state['Registros generales']({ content: superescalar.gpr.content });
+   state['Registros de punto flotante']({ content: superescalar.fpr.content });
+   state['Mem']({ content: superescalar.gpr.content });
+   // state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
+   // state['FU +Entera']({ content: superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM] });
 
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       window.alert('Done');
@@ -109,8 +111,9 @@ window.loadSuper = loadSuper;
 window.superStep = superStep;
 window.superExe = superExe;
 
-
 ReactDOM.render(
    <App machine={superescalar} />,
    document.getElementById('app')
 );
+
+console.log(window.loadSuper);

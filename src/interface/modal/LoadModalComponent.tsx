@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Modal } from 'react-bootstrap';
+
 declare var window: any;
 
 export class LoadModalComponent extends React.Component<any, any> {

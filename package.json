@@ -21,7 +21,7 @@
       "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
       "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
       "release": "standard-version",
-      "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js  --progress --inline --hot --profile --port=9060",
+      "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --port=9060",
       "webpack:prod": "webpack --config webpack/webpack.prod.js"
    },
    "repository": {
@@ -42,6 +42,8 @@
       "babel-preset-es2015": "^6.24.1",
       "babel-preset-react": "^6.24.1",
       "bootstrap": "^3.3.7",
+      "browser-sync": "^2.18.11",
+      "browser-sync-webpack-plugin": "^1.1.4",
       "css-loader": "^0.28.1",
       "extract-text-webpack-plugin": "^2.1.0",
       "file-loader": "^0.11.1",
@@ -49,6 +51,7 @@
       "jquery": "^3.2.1",
       "lex": "^1.7.9",
       "react": "^15.5.4",
+      "react-bootstrap": "^0.31.0",
       "react-dom": "^15.5.4",
       "source-map-loader": "^0.2.1",
       "style-loader": "^0.17.0",

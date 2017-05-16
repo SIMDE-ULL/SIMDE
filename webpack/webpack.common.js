@@ -9,10 +9,6 @@ module.exports = function (options) {
       name: 'app',
       target: 'web',
       entry: './src/main.tsx',
-      output: {
-         path: path.resolve("./dist"),
-         filename: "bundle.js"
-      },
       devtool: "source-map",
       resolve: {
          extensions: ['.js', '.ts', '.jsx', '.tsx'],
