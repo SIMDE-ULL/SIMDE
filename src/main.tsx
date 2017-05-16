@@ -21,53 +21,10 @@ let superescalar = new Superescalar();
 let state: any = {};
 window.state = state;
 
-// Always use arrow functions for not losing this
-let load = (id) => {
-   console.log('Time to load the code');
-   let input = document.getElementById(id);
-   let code: Code = new Code();
-   try {
-      code.load(input.value);
-   } catch (err) {
-      window.alert(err);
-   }
-};
-
-let superExe = () => {
-   superescalar.init(true);
-};
-
-let superStep = () => {
-   console.log('Super step!');
-   console.log(state);
-   let resul = superescalar.tic();;
-   state['Registros generales']({ content: superescalar.gpr.content });
-   state['Registros de punto flotante']({ content: superescalar.fpr.content });
-   state['Mem']({ content: superescalar.gpr.content });
-   // state['RS +Entera']({ content: superescalar.reserveStationEntry[0] });
-   // state['FU +Entera']({ content: superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM] });
-
-   if (resul === SuperescalarStatus.SUPER_ENDEXE) {
-      window.alert('Done');
-   }
-};
-
-let loadSuper = () => {
-   let code = new Code();
-   try {
-      code.load(document.getElementById('codeInput').value);
-      superExe();
-      superescalar.code = code;
-
-      // There is no need to update the code with the rest, it should remain the same during all the program execution
-      state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
-      superescalar.memory.setDatum(0, 20);
-   } catch (err) {
-      alert(err);
-   }
-};
-
-
+/*
+ * Callbacks for allowing the global state to refresh the components
+ *
+ */
 let componentContent = (title: string): any => {
    let result;
    /* tslint:disable */
@@ -105,15 +62,60 @@ let callAllCallbacks = () => {
 };
 
 
+// Always use arrow functions for not losing this
+let load = (id) => {
+   console.debug('Time to load the code');
+   let input = document.getElementById(id);
+   let code: Code = new Code();
+   try {
+      code.load(input.value);
+   } catch (err) {
+      window.alert(err);
+   }
+};
+
+let superExe = () => {
+   superescalar.init(true);
+};
+
+let superStep = () => {
+   console.debug('Super step!');
+   console.debug(state);
+   let resul = superescalar.tic();;
+   callAllCallbacks();
+
+   if (resul === SuperescalarStatus.SUPER_ENDEXE) {
+      window.alert('Done');
+   }
+};
+
+let loadSuper = () => {
+   let code = new Code();
+   try {
+      code.load(document.getElementById('codeInput').value);
+      superExe();
+      superescalar.code = code;
+
+      // There is no need to update the code with the rest, it should remain the same during all the program execution
+      state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
+      superescalar.memory.setDatum(0, 20);
+   } catch (err) {
+      alert(err);
+   }
+};
+
+
+
 
 window.load = load;
 window.loadSuper = loadSuper;
 window.superStep = superStep;
 window.superExe = superExe;
+window.callAllCallbacks = callAllCallbacks;
 
 ReactDOM.render(
    <App machine={superescalar} />,
    document.getElementById('app')
 );
 
-console.log(window.loadSuper);
+console.debug('Main entry point achieved');

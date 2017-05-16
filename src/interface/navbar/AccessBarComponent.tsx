@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './AccessBarComponent.css';
 declare var window: any;
 
 export class AccessBarComponent extends React.Component<any, any> {
@@ -38,28 +39,28 @@ export class AccessBarComponent extends React.Component<any, any> {
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li>
-                  <a href='#'>
-                     <i className='fa fa-play' aria-hidden='true' onClick={this.play}></i>
+                  <a href='#' onClick={this.play}>
+                     <i className='fa fa-play' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#'>
-                     <i className='fa fa-pause' aria-hidden='true' onClick={this.pause}></i>
+                  <a href='#' onClick={this.pause} >
+                     <i className='fa fa-pause' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#'>
-                     <i className='fa fa-stop' aria-hidden='true' onClick={this.stop}></i>
+                  <a href='#' onClick={this.stop}>
+                     <i className='fa fa-stop' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#'>
-                     <i className='fa fa-step-backward' aria-hidden='true' onClick={this.stepBack}></i>
+                  <a href='#' onClick={this.stepBack}>
+                     <i className='fa fa-step-backward' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#'>
-                     <i className='fa fa-step-forward' aria-hidden='true' onClick={() => { this.stepForward() }}></i>
+                  <a href='#' onClick={() => { this.stepForward(); }}>
+                     <i className='fa fa-step-forward' aria-hidden='true'></i>
                   </a>
                </li>
                <li>

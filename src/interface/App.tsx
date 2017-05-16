@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Superescalar } from '../core/Superescalar';
 
-import { FileBarComponent } from './FileBarComponent';
-import { AccessBarComponent } from './AccessBarComponent';
+import { FileBarComponent } from './navbar/FileBarComponent';
+import { AccessBarComponent } from './navbar/AccessBarComponent';
 
 import { GeneralTabComponent } from './tab/GeneralTabComponent';
 import { RegisterTabComponent } from './tab/RegistersTabComponent';
@@ -22,9 +22,7 @@ class App extends React.Component<any, any> {
          <div className='App'>
             <div className='container-fluid'>
                <FileBarComponent />
-               <div className='row'>
-                  <AccessBarComponent />
-               </div>
+               <AccessBarComponent />
                <div className='tab-content'>
                   <GeneralTabComponent />
                   <RegisterTabComponent />

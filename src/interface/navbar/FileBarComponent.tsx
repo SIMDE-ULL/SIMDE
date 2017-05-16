@@ -1,16 +1,17 @@
 import * as React from 'react';
+import './FileBarComponent.css';
 declare var window: any;
 
 export class FileBarComponent extends React.Component<any, any> {
 
    render() {
-      return (<div className='second-nav'>
+      return (<div className='filebar'>
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
                   <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Archivo</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='#' data-toggle='modal' data-target='#codeModal'>Cargar</a></li>
+                     <li><a href='#' onClick={() => { window['loadModal'](true); }}>Cargar</a></li>
                   </ul>
                </li>
             </ul>
