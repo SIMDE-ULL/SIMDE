@@ -247,7 +247,7 @@ export class Superescalar extends Machine {
       // TODO REVFISAR ESTE < QUE
       for (let i = this.decoder.first; i !== this.decoder.end(); i = this.decoder.nextIterator(i), cont++) {
          // console.log('Tic Issue', this.decoder.first, this.decoder.last);
-         console.log('Decoder?', this.decoder.elements, i, this.decoder.first, this.decoder.last);
+         // console.log('Decoder?', this.decoder.elements, i, this.decoder.first, this.decoder.last);
          // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
          if (this.reorderBuffer.isFull()) {
@@ -444,7 +444,7 @@ export class Superescalar extends Machine {
                resul = (this.reserveStationEntry[type][i].Vj === this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BNE:
-               console.log('Llega la instruccion de salto!');
+               // console.log('Llega la instruccion de salto!');
                resul = (this.reserveStationEntry[type][i].Vj !== this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BGT:
@@ -519,7 +519,7 @@ export class Superescalar extends Machine {
          for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
             // TODO REMOVE THIS
             if (i === 5) {
-               console.log('JUMP instruction ready for jump', this.functionalUnit[i][j].status.stall);
+               // console.log('JUMP instruction ready for jump', this.functionalUnit[i][j].status.stall);
             }
             if (this.functionalUnit[i][j].status.stall === 0) {
                this.writeInstruction(i, j);
@@ -531,7 +531,7 @@ export class Superescalar extends Machine {
    }
 
    checkJump(rob: ReorderBufferEntry): boolean {
-      console.log('Comprobar salto');
+      // console.log('Comprobar salto');
       // Se comprueba si la predicción acertó
       // Typescript does not support ^ operator for boolean
       if (+this.prediction(rob.instruction.id) ^ +!!rob.value) {
@@ -581,11 +581,11 @@ export class Superescalar extends Machine {
          this.ROBFpr.fill(-1);
          this._gpr.setAllBusy(false);
          this._fpr.setAllBusy(false);
-         console.log('El salto dio false', false);
+         // console.log('El salto dio false', false);
          return false;
       }
       // CHECK !! AS (BOOL CAST)
-      console.log('Cambiar la preddicion', true);
+      // console.log('Cambiar la preddicion', true);
       this.changePrediction(rob.instruction.id, !!rob.value);
       return true;
    }
@@ -608,7 +608,7 @@ export class Superescalar extends Machine {
                case Opcodes.BEQ:
                case Opcodes.BNE:
                case Opcodes.BGT:
-                  console.log('heeey saltito!');
+                  // console.log('heeey saltito!');
                   if (!this.checkJump(aux)) {
                      return CommitStatus.SUPER_COMMITMISS;
                   }

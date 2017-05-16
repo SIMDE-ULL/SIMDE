@@ -33,10 +33,6 @@ module.exports = function (options) {
          ],
       },
       plugins: [
-         new HtmlWebpackPlugin({
-            title: 'Sinde DEMO',
-            template: 'src/index.html'
-         }),
          new ExtractTextPlugin({
             filename: '[name].[hash:8].css',
             allChunks: true

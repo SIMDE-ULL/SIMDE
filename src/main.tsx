@@ -22,27 +22,78 @@ let state: any = {};
 window.state = state;
 
 /*
- * Callbacks for allowing the global state to refresh the components
- *
+ * This functions relates the component name with the 
+ * approtiate fucntion content.
+ * Parameter: the title of the component.
+ * Returns: Component content.
  */
 let componentContent = (title: string): any => {
    let result;
    /* tslint:disable */
    switch (title) {
-      case 'GPR':
+      case 'Prefetch':
+         result = superescalar.prefetchUnit.elements;
+         break;
+      case 'Decoder':
+         result = superescalar.decoder.elements;
+         break;
+      case 'ROB<->GPR':
+         result = superescalar.ROBGpr;
+         break;
+      case 'ROB<->FPR':
+         result = superescalar.ROBFpr;
+         break;
+      case 'Jump':
+         result = superescalar.$jumpPrediction;
+         break;
+      case 'ReorderBuffer':
+         result = superescalar.reorderBuffer.elements;
+         break;
+      case 'Registros generales':
          result = superescalar.gpr.content;
          break;
-      case 'FPR':
+      case 'Registros de punto flotante':
          result = superescalar.fpr.content;
          break;
-      case 'RS +Entera':
+      case 'Memoria':
+         result = superescalar.memory.data;
+         break;
+      case 'Integer +':
          result = superescalar.reserveStationEntry[0];
          break;
-      case 'FU +Entera':
-         result = superescalar.functionalUnit[FunctionalUnitType.INTEGERSUM];
+      case 'Integer x':
+         result = superescalar.reserveStationEntry[1];
          break;
-      case 'FU xEntera':
-         result = superescalar.functionalUnit[FunctionalUnitType.INTEGERMULTIPLY];
+      case 'Floating +':
+         result = superescalar.reserveStationEntry[2];
+         break;
+      case 'Floating x':
+         result = superescalar.reserveStationEntry[3];
+         break;
+      case 'Memoru':
+         result = superescalar.reserveStationEntry[4];
+         break;
+      case 'Jump':
+         result = superescalar.reserveStationEntry[5];
+         break;
+      case '+Entera':
+         result = superescalar.functionalUnit[0];
+         break;
+      case 'xEntera':
+         result = superescalar.functionalUnit[1];
+         break;
+      case '+Flotante':
+         result = superescalar.functionalUnit[2];
+         break;
+      case 'xFlotante':
+         result = superescalar.functionalUnit[3];
+         break;
+      case 'Mem':
+         result = superescalar.functionalUnit[4];
+         break;
+      case 'Jumpito':
+         result = superescalar.functionalUnit[5];
+         break;
    }
    /* tslint:enable */
    return result;

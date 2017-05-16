@@ -61,6 +61,5 @@ test('Queue behavior', (t) => {
    queue.remove(0);
 
    queue.add(3);
-   console.log(queue);
    t.is(queue.top(), 2);
 });

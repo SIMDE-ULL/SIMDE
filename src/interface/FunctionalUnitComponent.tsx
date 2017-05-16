@@ -7,12 +7,38 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: []
+         content: [],
+         showableContent: []
       };
       window.state[this.props.title] = (data) => {
-         console.log('Set data', data);
+         let newState = {
+            content: data,
+            showableContent: null
+         };
+         // #0 | #1
+         // L1   L1
+         // L2   L2
+         // L3   L3
+         // -> Number of Funcional Units
+         // | Latency
+
+         newState.showableContent = this.buildShowableContent(data).slice();
          this.setState(data);
       };
+   }
+
+   buildShowableContent(data): any[] {
+      let toReturn = new Array();
+      if (data != null && data[0] != null) {
+         for (let i = 0; i < data[0].flow.length; i++) {
+            let aux = [];
+            for (let j = 0; j < data.length; j++) {
+               aux.push(data[j][i]);
+            }
+            toReturn.push(aux);
+         }
+      }
+      return toReturn;
    }
 
    generateColSize(): number[] {
@@ -36,14 +62,14 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <tbody>
-                     {this.generateColSize().map((element, i) => {
-                        <p key={i}>{element}</p>
-                        {/*<tr>
-                           {this.state.content.flow.map((functionalUnit) => {
-                              <td>{this.getCellContent(functionalUnit.flow[i])}</td>;
-                           })
+                     {this.state.showableContent.map(element => {
+                        <tr>
+                           {
+                              element.map(flow => {
+                                 <td>{flow}</td>
+                              })
                            }
-                        </tr>;*/}
+                        </tr>
                      })
                      }
                   </tbody>

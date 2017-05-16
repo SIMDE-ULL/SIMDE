@@ -69,7 +69,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                                           <ReserveStationComponent title='Floating +' />
                                           <ReserveStationComponent title='Floating x' />
                                           <ReserveStationComponent title='Memoru' />
-                                          <ReserveStationComponent title='Jump' />
+                                          <ReserveStationComponent title='Jumpito' />
                                        </div>
                                     </div>
                                  </div>

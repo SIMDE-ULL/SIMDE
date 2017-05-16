@@ -7,11 +7,23 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: []
+         content: [],
+         showableContent: []
       };
       window.state[this.props.title] = (data) => {
-         this.setState(data);
+         let newState = {
+            content: data.content,
+            showableContent: []
+         };
+         newState.showableContent = this.buildShowableContent(data.content);
+         this.setState(newState);
       };
+   }
+
+   buildShowableContent(data) {
+      return data.map(i => {
+         return (i != null) ? i.instruction.id : '';
+      });
    }
 
 
@@ -23,9 +35,10 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.content.map((row) => <tr>
-                           <td>{row.instruction.id}</td>
-                        </tr>)
+                        this.state.showableContent.map((element, i) =>
+                           <tr key={this.props.title + 'row' + i}>
+                              <td key={this.props.title + i}>{element}</td>
+                           </tr>)
                      }
                   </tbody>
                </table>

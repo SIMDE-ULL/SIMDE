@@ -7,11 +7,50 @@ export class ReserveStationComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: []
+         content: [],
+         showableContent: []
       };
       window.state[this.props.title] = (data) => {
-         this.setState(data);
+         let newState = {
+            content: data,
+            showableContent: this.buildShowable(data)
+         };
+         this.setState(newState);
       };
+   }
+
+   buildShowable(data): any[] {
+      let toReturn = [];
+
+      for (let i = 0; i < data.length; i++) {
+         let aux = {
+            instruction: { id: '' },
+            Qj: '',
+            Vj: '',
+            Qk: '',
+            Vk: '',
+            A: '',
+            ROB: ''
+         };
+         if (data[i] != null) {
+            let aux = {
+               instruction: { id: '' },
+               Qj: data[i].Qj,
+               Vj: data[i].Vj,
+               Qk: data[i].Qk,
+               Vk: data[i].Vk,
+               A: data[i].A,
+               ROB: data[i].ROB
+            };
+         }
+
+         if (data[i].instruction != null) {
+            aux.instruction.id = data[i].instruction.id;
+         }
+         toReturn.push(aux);
+      }
+
+      return toReturn;
    }
 
 
@@ -34,7 +73,7 @@ export class ReserveStationComponent extends React.Component<any, any> {
                   </thead>
                   <tbody>
                      {
-                        this.state.content.map((row, i) => <tr key={`${this.props.title + i}`}>
+                        this.state.showableContent.map((row, i) => <tr key={`${this.props.title + i}`}>
                            <td>{row.instruction.id}</td>
                            <td>{row.Qj}</td>
                            <td>{row.Vj}</td>

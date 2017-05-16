@@ -51,7 +51,7 @@ export class Queue<T> {
    }
 
    public isFull(): boolean {
-      console.log('Is full?', (this.last + 1) % this.size === this.first);
+      // console.log('Is full?', (this.last + 1) % this.size === this.first);
       return ((this.last + 1) % this.size === this.first);
    }
 
@@ -78,7 +78,7 @@ export class Queue<T> {
       if (this.isFull()) {
          return -1;
       }
-      console.log('Adding', this.last);
+      // console.log('Adding', this.last);
       let oldLast = this.last;
       this._elements[this.last] = value;
       this.last = (this.last + 1) % this.size;

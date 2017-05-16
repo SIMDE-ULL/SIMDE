@@ -6,11 +6,45 @@ export class ReorderBufferComponent extends React.Component<any, any> {
    constructor(props: any) {
       super(props);
       this.state = {
-         content: []
+         content: [],
+         showableContent: []
       };
-      window.state['ROB'] = (data) => {
-         this.setState(data);
+      window.state['ReorderBuffer'] = (data) => {
+         let newState = {
+            content: data.content,
+            showableContent: []
+         };
+         newState.showableContent = this.buildShowableContent(data.content);
+         this.setState(newState);
       };
+   }
+
+   buildShowableContent(data): any[] {
+      let toReturn = new Array();
+      for (let i = 0; i < data.length; i++) {
+         let aux = {
+            instruction: { id: '' },
+            destinyRegister: '',
+            value: '',
+            address: '',
+            superStage: ''
+         };
+         if (data[i] != null) {
+            aux = {
+               instruction: { id: '' },
+               destinyRegister: data[i].destinyRegister,
+               value: data[i].value,
+               address: data[i].address,
+               superStage: data[i].superStage
+            };
+            if (data[i].instruction != null) {
+               aux.instruction.id = data[i].instruction.id;
+            }
+         };
+         toReturn.push(aux);
+      }
+
+      return toReturn;
    }
 
 
@@ -32,7 +66,7 @@ export class ReorderBufferComponent extends React.Component<any, any> {
                   </thead>
                   <tbody>
                      {
-                        this.state.content.map((row, i) => <tr>
+                        this.state.showableContent.map((row, i) => <tr>
                            <td>{i}</td>
                            <td>{row.instruction.id}</td>
                            <td>{row.destinyRegister}</td>
