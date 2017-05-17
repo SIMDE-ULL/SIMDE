@@ -6,3 +6,11 @@
 #navbar {
   background-color: white;
 }
+
+.cycle {
+   margin-left:10px;
+   padding: 1px;
+   border: 1px solid black;
+   width: 20px;
+   min-width: 20px;
+}

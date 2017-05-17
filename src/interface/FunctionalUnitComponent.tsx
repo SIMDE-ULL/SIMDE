@@ -21,9 +21,8 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          // L3   L3
          // -> Number of Funcional Units
          // | Latency
-
-         newState.showableContent = this.buildShowableContent(data).slice();
-         this.setState(data);
+         newState.showableContent = this.buildShowableContent(data.content).slice();
+         this.setState(newState);
       };
    }
 
@@ -33,26 +32,16 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          for (let i = 0; i < data[0].flow.length; i++) {
             let aux = [];
             for (let j = 0; j < data.length; j++) {
-               aux.push(data[j][i]);
+               if (data[j][i] != null) {
+                  aux.push(data[j][i]);
+               } else {
+                  aux.push('');
+               }
             }
             toReturn.push(aux);
          }
       }
       return toReturn;
-   }
-
-   generateColSize(): number[] {
-      console.log('Col size', this.state.content[0]);
-      let toReturn = new Array();
-      if (this.state.content[0]) {
-         toReturn.length = this.state.content[0].latency;
-         toReturn.fill(1);
-      }
-      return toReturn;
-   }
-
-   getCellContent(element) {
-      return element ? element : '';
    }
 
    render() {
@@ -61,16 +50,21 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
             <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
-                  <tbody>
-                     {this.state.showableContent.map(element => {
-                        <tr>
-                           {
-                              element.map(flow => {
-                                 <td>{flow}</td>
-                              })
-                           }
-                        </tr>
+                  {/*<thead>
+                     {this.state.header.map((element) => {
+                        <th>{`# ${element}`}</th>
                      })
+                     }
+                  </thead>*/}
+                  <tbody>
+                     {
+                        this.state.showableContent.map((element, i) =>
+                           <tr key={this.props.title + 'FU' + i}>
+                              {element.map((content, j) =>
+                                 <td key={this.props.title + 'FU' + i + j}>{i}</td>
+                              )}
+                           </tr>
+                        )
                      }
                   </tbody>
                </table>

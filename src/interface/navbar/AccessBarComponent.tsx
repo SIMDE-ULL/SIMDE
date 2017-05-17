@@ -11,10 +11,16 @@ export class AccessBarComponent extends React.Component<any, any> {
       this.play = this.play.bind(this);
       this.pause = this.pause.bind(this);
       this.stop = this.stop.bind(this);
+      this.state = {
+         content: null
+      };
+
+      window.state['cycle'] = (data) => {
+         this.setState(data);
+      };
    }
 
    stepForward() {
-      console.log(window.superStep);
       window.superStep();
    }
 
@@ -65,8 +71,8 @@ export class AccessBarComponent extends React.Component<any, any> {
                </li>
                <li>
                   <a href='#'>
-                     <label htmlFor='ciclo'>Ciclo</label>
-                     <input type='number' id='ciclo' disabled></input>
+                     <label>Ciclo</label>
+                     <span className='cycle'>{this.state.content}</span>
                   </a>
                </li>
                <li>

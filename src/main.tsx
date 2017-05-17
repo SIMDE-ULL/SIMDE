@@ -73,7 +73,7 @@ let componentContent = (title: string): any => {
       case 'Memoru':
          result = superescalar.reserveStationEntry[4];
          break;
-      case 'Jump':
+      case 'Jumputo':
          result = superescalar.reserveStationEntry[5];
          break;
       case '+Entera':
@@ -93,6 +93,9 @@ let componentContent = (title: string): any => {
          break;
       case 'Jumpito':
          result = superescalar.functionalUnit[5];
+         break;
+      case 'cycle':
+         result = superescalar.status.cycle;
          break;
    }
    /* tslint:enable */

@@ -13,7 +13,7 @@ export class ReserveStationComponent extends React.Component<any, any> {
       window.state[this.props.title] = (data) => {
          let newState = {
             content: data,
-            showableContent: this.buildShowable(data)
+            showableContent: this.buildShowable(data.content)
          };
          this.setState(newState);
       };
@@ -33,7 +33,7 @@ export class ReserveStationComponent extends React.Component<any, any> {
             ROB: ''
          };
          if (data[i] != null) {
-            let aux = {
+            aux = {
                instruction: { id: '' },
                Qj: data[i].Qj,
                Vj: data[i].Vj,

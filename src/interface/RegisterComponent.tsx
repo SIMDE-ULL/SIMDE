@@ -12,7 +12,6 @@ export class RegisterComponent extends React.Component<any, any> {
          show: [1, 8]
       };
       window.state[this.props.title] = (data) => {
-         console.log('Calling register back');
          let newState = {
             content: data.content.slice(),
             contentShowable: []

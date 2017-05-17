@@ -23,9 +23,22 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
    }
 
    buildShowableContent(data) {
-      return data.map(i => {
+      let toReturn = data.map(i => {
          return (i != null) ? i.instruction.id : '';
       });
+      toReturn.pop();
+      toReturn.sort((a, b) => {
+         if (a === '') {
+            return 1;
+         }
+         if (b === '') {
+            return -1;
+         }
+         if (a < b) { return -1; }
+         if (a === b) { return 0; }
+         if (a > b) { return 1; }
+      });
+      return toReturn;
    }
 
 
