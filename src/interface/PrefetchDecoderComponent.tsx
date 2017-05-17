@@ -10,6 +10,8 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
          content: [],
          showableContent: []
       };
+
+      // TODO mandar la cola entera y utilizar el elemento final y tal
       window.state[this.props.title] = (data) => {
          let newState = {
             content: data.content,

@@ -66,7 +66,7 @@ export class ReorderBufferComponent extends React.Component<any, any> {
                   </thead>
                   <tbody>
                      {
-                        this.state.showableContent.map((row, i) => <tr>
+                        this.state.showableContent.map((row, i) => <tr key={'ReorderBuffer' + i}>
                            <td>{i}</td>
                            <td>{row.instruction.id}</td>
                            <td>{row.destinyRegister}</td>

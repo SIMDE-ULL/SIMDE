@@ -9,7 +9,6 @@ module.exports = function (options) {
       name: 'app',
       target: 'web',
       entry: './src/main.tsx',
-      devtool: "source-map",
       resolve: {
          extensions: ['.js', '.ts', '.jsx', '.tsx'],
       },

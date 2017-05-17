@@ -32,6 +32,7 @@ export class LoadModalComponent extends React.Component<any, any> {
 
    loadSuper() {
       window.loadSuper();
+      this.close();
    }
 
    render() {
@@ -40,13 +41,19 @@ export class LoadModalComponent extends React.Component<any, any> {
             <Modal.Title>Carga de código</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <textarea id='codeInput' defaultValue={`5
-        LF F1 (R2)
-        ADDI R5 R0 #3
-        LOOP:
-        ADDF F2 F1 F0
-        ADDI R2 R2 #1
-        BNE	R2 R5 LOOP`}>
+            <textarea id='codeInput' defaultValue={`11
+	ADDI	R2 R0 #50
+	ADDI	R3 R0 #70
+	ADDI	R4 R0 #40
+	LF	F0 (R4)
+	ADDI	R5 R2 #16
+LOOP:
+	LF 	F1 (R2)
+	ADDF	F1 F1 F0
+	SF	F1 (R3)
+	ADDI 	R2 R2 #1
+	ADDI	R3 R3 #1
+	BNE	R2 R5 LOOP`}>
             </textarea>
          </Modal.Body>
          <Modal.Footer>

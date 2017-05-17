@@ -11,6 +11,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
    devServer: {
       contentBase: './target/www'
    },
+   devtool: "source-map",
    output: {
       path: path.resolve('target/www'),
       filename: '[name].bundle.js',
