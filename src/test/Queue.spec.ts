@@ -61,5 +61,6 @@ test('Queue behavior', (t) => {
    queue.remove(0);
 
    queue.add(3);
-   t.is(queue.top(), 2);
+   queue.remove();
+   t.is(queue.top(), 3);
 });

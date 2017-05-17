@@ -335,19 +335,19 @@ export class Code {
    public stringToAddress(stringAddress: string): number[] {
       let result: number[] = new Array(2);
       let position = stringAddress.indexOf('(');
-      if (position === 1) {
+      if (position === 0) {
          result[0] = 0;
       } else {
          result[0] = +stringAddress.substring(0, position - 1);
       }
       // TODO substr or substring?
-      result[1] = this.stringToRegister(stringAddress.substr(position, stringAddress.length));
+      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - position - 1));
       return result;
    }
 
    public stringToRegister(stringRegister: string): number {
       // TODO Cohercion vs Number.parse?
-      return +stringRegister.substring(1, stringRegister.length);
+      return +stringRegister.substring(1, stringRegister.length - 1);
    }
 
    public stringToInmediate(stringInmediate: string): number {

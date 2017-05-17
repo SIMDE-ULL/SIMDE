@@ -102,7 +102,6 @@ export class Queue<T> {
          for (let i = position; i < this.last; i++) {
             this._elements[i % this.size] = this._elements[(i + 1) % this.size];
          }
-         this._elements[this.first] = null;
          this.last = (this.last - 1) % this.size;
          return element;
       } else {

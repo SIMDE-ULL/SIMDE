@@ -245,7 +245,8 @@ export class Superescalar extends Machine {
    ticIssue(): number {
       let cont = 0;
       // TODO REVFISAR ESTE < QUE
-      for (let i = this.decoder.first; i !== this.decoder.end(); i = this.decoder.nextIterator(i), cont++) {
+      for (let i = this.decoder.first; i !== this.decoder.end();
+         i = this.decoder.nextIterator(i), cont++) {
          // console.log('Tic Issue', this.decoder.first, this.decoder.last);
          // console.log('Decoder?', this.decoder.elements, i, this.decoder.first, this.decoder.last);
          // TODO ESTO NO SE YO NO SE YO.
@@ -254,7 +255,7 @@ export class Superescalar extends Machine {
             break;
          }
          let fuType: FunctionalUnitType = Code.opcodeToFunctionalUnitType(instruction.opcode);
-         if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
+         if ((this.reserveStationEntry[fuType].length + 1) === this.getReserveStationSize(fuType)) {
             break;
          }
          let newROB: ReorderBufferEntry = new ReorderBufferEntry();
@@ -269,7 +270,7 @@ export class Superescalar extends Machine {
          this.reorderBuffer.elements[robPos].instruction = instruction;
          this.reorderBuffer.elements[robPos].ready = false;
          this.reorderBuffer.elements[robPos].superStage = SuperStage.SUPER_ISSUE;
-         this.decoder.remove(i);;
+         this.decoder.remove(i);
       }
 
       return cont;
@@ -353,15 +354,15 @@ export class Superescalar extends Machine {
          if (this.aluMem[i].getTopInstruction() != null) {
             // Busco la entrada de la ER que coincide con esa instrucción
             // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
-            let i = 0;
-            while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum !== this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i)
-               || (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUPos !== this.aluMem[i].getLast())) {
-               i++;
+            let j = 0;
+            while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum !== this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i)
+               || (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos !== this.aluMem[i].getLast())) {
+               j++;
             }
 
-            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vk + this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A;
-            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].A = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address;
-            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum = -1; // Vuelve a no tener una UF asociada
+            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB].address = this.reserveStationEntry[FunctionalUnitType.MEMORY][j].Vk + this.reserveStationEntry[FunctionalUnitType.MEMORY][j].A;
+            this.reserveStationEntry[FunctionalUnitType.MEMORY][j].A = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address;
+            this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum = -1; // Vuelve a no tener una UF asociada
          }
          this.aluMem[i].tic();
       }
@@ -369,19 +370,19 @@ export class Superescalar extends Machine {
       // Relleno la ALU de cálculo de direcciones asociagda a esta UF
       for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
          // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
-         let i = 0;
-         for (; i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; i++) {
+         let j = 0;
+         for (; j !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; j++) {
             // Operand value available AND address not calculated yet AND is being calculated right now
-            if ((this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qk === -1)
-               && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address === -1)
-               && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum === -1)) {
+            if ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].Qk === -1)
+               && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB].address === -1)
+               && (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum === -1)) {
                break;
             }
          }
-         if (i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
-            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUNum = i + this.functionalUnitNumbers[FunctionalUnitType.MEMORY];  // Así las distingo de las UF de Memoria
-            this.reserveStationEntry[FunctionalUnitType.MEMORY][i].FUPos = this.aluMem[i].fillFlow(this.reserveStationEntry[FunctionalUnitType.MEMORY][i].instruction);
-            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].superStage = SuperStage.SUPER_EXECUTE;
+         if (j !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
+            this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum = i + this.functionalUnitNumbers[FunctionalUnitType.MEMORY];  // Así las distingo de las UF de Memoria
+            this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos = this.aluMem[i].fillFlow(this.reserveStationEntry[FunctionalUnitType.MEMORY][j].instruction);
+            this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB].superStage = SuperStage.SUPER_EXECUTE;
          }
       }
    }
@@ -460,7 +461,7 @@ export class Superescalar extends Machine {
                // console.log('No era un salto :c');
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   // TEstacionReserva::iterator itER = ER[i].begin();
-                  for (let k = 0; k !== this.reserveStationEntry[j].length; k++) {
+                  for (let k = 0; k < this.reserveStationEntry[j].length; k++) {
                      // console.log(type, i, this.reserveStationEntry[type][i]);
                      if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
                         this.reserveStationEntry[j][k].Vj = resul;
