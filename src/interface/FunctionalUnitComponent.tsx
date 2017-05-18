@@ -61,7 +61,7 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
                         this.state.showableContent.map((element, i) =>
                            <tr key={this.props.title + 'FU' + i}>
                               {element.map((content, j) =>
-                                 <td key={this.props.title + 'FU' + i + j}>{element}</td>
+                                 <td key={this.props.title + 'FU' + i + j}>{content}</td>
                               )}
                            </tr>
                         )

@@ -184,16 +184,31 @@ let loadSuper = () => {
 
 let play = () => {
    let id;
+   let speed = calculateSpeed();
 
-   id = setInterval(() => {
-      try {
-         superStep();
-      } catch (err) {
-         window.alert(err);
-         clearInterval(id);
-      }
-   }, 1000);
+   if (speed) {
+      id = setInterval(() => {
+         try {
+            superStep();
+         } catch (err) {
+            window.alert(err);
+            clearInterval(id);
+         }
+      }, speed);
+   }
 };
+
+function calculateSpeed() {
+   let speed = +document.getElementById('velocidad').value;
+   let calculatedSpeed = 2000;
+   if (speed) {
+      calculatedSpeed /= speed;
+   } else {
+      calculatedSpeed = 0;
+   }
+
+   return calculatedSpeed;
+}
 
 /*
  * For exposing the functions to react and the ts code

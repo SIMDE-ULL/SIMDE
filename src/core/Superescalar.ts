@@ -124,17 +124,17 @@ export class Superescalar extends Machine {
       return this.decoder.getCount();
    }
 
-   checkRegister(register: number, fp: boolean, reserveStationEntry: ReserveStationEntry, j: boolean) {
+   checkRegister(register: number, floatingPoint: boolean, reserveStationEntry: ReserveStationEntry, j: boolean) {
       let q = -1;
       let v = 0;
-      if (fp) {
-         // El registro tiene su valor listo
+      if (floatingPoint) {
+         // The register has the value ready
          if (!this._fpr.busy[register]) {
             v = this._fpr.content[register];
          } else if (this.reorderBuffer.elements[this.ROBFpr[register]].ready) {
             v = this.reorderBuffer.elements[this.ROBFpr[register]].value;
          } else {
-            // El valor aún está calculándose
+            // The value is still being calculated
             q = this.ROBFpr[register];
          }
       } else {
@@ -143,7 +143,7 @@ export class Superescalar extends Machine {
          } else if (this.reorderBuffer.elements[this.ROBGpr[register]].ready) {
             v = this.reorderBuffer.elements[this.ROBGpr[register]].value;
          } else {
-            // El valor aún está calculándose
+            // The value is still being calculated
             q = this.ROBGpr[register];
          }
       }
@@ -244,12 +244,9 @@ export class Superescalar extends Machine {
 
    ticIssue(): number {
       let cont = 0;
-      // TODO REVFISAR ESTE < QUE
+
       for (let i = this.decoder.first; i !== this.decoder.end();
          i = this.decoder.nextIterator(i), cont++) {
-         // console.log('Tic Issue', this.decoder.first, this.decoder.last);
-         // console.log('Decoder?', this.decoder.elements, i, this.decoder.first, this.decoder.last);
-         // TODO ESTO NO SE YO NO SE YO.
          let instruction: Instruction = this.decoder.elements[i].instruction;
          if (this.reorderBuffer.isFull()) {
             break;
@@ -266,7 +263,7 @@ export class Superescalar extends Machine {
          let newER: ReserveStationEntry = new ReserveStationEntry();
          this.reserveStationEntry[fuType].push(newER);
          this.issueInstruction(instruction, fuType, robPos);
-         // console.log('ROB?', this.reorderBuffer.elements[robPos]);
+
          this.reorderBuffer.elements[robPos].instruction = instruction;
          this.reorderBuffer.elements[robPos].ready = false;
          this.reorderBuffer.elements[robPos].superStage = SuperStage.SUPER_ISSUE;
@@ -457,12 +454,9 @@ export class Superescalar extends Machine {
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                // Actualizo todas las ER
-               // console.log(this.reserveStationEntry[type]);
-               // console.log('No era un salto :c');
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   // TEstacionReserva::iterator itER = ER[i].begin();
                   for (let k = 0; k < this.reserveStationEntry[j].length; k++) {
-                     // console.log(type, i, this.reserveStationEntry[type][i]);
                      if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
                         this.reserveStationEntry[j][k].Vj = resul;
                         this.reserveStationEntry[j][k].Qj = -1;
@@ -474,8 +468,7 @@ export class Superescalar extends Machine {
                   }
                }
             }
-            // console.log(i, type);
-            // console.log(this.reserveStationEntry[type][i]);
+
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].value = resul;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].ready = true;
@@ -518,10 +511,6 @@ export class Superescalar extends Machine {
       // Después recorro todas las UF para recoger los resultados
       for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
          for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-            // TODO REMOVE THIS
-            if (i === 5) {
-               // console.log('JUMP instruction ready for jump', this.functionalUnit[i][j].status.stall);
-            }
             if (this.functionalUnit[i][j].status.stall === 0) {
                this.writeInstruction(i, j);
             }
@@ -543,63 +532,32 @@ export class Superescalar extends Machine {
          } else {
             this.pc = rob.instruction.id + 1;
          }
-         // Se limpia el ROB
-         // let i = 0;
-         // TReorderBuffer::iterator itROB = ROB.begin();
-         /*
-         for (let i = this.reorderBuffer.first; i !== this.reorderBuffer.end(); i = this.reorderBuffer.nextIterator(i)) {
-            let aux: ReorderBufferEntry = this.reorderBuffer.remove(i);
-         }
-         // Se limpian las UF y ER
-         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-               this.functionalUnit[i][j].clean();
-               this.reserveStationEntry[i].fill(null);
-            }
-         }
-         // y las UF de cálculo de direcciones
-         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            this.aluMem[i].clean();
-         }
-         // Se limpia el decoder
-         // TDecoder::iterator itDec = decoder.begin();
-         for (let i = this.decoder.first; i !== this.decoder.end(); i = this.decoder.nextIterator(i)) {
-            let aux: DecoderEntry = this.decoder.remove(i);
-            // delete aux.instruction;
-            // delete aux;
-         }
-         //        decoder.clear();
-         // Se limpia la unidad de Prefetch
-         // TPrefetchUnit::iterator itPre = prefetchUnit.begin();
 
-         for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.end(); i = this.prefetchUnit.nextIterator(i)) {
-            let aux: PrefetchEntry = this.prefetchUnit.remove(i);
-            // delete aux.instruction;
-            // delete aux;
-         }*/
-
-         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            this.aluMem[i].clean();
-         }
-         this.prefetchUnit = new Queue<PrefetchEntry>();
-         this.decoder = new Queue<DecoderEntry>();
-         this.reorderBuffer = new Queue<ReorderBufferEntry>();
+         // Clean functional Units and Reserve Stations,
+         // the total will help for clean the next objects
          let total = 0;
-         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            this.reserveStationEntry[i] = new Array();
-            total += this.getReserveStationSize(i);
-         }
-         this.reorderBuffer.init(total);
-         this.decoder.init(this.issue);
-         this.prefetchUnit.init(2 * this.issue);
-
          for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
                this.functionalUnit[i][j].clean();
                this.reserveStationEntry[i] = new Array();
             }
+            total += this.getReserveStationSize(i);
          }
-         //        prefetchUnit.clear();
+
+         // Clean the alus for the address calculus
+         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            this.aluMem[i].clean();
+         }
+
+         // Clean prefetch, decoder and reorder buffer, the simplest way is
+         // to rebuild the objects
+         this.prefetchUnit = new Queue<PrefetchEntry>();
+         this.decoder = new Queue<DecoderEntry>();
+         this.reorderBuffer = new Queue<ReorderBufferEntry>();
+         this.reorderBuffer.init(total);
+         this.decoder.init(this.issue);
+         this.prefetchUnit.init(2 * this.issue);
+
          // Limpio también las estructuras asociadas a los registros
          this.ROBGpr.fill(-1);
          this.ROBFpr.fill(-1);

@@ -79,7 +79,7 @@ export class AccessBarComponent extends React.Component<any, any> {
                   <a href='#'>
                      <div className='speed'>
                         <label htmlFor='velocidad'>Velocidad</label>
-                        <input type='number' id='velocidad' defaultValue={'0'} max='10'></input>
+                        <input type='number' id='velocidad' defaultValue={'5'} max='10'></input>
                      </div>
                   </a>
                </li>
