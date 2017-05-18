@@ -42,11 +42,11 @@ export class ReserveStationComponent extends React.Component<any, any> {
                A: data[i].A,
                ROB: data[i].ROB
             };
+            if (data[i].instruction != null) {
+               aux.instruction.id = data[i].instruction.id;
+            }
          }
 
-         if (data[i].instruction != null) {
-            aux.instruction.id = data[i].instruction.id;
-         }
          toReturn.push(aux);
       }
 

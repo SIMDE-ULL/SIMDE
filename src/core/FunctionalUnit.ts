@@ -86,7 +86,8 @@ export class FunctionalUnit {
    }
 
    clean() {
-      this._flow = new Array(this._latency).fill(null);
+      this._flow = new Array(this._latency);
+      this._flow.fill(null);
       this._status.lastInstruction = this._latency - 1;
       this._status.stall = 0;
       this._status.instructionNumber = 0;

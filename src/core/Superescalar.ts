@@ -279,7 +279,7 @@ export class Superescalar extends Machine {
    checkStore(robIndex: number, address: number): boolean {
       // Compruebo que no haya algún store anterior...
       let i;
-      for (i = this.reorderBuffer.first; i !== robIndex; i++) {
+      for (i = this.reorderBuffer.first; i !== robIndex; i = this.reorderBuffer.nextIterator(i)) {
          let opcode: number = this.reorderBuffer.elements[i].instruction.opcode;
          if ((opcode === Opcodes.SW) || (opcode === Opcodes.SF)) {
             // ... sin la dir. calculada...
@@ -355,7 +355,7 @@ export class Superescalar extends Machine {
             // Busco la entrada de la ER que coincide con esa instrucción
             // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
             let j = 0;
-            while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum !== this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i)
+            while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum !== (this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i))
                || (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos !== this.aluMem[i].getLast())) {
                j++;
             }
@@ -546,7 +546,8 @@ export class Superescalar extends Machine {
          // Se limpia el ROB
          // let i = 0;
          // TReorderBuffer::iterator itROB = ROB.begin();
-         for (let i = 0; i !== this.reorderBuffer.end(); i++) {
+         /*
+         for (let i = this.reorderBuffer.first; i !== this.reorderBuffer.end(); i = this.reorderBuffer.nextIterator(i)) {
             let aux: ReorderBufferEntry = this.reorderBuffer.remove(i);
          }
          // Se limpian las UF y ER
@@ -562,7 +563,7 @@ export class Superescalar extends Machine {
          }
          // Se limpia el decoder
          // TDecoder::iterator itDec = decoder.begin();
-         for (let i = 0; i !== this.decoder.end(); i++) {
+         for (let i = this.decoder.first; i !== this.decoder.end(); i = this.decoder.nextIterator(i)) {
             let aux: DecoderEntry = this.decoder.remove(i);
             // delete aux.instruction;
             // delete aux;
@@ -571,10 +572,32 @@ export class Superescalar extends Machine {
          // Se limpia la unidad de Prefetch
          // TPrefetchUnit::iterator itPre = prefetchUnit.begin();
 
-         for (let i = 0; i !== this.prefetchUnit.end(); i++) {
+         for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.end(); i = this.prefetchUnit.nextIterator(i)) {
             let aux: PrefetchEntry = this.prefetchUnit.remove(i);
             // delete aux.instruction;
             // delete aux;
+         }*/
+
+         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            this.aluMem[i].clean();
+         }
+         this.prefetchUnit = new Queue<PrefetchEntry>();
+         this.decoder = new Queue<DecoderEntry>();
+         this.reorderBuffer = new Queue<ReorderBufferEntry>();
+         let total = 0;
+         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            this.reserveStationEntry[i] = new Array();
+            total += this.getReserveStationSize(i);
+         }
+         this.reorderBuffer.init(total);
+         this.decoder.init(this.issue);
+         this.prefetchUnit.init(2 * this.issue);
+
+         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+               this.functionalUnit[i][j].clean();
+               this.reserveStationEntry[i] = new Array();
+            }
          }
          //        prefetchUnit.clear();
          // Limpio también las estructuras asociadas a los registros
@@ -582,11 +605,8 @@ export class Superescalar extends Machine {
          this.ROBFpr.fill(-1);
          this._gpr.setAllBusy(false);
          this._fpr.setAllBusy(false);
-         // console.log('El salto dio false', false);
          return false;
       }
-      // CHECK !! AS (BOOL CAST)
-      // console.log('Cambiar la preddicion', true);
       this.changePrediction(rob.instruction.id, !!rob.value);
       return true;
    }
@@ -651,7 +671,11 @@ export class Superescalar extends Machine {
    }
 
    tic(): SuperescalarStatus {
+      if (this.status.cycle === 47) {
+         debugger;
+      }
       this.status.cycle++;
+
       // COMMiT stage
       let commit = this.ticCommit();
       if (commit !== CommitStatus.SUPER_COMMITEND && commit !== CommitStatus.SUPER_COMMITMISS) {
