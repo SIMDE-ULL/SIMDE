@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { stageToString } from '../core/SuperescalarEnums';
+
 declare var window: any;
 
 export class ReorderBufferComponent extends React.Component<any, any> {
@@ -35,7 +37,7 @@ export class ReorderBufferComponent extends React.Component<any, any> {
                destinyRegister: data[i].destinyRegister,
                value: data[i].value,
                address: data[i].address,
-               superStage: data[i].superStage
+               superStage: stageToString(data[i].superStage)
             };
             if (data[i].instruction != null) {
                aux.instruction.id = data[i].instruction.id;

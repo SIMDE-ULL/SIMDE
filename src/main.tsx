@@ -59,22 +59,46 @@ let componentContent = (title: string): any => {
          result = superescalar.memory.data;
          break;
       case 'Integer +':
-         result = superescalar.reserveStationEntry[0];
+         result = {
+            data: superescalar.reserveStationEntry[0],
+            size: superescalar.getReserveStationSize(0)
+         };
+
          break;
       case 'Integer x':
-         result = superescalar.reserveStationEntry[1];
+         result = {
+            data: superescalar.reserveStationEntry[1],
+            size: superescalar.getReserveStationSize(1)
+         };
+
          break;
       case 'Floating +':
-         result = superescalar.reserveStationEntry[2];
+         result = {
+            data: superescalar.reserveStationEntry[2],
+            size: superescalar.getReserveStationSize(2)
+         };
+
          break;
       case 'Floating x':
-         result = superescalar.reserveStationEntry[3];
+         result = {
+            data: superescalar.reserveStationEntry[3],
+            size: superescalar.getReserveStationSize(3)
+         };
+
          break;
       case 'Memoru':
-         result = superescalar.reserveStationEntry[4];
+         result = {
+            data: superescalar.reserveStationEntry[4],
+            size: superescalar.getReserveStationSize(4)
+         };
+
          break;
-      case 'Jumputo':
-         result = superescalar.reserveStationEntry[5];
+      case 'Jumpito':
+         result = {
+            data: superescalar.reserveStationEntry[5],
+            size: superescalar.getReserveStationSize(5)
+         };
+
          break;
       case '+Entera':
          result = superescalar.functionalUnit[0];
@@ -91,7 +115,7 @@ let componentContent = (title: string): any => {
       case 'Mem':
          result = superescalar.functionalUnit[4];
          break;
-      case 'Jumpito':
+      case 'Jumputo':
          result = superescalar.functionalUnit[5];
          break;
       case 'cycle':
@@ -139,7 +163,7 @@ let superStep = () => {
    callAllCallbacks();
 
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
-      window.alert('Done');
+      throw 'Done';
    }
 };
 
@@ -158,13 +182,29 @@ let loadSuper = () => {
    }
 };
 
+let play = () => {
+   let id;
 
+   id = setInterval(() => {
+      try {
+         superStep();
+      } catch (err) {
+         window.alert(err);
+         clearInterval(id);
+      }
+   }, 1000);
+};
 
-
+/*
+ * For exposing the functions to react and the ts code
+ * we need to attach them to the Windows object, so
+ * in runtime they will be visible from anywhere.
+ */
 window.load = load;
 window.loadSuper = loadSuper;
 window.superStep = superStep;
 window.superExe = superExe;
+window.play = play;
 window.callAllCallbacks = callAllCallbacks;
 
 ReactDOM.render(

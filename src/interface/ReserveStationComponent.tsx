@@ -12,17 +12,17 @@ export class ReserveStationComponent extends React.Component<any, any> {
       };
       window.state[this.props.title] = (data) => {
          let newState = {
-            content: data,
-            showableContent: this.buildShowable(data.content)
+            content: data.content,
+            showableContent: this.buildShowable(data.content.data, data.content.size)
          };
          this.setState(newState);
       };
    }
 
-   buildShowable(data): any[] {
+   buildShowable(data, size): any[] {
       let toReturn = [];
-
-      for (let i = 0; i < data.length; i++) {
+      let i;
+      for (i = 0; i < data.length; i++) {
          let aux = {
             instruction: { id: '' },
             Qj: '',
@@ -48,6 +48,18 @@ export class ReserveStationComponent extends React.Component<any, any> {
             aux.instruction.id = data[i].instruction.id;
          }
          toReturn.push(aux);
+      }
+
+      for (let j = i; j < size; j++) {
+         toReturn.push({
+            instruction: { id: '' },
+            Qj: '',
+            Vj: '',
+            Qk: '',
+            Vk: '',
+            A: '',
+            ROB: ''
+         });
       }
 
       return toReturn;

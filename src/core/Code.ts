@@ -341,7 +341,7 @@ export class Code {
          result[0] = +stringAddress.substring(0, position - 1);
       }
       // TODO substr or substring?
-      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - 1));
+      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - 2));
       return result;
    }
 

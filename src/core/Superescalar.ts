@@ -109,7 +109,7 @@ export class Superescalar extends Machine {
       return this.prefetchUnit.getCount();
    }
 
-   getReserveStationSize(type: FunctionalUnitType): number {
+   public getReserveStationSize(type: FunctionalUnitType): number {
       return this.functionalUnitNumbers[type] * (this._functionalUnitLatencies[type] + 1);
    }
 
@@ -255,7 +255,7 @@ export class Superescalar extends Machine {
             break;
          }
          let fuType: FunctionalUnitType = Code.opcodeToFunctionalUnitType(instruction.opcode);
-         if ((this.reserveStationEntry[fuType].length + 1) === this.getReserveStationSize(fuType)) {
+         if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
             break;
          }
          let newROB: ReorderBufferEntry = new ReorderBufferEntry();
@@ -322,7 +322,7 @@ export class Superescalar extends Machine {
                let opcode = this.reserveStationEntry[type][i].instruction.opcode;
                if ((opcode === Opcodes.LW || opcode === Opcodes.LF)
                   && (this.reserveStationEntry[type][i].FUNum === -1)
-                  && this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].address !== 1
+                  && this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].address !== -1
                   && this.checkStore(this.reserveStationEntry[type][i].ROB, this.reorderBuffer.elements[this.reserveStationEntry[type][i].ROB].address)) {
                   break;
                }
