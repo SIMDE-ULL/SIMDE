@@ -341,13 +341,13 @@ export class Code {
          result[0] = +stringAddress.substring(0, position - 1);
       }
       // TODO substr or substring?
-      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - position - 1));
+      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - 1));
       return result;
    }
 
    public stringToRegister(stringRegister: string): number {
       // TODO Cohercion vs Number.parse?
-      return +stringRegister.substring(1, stringRegister.length - 1);
+      return +stringRegister.substring(1, stringRegister.length);
    }
 
    public stringToInmediate(stringInmediate: string): number {
