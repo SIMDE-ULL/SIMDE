@@ -158,7 +158,7 @@ let superExe = () => {
 let superStep = () => {
    console.debug('Super step!');
    console.debug(state);
-   let resul = superescalar.tic();;
+   let resul = superescalar.tic();
    callAllCallbacks();
 
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
@@ -194,6 +194,11 @@ let play = () => {
             clearInterval(id);
          }
       }, speed);
+   } else {
+      // Modo ejecución continua
+      while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE);
+      callAllCallbacks();
+      throw 'Done';
    }
 };
 
