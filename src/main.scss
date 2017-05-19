@@ -1,12 +1,13 @@
-@import url('../node_modules/bootstrap/dist/css/bootstrap.min.css');
-@import url('../node_modules/font-awesome/css/font-awesome.min.css');
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import './variables';
 
 body {
   width: 100%;
 }
 
 #code-zone {
-  height: calc(90vh);
+  height: calc($work-zone);
 }
 
 #functional-unit-zone {
@@ -108,7 +109,7 @@ body {
 .panel-heading {
   padding-top: 5px;
   padding-bottom: 5px;
-  background-color: #9E9E9E !important;
+  background-color: $primary-color !important;
   font-weight: bold !important;
 }
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './FileBarComponent.css';
+import './FileBarComponent.scss';
 declare var window: any;
 
 export class FileBarComponent extends React.Component<any, any> {

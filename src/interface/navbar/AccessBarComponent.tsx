@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './AccessBarComponent.css';
+import './AccessBarComponent.scss';
 declare var window: any;
 
 export class AccessBarComponent extends React.Component<any, any> {

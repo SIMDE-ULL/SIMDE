@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom';
 
 import App from './interface/App';
 
-const styles = require('./main.css');
+const styles = require('./main.scss');
 
 // Declare browser vars for Typescript
 declare var document;

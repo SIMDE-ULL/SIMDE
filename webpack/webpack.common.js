@@ -17,13 +17,8 @@ module.exports = function (options) {
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             {
-               test: /\.css$/,
-               loader: ExtractTextPlugin.extract({
-                  fallback: 'style-loader',
-                  use: {
-                     loader: 'css-loader'
-                  }
-               })
+               test: /\.scss$/,
+               loader: ExtractTextPlugin.extract('css-loader!sass-loader')
             },
             {
                test: /\.(eot|svg|ttf|woff|woff2)$/,
