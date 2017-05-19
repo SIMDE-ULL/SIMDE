@@ -32,8 +32,8 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          for (let i = 0; i < data[0].flow.length; i++) {
             let aux = [];
             for (let j = 0; j < data.length; j++) {
-               if (data[j][i] != null) {
-                  aux.push(data[j][i]);
+               if (((data[j]).flow[i]) != null) {
+                  aux.push((data[j]).flow[i].id);
                } else {
                   aux.push('');
                }
