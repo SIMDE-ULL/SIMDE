@@ -9,6 +9,7 @@
       "info": "npm-scripts-info",
       "build": "trash build && tsc -p tsconfig.json && tsc -p config/tsconfig.module.json",
       "lint": "tslint src/**/*.ts",
+      "start": "yarn run webpack:dev",
       "unit": "yarn build && nyc ava",
       "check-coverage": "nyc check-coverage --lines 100 --functions 100 --branches 100",
       "test": "yarn lint && yarn unit && yarn check-coverage",

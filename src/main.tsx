@@ -128,9 +128,8 @@ let componentContent = (title: string): any => {
 
 
 let callAllCallbacks = () => {
-
-   // TODO DO NOT CALL CODE!
    for (let callbackName in state) {
+      // Code should only be setted on the first iteration
       if (callbackName !== 'Code') {
          state[callbackName]({
             content: componentContent(callbackName)
@@ -140,7 +139,7 @@ let callAllCallbacks = () => {
 };
 
 
-// Always use arrow functions for not losing this
+// Always use arrow functions for not losing "this"
 let load = (id) => {
    console.debug('Time to load the code');
    let input = document.getElementById(id);
@@ -226,5 +225,3 @@ ReactDOM.render(
    <App machine={superescalar} />,
    document.getElementById('app')
 );
-
-console.debug('Main entry point achieved');

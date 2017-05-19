@@ -387,13 +387,11 @@ export class Superescalar extends Machine {
    writeInstruction(type: FunctionalUnitType, num: number) {
       let resul;
       let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
-      // console.log('Write instruction', inst);
       if (inst != null) {
          let i = 0;
-         // TEstacionReserva::iterator it = ER[type].begin();
          while ((this.reserveStationEntry[type][i].FUNum !== num) ||
             (this.reserveStationEntry[type][i].FUPos !== this.functionalUnit[type][num].getLast())) {
-            i++;   // NOTA: si esto no para es q la he cagao en algún paso anterior
+            i++;
          }
          let opcode = inst.opcode;
          /* tslint:disable:ter-indent */
@@ -442,7 +440,6 @@ export class Superescalar extends Machine {
                resul = (this.reserveStationEntry[type][i].Vj === this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BNE:
-               // console.log('Llega la instruccion de salto!');
                resul = (this.reserveStationEntry[type][i].Vj !== this.reserveStationEntry[type][i].Vk) ? 1 : 0;
                break;
             case Opcodes.BGT:
@@ -455,7 +452,6 @@ export class Superescalar extends Machine {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
                // Actualizo todas las ER
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
-                  // TEstacionReserva::iterator itER = ER[i].begin();
                   for (let k = 0; k < this.reserveStationEntry[j].length; k++) {
                      if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
                         this.reserveStationEntry[j][k].Vj = resul;
@@ -480,7 +476,6 @@ export class Superescalar extends Machine {
 
    ticWriteResult(): void {
       // En primer lugar compruebo si hay STORES listos
-      // let i = this.reserveStationEntry[FunctionalUnitType.MEMORY].begin();
       let i = 0;
       while (i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
          let opcode = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].instruction.opcode;
@@ -521,7 +516,6 @@ export class Superescalar extends Machine {
    }
 
    checkJump(rob: ReorderBufferEntry): boolean {
-      // console.log('Comprobar salto');
       // Se comprueba si la predicción acertó
       // Typescript does not support ^ operator for boolean
       if (+this.prediction(rob.instruction.id) ^ +!!rob.value) {
@@ -587,7 +581,6 @@ export class Superescalar extends Machine {
                case Opcodes.BEQ:
                case Opcodes.BNE:
                case Opcodes.BGT:
-                  // console.log('heeey saltito!');
                   if (!this.checkJump(aux)) {
                      return CommitStatus.SUPER_COMMITMISS;
                   }
@@ -634,22 +627,18 @@ export class Superescalar extends Machine {
       }
       this.status.cycle++;
 
-      // COMMiT stage
       let commit = this.ticCommit();
       if (commit !== CommitStatus.SUPER_COMMITEND && commit !== CommitStatus.SUPER_COMMITMISS) {
-         // WRITE RESULT STAGE
          this.ticWriteResult();
-         // EXECUTE STAGE
          this.ticExecute();
       }
 
-      // ISSUE STAGE
       let resultIssue = this.ticIssue();
-      // DECODER STAGE
       let resultDecoder = this.ticDecoder();
-      // PREFETCH STAGE
       let resultPrefetch = this.ticPrefetch();
-      if ((resultIssue + resultDecoder + resultPrefetch === 0) && (commit === CommitStatus.SUPER_COMMITEND)) {
+
+      if ((resultIssue + resultDecoder + resultPrefetch === 0) &&
+         (commit === CommitStatus.SUPER_COMMITEND)) {
          return SuperescalarStatus.SUPER_ENDEXE;
       }
       for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.last; i = this.prefetchUnit.nextIterator(i)) {

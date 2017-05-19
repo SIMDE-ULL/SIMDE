@@ -51,7 +51,6 @@ export class Queue<T> {
    }
 
    public isFull(): boolean {
-      // console.log('Is full?', (this.last + 1) % this.size === this.first);
       return ((this.last + 1) % this.size === this.first);
    }
 
@@ -78,7 +77,6 @@ export class Queue<T> {
       if (this.isFull()) {
          return -1;
       }
-      // console.log('Adding', this.last);
       let oldLast = this.last;
       this._elements[this.last] = value;
       this.last = (this.last + 1) % this.size;
@@ -86,9 +84,7 @@ export class Queue<T> {
 
    }
 
-   // Check those return null
    public remove(position?: number): T {
-      // console.log('Amos a remover', position);
       if (position != null) {
          if (position === this.first) {
             return this.removeFirst();
@@ -97,7 +93,6 @@ export class Queue<T> {
             return null;
          }
          let element = this._elements[position];
-         // TODO: Check if I can do this with some array operations like slice.
          this.last = (this.last > position) ? this.last : this.last + this.size;
          for (let i = position; i < this.last; i++) {
             this._elements[i % this.size] = this._elements[(i + 1) % this.size];
