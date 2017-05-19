@@ -46,7 +46,8 @@ export class Machine {
       // TODO: Check this
       this._gpr = new Register();
       this._fpr = new Register();
-      this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY).fill(null);
+      this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY)
+      this.functionalUnit.fill(null);
       // this.init(true);
    }
 

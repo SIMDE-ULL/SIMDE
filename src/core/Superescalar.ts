@@ -622,9 +622,6 @@ export class Superescalar extends Machine {
    }
 
    tic(): SuperescalarStatus {
-      if (this.status.cycle === 47) {
-         debugger;
-      }
       this.status.cycle++;
 
       let commit = this.ticCommit();

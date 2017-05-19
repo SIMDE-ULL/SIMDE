@@ -19,6 +19,7 @@ declare var window;
 // Global objects for binding React to the View
 let superescalar = new Superescalar();
 let state: any = {};
+window.interval = null;
 window.state = state;
 
 /*
@@ -182,24 +183,37 @@ let loadSuper = () => {
 };
 
 let play = () => {
-   let id;
    let speed = calculateSpeed();
 
    if (speed) {
-      id = setInterval(() => {
+      window.interval = setInterval(() => {
          try {
             superStep();
          } catch (err) {
             window.alert(err);
-            clearInterval(id);
+            clearInterval(window.interval);
          }
       }, speed);
    } else {
-      // Modo ejecución continua
-      while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE);
+      // Continuous execution mode;
+      // tslint:disable-next-line:no-empty
+      while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
       callAllCallbacks();
       throw 'Done';
    }
+};
+
+let pause = () => {
+   clearInterval(window.interval);
+};
+
+let stop = () => {
+   clearInterval(window.interval);
+   // TODO clean reboot the machine and clean the interface
+};
+
+let stepBack = () => {
+   console.log('This is just for time travellers');
 };
 
 function calculateSpeed() {
@@ -224,6 +238,9 @@ window.loadSuper = loadSuper;
 window.superStep = superStep;
 window.superExe = superExe;
 window.play = play;
+window.stop = stop;
+window.pause = pause;
+window.stepBack = stepBack;
 window.callAllCallbacks = callAllCallbacks;
 
 ReactDOM.render(

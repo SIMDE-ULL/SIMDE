@@ -65,7 +65,7 @@ export class AccessBarComponent extends React.Component<any, any> {
                   </a>
                </li>
                <li>
-                  <a href='#' onClick={() => { this.stepForward(); }}>
+                  <a href='#' onClick={this.stepForward}>
                      <i className='fa fa-step-forward' aria-hidden='true'></i>
                   </a>
                </li>
@@ -89,6 +89,6 @@ export class AccessBarComponent extends React.Component<any, any> {
                <li><a data-toggle='tab' href='#menu1'>Memoria - Registros</a></li>
             </ul>
          </nav>
-      </div>);
+      </div >);
    }
 }
