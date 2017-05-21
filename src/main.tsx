@@ -184,7 +184,11 @@ let loadSuper = () => {
 
 let play = () => {
    let speed = calculateSpeed();
-
+   if (superescalar.status.cycle === 0) {
+      let code = Object.assign(new Code(), superescalar.code);
+      superExe();
+      superescalar.code = code;
+   }
    if (speed) {
       window.interval = setInterval(() => {
          try {
@@ -199,7 +203,7 @@ let play = () => {
       // tslint:disable-next-line:no-empty
       while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
       callAllCallbacks();
-      throw 'Done';
+      window.alert('Done');
    }
 };
 
@@ -210,6 +214,10 @@ let pause = () => {
 let stop = () => {
    clearInterval(window.interval);
    // TODO clean reboot the machine and clean the interface
+   let code = Object.assign(new Code(), superescalar.code);
+   superExe();
+   superescalar.code = code;
+   callAllCallbacks();
 };
 
 let stepBack = () => {
@@ -226,7 +234,27 @@ function calculateSpeed() {
    }
 
    return calculatedSpeed;
-}
+};
+
+let saveSuperConfig = (superConfig) => {
+   const superConfigKeys = Object.keys(superConfig);
+   for (let i = 0; i < (superConfigKeys.length - 2); i++) {
+      if (i % 2 === 0) {
+         superescalar.setFunctionalUnitNumber(i,
+            +superConfig[superConfigKeys[i]]);
+      } else {
+         superescalar.setFunctionalUnitLatency(i,
+            +superConfig[superConfigKeys[i]]);
+      }
+   }
+   superescalar.memoryFailLatency = +superConfig.cacheFailLatency;
+   superescalar.issue = +superConfig.issueGrade;
+   console.log(superescalar);
+};
+
+let colorBlocks = () => {
+   state['Code']({ color: true });
+};
 
 /*
  * For exposing the functions to react and the ts code
@@ -241,7 +269,9 @@ window.play = play;
 window.stop = stop;
 window.pause = pause;
 window.stepBack = stepBack;
+window.saveSuperConfig = saveSuperConfig;
 window.callAllCallbacks = callAllCallbacks;
+window.colorBlocks = colorBlocks;
 
 ReactDOM.render(
    <App machine={superescalar} />,

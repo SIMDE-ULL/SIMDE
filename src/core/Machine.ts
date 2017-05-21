@@ -178,4 +178,12 @@ export class Machine {
    public get fpr(): Register {
       return this._fpr;
    }
+
+   public setFunctionalUnitNumber(index: number, quantity: number) {
+      this.functionalUnitNumbers[index] = quantity;
+   }
+
+   public setFunctionalUnitLatency(index: number, latency: number) {
+      this.functionalUnitLatencies[index] = latency;
+   }
 }
