@@ -45,7 +45,7 @@ let componentContent = (title: string): any => {
          result = superescalar.ROBFpr;
          break;
       case 'Jump':
-         result = superescalar.$jumpPrediction;
+         result = superescalar.jumpPrediction;
          break;
       case 'ReorderBuffer':
          result = superescalar.reorderBuffer.elements;
@@ -222,6 +222,19 @@ let stop = () => {
 
 let stepBack = () => {
    console.log('This is just for time travellers');
+   // There is no time travelling for batch mode and initial mode
+   // TODO Limit the number of steps
+   // TODO Clean the interface
+   if (superescalar.status.cycle > 0) {
+      for (let callbackName in state) {
+         // Code should only be setted on the first iteration
+         if (callbackName !== 'Code') {
+            state[callbackName]({
+               content: componentContent(callbackName)
+            });
+         }
+      }
+   }
 };
 
 function calculateSpeed() {

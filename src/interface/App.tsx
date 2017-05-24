@@ -9,6 +9,8 @@ import { RegisterTabComponent } from './tab/RegistersTabComponent';
 
 import { LoadModalComponent } from './modal/LoadModalComponent';
 import { SuperescalarConfigModalComponent } from './modal/SuperescalarConfigModalComponent';
+import { AutorModalComponent } from './modal/AutorModalComponent';
+
 declare var window: any;
 
 class App extends React.Component<any, any> {
@@ -28,8 +30,9 @@ class App extends React.Component<any, any> {
                   <RegisterTabComponent />
                </div>
             </div>
-            < LoadModalComponent />
+            <LoadModalComponent />
             <SuperescalarConfigModalComponent />
+            <AutorModalComponent />
          </div >
       );
    }

@@ -9,48 +9,48 @@ export class FileBarComponent extends React.Component<any, any> {
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Archivo</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Archivo</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='#' onClick={() => { window['loadModal'](true); }}>Cargar</a></li>
+                     <li><a onClick={() => { window['loadModal'](true); }}>Cargar</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='#'>Bloques Básicos</a></li>
-                     <li><a href='#'>Código Secuencial</a></li>
+                     <li><a>Bloques Básicos</a></li>
+                     <li><a>Código Secuencial</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Configurar</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Configurar</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='#' onClick={() => { window['superConfigModal'](true); }}>Configurar Máquina SuperEscalar</a></li>
-                     <li><a href='#'>Opciones</a></li>
+                     <li><a onClick={() => { window['superConfigModal'](true); }}>Configurar Máquina SuperEscalar</a></li>
+                     <li><a>Opciones</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ejecutar</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ejecutar</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='#'>Iniciar</a></li>
-                     <li><a href='#'>Pausa</a></li>
-                     <li><a href='#'>Parar</a></li>
-                     <li><a href='#'>Atrás</a></li>
-                     <li><a href='#'>Adelante</a></li>
+                     <li><a>Iniciar</a></li>
+                     <li><a>Pausa</a></li>
+                     <li><a>Parar</a></li>
+                     <li><a>Atrás</a></li>
+                     <li><a>Adelante</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a href='#' className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ayuda</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ayuda</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='http://demosimde.azurewebsites.net/simde-documentation/'>Documentación</a></li>
-                     <li><a href='#'>Acerca de...</a></li>
+                     <li><a href='http://demosimde.azurewebsites.net/docs/'>Documentación</a></li>
+                     <li><a onClick={() => { window['autorModal'](true); }}>Acerca de...</a></li>
                   </ul>
                </li>
             </ul>

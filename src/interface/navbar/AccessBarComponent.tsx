@@ -71,16 +71,14 @@ export class AccessBarComponent extends React.Component<any, any> {
                </li>
                <li>
                   <a href='#'>
-                     <label>Ciclo</label>
+                     <label htmlFor='cycle'>Ciclo</label>
                      <span className='cycle'>{this.state.content}</span>
                   </a>
                </li>
                <li>
                   <a href='#'>
-                     <div className='speed'>
-                        <label htmlFor='velocidad'>Velocidad</label>
-                        <input type='number' id='velocidad' defaultValue={'5'} min='0' max='10'></input>
-                     </div>
+                     <label htmlFor='velocidad'>Velocidad</label>
+                     <input type='number' id='velocidad' className='speed' defaultValue={'5'} min='0' max='10'></input>
                   </a>
                </li>
             </ul>

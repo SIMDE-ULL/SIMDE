@@ -8,9 +8,18 @@
 }
 
 .cycle {
-   margin-left:10px;
+   margin-bottom: -5px;
+   margin-left: 10px;
    padding: 1px;
    border: 1px solid black;
-   width: 20px;
-   min-width: 20px;
+   width: 30px;
+   min-width: 30px;
+   height: 20px;
+   min-height: 20px;
+   text-align: center;
+   display: inline-block;
+}
+
+.speed {
+   margin-left: 5px;
 }

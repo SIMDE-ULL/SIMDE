@@ -1,7 +1,12 @@
 import * as React from 'react';
+import './RegisterComponent.scss';
+
 declare var window: any;
 
 export class RegisterComponent extends React.Component<any, any> {
+
+   history: any[];
+   historyLength: 10;
 
    constructor(props: any) {
       super(props);
@@ -11,12 +16,20 @@ export class RegisterComponent extends React.Component<any, any> {
          contentShowable: [],
          show: [1, 8]
       };
+      this.history = [];
+
       window.state[this.props.title] = (data) => {
          let newState = {
             content: data.content.slice(),
             contentShowable: []
          };
          newState.contentShowable = data.content.slice(this.state.show[0], this.state.show[1]);
+         // Set a limit for history
+         if (!(this.history.length < this.historyLength)) {
+            this.history.shift();
+         }
+         this.history.push(newState.contentShowable);
+
          this.setState(newState);
       };
    }

@@ -31,7 +31,7 @@ export class Superescalar extends Machine {
    private _decoder: Queue<DecoderEntry>;
    private _aluMem: FunctionalUnit[];
 
-   private jumpPrediction: number[];
+   private _jumpPrediction: number[];
 
    constructor() {
       super();
@@ -274,15 +274,15 @@ export class Superescalar extends Machine {
    }
 
    checkStore(robIndex: number, address: number): boolean {
-      // Compruebo que no haya algún store anterior...
+      // Check for previous stores
       let i;
       for (i = this.reorderBuffer.first; i !== robIndex; i = this.reorderBuffer.nextIterator(i)) {
          let opcode: number = this.reorderBuffer.elements[i].instruction.opcode;
          if ((opcode === Opcodes.SW) || (opcode === Opcodes.SF)) {
-            // ... sin la dir. calculada...
+            // without calculated address...
             if (this.reorderBuffer.elements[i].address === -1) {
                break;
-               // ...o con la misma dir.
+               // ...or with the same address.
             } else if (this.reorderBuffer.elements[i].address === address) {
                break;
             }
@@ -736,12 +736,12 @@ export class Superescalar extends Machine {
       this._aluMem = value;
    }
 
-   public get $jumpPrediction(): number[] {
-      return this.jumpPrediction;
+   public get jumpPrediction(): number[] {
+      return this._jumpPrediction;
    }
 
-   public set $jumpPrediction(value: number[]) {
-      this.jumpPrediction = value;
+   public set jumpPrediction(value: number[]) {
+      this._jumpPrediction = value;
    }
 
 }

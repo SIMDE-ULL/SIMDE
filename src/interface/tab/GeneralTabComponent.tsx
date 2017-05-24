@@ -4,6 +4,7 @@ import { CodeComponent } from '../CodeComponent';
 import { ReserveStationComponent } from '../ReserveStationComponent';
 import { RegisterMapperComponent } from '../RegisterMapperComponent';
 import { ReorderBufferComponent } from '../ReorderBufferComponent';
+import { JumpPredictionComponent } from '../JumPredictionComponent';
 
 import * as React from 'react';
 declare var window: any;
@@ -47,7 +48,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                         <div className='col-sm-4'>
                            <div className='row'>
-                              <RegisterMapperComponent title='Jump' />
+                              <JumpPredictionComponent title='Jump' />
                            </div>
                         </div>
                      </div>
