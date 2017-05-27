@@ -74,13 +74,13 @@ export class ReserveStationComponent extends React.Component<any, any> {
                <table className='table table-bordered'>
                   <thead>
                      <tr>
-                        <td>Inst</td>
-                        <td>Qj</td>
-                        <td>Vj</td>
-                        <td>Qk</td>
-                        <td>Vk</td>
-                        <td>A</td>
-                        <td>ROB</td>
+                        <td width='14.28%'>Inst</td>
+                        <td width='14.28%'>Qj</td>
+                        <td width='14.28%'>Vj</td>
+                        <td width='14.28%'>Qk</td>
+                        <td width='14.28%'>Vk</td>
+                        <td width='14.28%'>A</td>
+                        <td width='14.28%'>ROB</td>
                      </tr>
                   </thead>
                   <tbody>

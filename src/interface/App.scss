@@ -1,0 +1,11 @@
+.navigation-bars {
+   height: 85px;
+   max-height: 85px;
+   min-height: 72px;
+}
+
+.tab-content {
+    height: -webkit-calc(90% - 85px);
+    height:    -moz-calc(90% - 85px);
+    height:         calc(90% - 85px);
+}

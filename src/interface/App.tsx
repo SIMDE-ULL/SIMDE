@@ -11,6 +11,8 @@ import { LoadModalComponent } from './modal/LoadModalComponent';
 import { SuperescalarConfigModalComponent } from './modal/SuperescalarConfigModalComponent';
 import { AutorModalComponent } from './modal/AutorModalComponent';
 
+import './App.scss';
+
 declare var window: any;
 
 class App extends React.Component<any, any> {
@@ -23,8 +25,10 @@ class App extends React.Component<any, any> {
       return (
          <div className='App'>
             <div className='container-fluid'>
-               <FileBarComponent />
-               <AccessBarComponent />
+               <div className='navigation-bars'>
+                  <FileBarComponent />
+                  <AccessBarComponent />
+               </div>
                <div className='tab-content'>
                   <GeneralTabComponent />
                   <RegisterTabComponent />

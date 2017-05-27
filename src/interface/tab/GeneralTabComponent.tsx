@@ -1,12 +1,14 @@
+import * as React from 'react';
 import { FunctionalUnitComponent } from '../FunctionalUnitComponent';
 import { PrefetchDecoderComponent } from '../PrefetchDecoderComponent';
 import { CodeComponent } from '../CodeComponent';
 import { ReserveStationComponent } from '../ReserveStationComponent';
 import { RegisterMapperComponent } from '../RegisterMapperComponent';
+import { ROBMapperComponent } from '../ROBMapperComponent';
 import { ReorderBufferComponent } from '../ReorderBufferComponent';
 import { JumpPredictionComponent } from '../JumPredictionComponent';
 
-import * as React from 'react';
+import './GeneralTabComponent.scss';
 declare var window: any;
 
 export class GeneralTabComponent extends React.Component<any, any> {
@@ -37,17 +39,17 @@ export class GeneralTabComponent extends React.Component<any, any> {
                      </div>
                      <div className='row'>
                         <div className='col-sm-4'>
-                           <div className='row'>
-                              <RegisterMapperComponent title='ROB<->GPR' />
+                           <div className='row register-mapper'>
+                              <ROBMapperComponent title='ROB<->GPR' />
                            </div>
                         </div>
                         <div className='col-sm-4'>
-                           <div className='row'>
-                              <RegisterMapperComponent title='ROB<->FPR' />
+                           <div className='row register-mapper'>
+                              <ROBMapperComponent title='ROB<->FPR' />
                            </div>
                         </div>
                         <div className='col-sm-4'>
-                           <div className='row'>
+                           <div className='row register-mapper'>
                               <JumpPredictionComponent title='Jump' />
                            </div>
                         </div>

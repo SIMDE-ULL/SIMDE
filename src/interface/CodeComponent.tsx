@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Code } from '../core/Code';
+import './CodeComponent.scss';
 declare var window: any;
 
 export class CodeComponent extends React.Component<any, any> {
@@ -20,15 +21,13 @@ export class CodeComponent extends React.Component<any, any> {
          <div className='panel panel-default'>
             <div className='panel-heading'>{'Code'}</div>
             <div className='panel-body'>
-               <table className='table table-bordered'>
+               <table className='table'>
                   <thead>
-                     <tr>
-                        <th>#</th>
-                        <th>OPCODE</th>
-                        <th>OP1</th>
-                        <th>OP2</th>
-                        <th>OP3</th>
-                     </tr>
+                     <th>#</th>
+                     <th>OPCODE</th>
+                     <th>OP1</th>
+                     <th>OP2</th>
+                     <th>OP3</th>
                   </thead>
                   <tbody>
                      {

@@ -45,38 +45,38 @@ export class AccessBarComponent extends React.Component<any, any> {
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li>
-                  <a href='#' onClick={this.play}>
+                  <a onClick={this.play}>
                      <i className='fa fa-play' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#' onClick={this.pause} >
+                  <a onClick={this.pause} >
                      <i className='fa fa-pause' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#' onClick={this.stop}>
+                  <a onClick={this.stop}>
                      <i className='fa fa-stop' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#' onClick={this.stepBack}>
+                  <a onClick={this.stepBack}>
                      <i className='fa fa-step-backward' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#' onClick={this.stepForward}>
+                  <a onClick={this.stepForward}>
                      <i className='fa fa-step-forward' aria-hidden='true'></i>
                   </a>
                </li>
                <li>
-                  <a href='#'>
+                  <a >
                      <label htmlFor='cycle'>Ciclo</label>
                      <span className='cycle'>{this.state.content}</span>
                   </a>
                </li>
                <li>
-                  <a href='#'>
+                  <a >
                      <label htmlFor='velocidad'>Velocidad</label>
                      <input type='number' id='velocidad' className='speed' defaultValue={'5'} min='0' max='10'></input>
                   </a>

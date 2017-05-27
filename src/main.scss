@@ -1,22 +1,20 @@
 @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.min.css';
 @import './variables';
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body {
   width: 100%;
-}
-
-#code-zone {
-  height: calc($work-zone);
+  font-family: 'Montserrat', sans-serif;
+  overflow-y: hidden;
 }
 
 #functional-unit-zone {
-  height: calc(90vh);
-}
-
-#functional-unit-zone > .panel-body{
-  max-height: calc(85vh);
-  padding-right: -10px;
+   height: calc(90vh);
+   & > .panel-body{
+      max-height: calc(85vh);
+      padding-right: -10px;
+   }
 }
 
 #simulation-zone {
@@ -33,19 +31,19 @@ body {
 }
 
 .icon-wrapper > i{
-  background-color: white;
-  padding-left: 3px;
-  padding-right: 3px;
+   background-color: white;
+   padding-left: 3px;
+   padding-right: 3px;
 }
 
 .menu-item {
-  text-align: center;
-  padding: 5px;
-  cursor: pointer;
-}
+   text-align: center;
+   padding: 5px;
+   cursor: pointer;
 
-.menu-item:hover {
-  background-color: gray;
+   &:hover {
+      background-color: gray;
+   }
 }
  
 #barra-de-acciones {
@@ -53,86 +51,38 @@ body {
 }
 
 .navbar {
-  margin-bottom: 0px;
-  min-height: 0px;
+   margin-bottom: 0px;
+   min-height: 0px;
 }
 
 
-#reserve-station-zone{
-  height: calc(90vh);
-}
-
-#reserve-station-zone > .panel-body{
-  max-height: calc(85vh);
-}
 
 .panel {
-  margin-bottom: 0px !important;
+   margin-bottom: 0px !important;
+   border-radius: 0px;
+   & .panel-heading {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background-color: $primary-color !important;
+      color: $text;
+      font-weight: bold !important;
+      border-radius: 0px;
+   }
+   & .panel-body {
+      overflow-y: auto;
+      padding: 0px 0px 0px 0px;
+      & > table {
+         border: 0px solid gray;
+      }
+   }
+   &.panel-default .register .panel-body {
+      overflow-x: hidden;
+   }
 }
 
-.prefetch-decoder-zone {
-  height: calc(20vh);
-}
-
-.prefetch-decoder-zone > .panel-body{
-   max-height: calc(15vh);
-}
-
-.register-mapper {
-   height: calc(20vh);
-}
-
-.register-mapper > .panel-body {
-   max-height: calc(13vh);
-}
-
-.register-mapper > .panel-footer {
-   padding-top: 5px;
-   padding-bottom: 0px;
-   padding-right: 0px;
-}
-
-.rob-zone {
-  height: calc(20vh);
-}
-
-.reorder-zone {
-  height: calc(50vh);
-}
-
-.reorder-zone > .panel-body{
-  max-height: calc(46vh);
-}
-
-
-
-.panel-heading {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  background-color: $primary-color !important;
-  font-weight: bold !important;
-}
-
-.panel .panel-body {
-    overflow-y: scroll;
-}
-
-.panel-body {
-  padding-top: 5px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
-.panel-body > table {
-  border: 2px solid gray;
-}
 
 a {
   color: #212121;
-}
-
-.panel .panel-default .register .panel-body {
-   overflow-x: hidden;
 }
 
 .inside-bar > .panel-body {
@@ -146,6 +96,6 @@ a {
  .table>thead>tr>td, 
  .table>thead>tr>th {
    padding: 0px 0px 0px 8px;
-    height: 19px;
-    min-height: 15px;
+   height: 19px;
+   min-height: 15px;
 }

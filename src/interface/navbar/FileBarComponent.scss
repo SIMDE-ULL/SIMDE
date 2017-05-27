@@ -1,7 +1,10 @@
-li > a {
-  padding-top: 0px;
-}
 .filebar {
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: -17px;
+}
+
+@media (min-width: 768px) {
+   .navbar-nav>li>a {
+      padding-top: 10px !important;
+      padding-bottom: 5px !important;
+   }
 }

@@ -51,12 +51,12 @@ export class RegisterComponent extends React.Component<any, any> {
                </table>
             </div>
             <div className='panel-footer'>
-               <button type='button' className='btn'><i className='fa fa-plus' aria-hidden='true'></i>
+               <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
                </button>
-               <button type='button' className='btn'><i className='fa fa-minus' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-check' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-times' aria-hidden='true'></i></button>
-               <button type='button' className='btn'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
             </div>
          </div>);
    }
