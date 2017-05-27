@@ -36,6 +36,7 @@
    },
    "homepage": "https://github.com/adrianabreu/SIMDE#readme",
    "dependencies": {
+      "@types/lodash": "^4.14.64",
       "@types/react": "^15.0.23",
       "@types/react-dom": "^15.5.0",
       "awesome-typescript-loader": "^3.1.2",
@@ -51,6 +52,7 @@
       "font-awesome": "^4.7.0",
       "jquery": "^3.2.1",
       "lex": "^1.7.9",
+      "lodash": "^4.17.4",
       "node-sass": "^4.5.3",
       "react": "^15.5.4",
       "react-bootstrap": "^0.31.0",
