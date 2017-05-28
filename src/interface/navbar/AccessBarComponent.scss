@@ -28,7 +28,20 @@
 .nav.nav-tabs {
    float: right;
 
+   &>li {
+      background: $primary-color;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      &>a {
+         margin-right: 0px;
+         color: $text;
+      }
+   }
    & li {
-      background: $primary-color; 
+      &:hover,&.active {
+         & a {
+            color: $secondary-color;
+         }
+      }
    }
 }

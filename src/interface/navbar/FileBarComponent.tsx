@@ -20,7 +20,6 @@ export class FileBarComponent extends React.Component<any, any> {
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
                   <ul className='dropdown-menu'>
                      <li><a>Bloques Básicos</a></li>
-                     <li><a>Código Secuencial</a></li>
                   </ul>
                </li>
             </ul>
