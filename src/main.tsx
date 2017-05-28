@@ -44,7 +44,7 @@ let componentContent = (title: string): any => {
       case 'ROB<->FPR':
          result = superescalar.ROBFpr;
          break;
-      case 'Jump':
+      case 'Jump table':
          result = superescalar.jumpPrediction;
          break;
       case 'ReorderBuffer':
@@ -87,14 +87,14 @@ let componentContent = (title: string): any => {
          };
 
          break;
-      case 'Memoru':
+      case 'Memory':
          result = {
             data: superescalar.reserveStationEntry[4],
             size: superescalar.getReserveStationSize(4)
          };
 
          break;
-      case 'Jumpito':
+      case 'Jump':
          result = {
             data: superescalar.reserveStationEntry[5],
             size: superescalar.getReserveStationSize(5)
@@ -116,7 +116,7 @@ let componentContent = (title: string): any => {
       case 'Mem':
          result = superescalar.functionalUnit[4];
          break;
-      case 'Jumputo':
+      case 'JumpUF':
          result = superescalar.functionalUnit[5];
          break;
       case 'cycle':
@@ -177,6 +177,7 @@ let loadSuper = () => {
       // There is no need to update the code with the rest, it should remain the same during all the program execution
       state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
       superescalar.memory.setDatum(0, 20);
+      callAllCallbacks();
    } catch (err) {
       alert(err);
    }

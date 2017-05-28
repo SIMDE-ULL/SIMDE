@@ -48,7 +48,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                         <div className='col-sm-4'>
                            <div className='row register-mapper'>
-                              <JumpPredictionComponent title='Jump' />
+                              <JumpPredictionComponent title='Jump table' />
                            </div>
                         </div>
                      </div>
@@ -67,8 +67,8 @@ export class GeneralTabComponent extends React.Component<any, any> {
                                     <ReserveStationComponent title='Integer x' />
                                     <ReserveStationComponent title='Floating +' />
                                     <ReserveStationComponent title='Floating x' />
-                                    <ReserveStationComponent title='Memoru' />
-                                    <ReserveStationComponent title='Jumpito' />
+                                    <ReserveStationComponent title='Memory' />
+                                    <ReserveStationComponent title='Jump' />
                                  </div>
                               </div>
                            </div>
@@ -87,7 +87,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                                     <FunctionalUnitComponent title='+Flotante' />
                                     <FunctionalUnitComponent title='xFlotante' />
                                     <FunctionalUnitComponent title='Mem' />
-                                    <FunctionalUnitComponent title='Jumputo' />
+                                    <FunctionalUnitComponent title='JumpUF' />
                                  </div>
                               </div>
                            </div>
