@@ -1,4 +1,10 @@
+@import '../../variables';
+
 textarea {
    width: 100%;
    height: 200px;
+}
+
+.btn.btn-primary {
+   background: $primary-color;
 }

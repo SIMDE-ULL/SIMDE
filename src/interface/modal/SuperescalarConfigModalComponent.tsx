@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import './SuperescalarConfigModalComponent.scss';
+
 declare var window: any;
 
 export class SuperescalarConfigModalComponent extends React.Component<any, any> {
@@ -92,147 +94,232 @@ export class SuperescalarConfigModalComponent extends React.Component<any, any> 
             <Modal.Title>Configuración Superescalar</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <form>
-               <fieldset>
-                  <legend>Suma Entera</legend>
-                  <input
-                     name='integerSumQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.integerSumQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='integerSumLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.integerSumLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <fieldset>
-                  <legend>Mult Entera</legend>
-                  <input
-                     name='integerMultQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.integerMultQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='integerMultLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.integerMultLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <fieldset>
-                  <legend>Suma Flotante</legend>
-                  <input
-                     name='floatingSumQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.floatingSumQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='floatingSumLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.floatingSumLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <fieldset>
-                  <legend>Mult. Flotante</legend>
-                  <input
-                     name='floatingMultQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.floatingMultQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='floatingMultLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.floatingMultLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <fieldset>
-                  <legend>Memoria</legend>
-                  <input
-                     name='memoryQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.memoryQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='memoryLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.memoryLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <fieldset>
-                  <legend>Salto</legend>
-                  <input
-                     name='jumpQuantity'
-                     type='number'
-                     min='1'
-                     max='10'
-                     value={this.state.superConfig.jumpQuantity}
-                     onChange={this.handleChange}
-                  />
-                  <input
-                     name='jumpLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.jumpLatency}
-                     onChange={this.handleChange}
-                  />
-               </fieldset>
-               <label> Fallo de cache
-                  <input
-                     name='cacheFailLatency'
-                     type='number'
-                     min='1'
-                     max='100'
-                     value={this.state.superConfig.cacheFailLatency}
-                     onChange={this.handleChange}
-                  />
-               </label>
-               <label> Emision
-                  <input
-                     name='issueGrade'
-                     type='number'
-                     min='2'
-                     max='16'
-                     value={this.state.superConfig.issueGrade}
-                     onChange={this.handleChange}
-                  />
-               </label>
+            <form className='form form-horizontal'>
+               <div className='form-group'>
+                  <div className='col-sm-4 col-sm-offset-4'>
+                     <label>Cantidad</label>
+                  </div>
+                  <div className='col-sm-4'>
+                     <label>Latencia</label>
+                  </div>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Suma Entera</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='integerSumQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.integerSumQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='integerSumLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.integerSumLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Mult Entera</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='integerMultQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.integerMultQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='integerMultLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.integerMultLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Suma Flotante</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='floatingSumQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.floatingSumQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='floatingSumLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.floatingSumLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Mult. Flotante</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='floatingMultQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.floatingMultQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='floatingMultLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.floatingMultLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Memoria</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='memoryQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.memoryQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='memoryLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.memoryLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+               <div className='form-group'>
+                  <fieldset>
+                     <div className='col-sm-4'>
+                        <legend className='control-label'>Salto</legend>
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='jumpQuantity'
+                           type='number'
+                           min='1'
+                           max='10'
+                           value={this.state.superConfig.jumpQuantity}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                     <div className='col-sm-4'>
+                        <input
+                           className='form-control'
+                           name='jumpLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.jumpLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </fieldset>
+               </div>
+
+               <div className='extraParams'>
+                  <div className='form-group'>
+                     <div className='col-sm-4'>
+                        <label htmlFor='cacheFailLatency' className='control-label'> Fallo de cache
+                  </label>
+                     </div>
+                     <div className='col-sm-8'>
+                        <input
+                           className='form-control'
+                           name='cacheFailLatency'
+                           type='number'
+                           min='1'
+                           max='100'
+                           value={this.state.superConfig.cacheFailLatency}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </div>
+                  <div className='form-group'>
+                     <div className='col-sm-4'>
+                        <label htmlFor='issueGrade' className='control-label'> Emision
+                  </label>
+                     </div>
+                     <div className='col-sm-8'>
+                        <input
+                           className='form-control'
+                           name='issueGrade'
+                           type='number'
+                           min='2'
+                           max='16'
+                           value={this.state.superConfig.issueGrade}
+                           onChange={this.handleChange}
+                        />
+                     </div>
+                  </div>
+               </div>
             </form>
          </Modal.Body>
          <Modal.Footer>
-            <Button className='btn btn-primary' onClick={this.setDefault}>Default</Button>
-            <Button onClick={this.cancel}>Close</Button>
-            <Button className='btn btn-primary' onClick={this.saveSuperConfig}>Save</Button>
+            <Button className='btn btn-primary' onClick={this.setDefault}>Valores por defecto</Button>
+            <Button onClick={this.cancel}>Cancelar</Button>
+            <Button className='btn btn-primary' onClick={this.saveSuperConfig}>Guardar</Button>
          </Modal.Footer>
       </Modal>);
    }

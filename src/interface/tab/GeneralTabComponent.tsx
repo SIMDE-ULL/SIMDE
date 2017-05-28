@@ -3,7 +3,6 @@ import { FunctionalUnitComponent } from '../FunctionalUnitComponent';
 import { PrefetchDecoderComponent } from '../PrefetchDecoderComponent';
 import { CodeComponent } from '../CodeComponent';
 import { ReserveStationComponent } from '../ReserveStationComponent';
-import { RegisterMapperComponent } from '../RegisterMapperComponent';
 import { ROBMapperComponent } from '../ROBMapperComponent';
 import { ReorderBufferComponent } from '../ReorderBufferComponent';
 import { JumpPredictionComponent } from '../JumPredictionComponent';
@@ -12,7 +11,6 @@ import './GeneralTabComponent.scss';
 declare var window: any;
 
 export class GeneralTabComponent extends React.Component<any, any> {
-
 
    render() {
       return (<div id='home' className='tab-pane fade in active'>
@@ -65,16 +63,12 @@ export class GeneralTabComponent extends React.Component<any, any> {
                               <div className='panel panel-default inside-bar' id='reserve-station-zone'>
                                  <div className='panel-heading'>Reserve Stations</div>
                                  <div className='panel-body'>
-                                    <div className='row'>
-                                       <div className='panel panel-default'>
-                                          <ReserveStationComponent title='Integer +' />
-                                          <ReserveStationComponent title='Integer x' />
-                                          <ReserveStationComponent title='Floating +' />
-                                          <ReserveStationComponent title='Floating x' />
-                                          <ReserveStationComponent title='Memoru' />
-                                          <ReserveStationComponent title='Jumpito' />
-                                       </div>
-                                    </div>
+                                    <ReserveStationComponent title='Integer +' />
+                                    <ReserveStationComponent title='Integer x' />
+                                    <ReserveStationComponent title='Floating +' />
+                                    <ReserveStationComponent title='Floating x' />
+                                    <ReserveStationComponent title='Memoru' />
+                                    <ReserveStationComponent title='Jumpito' />
                                  </div>
                               </div>
                            </div>
@@ -88,14 +82,12 @@ export class GeneralTabComponent extends React.Component<any, any> {
                               <div className='panel panel-default inside-bar' id='functional-unit-zone'>
                                  <div className='panel-heading'>U. F.</div>
                                  <div className='panel-body'>
-                                    <div className='row'>
-                                       <FunctionalUnitComponent title='+Entera' />
-                                       <FunctionalUnitComponent title='xEntera' />
-                                       <FunctionalUnitComponent title='+Flotante' />
-                                       <FunctionalUnitComponent title='xFlotante' />
-                                       <FunctionalUnitComponent title='Mem' />
-                                       <FunctionalUnitComponent title='Jumputo' />
-                                    </div>
+                                    <FunctionalUnitComponent title='+Entera' />
+                                    <FunctionalUnitComponent title='xEntera' />
+                                    <FunctionalUnitComponent title='+Flotante' />
+                                    <FunctionalUnitComponent title='xFlotante' />
+                                    <FunctionalUnitComponent title='Mem' />
+                                    <FunctionalUnitComponent title='Jumputo' />
                                  </div>
                               </div>
                            </div>
@@ -105,6 +97,6 @@ export class GeneralTabComponent extends React.Component<any, any> {
                </div>
             </div>
          </div>
-      </div>)
+      </div>);
    }
 }

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import './ReserveStationComponent.scss';
+
 declare var window: any;
 
 export class ReserveStationComponent extends React.Component<any, any> {

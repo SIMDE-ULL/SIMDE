@@ -29,7 +29,6 @@ export class LoadModalComponent extends React.Component<any, any> {
       this.setState({ showModal: true });
    };
 
-
    loadSuper() {
       window.loadSuper();
       this.close();
@@ -57,8 +56,8 @@ LOOP:
             </textarea>
          </Modal.Body>
          <Modal.Footer>
-            <Button onClick={this.close}>Close</Button>
-            <Button className='btn btn-primary' onClick={this.loadSuper}>Load</Button>
+            <Button onClick={this.close}>Cancelar</Button>
+            <Button className='btn btn-primary' onClick={this.loadSuper}>Cargar</Button>
          </Modal.Footer>
       </Modal>);
    }

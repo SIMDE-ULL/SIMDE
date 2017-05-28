@@ -28,7 +28,7 @@ export class FileBarComponent extends React.Component<any, any> {
                <li className='dropdown'>
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Configurar</a>
                   <ul className='dropdown-menu'>
-                     <li><a onClick={() => { window['superConfigModal'](true); }}>Configurar Máquina SuperEscalar</a></li>
+                     <li><a onClick={() => { window['superConfigModal'](true); }}>Configurar Máquina Superescalar</a></li>
                      <li><a>Opciones</a></li>
                   </ul>
                </li>

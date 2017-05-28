@@ -24,17 +24,19 @@
 }
 
 .register-mapper {
-   height: calc(20vh);
+   height: calc(25vh);
+   & .panel {
+      & .panel-body {
+         max-height: calc(15vh);
+      }
 
-   & .panel-body {
-      max-height: calc(100% - 16px);
+      & .panel-footer {
+         padding-top: 0px;
+         padding-bottom: 0px;
+         padding-right: 0px;
+      }
    }
 
-   & .panel-footer {
-      padding-top: 0px;
-      padding-bottom: 0px;
-      padding-right: 0px;
-   }
 }
 
 .jump-table {
@@ -53,6 +55,6 @@
 .reorder-zone {
    height: calc(50vh);
    & > .panel-body{
-      max-height: calc(46vh);
+      max-height: calc(40vh);
    }
 }

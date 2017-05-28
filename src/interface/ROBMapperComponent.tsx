@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './ROBMapperComponent.scss';
 
 declare var window: any;
 

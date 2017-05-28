@@ -1,0 +1,24 @@
+@import '../variables';
+
+.panel {
+   margin-bottom: 0px !important;
+   border-radius: 0px;
+   & .panel-heading {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background-color: $primary-color !important;
+      color: $text;
+      font-weight: bold !important;
+      border-radius: 0px;
+   }
+   & .panel-body {
+      overflow-y: auto;
+      padding: 0px 0px 0px 0px;
+      & > table {
+         border: 0px solid gray;
+      }
+   }
+   &.panel-default .register .panel-body {
+      overflow-x: hidden;
+   }
+}
