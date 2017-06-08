@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as _ from 'lodash';
 import './ROBMapperComponent.scss';
 
 declare var window: any;
@@ -17,6 +18,8 @@ export class ROBMapperComponent extends React.Component<any, any> {
          show: [1, 8]
       };
       this.history = [];
+      this.addInterval = this.addInterval.bind(this);
+      this.removeInterval = this.removeInterval.bind(this);
 
       window.state[this.props.title] = (data) => {
          let newState = {
@@ -35,7 +38,7 @@ export class ROBMapperComponent extends React.Component<any, any> {
    }
 
    addInterval() {
-      console.log('Do something');
+      let newInterval = prompt('Seleccione un nuevo intervalo');
    }
 
    removeInterval() {
@@ -59,9 +62,9 @@ export class ROBMapperComponent extends React.Component<any, any> {
                </table>
             </div>
             <div className='panel-footer'>
-               <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
+               <button type='button' className='btn btn-xs' onClick={this.addInterval}><i className='fa fa-plus' aria-hidden='true'></i>
                </button>
-               <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
+               <button type='button' className='btn btn-xs' onClick={this.removeInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
             </div>
          </div>);
    }

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Queue } from '../core/collections/Queue';
+
 declare var window: any;
 
 export class PrefetchDecoderComponent extends React.Component<any, any> {
@@ -12,7 +14,7 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
       };
 
       // TODO mandar la cola entera y utilizar el elemento final y tal
-      window.state[this.props.title] = (data) => {
+      window.state[this.props.title] = (data: { content: Queue<any> }) => {
          let newState = {
             content: data.content,
             showableContent: []
@@ -22,21 +24,12 @@ export class PrefetchDecoderComponent extends React.Component<any, any> {
       };
    }
 
-   buildShowableContent(data) {
-      let toReturn = data.map(i => {
-         return (i != null) ? i.instruction.id : '';
-      });
-      // toReturn.sort((a, b) => {
-      //    if (a === '') {
-      //       return 1;
-      //    }
-      //    if (b === '') {
-      //       return -1;
-      //    }
-      //    if (a < b) { return -1; }
-      //    if (a === b) { return 0; }
-      //    if (a > b) { return 1; }
-      // });
+   buildShowableContent(data: Queue<any>) {
+      let toReturn = new Array(data.elements.length - 1);
+      toReturn.fill(' ');
+      for (let i = data.first, j = 0; i !== data.last; i = data.nextIterator(i), j++) {
+         toReturn[j] = ((data.getElement(i) != null) ? data.getElement(i).instruction.id : '0');
+      }
       return toReturn;
    }
 

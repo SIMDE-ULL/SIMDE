@@ -168,7 +168,7 @@ export class Code {
             if (basicBlock.lineNumber === -1) {
                return -1;
             }
-            this._instructions[i].setOperand(2, basicBlock.id);
+            this._instructions[i].setOperand(2, basicBlock.id, '');
          }
       }
    }
@@ -230,9 +230,9 @@ export class Code {
          /* tslint:disable:ter-indent */
          switch (opcode) {
             case Opcodes.NOP:
-               this._instructions[i].setOperand(0, 0);
-               this._instructions[i].setOperand(1, 0);
-               this._instructions[i].setOperand(2, 0);
+               this._instructions[i].setOperand(0, 0, '');
+               this._instructions[i].setOperand(1, 0, '');
+               this._instructions[i].setOperand(2, 0, '');
                break;
             case Opcodes.ADD:
             case Opcodes.SUB:
@@ -245,72 +245,72 @@ export class Code {
             case Opcodes.SRLV:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext), lexema.yytext);
                break;
             case Opcodes.ADDF:
             case Opcodes.SUBF:
             case Opcodes.MULTF:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGFP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGFP, i);
-               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGFP, i);
-               this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(2, this.stringToRegister(lexema.yytext), lexema.yytext);
                break;
             case Opcodes.ADDI:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.INMEDIATE, i);
-               this._instructions[i].setOperand(2, this.stringToInmediate(lexema.yytext));
+               this._instructions[i].setOperand(2, this.stringToInmediate(lexema.yytext), lexema.yytext);
                break;
             case Opcodes.SW:
             case Opcodes.LW:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.ADDRESS, i);
                let result: number[] = this.stringToAddress(lexema.yytext);
-               this._instructions[i].setOperand(1, result[0]);
-               this._instructions[i].setOperand(2, result[1]);
+               this._instructions[i].setOperand(1, result[0], lexema.yytext);
+               this._instructions[i].setOperand(2, result[1], '');
                break;
             case Opcodes.SF:
             case Opcodes.LF:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGFP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.ADDRESS, i);
                let result2: number[] = this.stringToAddress(lexema.yytext);
-               this._instructions[i].setOperand(1, result2[0]);
-               this._instructions[i].setOperand(2, result2[1]);
+               this._instructions[i].setOperand(1, result2[0], lexema.yytext);
+               this._instructions[i].setOperand(2, result2[1], '');
                break;
             case Opcodes.BNE:
             case Opcodes.BEQ:
             case Opcodes.BGT:
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.REGGP, i);
-               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext));
+               this._instructions[i].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
                lexema = this._parser.lex();
                this.checkLexema(lexema, LEX.ID, i);
-               this._instructions[i].setOperand(2, this.checkLabel(lexema.yytext, actual));
+               this._instructions[i].setOperand(2, this.checkLabel(lexema.yytext, actual), lexema.yytext);
                newBlock = true;
                break;
             case Opcodes.OPERROR:

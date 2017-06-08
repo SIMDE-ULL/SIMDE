@@ -518,7 +518,7 @@ export class Superescalar extends Machine {
    checkJump(rob: ReorderBufferEntry): boolean {
       // Se comprueba si la predicción acertó
       // Typescript does not support ^ operator for boolean
-      if (+this.prediction(rob.instruction.id) ^ +!!rob.value) {
+      if (+this.prediction(rob.instruction.id) ^ +(!!rob.value)) {
          this.changePrediction(rob.instruction.id, !!rob.value);
          // Se cambia el PC
          if (rob.value) {

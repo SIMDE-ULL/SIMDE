@@ -33,10 +33,10 @@ let componentContent = (title: string): any => {
    /* tslint:disable */
    switch (title) {
       case 'Prefetch':
-         result = superescalar.prefetchUnit.elements;
+         result = superescalar.prefetchUnit;
          break;
       case 'Decoder':
-         result = superescalar.decoder.elements;
+         result = superescalar.decoder;
          break;
       case 'ROB<->GPR':
          result = superescalar.ROBGpr;
@@ -162,6 +162,9 @@ let superStep = () => {
    let resul = superescalar.tic();
    callAllCallbacks();
 
+   if (resul === SuperescalarStatus.SUPER_BREAKPOINT) {
+      throw 'Ejecución detenida, breakpoint';
+   }
    if (resul === SuperescalarStatus.SUPER_ENDEXE) {
       throw 'Done';
    }
@@ -176,7 +179,6 @@ let loadSuper = () => {
 
       // There is no need to update the code with the rest, it should remain the same during all the program execution
       state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
-      superescalar.memory.setDatum(0, 20);
       callAllCallbacks();
    } catch (err) {
       alert(err);
@@ -266,8 +268,13 @@ let saveSuperConfig = (superConfig) => {
    console.log(superescalar);
 };
 
-let colorBlocks = () => {
-   state['Code']({ color: true });
+let colorBlocks = (color) => {
+   state['Code']({ color: color });
+};
+
+let setBreakpoint = (i) => {
+   superescalar.code.instructions[i].breakPoint = !superescalar.code.instructions[i].breakPoint;
+   state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
 };
 
 /*
@@ -286,7 +293,7 @@ window.stepBack = stepBack;
 window.saveSuperConfig = saveSuperConfig;
 window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
-
+window.setBreakpoint = setBreakpoint;
 ReactDOM.render(
    <App machine={superescalar} />,
    document.getElementById('app')

@@ -4,6 +4,12 @@ declare var window: any;
 
 export class FileBarComponent extends React.Component<any, any> {
 
+   private color: boolean;
+   constructor() {
+      super();
+      this.color = false;
+   }
+
    render() {
       return (<div className='filebar'>
          <nav className='navbar'>
@@ -19,7 +25,10 @@ export class FileBarComponent extends React.Component<any, any> {
                <li className='dropdown'>
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
                   <ul className='dropdown-menu'>
-                     <li><a>Bloques Básicos</a></li>
+                     <li><a onClick={() => {
+                     this.color = !this.color;
+                        window['colorBlocks'](this.color);
+                     }}>Bloques Básicos</a></li>
                   </ul>
                </li>
             </ul>

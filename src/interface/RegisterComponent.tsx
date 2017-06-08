@@ -14,7 +14,7 @@ export class RegisterComponent extends React.Component<any, any> {
          title: null,
          content: new Array(64).fill(0),
          contentShowable: [],
-         show: [1, 8]
+         show: [1, 64]
       };
       this.history = [];
 
@@ -36,27 +36,29 @@ export class RegisterComponent extends React.Component<any, any> {
 
    render() {
       return (
-         <div className='panel panel-default'>
-            <div className='panel-heading'>{this.props.title}</div>
-            <div className='panel-body'>
-               <table className='table table-bordered'>
-                  <tbody>
-                     {
-                        this.state.contentShowable.map((row, i) => <tr key={`${this.state.title + i}`}>
-                           <td key={`${this.state.title + i + 65}`}>{i}</td>
-                           <td key={`${this.state.title + i + 131}`}>{row}</td>
-                        </tr>)
-                     }
-                  </tbody>
-               </table>
-            </div>
-            <div className='panel-footer'>
-               <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
-               </button>
-               <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
-               <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
-               <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
-               <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+         <div className='registerPanel'>
+            <div className='panel panel-default'>
+               <div className='panel-heading'>{this.props.title}</div>
+               <div className='panel-body'>
+                  <table className='table table-bordered'>
+                     <tbody>
+                        {
+                           this.state.contentShowable.map((row, i) => <tr key={`${this.state.title + i}`}>
+                              <td width='30%' key={`${this.state.title + i + 65}`}>{i}</td>
+                              <td width='70%' key={`${this.state.title + i + 131}`}>{row}</td>
+                           </tr>)
+                        }
+                     </tbody>
+                  </table>
+               </div>
+               <div className='panel-footer'>
+                  <button type='button' className='btn btn-xs'><i className='fa fa-plus' aria-hidden='true'></i>
+                  </button>
+                  <button type='button' className='btn btn-xs'><i className='fa fa-minus' aria-hidden='true'></i></button>
+                  <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
+                  <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
+                  <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+               </div>
             </div>
          </div>);
    }
