@@ -39,7 +39,7 @@ export class Superescalar extends Machine {
 
       this.ROBFpr = new Array(Machine.NFP).fill(-1);
       this.ROBGpr = new Array(Machine.NGP).fill(-1);
-      this.jumpPrediction = new Array(Superescalar.PREDTABLEBITS).fill(0);
+      this.jumpPrediction = new Array(Superescalar.PREDTABLESIZE).fill(0);
       this.reserveStationEntry = new Array(FUNCTIONALUNITTYPESQUANTITY).fill(null);
       // Calculate total ROB size
       let total = 0;

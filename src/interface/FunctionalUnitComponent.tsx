@@ -8,12 +8,14 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
       this.state = {
          title: null,
          content: [],
-         showableContent: []
+         showableContent: [],
+         showableHeader: []
       };
       window.state[this.props.title] = (data) => {
          let newState = {
             content: data,
-            showableContent: null
+            showableContent: null,
+            showableHeader: null
          };
          // #0 | #1
          // L1   L1
@@ -22,6 +24,7 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          // -> Number of Funcional Units
          // | Latency
          newState.showableContent = this.buildShowableContent(data.content).slice();
+         newState.showableHeader = this.buildShowableHeader(data.content);
          this.setState(newState);
       };
    }
@@ -35,10 +38,20 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
                if (((data[j]).flow[i]) != null) {
                   aux.push((data[j]).flow[i].id);
                } else {
-                  aux.push('');
+                  aux.push(' ');
                }
             }
             toReturn.push(aux);
+         }
+      }
+      return toReturn;
+   }
+
+   buildShowableHeader(data): string[] {
+      let toReturn = [];
+      if (data != null) {
+         for (let i = 0; i < data.length; i++) {
+            toReturn.push(`#${i}`);
          }
       }
       return toReturn;
@@ -50,12 +63,11 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
             <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
-                  {/*<thead>
-                     {this.state.header.map((element) => {
-                        <th>{`# ${element}`}</th>
-                     })
-                     }
-                  </thead>*/}
+                  {<thead>
+                     <tr>
+                        {this.state.showableHeader.map((element, i) => <th>{element}</th>)}
+                     </tr>
+                  </thead>}
                   <tbody>
                      {
                         this.state.showableContent.map((element, i) =>

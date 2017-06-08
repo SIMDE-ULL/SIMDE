@@ -11,7 +11,7 @@ export class JumpPredictionComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: new Array(64).fill(0),
+         content: new Array(16).fill(0),
          contentShowable: []
       };
       this.history = [];
@@ -22,7 +22,7 @@ export class JumpPredictionComponent extends React.Component<any, any> {
             contentShowable: []
          };
          for (let i = 0; i < newState.content.length; i++) {
-            newState.contentShowable.push(data.content[i] ? data.content[i] : '');
+            newState.contentShowable.push(data.content[i] ? data.content[i] : ' ');
          }
          // Set a limit for history
          if (!(this.history.length < this.historyLength)) {
