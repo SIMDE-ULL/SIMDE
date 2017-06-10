@@ -65,7 +65,8 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
                <table className='table table-bordered'>
                   {<thead>
                      <tr>
-                        {this.state.showableHeader.map((element, i) => <th>{element}</th>)}
+                        {this.state.showableHeader.map((element, i) =>
+                           <th key={this.props.title + 'FUTitle' + i}>{element}</th>)}
                      </tr>
                   </thead>}
                   <tbody>

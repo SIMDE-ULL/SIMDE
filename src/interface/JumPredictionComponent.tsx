@@ -43,8 +43,8 @@ export class JumpPredictionComponent extends React.Component<any, any> {
                   <tbody>
                      {
                         this.state.contentShowable.map((row, i) => <tr key={`${this.state.title + i}`}>
-                           <td key={`${this.state.title + i + 65}`}>{i}</td>
-                           <td key={`${this.state.title + i + 131}`}>{row}</td>
+                           <td width='40%' key={`${this.state.title + i + 65}`}>{i}</td>
+                           <td width='60%' key={`${this.state.title + i + 131}`}>{row}</td>
                         </tr>)
                      }
                   </tbody>
