@@ -21,7 +21,6 @@ export class CodeComponent extends React.Component<any, any> {
          ]
       };
       window.state['Code'] = (data) => {
-         console.log('Setting code data', data);
          this.setState(data);
       };
       this.setBreakpoint = this.setBreakpoint.bind(this);
@@ -38,11 +37,13 @@ export class CodeComponent extends React.Component<any, any> {
             <div className='panel-body'>
                <table className='table'>
                   <thead>
-                     <th>#</th>
-                     <th>OPCODE</th>
-                     <th>OP1</th>
-                     <th>OP2</th>
-                     <th>OP3</th>
+                     <tr>
+                        <th>#</th>
+                        <th>OPCODE</th>
+                        <th>OP1</th>
+                        <th>OP2</th>
+                        <th>OP3</th>
+                     </tr>
                   </thead>
                   <tbody>
                      {

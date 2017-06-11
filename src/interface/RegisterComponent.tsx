@@ -1,4 +1,7 @@
 import * as React from 'react';
+
+import { IntervalModalComponent } from './modal/IntervalModalComponent';
+
 import './RegisterComponent.scss';
 
 declare var window: any;
@@ -12,6 +15,9 @@ export class RegisterComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
+      if (this.props.title === 'Memoria') {
+         this.maxElem = 1024;
+      }
       this.state = {
          title: null,
          content: new Array(64).fill(0),
@@ -25,6 +31,8 @@ export class RegisterComponent extends React.Component<any, any> {
       }
       this.addInterval = this.addInterval.bind(this);
       this.removeInterval = this.removeInterval.bind(this);
+      this.openWithAddInterval = this.openWithAddInterval.bind(this);
+      this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
 
       window.state[this.props.title] = (data) => {
          let newState = {
@@ -45,37 +53,25 @@ export class RegisterComponent extends React.Component<any, any> {
       };
    }
 
-   addInterval() {
-      // let setToAdd = this.parseInterval();
-      console.log('Show before remove', this.show);
-      let setToAdd = new Set();
-      setToAdd.add(10);
-      setToAdd.add(15);
-      setToAdd.forEach(e => this.show.add(e));
-      console.log('Show after remove', this.show);
-      let newState = { contentShowable: [], show: this.show };
-      this.show.forEach(e => {
-         newState.contentShowable.push({ index: e, value: this.state.content[e] });
-      });
-      newState.contentShowable.sort((a, b) => a.index - b.index);
-      this.setState(newState);
+   addInterval(toAdd: string) {
+      if (toAdd) {
+         let setToAdd = this.parseInterval(toAdd);
+         setToAdd.forEach(e => this.show.add(e));
+         this.show = new Set(Array.from(this.show).sort((a, b) => a - b));
+         this.buildShowableContent();
+      } else {
+         this.setState({ open: false });
+      }
    }
 
-   parseInterval(): Set<number> {
+   parseInterval(toAdd: string): Set<number> {
       let newInterval = new Set<number>();
-      let cadena = prompt('Seleccione un nuevo intervalo');
-      while (cadena.length !== 0) {
-         let posComa = cadena.indexOf(',');
-         posComa = (posComa === -1) ? cadena.length : 1;
-         let posGuion = cadena.substr(0, posComa).indexOf('-');
-         if (posGuion === -1) {
-            let num = +cadena.substr(0, posComa);
-            if (num < this.maxElem) {
-               this.show.add(num);
-            }
-         } else {
-            let num1 = +cadena.substr(0, posGuion - 1);
-            let num2 = +cadena.substr(posGuion + 1, posComa - posGuion - 1);
+      let cadena = toAdd;
+      cadena.split(',').map(e => {
+         if (e.indexOf('-') !== -1) {
+            let range = e.split('-');
+            let num1 = +range[0];
+            let num2 = +range[1];
             if (num1 >= this.maxElem) {
                num1 = this.maxElem - 1;
             }
@@ -84,37 +80,52 @@ export class RegisterComponent extends React.Component<any, any> {
             }
             if (num1 < num2) {
                for (; num1 <= num2; num1++) {
-                  this.show.add(num1);
+                  newInterval.add(num1);
                }
             } else {
                for (; num2 <= num1; num2++) {
-                  this.show.add(num2);
+                  newInterval.add(num2);
                }
             }
+         } else {
+            let num = +e;
+            if (num < this.maxElem) {
+               newInterval.add(+e);
+            }
          }
-         cadena = cadena.substr(posComa + 1, cadena.length - posComa);
-      }
+      });
       return newInterval;
    }
 
-   removeInterval() {
-      // let setToRemove = Object.assign(new Set(), this.parseInterval());
-      let setToRemove = new Set();
-      setToRemove.add(10);
-      setToRemove.add(15);
-      console.log('Show before remove', this.show);
-      setToRemove.forEach(e => {
-         if (this.show.has(e)) {
-            this.show.delete(e);
-         }
-      });
-      console.log('Show after remove', this.show);
-      let newState = { contentShowable: [], show: this.show };
+   removeInterval(toRemove: string) {
+      if (toRemove) {
+         let setToRemove = this.parseInterval(toRemove);
+         setToRemove.forEach(e => {
+            if (this.show.has(e)) {
+               this.show.delete(e);
+            }
+         });
+         this.show = new Set(Array.from(this.show).sort((a, b) => a - b));
+         this.buildShowableContent();
+      } else {
+         this.setState({ open: false });
+      }
+   }
+
+   buildShowableContent() {
+      let newState = { contentShowable: [], show: this.show, open: false };
       this.show.forEach(e => {
          newState.contentShowable.push({ index: e, value: this.state.content[e] });
       });
-      newState.contentShowable.sort((a, b) => a.index - b.index);
       this.setState(newState);
+   }
+
+   openWithAddInterval() {
+      this.setState({ open: true, onAccept: this.addInterval });
+   }
+
+   openWithRemoveInterval() {
+      this.setState({ open: true, onAccept: this.removeInterval });
    }
 
    render() {
@@ -135,14 +146,15 @@ export class RegisterComponent extends React.Component<any, any> {
                   </table>
                </div>
                <div className='panel-footer'>
-                  <button type='button' className='btn btn-xs' onClick={this.addInterval}><i className='fa fa-plus' aria-hidden='true'></i>
+                  <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
                   </button>
-                  <button type='button' className='btn btn-xs' onClick={this.removeInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
+                  <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
                   <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
                   <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
                   <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
                </div>
             </div>
+            <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
          </div>);
    }
 }
