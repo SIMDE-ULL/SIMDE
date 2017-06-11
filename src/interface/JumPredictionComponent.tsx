@@ -1,8 +1,8 @@
 import * as React from 'react';
-
+import { BaseComponent } from './BaseComponent';
 declare var window: any;
 
-export class JumpPredictionComponent extends React.Component<any, any> {
+export class JumpPredictionComponent extends BaseComponent {
 
    history: any[];
    historyLength: 10;

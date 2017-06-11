@@ -1,12 +1,12 @@
 import * as React from 'react';
-
+import { BaseComponent } from './BaseComponent';
 import { IntervalModalComponent } from './modal/IntervalModalComponent';
 
 import './RegisterComponent.scss';
 
 declare var window: any;
 
-export class RegisterComponent extends React.Component<any, any> {
+export class RegisterComponent extends BaseComponent {
 
    history: any[];
    show: Set<number>;

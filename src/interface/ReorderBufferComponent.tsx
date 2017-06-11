@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { BaseComponent } from './BaseComponent';
 import { stageToString } from '../core/SuperescalarEnums';
 
 declare var window: any;
 
-export class ReorderBufferComponent extends React.Component<any, any> {
+export class ReorderBufferComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);

@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { BaseComponent } from './BaseComponent';
 declare var window: any;
 
-export class FunctionalUnitComponent extends React.Component<any, any> {
+export class FunctionalUnitComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);

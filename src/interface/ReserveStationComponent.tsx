@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { BaseComponent } from './BaseComponent';
 import './ReserveStationComponent.scss';
 
 declare var window: any;
 
-export class ReserveStationComponent extends React.Component<any, any> {
+export class ReserveStationComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);

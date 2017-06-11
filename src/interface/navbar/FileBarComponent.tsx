@@ -26,7 +26,7 @@ export class FileBarComponent extends React.Component<any, any> {
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
                   <ul className='dropdown-menu'>
                      <li><a onClick={() => {
-                     this.color = !this.color;
+                        this.color = !this.color;
                         window['colorBlocks'](this.color);
                      }}>Bloques Básicos</a></li>
                   </ul>
@@ -45,11 +45,11 @@ export class FileBarComponent extends React.Component<any, any> {
                <li className='dropdown'>
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ejecutar</a>
                   <ul className='dropdown-menu'>
-                     <li><a>Iniciar</a></li>
-                     <li><a>Pausa</a></li>
-                     <li><a>Parar</a></li>
-                     <li><a>Atrás</a></li>
-                     <li><a>Adelante</a></li>
+                     <li onClick={() => window.play()}><a>Iniciar</a></li>
+                     <li onClick={() => window.pause()}><a>Pausa</a></li>
+                     <li onClick={() => window.stop()}><a>Parar</a></li>
+                     <li onClick={() => window.stepBack()}><a>Atrás</a></li>
+                     <li onClick={() => window.superStep()}><a>Adelante</a></li>
                   </ul>
                </li>
             </ul>

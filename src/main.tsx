@@ -224,16 +224,15 @@ let stop = () => {
 };
 
 let stepBack = () => {
-   console.log('This is just for time travellers');
    // There is no time travelling for batch mode and initial mode
    // TODO Limit the number of steps
    // TODO Clean the interface
    if (superescalar.status.cycle > 0) {
       for (let callbackName in state) {
          // Code should only be setted on the first iteration
-         if (callbackName !== 'Code') {
+         if (callbackName === 'Prefetch') {
             state[callbackName]({
-               content: componentContent(callbackName)
+               step: 2
             });
          }
       }
