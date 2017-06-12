@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 declare var window: any;
 
-export class FunctionalUnitComponent extends BaseComponent {
+export class FunctionalUnitComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
@@ -13,6 +13,7 @@ export class FunctionalUnitComponent extends BaseComponent {
          showableHeader: []
       };
       window.state[this.props.title] = (data) => {
+         console.log('FU');
          let newState = {
             content: data,
             showableContent: null,
@@ -27,6 +28,7 @@ export class FunctionalUnitComponent extends BaseComponent {
          newState.showableContent = this.buildShowableContent(data.content).slice();
          newState.showableHeader = this.buildShowableHeader(data.content);
          this.setState(newState);
+         console.log('FU Done');
       };
    }
 

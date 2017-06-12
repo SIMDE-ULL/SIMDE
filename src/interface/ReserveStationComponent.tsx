@@ -8,62 +8,51 @@ export class ReserveStationComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
-      this.state = {
-         title: null,
-         content: [],
-         showableContent: []
-      };
-      window.state[this.props.title] = (data) => {
-         let newState = {
-            content: data.content,
-            showableContent: this.buildShowable(data.content.data, data.content.size)
-         };
-         this.setState(newState);
-      };
    }
 
-   buildShowable(data, size): any[] {
+   buildShowableContent(data, size): any[] {
+
       let toReturn = [];
-      let i;
-      for (i = 0; i < data.length; i++) {
-         let aux = {
-            instruction: { id: '' },
-            Qj: '',
-            Vj: '',
-            Qk: '',
-            Vk: '',
-            A: '',
-            ROB: ''
-         };
-         if (data[i] != null) {
-            aux = {
-               instruction: { id: '' },
-               Qj: data[i].Qj,
-               Vj: data[i].Vj,
-               Qk: data[i].Qk,
-               Vk: data[i].Vk,
-               A: data[i].A,
-               ROB: data[i].ROB
-            };
-            if (data[i].instruction != null) {
-               aux.instruction.id = data[i].instruction.id;
-            }
-         }
+      // let i;
+      // for (i = 0; i < data.length; i++) {
+      //    let aux = {
+      //       instruction: { id: '' },
+      //       Qj: '',
+      //       Vj: '',
+      //       Qk: '',
+      //       Vk: '',
+      //       A: '',
+      //       ROB: ''
+      //    };
+      //    if (data[i] != null) {
+      //       aux = {
+      //          instruction: { id: '' },
+      //          Qj: data[i].Qj,
+      //          Vj: data[i].Vj,
+      //          Qk: data[i].Qk,
+      //          Vk: data[i].Vk,
+      //          A: data[i].A,
+      //          ROB: data[i].ROB
+      //       };
+      //       if (data[i].instruction != null) {
+      //          aux.instruction.id = data[i].instruction.id;
+      //       }
+      //    }
 
-         toReturn.push(aux);
-      }
+      //    toReturn.push(aux);
+      // }
 
-      for (let j = i; j < size; j++) {
-         toReturn.push({
-            instruction: { id: '' },
-            Qj: '',
-            Vj: '',
-            Qk: '',
-            Vk: '',
-            A: '',
-            ROB: ''
-         });
-      }
+      // for (let j = i; j < size; j++) {
+      //    toReturn.push({
+      //       instruction: { id: '' },
+      //       Qj: '',
+      //       Vj: '',
+      //       Qk: '',
+      //       Vk: '',
+      //       A: '',
+      //       ROB: ''
+      //    });
+      // }
 
       return toReturn;
    }

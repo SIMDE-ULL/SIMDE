@@ -53,7 +53,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                      </div>
                      <div className='row'>
-                        <ReorderBufferComponent />
+                        <ReorderBufferComponent title='ReorderBuffer' />
                      </div>
                   </div>
                   <div className='col-sm-5'>

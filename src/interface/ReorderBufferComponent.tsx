@@ -8,21 +8,10 @@ export class ReorderBufferComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
-      this.state = {
-         content: [],
-         showableContent: []
-      };
-      window.state['ReorderBuffer'] = (data) => {
-         let newState = {
-            content: data.content,
-            showableContent: []
-         };
-         newState.showableContent = this.buildShowableContent(data.content);
-         this.setState(newState);
-      };
    }
 
    buildShowableContent(data): any[] {
+      console.log(data);
       let toReturn = new Array();
       for (let i = 0; i < data.length; i++) {
          let aux = {

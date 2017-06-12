@@ -128,13 +128,26 @@ let componentContent = (title: string): any => {
 };
 
 
-let callAllCallbacks = () => {
-   for (let callbackName in state) {
-      // Code should only be setted on the first iteration
-      if (callbackName !== 'Code') {
-         state[callbackName]({
-            content: componentContent(callbackName)
-         });
+let callAllCallbacks = (step?) => {
+   if (step) {
+      for (let callbackName in state) {
+         // Code should only be setted on the first iteration
+         if (callbackName !== 'Code') {
+            console.log(callbackName);
+            state[callbackName]({
+               step: step
+            });
+         }
+      }
+   } else {
+      for (let callbackName in state) {
+         // Code should only be setted on the first iteration
+         if (callbackName !== 'Code') {
+            console.log(callbackName);
+            state[callbackName]({
+               content: componentContent(callbackName)
+            });
+         }
       }
    }
 };
@@ -176,11 +189,12 @@ let loadSuper = () => {
       code.load(document.getElementById('codeInput').value);
       superExe();
       superescalar.code = code;
-
+      console.log('¿here?');
       // There is no need to update the code with the rest, it should remain the same during all the program execution
       state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
       callAllCallbacks();
    } catch (err) {
+      console.log('Load');
       alert(err);
    }
 };
@@ -228,14 +242,7 @@ let stepBack = () => {
    // TODO Limit the number of steps
    // TODO Clean the interface
    if (superescalar.status.cycle > 0) {
-      for (let callbackName in state) {
-         // Code should only be setted on the first iteration
-         if (callbackName === 'Prefetch') {
-            state[callbackName]({
-               step: 2
-            });
-         }
-      }
+      callAllCallbacks(2);
    }
 };
 

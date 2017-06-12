@@ -3,7 +3,7 @@ import { Queue } from '../core/collections/Queue';
 
 declare var window: any;
 
-export class BaseComponent extends React.Component<any, any> {
+export abstract class BaseComponent extends React.Component<any, any> {
 
    history: any[];
 
@@ -15,7 +15,7 @@ export class BaseComponent extends React.Component<any, any> {
          showableContent: []
       };
       this.history = new Array();
-      window.state[this.props.title] = (data: { content: Queue<any>, step: number }) => {
+      window.state[this.props.title] = (data: { content: any, step: number }) => {
          let newState = {
             content: data.content,
             showableContent: []
@@ -35,5 +35,5 @@ export class BaseComponent extends React.Component<any, any> {
       };
    }
 
-   buildShowableContent(data: Queue<any>): any { }
+   abstract buildShowableContent(data: any, size?: any): any;
 }

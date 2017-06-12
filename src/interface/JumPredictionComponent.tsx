@@ -9,29 +9,14 @@ export class JumpPredictionComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
-      this.state = {
-         title: null,
-         content: new Array(16).fill(0),
-         contentShowable: []
-      };
-      this.history = [];
+   }
 
-      window.state[this.props.title] = (data) => {
-         let newState = {
-            content: data.content.slice(),
-            contentShowable: []
-         };
-         for (let i = 0; i < newState.content.length; i++) {
-            newState.contentShowable.push(data.content[i] ? data.content[i] : ' ');
-         }
-         // Set a limit for history
-         if (!(this.history.length < this.historyLength)) {
-            this.history.shift();
-         }
-         this.history.push(newState.contentShowable);
-
-         this.setState(newState);
-      };
+   buildShowableContent(data): any[] {
+      let toReturn = [];
+      for (let i = 0; i < data.length; i++) {
+         toReturn.push(data[i] ? data[i] : ' ');
+      }
+      return toReturn;
    }
 
    render() {
@@ -42,7 +27,7 @@ export class JumpPredictionComponent extends BaseComponent {
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.contentShowable.map((row, i) => <tr key={`${this.state.title + i}`}>
+                        this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
                            <td width='40%' key={`${this.state.title + i + 65}`}>{i}</td>
                            <td width='60%' key={`${this.state.title + i + 131}`}>{row}</td>
                         </tr>)
