@@ -26,7 +26,8 @@ export class PrefetchDecoderComponent extends BaseComponent {
    render() {
       return (
          <div className='panel panel-default prefetch-decoder-zone'>
-            <div className='panel-heading'>{this.props.title}</div>
+            <div className='panel-heading'>
+               {this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <tbody>

@@ -19,7 +19,8 @@ export abstract class BaseComponent extends React.Component<any, any> {
             showableContent: []
          };
          if (data.step) {
-            newState.showableContent = this.history[data.step].content;
+            console.log('Time for...', this.history.length - data.step);
+            newState.showableContent = this.history[this.history.length - data.step].content;
          } else {
             newState.showableContent = this.buildShowableContent(data.content);
             if (this.history.length < 10) {

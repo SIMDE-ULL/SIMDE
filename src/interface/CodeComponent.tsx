@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Code } from '../core/Code';
 import { Instruction } from '../core/Instruction';
 
+import { FormattedMessage } from 'react-intl';
 import './CodeComponent.scss';
 declare var window: any;
 
@@ -33,7 +34,11 @@ export class CodeComponent extends React.Component<any, any> {
    render() {
       return (
          <div className='panel panel-default'>
-            <div className='panel-heading'>{'Code'}</div>
+            <div className='panel-heading'>
+               <FormattedMessage id="app.Code"
+                  defaultMessage="Code"
+                  values={{ filename: <code>src/App.tsx</code> }} />
+            </div>
             <div className='panel-body'>
                <table className='table'>
                   <thead>

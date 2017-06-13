@@ -7,6 +7,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { IntlProvider } from 'react-intl';
+const locale = 'en';
 
 import App from './interface/App';
 
@@ -21,6 +23,7 @@ let superescalar = new Superescalar();
 let state: any = {};
 window.interval = null;
 window.state = state;
+window.backStep = 0;
 
 /*
  * This functions relates the component name with the 
@@ -129,7 +132,9 @@ let componentContent = (title: string): any => {
 
 
 let callAllCallbacks = (step?) => {
+   console.log('There is no step');
    if (step) {
+      console.log('Calling all callbacks ', step);
       for (let callbackName in state) {
          // Code should only be setted on the first iteration
          if (callbackName !== 'Code') {
@@ -168,16 +173,19 @@ let superExe = () => {
 };
 
 let superStep = () => {
-   console.debug('Super step!');
-   console.debug(state);
-   let resul = superescalar.tic();
-   callAllCallbacks();
+   if (window.backStep > 0) {
+      window.backStep--;
+      callAllCallbacks(window.backStep);
+   } else {
+      let resul = superescalar.tic();
+      callAllCallbacks();
 
-   if (resul === SuperescalarStatus.SUPER_BREAKPOINT) {
-      throw 'Ejecución detenida, breakpoint';
-   }
-   if (resul === SuperescalarStatus.SUPER_ENDEXE) {
-      throw 'Done';
+      if (resul === SuperescalarStatus.SUPER_BREAKPOINT) {
+         throw 'Ejecución detenida, breakpoint';
+      }
+      if (resul === SuperescalarStatus.SUPER_ENDEXE) {
+         throw 'Done';
+      }
    }
 };
 
@@ -237,8 +245,12 @@ let stepBack = () => {
    // There is no time travelling for batch mode and initial mode
    // TODO Limit the number of steps
    // TODO Clean the interface
-   if (superescalar.status.cycle > 0) {
-      callAllCallbacks(2);
+   console.log('Go');
+   console.log(superescalar.status.cycle, window.backStep);
+   if (superescalar.status.cycle > 0 && window.backStep < 10) {
+      console.log('entro en el if');
+      window.backStep++;
+      callAllCallbacks(window.backStep);
    }
 };
 
@@ -296,6 +308,8 @@ window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
 ReactDOM.render(
-   <App machine={superescalar} />,
+   <IntlProvider locale={locale}>
+      <App machine={superescalar} />
+   </IntlProvider>,
    document.getElementById('app')
 );
