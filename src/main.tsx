@@ -155,10 +155,8 @@ let callAllCallbacks = (step?) => {
    }
 };
 
-
 // Always use arrow functions for not losing "this"
 let load = (id) => {
-   console.debug('Time to load the code');
    let input = document.getElementById(id);
    let code: Code = new Code();
    try {
@@ -179,13 +177,7 @@ let superStep = () => {
    } else {
       let resul = superescalar.tic();
       callAllCallbacks();
-
-      if (resul === SuperescalarStatus.SUPER_BREAKPOINT) {
-         throw 'Ejecución detenida, breakpoint';
-      }
-      if (resul === SuperescalarStatus.SUPER_ENDEXE) {
-         throw 'Done';
-      }
+      return resul;
    }
 };
 
@@ -195,7 +187,9 @@ let loadSuper = () => {
       code.load(document.getElementById('codeInput').value);
       superExe();
       superescalar.code = code;
-      // There is no need to update the code with the rest, it should remain the same during all the program execution
+
+      // There is no need to update the code with the rest,
+      // it should remain the same during all the program execution
       state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
       callAllCallbacks();
    } catch (err) {
@@ -204,6 +198,7 @@ let loadSuper = () => {
 };
 
 let play = () => {
+   window.stopCondition = 0;
    let speed = calculateSpeed();
    if (superescalar.status.cycle === 0) {
       let code = Object.assign(new Code(), superescalar.code);
@@ -211,14 +206,7 @@ let play = () => {
       superescalar.code = code;
    }
    if (speed) {
-      window.interval = setInterval(() => {
-         try {
-            superStep();
-         } catch (err) {
-            clearInterval(window.interval);
-            window.alert(err);
-         }
-      }, speed);
+      foo(speed);
    } else {
       // Continuous execution mode;
       // tslint:disable-next-line:no-empty
@@ -229,26 +217,22 @@ let play = () => {
 };
 
 let pause = () => {
-   clearInterval(window.interval);
+   window.stopCondition = 1;
 };
 
 let stop = () => {
-   clearInterval(window.interval);
+
+   // In normal execution I have to avoid the asynchrnous way of
+   // js entering in the interval
+   window.stopCondition = 2;
    // TODO clean reboot the machine and clean the interface
-   let code = Object.assign(new Code(), superescalar.code);
-   superExe();
-   superescalar.code = code;
-   callAllCallbacks();
 };
 
 let stepBack = () => {
    // There is no time travelling for batch mode and initial mode
    // TODO Limit the number of steps
    // TODO Clean the interface
-   console.log('Go');
-   console.log(superescalar.status.cycle, window.backStep);
    if (superescalar.status.cycle > 0 && window.backStep < 10) {
-      console.log('entro en el if');
       window.backStep++;
       callAllCallbacks(window.backStep);
    }
@@ -265,6 +249,28 @@ function calculateSpeed() {
 
    return calculatedSpeed;
 };
+
+function foo(speed) {
+   if (!window.stopCondition) {
+      setTimeout(() => {
+         let result = superStep();
+         if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
+            foo(speed);
+         } else {
+            if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
+               alert('Ejecución detenida, breakpoint');
+            } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
+               alert('Ejecución finalizada');
+            }
+         }
+      }, speed);
+   } else if (window.stopCondition === 2) {
+      let code = Object.assign(new Code(), superescalar.code);
+      superExe();
+      superescalar.code = code;
+      callAllCallbacks();
+   }
+}
 
 let saveSuperConfig = (superConfig) => {
    const superConfigKeys = Object.keys(superConfig);
@@ -307,6 +313,7 @@ window.saveSuperConfig = saveSuperConfig;
 window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
+window.stopCondition = 0;
 ReactDOM.render(
    <IntlProvider locale={locale}>
       <App machine={superescalar} />
