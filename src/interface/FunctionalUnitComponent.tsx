@@ -13,7 +13,6 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          showableHeader: []
       };
       window.state[this.props.title] = (data) => {
-         console.log('FU');
          let newState = {
             content: data,
             showableContent: null,
@@ -28,7 +27,6 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
          newState.showableContent = this.buildShowableContent(data.content).slice();
          newState.showableHeader = this.buildShowableHeader(data.content);
          this.setState(newState);
-         console.log('FU Done');
       };
    }
 

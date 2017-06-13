@@ -33,7 +33,7 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
                this.history.push(Object.assign({}, { content: newState.showableContent }));
             } else {
                this.history.shift();
-               this.history.push(Object.assign({}, newState.showableContent));
+               this.history.push(Object.assign({}, { content: newState.showableContent }));
             }
          }
          this.setState(newState);
@@ -47,6 +47,7 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
       });
       return newState;
    }
+
    addInterval(toAdd: string) {
       if (toAdd) {
          let setToAdd = this.parseInterval(toAdd);

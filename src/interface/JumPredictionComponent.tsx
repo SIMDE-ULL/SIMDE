@@ -14,9 +14,29 @@ export class JumpPredictionComponent extends BaseComponent {
    buildShowableContent(data): any[] {
       let toReturn = [];
       for (let i = 0; i < data.length; i++) {
-         toReturn.push(data[i] ? data[i] : ' ');
+         toReturn.push(this.changeValue(data[i]));
       }
       return toReturn;
+   }
+
+   changeValue(value): string {
+      let valueToShow;
+      console.log(value);
+      switch (value) {
+         case 0:
+            valueToShow = 'F(00)';
+            break;
+         case 1:
+            valueToShow = 'F(01)';
+            break;
+         case 2:
+            valueToShow = 'V(10)';
+            break;
+         case 3:
+            valueToShow = 'V(11)';
+            break;
+      }
+      return valueToShow;
    }
 
    render() {

@@ -18,6 +18,7 @@ export class PrefetchDecoderComponent extends BaseComponent {
       for (let i = data.first, j = 0; i !== data.last; i = data.nextIterator(i), j++) {
          toReturn[j] = ((data.getElement(i) != null) ? data.getElement(i).instruction.id : '0');
       }
+      console.log(toReturn, data);
       return toReturn;
    }
 

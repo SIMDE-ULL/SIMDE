@@ -11,13 +11,11 @@ export abstract class BaseComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         content: [],
          showableContent: []
       };
       this.history = new Array();
       window.state[this.props.title] = (data: { content: any, step: number }) => {
          let newState = {
-            content: data.content,
             showableContent: []
          };
          if (data.step) {
@@ -28,7 +26,7 @@ export abstract class BaseComponent extends React.Component<any, any> {
                this.history.push(Object.assign({}, { content: newState.showableContent }));
             } else {
                this.history.shift();
-               this.history.push(Object.assign({}, newState.showableContent));
+               this.history.push(Object.assign({}, { content: newState.showableContent }));
             }
          }
          this.setState(newState);

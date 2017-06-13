@@ -11,7 +11,6 @@ export class ReorderBufferComponent extends BaseComponent {
    }
 
    buildShowableContent(data): any[] {
-      console.log(data);
       let toReturn = new Array();
       for (let i = 0; i < data.length; i++) {
          let aux = {
