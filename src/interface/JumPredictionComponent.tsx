@@ -21,7 +21,6 @@ export class JumpPredictionComponent extends BaseComponent {
 
    changeValue(value): string {
       let valueToShow;
-      console.log(value);
       switch (value) {
          case 0:
             valueToShow = 'F(00)';

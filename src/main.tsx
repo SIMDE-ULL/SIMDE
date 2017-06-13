@@ -207,8 +207,8 @@ let play = () => {
          try {
             superStep();
          } catch (err) {
-            window.alert(err);
             clearInterval(window.interval);
+            window.alert(err);
          }
       }, speed);
    } else {
