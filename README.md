@@ -2,10 +2,7 @@
 
 ## What is SIMDE?
 
-SIMDE is a simple superescalar machine simulator.
-
-[]()
-[]()
+SIMDE is a simulator for supporting teaching of ILP (Instruction Level Parallelism) Architectures. This versions represents Superescalar's machine execution.
 
 ## Technologies
 
@@ -17,4 +14,14 @@ The project has been released under GPLv3 License.
 
 ## Live DEMO
 
-[http://adrianabreu.com/Simde_simulator](Check the project live)
+[Check the project live](http://adrianabreu.com/Simde_simulator)
+
+## Docs
+
+If you have any doubt you should check the official docs [here](http://adrianabreu.com/SIMDE-Docs/).
+
+## Author
+
+This project has been rewrite from scratch by me using the original simulator made by [Iván Castilla Rodríguez](https://github.com/icasrod).
+
+All credit for the core design should go to him.
