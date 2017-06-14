@@ -11,12 +11,16 @@ export class JumpPredictionComponent extends BaseComponent {
       super(props);
    }
 
-   buildShowableContent(data): any[] {
+   buildShowableContent(data): any {
+      let toReturnObject = {
+         showableContent: []
+      };
       let toReturn = [];
       for (let i = 0; i < data.length; i++) {
          toReturn.push(this.changeValue(data[i]));
       }
-      return toReturn;
+      toReturnObject.showableContent = toReturn;
+      return toReturnObject;
    }
 
    changeValue(value): string {

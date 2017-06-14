@@ -10,7 +10,10 @@ export class ReserveStationComponent extends BaseComponent {
       super(props);
    }
 
-   buildShowableContent(content: { data: any, size: number }): any[] {
+   buildShowableContent(content: { data: any, size: number }): any {
+      let toReturnObject = {
+         showableContent: []
+      };
       let data = content.data;
       let toReturn = [];
       let i;
@@ -53,8 +56,8 @@ export class ReserveStationComponent extends BaseComponent {
             ROB: ''
          });
       }
-
-      return toReturn;
+      toReturnObject.showableContent = toReturn;
+      return toReturnObject;
    }
 
 

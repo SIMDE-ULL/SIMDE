@@ -132,11 +132,9 @@ let componentContent = (title: string): any => {
 
 
 let callAllCallbacks = (step?) => {
-   console.log('There is no step');
+   // Code should only be setted on the first iteration
    if (step) {
-      console.log('Calling all callbacks ', step);
       for (let callbackName in state) {
-         // Code should only be setted on the first iteration
          if (callbackName !== 'Code') {
             state[callbackName]({
                step: step
@@ -145,7 +143,6 @@ let callAllCallbacks = (step?) => {
       }
    } else {
       for (let callbackName in state) {
-         // Code should only be setted on the first iteration
          if (callbackName !== 'Code') {
             state[callbackName]({
                content: componentContent(callbackName)

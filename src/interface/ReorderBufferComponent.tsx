@@ -10,7 +10,10 @@ export class ReorderBufferComponent extends BaseComponent {
       super(props);
    }
 
-   buildShowableContent(data): any[] {
+   buildShowableContent(data): any {
+      let toReturnObject = {
+         showableContent: []
+      };
       let toReturn = new Array();
       for (let i = 0; i < data.length; i++) {
          let aux = {
@@ -34,8 +37,8 @@ export class ReorderBufferComponent extends BaseComponent {
          };
          toReturn.push(aux);
       }
-
-      return toReturn;
+      toReturnObject.showableContent = toReturn;
+      return toReturnObject;
    }
 
 

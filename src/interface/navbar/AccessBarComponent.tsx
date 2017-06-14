@@ -12,11 +12,16 @@ export class AccessBarComponent extends React.Component<any, any> {
       this.pause = this.pause.bind(this);
       this.stop = this.stop.bind(this);
       this.state = {
-         content: null
+         content: null,
+         showableContent: null
       };
 
       window.state['cycle'] = (data) => {
-         this.setState(data);
+         if (data.step) {
+            this.setState({ showableContent: this.state.content - data.step });
+         } else {
+            this.setState({ content: data.content, showableContent: data.content });
+         }
       };
    }
 
@@ -72,7 +77,7 @@ export class AccessBarComponent extends React.Component<any, any> {
                <li>
                   <a >
                      <label htmlFor='cycle'>Ciclo</label>
-                     <span className='cycle'>{this.state.content}</span>
+                     <span className='cycle'>{this.state.showableContent}</span>
                   </a>
                </li>
                <li>

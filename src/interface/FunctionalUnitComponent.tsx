@@ -2,36 +2,18 @@ import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 declare var window: any;
 
-export class FunctionalUnitComponent extends React.Component<any, any> {
+export class FunctionalUnitComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
-      this.state = {
-         title: null,
-         content: [],
+   }
+
+   buildShowableContent(data): any {
+      let toReturnObject = {
          showableContent: [],
          showableHeader: []
       };
-      window.state[this.props.title] = (data) => {
-         let newState = {
-            content: data,
-            showableContent: null,
-            showableHeader: null
-         };
-         // #0 | #1
-         // L1   L1
-         // L2   L2
-         // L3   L3
-         // -> Number of Funcional Units
-         // | Latency
-         newState.showableContent = this.buildShowableContent(data.content).slice();
-         newState.showableHeader = this.buildShowableHeader(data.content);
-         this.setState(newState);
-      };
-   }
-
-   buildShowableContent(data): any[] {
-      let toReturn = new Array();
+      let showableContent = new Array();
       if (data != null && data[0] != null) {
          for (let i = 0; i < data[0].flow.length; i++) {
             let aux = [];
@@ -42,10 +24,12 @@ export class FunctionalUnitComponent extends React.Component<any, any> {
                   aux.push(' ');
                }
             }
-            toReturn.push(aux);
+            showableContent.push(aux);
          }
       }
-      return toReturn;
+      toReturnObject.showableContent = showableContent;
+      toReturnObject.showableHeader = this.buildShowableHeader(data);
+      return toReturnObject;
    }
 
    buildShowableHeader(data): string[] {

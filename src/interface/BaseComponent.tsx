@@ -11,7 +11,8 @@ export abstract class BaseComponent extends React.Component<any, any> {
       super(props);
       this.state = {
          title: null,
-         showableContent: []
+         showableContent: [],
+         showableHeader: []
       };
       this.history = new Array();
       window.state[this.props.title] = (data: { content: any, step: number }) => {
@@ -19,10 +20,9 @@ export abstract class BaseComponent extends React.Component<any, any> {
             showableContent: []
          };
          if (data.step) {
-            console.log('Time for...', this.history.length - data.step);
             newState.showableContent = this.history[this.history.length - data.step].content;
          } else {
-            newState.showableContent = this.buildShowableContent(data.content);
+            newState = this.buildShowableContent(data.content);
             if (this.history.length < 10) {
                this.history.push(Object.assign({}, { content: newState.showableContent }));
             } else {
@@ -34,5 +34,5 @@ export abstract class BaseComponent extends React.Component<any, any> {
       };
    }
 
-   abstract buildShowableContent(data: any, size?: any): any;
+   abstract buildShowableContent(data: any, size?: number): any;
 }
