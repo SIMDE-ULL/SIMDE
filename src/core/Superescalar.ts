@@ -341,7 +341,7 @@ export class Superescalar extends Machine {
    }
 
    ticExecute(): void {
-
+      // Go through all the Functional Unit
       for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
          for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
             if (this.functionalUnit[i][j].isFree()) {
@@ -349,13 +349,11 @@ export class Superescalar extends Machine {
             }
          }
       }
-      // Después de pasar por todas las UF me encargo de las UF de cálculo de dir.
-      // Fase 1b: Cálculo de la dirección
-      // Primero termino la ejecución del cálculo de dir. en la ALU
+      // Steb b of address calculation
+      // Now it's time to gi through the FU of Address Calc
       for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
          if (this.aluMem[i].getTopInstruction() != null) {
-            // Busco la entrada de la ER que coincide con esa instrucción
-            // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
+            // Look the entry of the Reserve station that matchs this instruction
             let j = 0;
             while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum !== (this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i))
                || (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos !== this.aluMem[i].getLast())) {
@@ -368,10 +366,9 @@ export class Superescalar extends Machine {
          }
          this.aluMem[i].tic();
       }
-      // Fase 1a: Cálculo de la dirección
-      // Relleno la ALU de cálculo de direcciones asociagda a esta UF
+      // Step a of address calculation
+      // Fil the ALU of address calculations related to this FU
       for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-         // TEstacionReserva::iterator it = ER[FunctionalUnitType.MEMORY].begin();
          let j = 0;
          for (; j !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; j++) {
             // Operand value available AND address not calculated yet AND is being calculated right now
@@ -396,8 +393,6 @@ export class Superescalar extends Machine {
          let i = 0;
          while ((this.reserveStationEntry[type][i].FUNum !== num) ||
             (this.reserveStationEntry[type][i].FUPos !== this.functionalUnit[type][num].getLast())) {
-            console.log(this.reserveStationEntry[type][i].FUNum, ' ', num);
-            console.log(this.reserveStationEntry[type][i].FUPos, ' ', this.functionalUnit[type][num].getLast());
             i++;
          }
          let opcode = inst.opcode;
@@ -454,10 +449,10 @@ export class Superescalar extends Machine {
                break;
             /* tslint:enable:ter-indent */
          }
-         // Finalizó la ejecución de la instrucción
+         // Finish the instruction execution
          if (this.functionalUnit[type][num].status.stall === 0) {
             if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
-               // Actualizo todas las ER
+               // Update all the reserve stations
                for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                   for (let k = 0; k < this.reserveStationEntry[j].length; k++) {
                      if (this.reserveStationEntry[j][k].Qj === this.reserveStationEntry[type][i].ROB) {
@@ -482,28 +477,25 @@ export class Superescalar extends Machine {
    }
 
    ticWriteResult(): void {
-      // En primer lugar compruebo si hay STORES listos
+      // First check for STORES that are ready
       let i = 0;
       while (i !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
          let opcode = this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].instruction.opcode;
          if (((opcode === Opcodes.SW) || (opcode === Opcodes.SF))
             && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qj === -1)
             && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address !== -1)) {
-            console.log('Estoy en el sf');
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].value = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vj;
-            // NOTA: Lo pongo o no?
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].ready = true;
-            // Elimino la entrada de la ER
+            // Remove the Reserve Station entry
             if (i === 0) {
-               // TODO BEGIN
                this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
                i = 0;
             } else {
-               // TODO FIX THIS
                let j = i;
                i--;
-               this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
+               // Check, may this generate some problem?
+               this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(j, 1);
                i++;
             }
          } else {
@@ -524,13 +516,12 @@ export class Superescalar extends Machine {
    }
 
    checkJump(rob: ReorderBufferEntry): boolean {
-      // Se comprueba si la predicción acertó
+      // Check if the prediction was correct
       // Typescript does not support ^ operator for boolean
       if (+this.prediction(rob.instruction.id) ^ +(!!rob.value)) {
          this.changePrediction(rob.instruction.id, !!rob.value);
-         // Se cambia el PC
+         // Change pc
          if (rob.value) {
-            console.log('Time for jump', rob.instruction.getOperand(2));
             this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
          } else {
             this.pc = rob.instruction.id + 1;
@@ -561,7 +552,7 @@ export class Superescalar extends Machine {
          this.decoder.init(this.issue);
          this.prefetchUnit.init(2 * this.issue);
 
-         // Limpio también las estructuras asociadas a los registros
+         // Clean the structures related to the registers
          this.ROBGpr.fill(-1);
          this.ROBFpr.fill(-1);
          this._gpr.setAllBusy(false);
@@ -606,7 +597,7 @@ export class Superescalar extends Machine {
                case Opcodes.MULT:
                case Opcodes.LW:
                   this._gpr.setContent(aux.destinyRegister, aux.value, false);
-                  // Pase lo que pase R0 vale 0
+                  // R0 value is always 0
                   this._gpr.setContent(0, 0, false);
                   if (this.ROBGpr[aux.destinyRegister] === h) {
                      this._gpr.setBusy(aux.destinyRegister, false);

@@ -57,7 +57,7 @@ export class FileBarComponent extends React.Component<any, any> {
                <li className='dropdown'>
                   <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ayuda</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='http://demosimde.azurewebsites.net/docs/'>Documentación</a></li>
+                     <li><a href='http://adrianabreu.com/SIMDE-Docs/' target='_blank'>Documentación</a></li>
                      <li><a onClick={() => { window['autorModal'](true); }}>Acerca de...</a></li>
                   </ul>
                </li>

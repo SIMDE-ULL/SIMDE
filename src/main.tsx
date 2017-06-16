@@ -133,7 +133,6 @@ let componentContent = (title: string): any => {
    return result;
 };
 
-
 let callAllCallbacks = (step?) => {
    // Code should only be setted on the first iteration
    if (step) {

@@ -366,7 +366,6 @@ export class Code {
       for (let i = 0; i < basicBlockIndex; i++) {
          actual = actual.next;
       }
-      console.log('Line number', actual.lineNumber);
       return actual.lineNumber;
    }
 

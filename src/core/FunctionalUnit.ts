@@ -70,9 +70,7 @@ export class FunctionalUnit {
             this._flow[this._status.lastInstruction] = null;
             this._status.instructionNumber--;
          }
-         console.log('Latency before update', this._status.lastInstruction);
          this._status.lastInstruction = (this._latency + this._status.lastInstruction - 1) % this._latency;
-         console.log('lastInstruccion', this._status.lastInstruction);
       } else {
          this._status.stall--;
       }
@@ -108,7 +106,6 @@ export class FunctionalUnit {
    }
 
    getLast(): number {
-      console.log('Theyre asking me for the last', this._status.lastInstruction);
       return this._status.lastInstruction;
    }
 }
