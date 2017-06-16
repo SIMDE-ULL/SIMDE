@@ -27,7 +27,7 @@ window.backStep = 0;
 
 /*
  * This functions relates the component name with the 
- * approtiate fucntion content.
+ * appropiate function content.
  * Parameter: the title of the component.
  * Returns: Component content.
  */
@@ -67,42 +67,36 @@ let componentContent = (title: string): any => {
             data: superescalar.reserveStationEntry[0],
             size: superescalar.getReserveStationSize(0)
          };
-
          break;
       case 'Integer x':
          result = {
             data: superescalar.reserveStationEntry[1],
             size: superescalar.getReserveStationSize(1)
          };
-
          break;
       case 'Floating +':
          result = {
             data: superescalar.reserveStationEntry[2],
             size: superescalar.getReserveStationSize(2)
          };
-
          break;
       case 'Floating x':
          result = {
             data: superescalar.reserveStationEntry[3],
             size: superescalar.getReserveStationSize(3)
          };
-
          break;
       case 'Memory':
          result = {
             data: superescalar.reserveStationEntry[4],
             size: superescalar.getReserveStationSize(4)
          };
-
          break;
       case 'Jump':
          result = {
             data: superescalar.reserveStationEntry[5],
             size: superescalar.getReserveStationSize(5)
          };
-
          break;
       case '+Entera':
          result = superescalar.functionalUnit[0];
@@ -133,7 +127,12 @@ let componentContent = (title: string): any => {
    return result;
 };
 
-let callAllCallbacks = (step?) => {
+/*
+ * This call all the components to update the state
+ * if there is a step param, the components will use
+ * their history to set the appropiate content
+ */
+let callAllCallbacks = (step?: number) => {
    // Code should only be setted on the first iteration
    if (step) {
       for (let callbackName in state) {
@@ -154,7 +153,6 @@ let callAllCallbacks = (step?) => {
    }
 };
 
-// Always use arrow functions for not losing "this"
 let load = (id) => {
    let input = document.getElementById(id);
    let code: Code = new Code();
@@ -207,7 +205,6 @@ let play = () => {
    if (speed) {
       foo(speed);
    } else {
-      // Continuous execution mode;
       // tslint:disable-next-line:no-empty
       while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
       callAllCallbacks();
@@ -222,7 +219,7 @@ let pause = () => {
 let stop = () => {
 
    // In normal execution I have to avoid the asynchrnous way of
-   // js entering in the interval
+   // js entering in the interval, the only way I have is to check this
    window.stopCondition = 2;
    // TODO clean reboot the machine and clean the interface
 };
@@ -313,6 +310,11 @@ window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
 window.stopCondition = 0;
+
+/*
+ * Here is where the react endpoint appears
+ *
+ */
 ReactDOM.render(
    <IntlProvider locale={locale}>
       <App machine={superescalar} />

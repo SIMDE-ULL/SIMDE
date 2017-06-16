@@ -492,11 +492,7 @@ export class Superescalar extends Machine {
                this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
                i = 0;
             } else {
-               let j = i;
-               i--;
-               // Check, may this generate some problem?
-               this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(j, 1);
-               i++;
+               this.reserveStationEntry[FunctionalUnitType.MEMORY].splice(i, 1);
             }
          } else {
             i++;

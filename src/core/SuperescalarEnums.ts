@@ -21,6 +21,7 @@ export enum SuperescalarStatus {
 
 export function stageToString(index: number): string {
    let toReturn = '';
+   /* tslint:disable:ter-indent */
    switch (index) {
       case 0:
          toReturn = 'ISSUE';
@@ -35,5 +36,6 @@ export function stageToString(index: number): string {
          toReturn = 'COMMIT';
          break;
    }
+   /* tslint:enable:ter-indent */
    return toReturn;
 }
