@@ -56,7 +56,8 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
          let setToAdd = this.parseInterval(toAdd);
          setToAdd.forEach(e => this.show.add(e));
          this.show = new Set(Array.from(this.show).sort((a, b) => a - b));
-         this.buildShowableContent(this.state.content);
+         let newState = this.buildShowableContent(this.state.content);
+         this.setState(newState);
       } else {
          this.setState({ open: false });
       }
@@ -104,7 +105,8 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
             }
          });
          this.show = new Set(Array.from(this.show).sort((a, b) => a - b));
-         this.buildShowableContent(this.state.content);
+         let newState = this.buildShowableContent(this.state.content);
+         this.setState(newState);
       } else {
          this.setState({ open: false });
       }

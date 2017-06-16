@@ -27,6 +27,9 @@ export class ROBMapperComponent extends BaseRegisterComponent {
       // Bind functions for not losing context
       this.openWithAddInterval = this.openWithAddInterval.bind(this);
       this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+      this.addInterval = this.addInterval.bind(this);
+      this.parseInterval = this.parseInterval.bind(this);
+      this.removeInterval = this.removeInterval.bind(this);
    }
 
    openWithAddInterval() {
