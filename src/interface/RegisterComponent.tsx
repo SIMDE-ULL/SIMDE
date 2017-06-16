@@ -13,17 +13,17 @@ export class RegisterComponent extends BaseRegisterComponent {
 
    constructor(props: any) {
       super(props);
-      if (this.props.title === 'Memoria') {
-         this.maxElem = 1024;
-      }
-      this.state = {
-         title: null,
-         content: new Array(64).fill(0),
-         contentShowable: [],
-         show: [1, 64]
-      };
    }
 
+   // if (this.props.title === 'Memoria') {
+   //    this.maxElem = 1024;
+   // }
+   // this.state = {
+   //    title: null,
+   //    content: new Array(64).fill(0),
+   //    contentShowable: [],
+   //    show: [1, 64]
+   // };
 
 
    openWithAddInterval() {
@@ -43,7 +43,7 @@ export class RegisterComponent extends BaseRegisterComponent {
                   <table className='table table-bordered'>
                      <tbody>
                         {
-                           this.state.contentShowable.map((row, i) => <tr key={`${this.state.title + i}`}>
+                           this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
                               <td width='30%' key={`${this.state.title + i + 65}`}>{row.index}</td>
                               <td width='70%' key={`${this.state.title + i + 131}`}>{row.value}</td>
                            </tr>)

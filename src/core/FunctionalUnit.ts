@@ -52,7 +52,8 @@ export class FunctionalUnit {
       this._latency = value;
       this._status.lastInstruction = value - 1;
       this._status.instructionNumber = 0;
-      this._flow = new Array(value).fill(null);
+      this._flow = new Array(value);
+      this._flow.fill(null);
    }
 
    public get flow(): Instruction[] {
@@ -69,8 +70,9 @@ export class FunctionalUnit {
             this._flow[this._status.lastInstruction] = null;
             this._status.instructionNumber--;
          }
-         // WTF is this line?
+         console.log('Latency before update', this._status.lastInstruction);
          this._status.lastInstruction = (this._latency + this._status.lastInstruction - 1) % this._latency;
+         console.log('lastInstruccion', this._status.lastInstruction);
       } else {
          this._status.stall--;
       }
@@ -106,6 +108,7 @@ export class FunctionalUnit {
    }
 
    getLast(): number {
-      return this.status.lastInstruction;
+      console.log('Theyre asking me for the last', this._status.lastInstruction);
+      return this._status.lastInstruction;
    }
 }

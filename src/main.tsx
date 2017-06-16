@@ -122,6 +122,9 @@ let componentContent = (title: string): any => {
       case 'JumpUF':
          result = superescalar.functionalUnit[5];
          break;
+      case 'AluMem':
+         result = superescalar.aluMem;
+         break;
       case 'cycle':
          result = superescalar.status.cycle;
          break;

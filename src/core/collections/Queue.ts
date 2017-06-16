@@ -68,7 +68,8 @@ export class Queue<T> {
 
    public init(n: number) {
       this.size = n + 1;
-      this._elements = new Array(n + 1).fill(null);
+      this._elements = new Array(n + 1);
+      this._elements.fill(null);
       this.first = 0;
       this.last = 0;
    }

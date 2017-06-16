@@ -101,7 +101,10 @@ export class Superescalar extends Machine {
          // las distintas apariciones de una misma inst.
          aux.instruction = new Instruction();
          aux.instruction.copy(this.code.instructions[this.pc]);
-         if (((aux.instruction.opcode === Opcodes.BEQ || aux.instruction.opcode === Opcodes.BNE || aux.instruction.opcode === Opcodes.BGT) && this.jumpPrediction[this.pc])) {
+         if (((aux.instruction.opcode === Opcodes.BEQ
+            || aux.instruction.opcode === Opcodes.BNE
+            || aux.instruction.opcode === Opcodes.BGT)
+            && this.prediction(this.pc))) {
             this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
          } else {
             this.pc++;
@@ -393,6 +396,8 @@ export class Superescalar extends Machine {
          let i = 0;
          while ((this.reserveStationEntry[type][i].FUNum !== num) ||
             (this.reserveStationEntry[type][i].FUPos !== this.functionalUnit[type][num].getLast())) {
+            console.log(this.reserveStationEntry[type][i].FUNum, ' ', num);
+            console.log(this.reserveStationEntry[type][i].FUPos, ' ', this.functionalUnit[type][num].getLast());
             i++;
          }
          let opcode = inst.opcode;
@@ -484,6 +489,7 @@ export class Superescalar extends Machine {
          if (((opcode === Opcodes.SW) || (opcode === Opcodes.SF))
             && (this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Qj === -1)
             && (this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].address !== -1)) {
+            console.log('Estoy en el sf');
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].value = this.reserveStationEntry[FunctionalUnitType.MEMORY][i].Vj;
             // NOTA: Lo pongo o no?
             this.reorderBuffer.elements[this.reserveStationEntry[FunctionalUnitType.MEMORY][i].ROB].superStage = SuperStage.SUPER_WRITERESULT;
@@ -505,13 +511,13 @@ export class Superescalar extends Machine {
          }
       }
 
-      // Después recorro todas las UF para recoger los resultados
+      // Now it's time to retrieve all the results from the UF
       for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
          for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
             if (this.functionalUnit[i][j].status.stall === 0) {
                this.writeInstruction(i, j);
             }
-            // Avanzo el reloj de esa UF
+            // Update clocks of the uf
             this.functionalUnit[i][j].tic();
          }
       }
@@ -524,6 +530,7 @@ export class Superescalar extends Machine {
          this.changePrediction(rob.instruction.id, !!rob.value);
          // Se cambia el PC
          if (rob.value) {
+            console.log('Time for jump', rob.instruction.getOperand(2));
             this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
          } else {
             this.pc = rob.instruction.id + 1;
@@ -663,7 +670,7 @@ export class Superescalar extends Machine {
    }
 
    prediction(address: number): boolean {
-      return (this.jumpPrediction[address % Superescalar.PREDTABLESIZE] >= Superescalar.PREDBITS);
+      return (this.jumpPrediction[address % Superescalar.PREDTABLESIZE] >= 2);
    }
 
    public get code(): Code {

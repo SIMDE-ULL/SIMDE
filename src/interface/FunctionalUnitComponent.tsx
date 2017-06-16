@@ -2,6 +2,8 @@ import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 declare var window: any;
 
+import './FunctionalUnitComponent.scss';
+
 export class FunctionalUnitComponent extends BaseComponent {
 
    constructor(props: any) {

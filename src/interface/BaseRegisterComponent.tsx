@@ -16,6 +16,9 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
          content: [],
          showableContent: []
       };
+      if (this.props.title === 'Memoria') {
+         this.maxElem = 1024;
+      }
       this.history = new Array();
       window.state[this.props.title] = (data: { content: any, step: number }) => {
          let newState = {

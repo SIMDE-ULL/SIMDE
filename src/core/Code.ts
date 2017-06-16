@@ -163,7 +163,7 @@ export class Code {
    replaceLabels() {
       for (let i = 0; i < this._lines; i++) {
          if (this._instructions[i].opcode === Opcodes.BNE
-            || this._instructions[i].opcode === Opcodes.BEQ) {
+            || this._instructions[i].opcode === Opcodes.BEQ || this._instructions[i].opcode === Opcodes.BGT) {
             let basicBlock: BasicBlock = this._labels[this._instructions[i].getOperand(2)].blocks;
             if (basicBlock.lineNumber === -1) {
                return -1;
@@ -338,9 +338,9 @@ export class Code {
       if (position === 0) {
          result[0] = 0;
       } else {
-         result[0] = +stringAddress.substring(0, position - 1);
+         result[0] = +stringAddress.substring(0, position);
       }
-      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - 2));
+      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - position - 2));
       return result;
    }
 
@@ -366,7 +366,7 @@ export class Code {
       for (let i = 0; i < basicBlockIndex; i++) {
          actual = actual.next;
       }
-
+      console.log('Line number', actual.lineNumber);
       return actual.lineNumber;
    }
 

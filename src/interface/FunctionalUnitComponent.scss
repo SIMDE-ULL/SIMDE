@@ -1,6 +1,6 @@
 @import '../variables';
 
-#reserve-station-zone.panel {
+#functional-unit-zone.panel {
    margin-bottom: 0px !important;
    border-radius: 0px;
    & .panel-heading {
@@ -12,7 +12,6 @@
       border-radius: 0px;
    }
    &>.panel-body {
-      overflow-y: hidden;
       padding-right: 0px;
       padding: 0px 0px 0px 0px;
       & .panel {

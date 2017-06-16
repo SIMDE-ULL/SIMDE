@@ -40,19 +40,28 @@ export class LoadModalComponent extends React.Component<any, any> {
             <Modal.Title>Carga de código</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <textarea id='codeInput' defaultValue={`11
+            <textarea id='codeInput' defaultValue={`18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
 	LF	F0 (R4)
 	ADDI	R5 R2 #16
+// Código de inicialización
+	LF	F1 (R2)
+	ADDF	F2 F1 F0
+	LF	F1 1(R2)
+	ADDI	R2 R2 #2
 LOOP:
-	LF 	F1 (R2)
-	ADDF	F1 F1 F0
-	SF	F1 (R3)
-	ADDI 	R2 R2 #1
+	SF	F2 (R3)
+	ADDF	F2 F1 F0
+	LF	F1 (R2)
+	ADDI	R2 R2 #1
 	ADDI	R3 R3 #1
-	BNE	R2 R5 LOOP`}>
+	BNE	R2 R5 LOOP
+// Código de finalización
+	SF	F2 (R3)
+	ADDF	F2 F1 F0
+	SF	F2 1(R3)`}>
             </textarea>
          </Modal.Body>
          <Modal.Footer>

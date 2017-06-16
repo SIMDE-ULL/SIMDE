@@ -88,6 +88,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                                     <FunctionalUnitComponent title='xFlotante' />
                                     <FunctionalUnitComponent title='Mem' />
                                     <FunctionalUnitComponent title='JumpUF' />
+                                    <FunctionalUnitComponent title='AluMem' />
                                  </div>
                               </div>
                            </div>
