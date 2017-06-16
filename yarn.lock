@@ -52,6 +52,10 @@
   version "9.1.9"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.1.9.tgz#ed6336955eaf233b75eb7923b9b1f373d045ef01"
 
+"@types/i18next@*":
+  version "2.3.38"
+  resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-2.3.38.tgz#eb9bd4f579aefb7a2e86b15e2b8024edaaf4a4c9"
+
 "@types/lodash@^4.14.37", "@types/lodash@^4.14.64":
   version "4.14.64"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.64.tgz#979cf3a3d4a368670840bf9b3e448dc33ffe84ee"
@@ -72,6 +76,13 @@
   version "15.5.0"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-15.5.0.tgz#7f4fb9613d4051141773242f7b6b5f1a46b34bd9"
   dependencies:
+    "@types/react" "*"
+
+"@types/react-i18next@^1.7.8":
+  version "1.7.8"
+  resolved "https://registry.yarnpkg.com/@types/react-i18next/-/react-i18next-1.7.8.tgz#0338b40a2b5fc631ab3d61152a224002c0bc893e"
+  dependencies:
+    "@types/i18next" "*"
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^15.0.23":
@@ -3111,6 +3122,10 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
+hoist-non-react-statics@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -5214,6 +5229,12 @@ react-dom@^15.5.4:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "~15.5.7"
+
+react-i18next@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-4.1.2.tgz#d1240ad157c4318082501ca7587ccee77107194f"
+  dependencies:
+    hoist-non-react-statics "1.2.0"
 
 react-overlays@^0.7.0:
   version "0.7.0"
