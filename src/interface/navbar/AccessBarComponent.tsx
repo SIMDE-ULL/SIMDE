@@ -18,7 +18,11 @@ export class AccessBarComponent extends React.Component<any, any> {
 
       window.state['cycle'] = (data) => {
          if (data.step) {
-            this.setState({ showableContent: this.state.content - data.step });
+            if (data.step === -1) {
+               this.setState({ content: 0, showableContent: 0 });
+            } else {
+               this.setState({ showableContent: this.state.content - data.step });
+            }
          } else {
             this.setState({ content: data.content, showableContent: data.content });
          }

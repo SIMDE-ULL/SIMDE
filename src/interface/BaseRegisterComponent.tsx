@@ -29,7 +29,11 @@ export abstract class BaseRegisterComponent extends React.Component<any, any> {
             this.show.add(i);
          }
          if (data.step) {
-            newState.showableContent = this.history[data.step].content;
+            if (data.step === -1) {
+               this.history = new Array();
+            } else {
+               newState.showableContent = this.history[this.history.length - data.step].content;
+            }
          } else {
             newState = this.buildShowableContent(data.content);
             if (this.history.length < 10) {

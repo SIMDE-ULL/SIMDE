@@ -2,13 +2,13 @@ import { Code } from './core/Code';
 import { Superescalar } from './core/Superescalar';
 import { SuperescalarStatus } from './core/SuperescalarEnums';
 import { FunctionalUnitType } from './core/FunctionalUnit';
+import { ExecutionStatus } from './main-consts';
+
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { IntlProvider } from 'react-intl';
-const locale = 'en';
 
 import App from './interface/App';
 
@@ -195,32 +195,42 @@ let loadSuper = () => {
 };
 
 let play = () => {
-   window.stopCondition = 0;
+   window.stopCondition = ExecutionStatus.EXECUTABLE;
+   window.backStep = 0;
    let speed = calculateSpeed();
+
+   // Check if the execution has finished 
+   if (window.finishedExecution) {
+      window.finishedExecution = false;
+      // How can I clean the interface? oh shit.
+      callAllCallbacks(-1);
+      superescalar.status.cycle = 0;
+   }
    if (superescalar.status.cycle === 0) {
       let code = Object.assign(new Code(), superescalar.code);
       superExe();
       superescalar.code = code;
    }
    if (speed) {
-      foo(speed);
+      executionLoop(speed);
    } else {
       // tslint:disable-next-line:no-empty
       while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
       callAllCallbacks();
       window.alert('Done');
    }
+
 };
 
 let pause = () => {
-   window.stopCondition = 1;
+   window.stopCondition = ExecutionStatus.PAUSE;
 };
 
 let stop = () => {
 
    // In normal execution I have to avoid the asynchrnous way of
    // js entering in the interval, the only way I have is to check this
-   window.stopCondition = 2;
+   window.stopCondition = ExecutionStatus.STOP;
    // TODO clean reboot the machine and clean the interface
 };
 
@@ -246,25 +256,26 @@ function calculateSpeed() {
    return calculatedSpeed;
 };
 
-function foo(speed) {
+function executionLoop(speed) {
    if (!window.stopCondition) {
       setTimeout(() => {
          let result = superStep();
          if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
-            foo(speed);
+            executionLoop(speed);
          } else {
             if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
                alert('Ejecución detenida, breakpoint');
             } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
+               window.finishedExecution = true;
                alert('Ejecución finalizada');
             }
          }
       }, speed);
-   } else if (window.stopCondition === 2) {
+   } else if (window.stopCondition === ExecutionStatus.STOP) {
       let code = Object.assign(new Code(), superescalar.code);
       superExe();
       superescalar.code = code;
-      callAllCallbacks();
+      callAllCallbacks(-1);
    }
 }
 
@@ -309,15 +320,14 @@ window.saveSuperConfig = saveSuperConfig;
 window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
-window.stopCondition = 0;
+window.stopCondition = ExecutionStatus.EXECUTABLE;
+window.finishedExecution = false;
 
 /*
  * Here is where the react endpoint appears
  *
  */
 ReactDOM.render(
-   <IntlProvider locale={locale}>
-      <App machine={superescalar} />
-   </IntlProvider>,
+   <App machine={superescalar} />,
    document.getElementById('app')
 );

@@ -13,18 +13,13 @@ export class RegisterComponent extends BaseRegisterComponent {
 
    constructor(props: any) {
       super(props);
+      // Bind functions for not losing context
+      this.openWithAddInterval = this.openWithAddInterval.bind(this);
+      this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+      this.addInterval = this.addInterval.bind(this);
+      this.parseInterval = this.parseInterval.bind(this);
+      this.removeInterval = this.removeInterval.bind(this);
    }
-
-   // if (this.props.title === 'Memoria') {
-   //    this.maxElem = 1024;
-   // }
-   // this.state = {
-   //    title: null,
-   //    content: new Array(64).fill(0),
-   //    contentShowable: [],
-   //    show: [1, 64]
-   // };
-
 
    openWithAddInterval() {
       this.setState({ open: true, onAccept: this.addInterval });

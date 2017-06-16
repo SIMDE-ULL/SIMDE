@@ -20,7 +20,11 @@ export abstract class BaseComponent extends React.Component<any, any> {
             showableContent: []
          };
          if (data.step) {
-            newState.showableContent = this.history[this.history.length - data.step].content;
+            if (data.step === -1) {
+               this.history = new Array();
+            } else {
+               newState.showableContent = this.history[this.history.length - data.step].content;
+            }
          } else {
             newState = this.buildShowableContent(data.content);
             if (this.history.length < 10) {
