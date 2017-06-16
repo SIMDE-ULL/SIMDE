@@ -217,6 +217,7 @@ let play = () => {
       // tslint:disable-next-line:no-empty
       while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
       callAllCallbacks();
+      window.finishedExecution = true;
       window.alert('Done');
    }
 
