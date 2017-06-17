@@ -3,6 +3,7 @@ const path = require('path');
 const commonConfig = require('./webpack.common.js');
 const webpackMerge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ENV = 'production';
 
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
@@ -34,6 +35,9 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             'NODE_ENV': JSON.stringify('production')
          }
       }),
-      new webpack.optimize.UglifyJsPlugin()
+      new webpack.optimize.UglifyJsPlugin(),
+      new CopyWebpackPlugin([
+         { from: 'src/i18n' }
+      ])
    ],
 });
