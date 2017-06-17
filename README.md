@@ -14,7 +14,7 @@ The project has been released under GPLv3 License.
 
 ## Live DEMO
 
-[Check the project live](http://adrianabreu.com/Simde_simulator)
+[Check the project live](http://adrianabreu.com/SIMDE-Simulator/)
 
 ## Docs
 
