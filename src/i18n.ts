@@ -11,7 +11,7 @@ i18n
    .use(LngDetector)
    .init({
       fallbackLng: 'en',
-      // wait: true, // globally set to wait for loaded translations in translate hoc
+      wait: true, // globally set to wait for loaded translations in translate hoc
 
       // have a common namespace used around the full app
       ns: ['common'],

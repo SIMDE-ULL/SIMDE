@@ -1,0 +1,100 @@
+{
+   "fileBar": {
+      "file": {
+         "name": "Archivo",
+         "load": "Cargar"
+      },
+      "view": {
+         "name": "Ver",
+         "basicBlocks": "Bloques básicos"
+      },
+      "config": {
+         "name": "Opciones",
+         "superescalar": "Configurar Máquina Superescalar",
+         "options": "Opciones"
+      },
+      "execute": {
+         "name": "Ejecutar",
+         "init": "Iniciar",
+         "pause": "Pausar",
+         "stop": "Detener",
+         "back": "Atrás",
+         "forward": "Adelante"
+      },
+      "help": {
+         "name": "Ayuda",
+         "docs": "Documentación",
+         "about": "Acerca de..."
+      }
+   },
+   "accessBar": {
+      "cycle": "Ciclo",
+      "speed": "Velocidad",
+      "superescalar": "Superescalar",
+      "memReg": "Memoria - Registros"
+   },
+   "authorModal": {
+      "title": "Acerca de...",
+      "originalAuthor": "Autor original",
+      "newAuthor": "Versión adapta por"
+   },
+   "loadModal": {
+      "title": "Carga de código",
+      "load": "Cargar"
+   },
+   "intervalModal": {
+      "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8..."
+   },
+   "superescalarModal": {
+      "latency": "Latencia",
+      "quantity": "Cantidad",
+      "Integer +": "Suma entera",
+      "Integer x": "Multiplicación entera",
+      "Floating +": "Suma flotante",
+      "Floating x": "Multiplicación flotante",
+      "Memory": "Memoria",
+      "Jump": "Salto",
+      "cacheFail": "Fallo de caché",
+      "issue": "Emisión",
+      "default": "Valores por defecto"
+   },
+   "optionsModal": {
+      "title": "Opciones"
+   },
+   "commonButtons": {
+      "close": "Cerrar",
+      "save": "Guardar",
+      "accept": "Aceptar"
+   },
+   "Code": "Código",
+   "Jump table": "Tabla de saltos",
+   "Prefetch": "Prefetch",
+   "Decoder": "Decodificador",
+   "Reserve Stations": "Estaciones de reserva",
+   "Integer +": "Suma entera",
+   "Integer x": "Multiplicación entera",
+   "Floating +": "Suma flotante",
+   "Floating x": "Multiplicación flotante",
+   "Memory": "Memoria",
+   "Jump": "Salto",
+   "U.F": "U. F.",
+   "+Entera": "+Entera",
+   "xEntera": "xEntera",
+   "+Flotante": "+Flotante",
+   "xFlotante": "xFlotante",
+   "Mem": "Memoria",
+   "JumpUF": "Salto",
+   "AluMem": "Alu Dir.",
+   "ROB<->GPR": "ROB<->GPR",
+   "ROB<->FPR": "ROB<->FPR",
+   "reorderBuffer": {
+      "Inst": "Inst",
+      "Destiny": "Destino",
+      "Value": "Valor",
+      "A": "Dir",
+      "Stage": "Etapa"
+   },
+   "Memoria": "Memoria",
+   "Registros Generales": "Registros generales",
+   "Registros de punto flotante": "Registros de punto flotante"
+}

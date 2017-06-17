@@ -2,10 +2,13 @@ import * as React from 'react';
 import { Code } from '../core/Code';
 import { Instruction } from '../core/Instruction';
 
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 import './CodeComponent.scss';
 declare var window: any;
 
-export class CodeComponent extends React.Component<any, any> {
+class CodeComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
@@ -64,3 +67,5 @@ export class CodeComponent extends React.Component<any, any> {
          </div>);
    }
 }
+
+export default translate('common', { wait: true })(CodeComponent);

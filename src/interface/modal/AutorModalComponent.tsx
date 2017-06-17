@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
 
 declare var window: any;
 
-export class AutorModalComponent extends React.Component<any, any> {
+class AutorModalComponent extends React.Component<any, any> {
 
    constructor() {
       super();
@@ -30,25 +32,27 @@ export class AutorModalComponent extends React.Component<any, any> {
    render() {
       return (<Modal show={this.state.showModal} onHide={this.close}>
          <Modal.Header closeButton>
-            <Modal.Title>Acerda de...</Modal.Title>
+            <Modal.Title>{t('authorModal.title')}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
             <div className='text-center'>
                <div className='row'>
                   <div className='col-sm-12'>
-                     <label>Autor original</label>: Iván Castilla Rodríguez
+                     <label>{t('authorModal.originalAuthor')}</label>: Iván Castilla Rodríguez
             </div>
                </div>
                <div className='row'>
                   <div className='col-sm-12'>
-                     <label>Versión adaptada por</label>: Adrián Abreu González
+                     <label>{t('authorModal.newAuthor')}</label>: Adrián Abreu González
                </div>
                </div>
             </div>
          </Modal.Body>
          <Modal.Footer>
-            <Button onClick={this.close}>Close</Button>
+            <Button onClick={this.close}>{t('commonButtons.close')}</Button>
          </Modal.Footer>
       </Modal>);
    }
 }
+
+export default translate('common', { wait: true })(AutorModalComponent);

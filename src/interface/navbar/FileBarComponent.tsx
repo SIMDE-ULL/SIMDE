@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
 import './FileBarComponent.scss';
 declare var window: any;
 
-export class FileBarComponent extends React.Component<any, any> {
-
+class FileBarComponent extends React.Component<any, any> {
    private color: boolean;
-   constructor() {
+
+   constructor(props) {
       super();
       this.color = false;
    }
@@ -15,50 +17,50 @@ export class FileBarComponent extends React.Component<any, any> {
          <nav className='navbar'>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Archivo</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.file.name')}</a>
                   <ul className='dropdown-menu'>
-                     <li><a onClick={() => { window['loadModal'](true); }}>Cargar</a></li>
+                     <li><a onClick={() => { window['loadModal'](true); }}>{t('fileBar.file.load')}</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ver</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.view.name')}</a>
                   <ul className='dropdown-menu'>
                      <li><a onClick={() => {
                         this.color = !this.color;
                         window['colorBlocks'](this.color);
-                     }}>Bloques Básicos</a></li>
+                     }}>{t('fileBar.view.basicBlocks')}</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Configurar</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.config.name')}</a>
                   <ul className='dropdown-menu'>
-                     <li><a onClick={() => { window['superConfigModal'](true); }}>Configurar Máquina Superescalar</a></li>
-                     <li><a onClick={() => { window['options'](true); }}>Opciones</a></li>
+                     <li><a onClick={() => { window['superConfigModal'](true); }}>{t('fileBar.config.superescalar')}</a></li>
+                     <li><a onClick={() => { window['options'](true); }}>{t('fileBar.config.options')}</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ejecutar</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.execute.name')}</a>
                   <ul className='dropdown-menu'>
-                     <li onClick={() => window.play()}><a>Iniciar</a></li>
-                     <li onClick={() => window.pause()}><a>Pausa</a></li>
-                     <li onClick={() => window.stop()}><a>Parar</a></li>
-                     <li onClick={() => window.stepBack()}><a>Atrás</a></li>
-                     <li onClick={() => window.superStep()}><a>Adelante</a></li>
+                     <li onClick={() => window.play()}><a>{t('fileBar.execute.init')}</a></li>
+                     <li onClick={() => window.pause()}><a>{t('fileBar.execute.pause')}</a></li>
+                     <li onClick={() => window.stop()}><a>{t('fileBar.execute.stop')}</a></li>
+                     <li onClick={() => window.stepBack()}><a>{t('fileBar.execute.back')}</a></li>
+                     <li onClick={() => window.superStep()}><a>{t('fileBar.execute.forward')}</a></li>
                   </ul>
                </li>
             </ul>
             <ul className='nav navbar-nav'>
                <li className='dropdown'>
-                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Ayuda</a>
+                  <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.help.name')}</a>
                   <ul className='dropdown-menu'>
-                     <li><a href='http://adrianabreu.com/SIMDE-Docs/' target='_blank'>Documentación</a></li>
-                     <li><a onClick={() => { window['autorModal'](true); }}>Acerca de...</a></li>
+                     <li><a href='http://adrianabreu.com/SIMDE-Docs/' target='_blank'>{t('fileBar.help.docs')}</a></li>
+                     <li><a onClick={() => { window['autorModal'](true); }}>{t('fileBar.help.about')}</a></li>
                   </ul>
                </li>
             </ul>
@@ -66,3 +68,5 @@ export class FileBarComponent extends React.Component<any, any> {
       </div>);
    }
 }
+
+export default translate('common', { wait: true })(FileBarComponent);

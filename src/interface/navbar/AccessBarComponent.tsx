@@ -1,8 +1,13 @@
+
 import * as React from 'react';
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 import './AccessBarComponent.scss';
+
 declare var window: any;
 
-export class AccessBarComponent extends React.Component<any, any> {
+class AccessBarComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
@@ -80,22 +85,24 @@ export class AccessBarComponent extends React.Component<any, any> {
                </li>
                <li>
                   <a >
-                     <label htmlFor='cycle'>Ciclo</label>
+                     <label htmlFor='cycle'>{t('accessBar.cycle')}</label>
                      <span className='cycle'>{this.state.showableContent}</span>
                   </a>
                </li>
                <li>
                   <a >
-                     <label htmlFor='velocidad'>Velocidad</label>
+                     <label htmlFor='velocidad'>{t('accessBar.speed')}</label>
                      <input type='number' id='velocidad' className='speed' defaultValue={'5'} min='0' max='10'></input>
                   </a>
                </li>
             </ul>
             <ul className='nav nav-tabs'>
-               <li className='active'><a data-toggle='tab' href='#home'>Superescalar</a></li>
-               <li><a data-toggle='tab' href='#menu1'>Memoria - Registros</a></li>
+               <li className='active'><a data-toggle='tab' href='#home'>{t('accessBar.superescalar')}</a></li>
+               <li><a data-toggle='tab' href='#menu1'>{t('accessBar.memReg')}</a></li>
             </ul>
          </nav>
       </div >);
    }
 }
+
+export default translate('common', { wait: true })(AccessBarComponent);

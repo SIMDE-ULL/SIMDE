@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { FunctionalUnitComponent } from '../FunctionalUnitComponent';
-import { PrefetchDecoderComponent } from '../PrefetchDecoderComponent';
-import { CodeComponent } from '../CodeComponent';
-import { ReserveStationComponent } from '../ReserveStationComponent';
+
+import FunctionalUnitComponent from '../FunctionalUnitComponent';
+import PrefetchDecoderComponent from '../PrefetchDecoderComponent';
+import CodeComponent from '../CodeComponent';
+import ReserveStationComponent from '../ReserveStationComponent';
 import { ROBMapperComponent } from '../ROBMapperComponent';
-import { ReorderBufferComponent } from '../ReorderBufferComponent';
-import { JumpPredictionComponent } from '../JumPredictionComponent';
+import ReorderBufferComponent from '../ReorderBufferComponent';
+import JumpPredictionComponent from '../JumPredictionComponent';
 
 import './GeneralTabComponent.scss';
 declare var window: any;

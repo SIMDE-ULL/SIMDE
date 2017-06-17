@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 import './OptionsModalComponent.scss';
 
 declare var window: any;
 
-export class OptionsModalComponent extends React.Component<any, any> {
+class OptionsModalComponent extends React.Component<any, any> {
 
    constructor() {
       super();
@@ -37,7 +40,7 @@ export class OptionsModalComponent extends React.Component<any, any> {
    render() {
       return (<Modal show={this.state.showModal} onHide={this.close}>
          <Modal.Header closeButton>
-            <Modal.Title>Opciones</Modal.Title>
+            <Modal.Title>{t('optionsModal.title')}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
             <textarea id='codeInput' defaultValue={`18
@@ -65,9 +68,11 @@ LOOP:
             </textarea>
          </Modal.Body>
          <Modal.Footer>
-            <Button onClick={this.close}>Cancelar</Button>
-            <Button className='btn btn-primary' onClick={this.setOptions}>Guardar</Button>
+            <Button onClick={this.close}>{t('commonButtons.close')}</Button>
+            <Button className='btn btn-primary' onClick={this.setOptions}>{t('commonButtons.save')}</Button>
          </Modal.Footer>
       </Modal>);
    }
 }
+
+export default translate('common', { wait: true })(OptionsModalComponent);

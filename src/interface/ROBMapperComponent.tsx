@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { BaseRegisterComponent } from './BaseRegisterComponent';
-import { IntervalModalComponent } from './modal/IntervalModalComponent';
+import IntervalModalComponent from './modal/IntervalModalComponent';
 
-import * as _ from 'lodash';
 import './ROBMapperComponent.scss';
 
 declare var window: any;
@@ -18,11 +17,11 @@ export class ROBMapperComponent extends BaseRegisterComponent {
    constructor(props: any) {
       super(props);
       this.state = {
-         title: null,
          content: new Array(64).fill(0),
          showableContent: [],
          show: this.show,
-         open: false
+         open: false,
+         renderModal: false
       };
       // Bind functions for not losing context
       this.openWithAddInterval = this.openWithAddInterval.bind(this);
@@ -43,14 +42,17 @@ export class ROBMapperComponent extends BaseRegisterComponent {
    render() {
       return (
          <div className='panel panel-default'>
+            {
+               <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
+            }
             <div className='panel-heading'>{this.props.title}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
-                           <td width='40%' key={`${this.state.title + i + 65}`}>{row.index}</td>
-                           <td width='60%' key={`${this.state.title + i + 131}`}>{row.value}</td>
+                        this.state.showableContent.map((row, i) => <tr key={`${this.props.title + i}`}>
+                           <td width='40%' key={`${this.props.title + i + 65}`}>{row.index}</td>
+                           <td width='60%' key={`${this.props.title + i + 131}`}>{row.value}</td>
                         </tr>)
                      }
                   </tbody>
@@ -61,7 +63,10 @@ export class ROBMapperComponent extends BaseRegisterComponent {
                </button>
                <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
             </div>
-            <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
-         </div>);
+
+         </div>
+      );
    }
 }
+
+

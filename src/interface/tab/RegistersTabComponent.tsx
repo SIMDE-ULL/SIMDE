@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RegisterComponent } from '../RegisterComponent';
+import RegisterComponent from '../RegisterComponent';
 import * as _ from 'lodash';
 
 import './RegistersTabComponent.scss';

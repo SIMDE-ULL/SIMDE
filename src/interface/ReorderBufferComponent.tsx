@@ -2,9 +2,12 @@ import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 import { stageToString } from '../core/SuperescalarEnums';
 
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 declare var window: any;
 
-export class ReorderBufferComponent extends BaseComponent {
+class ReorderBufferComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
@@ -75,3 +78,5 @@ export class ReorderBufferComponent extends BaseComponent {
          </div>);
    }
 }
+
+export default translate('common', { wait: true })(ReorderBufferComponent);

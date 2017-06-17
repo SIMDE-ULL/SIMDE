@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
-import './ReserveStationComponent.scss';
 
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
+import './ReserveStationComponent.scss';
 declare var window: any;
 
-export class ReserveStationComponent extends BaseComponent {
+class ReserveStationComponent extends BaseComponent {
 
    constructor(props: any) {
       super(props);
@@ -64,7 +67,7 @@ export class ReserveStationComponent extends BaseComponent {
    render() {
       return (
          <div className='panel panel-default'>
-            <div className='panel-heading'>{this.props.title}</div>
+            <div className='panel-heading'>{t(this.props.title)}</div>
             <div className='panel-body'>
                <table className='table table-bordered'>
                   <thead>
@@ -96,3 +99,5 @@ export class ReserveStationComponent extends BaseComponent {
          </div>);
    }
 }
+
+export default translate('common', { wait: true })(ReserveStationComponent);

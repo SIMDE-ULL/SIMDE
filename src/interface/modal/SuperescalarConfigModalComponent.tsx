@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 import './SuperescalarConfigModalComponent.scss';
 
 declare var window: any;
 
-export class SuperescalarConfigModalComponent extends React.Component<any, any> {
+class SuperescalarConfigModalComponent extends React.Component<any, any> {
 
    constructor() {
       super();
@@ -324,3 +327,5 @@ export class SuperescalarConfigModalComponent extends React.Component<any, any> 
       </Modal>);
    }
 }
+
+export default translate('common', { wait: true })(SuperescalarConfigModalComponent);

@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { BaseRegisterComponent } from './BaseRegisterComponent';
-import { IntervalModalComponent } from './modal/IntervalModalComponent';
+import IntervalModalComponent from './modal/IntervalModalComponent';
+
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
 
 import './RegisterComponent.scss';
 
 declare var window: any;
 
-export class RegisterComponent extends BaseRegisterComponent {
+class RegisterComponent extends BaseRegisterComponent {
 
    history: any[];
    historyLength = 10;
@@ -55,7 +58,9 @@ export class RegisterComponent extends BaseRegisterComponent {
                   <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
                </div>
             </div>
-            <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
+            {<IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />}
          </div>);
    }
 }
+
+export default translate('common')(RegisterComponent);

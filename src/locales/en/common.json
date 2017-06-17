@@ -1,0 +1,100 @@
+{
+   "fileBar": {
+      "file": {
+         "name": "File",
+         "load": "Load"
+      },
+      "view": {
+         "name": "View",
+         "basicBlocks": "Basic blocks"
+      },
+      "config": {
+         "name": "Options",
+         "superescalar": "Configure Superescalar Machine",
+         "options": "Options"
+      },
+      "execute": {
+         "name": "Execute",
+         "init": "Start",
+         "pause": "Pause",
+         "stop": "Stop",
+         "back": "Back",
+         "forward": "Forward"
+      },
+      "help": {
+         "name": "Help",
+         "docs": "Docs",
+         "about": "About"
+      }
+   },
+   "accessBar": {
+      "cycle": "Cycle",
+      "speed": "Speed",
+      "superescalar": "Superescalar",
+      "memReg": "Memory - Registers"
+   },
+   "authorModal": {
+      "title": "About",
+      "originalAuthor": "Original author",
+      "newAuthor": "Adapted by"
+   },
+   "loadModal": {
+      "title": "Load Code",
+      "load": "Load"
+   },
+   "intervalModal": {
+      "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8..."
+   },
+   "superescalarModal": {
+      "latency": "Latency",
+      "quantity": "Quantity",
+      "Integer +": "Integer Sum",
+      "Integer x": "Integer Mult",
+      "Floating +": "Floating Sum",
+      "Floating x": "Floating Mult",
+      "Memory": "Memory",
+      "Jump": "Jump",
+      "cacheFail": "Cache Fail",
+      "issue": "Issue",
+      "default": "Default Values"
+   },
+   "optionsModal": {
+      "title": "Options"
+   },
+   "commonButtons": {
+      "close": "Close",
+      "save": "Save",
+      "accept": "Accept"
+   },
+   "Code": "Code",
+   "Jump table": "Jump table",
+   "Prefetch": "Prefetch",
+   "Decoder": "Decoder",
+   "Reserve Stations": "Reserve Stations",
+   "Integer +": "Integer Sum",
+   "Integer x": "Integer Mult",
+   "Floating +": "Floating Sum",
+   "Floating x": "Integer Mult",
+   "Memory": "Memory",
+   "Jump": "Jump",
+   "U.F": "F. U.",
+   "+Entera": "Integer+",
+   "xEntera": "Integerx",
+   "+Flotante": "Floating+",
+   "xFlotante": "Floatingx",
+   "Mem": "Memory",
+   "JumpUF": "Jump",
+   "AluMem": "Alu Add.",
+   "ROB<->GPR": "ROB<->GPR",
+   "ROB<->FPR": "ROB<->FPR",
+   "reorderBuffer": {
+      "Inst": "Inst",
+      "Destiny": "Destiny",
+      "Value": "Value",
+      "A": "A",
+      "Stage": "Stage"
+   },
+   "Memoria": "Memory",
+   "Registros Generales": "General Registers",
+   "Registros de punto flotante": "Floating point Registers"
+}
