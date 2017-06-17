@@ -9,8 +9,10 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
 
 import App from './interface/App';
+import i18n from './i18n'; // initialized i18next instance
 
 const styles = require('./main.scss');
 
@@ -329,6 +331,6 @@ window.finishedExecution = false;
  *
  */
 ReactDOM.render(
-   <App machine={superescalar} />,
+   <I18nextProvider i18n={i18n}><App machine={superescalar} /></I18nextProvider>,
    document.getElementById('app')
 );
