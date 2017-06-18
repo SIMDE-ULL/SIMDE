@@ -155,16 +155,6 @@ let callAllCallbacks = (step?: number) => {
    }
 };
 
-let load = (id) => {
-   let input = document.getElementById(id);
-   let code: Code = new Code();
-   try {
-      code.load(input.value);
-   } catch (err) {
-      window.alert(err);
-   }
-};
-
 let superExe = () => {
    superescalar.init(true);
 };
@@ -315,6 +305,10 @@ let saveSuperConfig = (superConfig) => {
    superescalar.issue = +superConfig.issueGrade;
 };
 
+let setOptions = (cacheFailPercentage: number) => {
+   superescalar.memory.failProbability = cacheFailPercentage;
+};
+
 let colorBlocks = (color) => {
    state['Code']({ color: color });
 };
@@ -329,7 +323,6 @@ let setBreakpoint = (i) => {
  * we need to attach them to the Windows object, so
  * in runtime they will be visible from anywhere.
  */
-window.load = load;
 window.loadSuper = loadSuper;
 window.superStep = superStep;
 window.superExe = superExe;

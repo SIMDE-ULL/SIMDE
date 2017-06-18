@@ -21,7 +21,7 @@ class OptionsModalComponent extends React.Component<any, any> {
    }
 
    componentWillMount() {
-      this.setState({ showModal: false });
+      this.setState({ cacheFailPercentage: 0, showModal: false });
    }
 
    close() {
@@ -39,20 +39,20 @@ class OptionsModalComponent extends React.Component<any, any> {
    }
 
    setOptions() {
-      window.loadSuper();
+      window.setOptions(this.state.cacheFailPercentage);
       this.close();
    }
 
    render() {
       return (<Modal show={this.state.showModal} onHide={this.close}>
          <Modal.Header closeButton>
-            <Modal.Title>{t('optionsModal.cacheFail')}</Modal.Title>
+            <Modal.Title>{t('optionsModal.title')}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <form>
+            <form className='form form-horizontal'>
                <div className='form-group'>
                   <div className='col-sm-4'>
-                     <label htmlFor='cacheFailPercentage' className='control-label'>{t('superescalarModal.issue')}
+                     <label htmlFor='cacheFailPercentage' className='control-label'>{t('optionsModal.cacheFail')}
                      </label>
                   </div>
                   <div className='col-sm-8'>
@@ -60,8 +60,8 @@ class OptionsModalComponent extends React.Component<any, any> {
                         className='form-control'
                         name='cacheFailPercentage'
                         type='number'
-                        min='2'
-                        max='16'
+                        min='0'
+                        max='100'
                         value={this.state.cacheFailPercentage}
                         onChange={this.handleChange}
                      />

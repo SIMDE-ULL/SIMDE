@@ -60,7 +60,8 @@
       "default": "Default Values"
    },
    "optionsModal": {
-      "title": "Options"
+      "title": "Options",
+      "cacheFail": "% Cache fail"
    },
    "commonButtons": {
       "close": "Close",

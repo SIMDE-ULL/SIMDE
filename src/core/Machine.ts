@@ -5,7 +5,7 @@ import { MachineStatus } from './MachineStatus';
 
 export class Machine {
 
-   // Const propierties
+   // Const properties
    protected static LAT_MAX: number[] = [100, 100, 100, 100, 100, 100];
    protected static LAT_MIN: number[] = [1, 1, 1, 1, 1, 1];
    protected static LAT_DEF: number[] = [1, 2, 4, 6, 4, 2];
@@ -43,7 +43,6 @@ export class Machine {
       this.status = new MachineStatus();
       this.memory = new Memory();
 
-      // TODO: Check this
       this._gpr = new Register();
       this._fpr = new Register();
       this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY)
