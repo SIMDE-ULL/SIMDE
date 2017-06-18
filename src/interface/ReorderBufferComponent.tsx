@@ -55,10 +55,10 @@ class ReorderBufferComponent extends BaseComponent {
                      <tr>
                         <td>#</td>
                         <td>Inst</td>
-                        <td>Destino</td>
-                        <td>Valor</td>
-                        <td>Dir</td>
-                        <td>Etapa</td>
+                        <td>{t('reorderBuffer.Destiny')}</td>
+                        <td>{t('reorderBuffer.Value')}</td>
+                        <td>{t('reorderBuffer.A')}</td>
+                        <td>{t('reorderBuffer.Stage')}</td>
                      </tr>
                   </thead>
                   <tbody>

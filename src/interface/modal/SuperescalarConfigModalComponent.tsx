@@ -94,22 +94,22 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
    render() {
       return (<Modal show={this.state.showModal} onHide={this.close}>
          <Modal.Header closeButton>
-            <Modal.Title>Configuración Superescalar</Modal.Title>
+            <Modal.Title>{t('superescalarModal.name')}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
             <form className='form form-horizontal'>
                <div className='form-group'>
                   <div className='col-sm-4 col-sm-offset-4'>
-                     <label>Cantidad</label>
+                     <label>{t('superescalarModal.quantity')}</label>
                   </div>
                   <div className='col-sm-4'>
-                     <label>Latencia</label>
+                     <label>{t('superescalarModal.latency')}</label>
                   </div>
                </div>
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Suma Entera</legend>
+                        <legend className='control-label'>{t('superescalarModal.Integer+')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -138,7 +138,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Mult Entera</legend>
+                        <legend className='control-label'>{t('superescalarModal.Integerx')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -167,7 +167,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Suma Flotante</legend>
+                        <legend className='control-label'>{t('superescalarModal.Floating+')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -196,7 +196,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Mult. Flotante</legend>
+                        <legend className='control-label'>{t('superescalarModal.Floatingx')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -225,7 +225,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Memoria</legend>
+                        <legend className='control-label'>{t('superescalarModal.Memory')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -254,7 +254,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='form-group'>
                   <fieldset>
                      <div className='col-sm-4'>
-                        <legend className='control-label'>Salto</legend>
+                        <legend className='control-label'>{t('superescalarModal.Jump')}</legend>
                      </div>
                      <div className='col-sm-4'>
                         <input
@@ -284,8 +284,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                <div className='extraParams'>
                   <div className='form-group'>
                      <div className='col-sm-4'>
-                        <label htmlFor='cacheFailLatency' className='control-label'> Fallo de cache
-                  </label>
+                        <label htmlFor='cacheFailLatency' className='control-label'>{t('superescalarModal.cacheFail')}
+                        </label>
                      </div>
                      <div className='col-sm-8'>
                         <input
@@ -301,8 +301,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                   </div>
                   <div className='form-group'>
                      <div className='col-sm-4'>
-                        <label htmlFor='issueGrade' className='control-label'> Emision
-                  </label>
+                        <label htmlFor='issueGrade' className='control-label'>{t('superescalarModal.issue')}
+                        </label>
                      </div>
                      <div className='col-sm-8'>
                         <input
@@ -320,9 +320,9 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
             </form>
          </Modal.Body>
          <Modal.Footer>
-            <Button className='btn btn-primary' onClick={this.setDefault}>Valores por defecto</Button>
-            <Button onClick={this.cancel}>Cancelar</Button>
-            <Button className='btn btn-primary' onClick={this.saveSuperConfig}>Guardar</Button>
+            <Button className='btn btn-primary' onClick={this.setDefault}>{t('superescalarModal.default')}</Button>
+            <Button onClick={this.cancel}>{t('commonButtons.close')}</Button>
+            <Button className='btn btn-primary' onClick={this.saveSuperConfig}>{t('commonButtons.save')}</Button>
          </Modal.Footer>
       </Modal>);
    }
