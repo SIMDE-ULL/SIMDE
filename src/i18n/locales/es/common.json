@@ -60,7 +60,8 @@
       "default": "Valores por defecto"
    },
    "optionsModal": {
-      "title": "Opciones"
+      "title": "Opciones",
+      "cacheFail": "% Fallo caché"
    },
    "commonButtons": {
       "close": "Cerrar",
@@ -96,6 +97,6 @@
       "Stage": "Etapa"
    },
    "Memoria": "Memoria",
-   "Registros Generales": "Registros generales",
+   "Registros generales": "Registros generales",
    "Registros de punto flotante": "Registros de punto flotante"
 }

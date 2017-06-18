@@ -174,6 +174,16 @@ let superStep = () => {
       window.backStep--;
       callAllCallbacks(window.backStep);
    } else {
+      if (window.finishedExecution) {
+         window.finishedExecution = false;
+         callAllCallbacks(-1);
+         superescalar.status.cycle = 0;
+      }
+      if (superescalar.status.cycle === 0) {
+         let code = Object.assign(new Code(), superescalar.code);
+         superExe();
+         superescalar.code = code;
+      }
       let resul = superescalar.tic();
       callAllCallbacks();
       return resul;
@@ -199,12 +209,12 @@ let loadSuper = () => {
 let play = () => {
    window.stopCondition = ExecutionStatus.EXECUTABLE;
    window.backStep = 0;
+   window.executing = true;
    let speed = calculateSpeed();
 
    // Check if the execution has finished 
    if (window.finishedExecution) {
       window.finishedExecution = false;
-      // How can I clean the interface? oh shit.
       callAllCallbacks(-1);
       superescalar.status.cycle = 0;
    }
@@ -227,6 +237,7 @@ let play = () => {
 
 let pause = () => {
    window.stopCondition = ExecutionStatus.PAUSE;
+   window.executing = false;
 };
 
 let stop = () => {
@@ -234,14 +245,21 @@ let stop = () => {
    // In normal execution I have to avoid the asynchrnous way of
    // js entering in the interval, the only way I have is to check this
    window.stopCondition = ExecutionStatus.STOP;
-   // TODO clean reboot the machine and clean the interface
+
+   if (!window.executing) {
+      window.executing = false;
+      callAllCallbacks(-1);
+      superescalar.status.cycle = 0;
+      let code = Object.assign(new Code(), superescalar.code);
+      superExe();
+      superescalar.code = code;
+   }
 };
 
 let stepBack = () => {
    // There is no time travelling for batch mode and initial mode
-   // TODO Limit the number of steps
-   // TODO Clean the interface
-   if (superescalar.status.cycle > 0 && window.backStep < 10) {
+   if (superescalar.status.cycle > 0 && window.backStep < 10 &&
+      (superescalar.status.cycle - window.backStep > 0)) {
       window.backStep++;
       callAllCallbacks(window.backStep);
    }
@@ -325,6 +343,7 @@ window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
 window.stopCondition = ExecutionStatus.EXECUTABLE;
 window.finishedExecution = false;
+window.executing = false;
 
 /*
  * Here is where the react endpoint appears

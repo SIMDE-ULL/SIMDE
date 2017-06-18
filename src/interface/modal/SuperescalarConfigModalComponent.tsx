@@ -18,6 +18,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
       };
 
       this.cancel = this.cancel.bind(this);
+      this.close = this.close.bind(this);
       this.open = this.open.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.setDefault = this.setDefault.bind(this);

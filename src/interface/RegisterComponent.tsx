@@ -36,7 +36,7 @@ class RegisterComponent extends BaseRegisterComponent {
       return (
          <div className='registerPanel'>
             <div className='panel panel-default'>
-               <div className='panel-heading'>{this.props.title}</div>
+               <div className='panel-heading'>{t(this.props.title)}</div>
                <div className='panel-body'>
                   <table className='table table-bordered'>
                      <tbody>

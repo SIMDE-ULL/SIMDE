@@ -32,6 +32,12 @@ class OptionsModalComponent extends React.Component<any, any> {
       this.setState({ showModal: true });
    };
 
+   handleChange(event) {
+      let newState = Object.assign({}, this.state);
+      newState.superConfig[event.target.name] = event.target.value;
+      this.setState(newState);
+   }
+
    setOptions() {
       window.loadSuper();
       this.close();
@@ -40,32 +46,28 @@ class OptionsModalComponent extends React.Component<any, any> {
    render() {
       return (<Modal show={this.state.showModal} onHide={this.close}>
          <Modal.Header closeButton>
-            <Modal.Title>{t('optionsModal.title')}</Modal.Title>
+            <Modal.Title>{t('optionsModal.cacheFail')}</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <textarea id='codeInput' defaultValue={`18
-	ADDI	R2 R0 #50
-	ADDI	R3 R0 #70
-	ADDI	R4 R0 #40
-	LF	F0 (R4)
-	ADDI	R5 R2 #16
-// Código de inicialización
-	LF	F1 (R2)
-	ADDF	F2 F1 F0
-	LF	F1 1(R2)
-	ADDI	R2 R2 #2
-LOOP:
-	SF	F2 (R3)
-	ADDF	F2 F1 F0
-	LF	F1 (R2)
-	ADDI	R2 R2 #1
-	ADDI	R3 R3 #1
-	BNE	R2 R5 LOOP
-// Código de finalización
-	SF	F2 (R3)
-	ADDF	F2 F1 F0
-	SF	F2 1(R3)`}>
-            </textarea>
+            <form>
+               <div className='form-group'>
+                  <div className='col-sm-4'>
+                     <label htmlFor='cacheFailPercentage' className='control-label'>{t('superescalarModal.issue')}
+                     </label>
+                  </div>
+                  <div className='col-sm-8'>
+                     <input
+                        className='form-control'
+                        name='cacheFailPercentage'
+                        type='number'
+                        min='2'
+                        max='16'
+                        value={this.state.cacheFailPercentage}
+                        onChange={this.handleChange}
+                     />
+                  </div>
+               </div>
+            </form>
          </Modal.Body>
          <Modal.Footer>
             <Button onClick={this.close}>{t('commonButtons.close')}</Button>

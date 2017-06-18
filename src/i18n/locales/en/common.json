@@ -43,15 +43,16 @@
       "load": "Load"
    },
    "intervalModal": {
-      "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8..."
+      "intervalMessage": "Select the elements that you would like to show. You can use numbers and intervals separated by commas. Ex: 1,4,6-8..."
    },
    "superescalarModal": {
+      "name": "Superescalar Configuration",
       "latency": "Latency",
       "quantity": "Quantity",
-      "Integer +": "Integer Sum",
-      "Integer x": "Integer Mult",
-      "Floating +": "Floating Sum",
-      "Floating x": "Floating Mult",
+      "Integer+": "Integer Sum",
+      "Integerx": "Integer Mult",
+      "Floating+": "Floating Sum",
+      "Floatingx": "Floating Mult",
       "Memory": "Memory",
       "Jump": "Jump",
       "cacheFail": "Cache Fail",
@@ -95,6 +96,6 @@
       "Stage": "Stage"
    },
    "Memoria": "Memory",
-   "Registros Generales": "General Registers",
+   "Registros generales": "General Registers",
    "Registros de punto flotante": "Floating point Registers"
 }
