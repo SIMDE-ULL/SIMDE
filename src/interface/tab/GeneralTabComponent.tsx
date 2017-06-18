@@ -8,10 +8,13 @@ import { ROBMapperComponent } from '../ROBMapperComponent';
 import ReorderBufferComponent from '../ReorderBufferComponent';
 import JumpPredictionComponent from '../JumPredictionComponent';
 
+import { translate } from 'react-i18next';
+import { t } from 'i18next';
+
 import './GeneralTabComponent.scss';
 declare var window: any;
 
-export class GeneralTabComponent extends React.Component<any, any> {
+class GeneralTabComponent extends React.Component<any, any> {
 
    render() {
       return (<div id='home' className='tab-pane fade in active'>
@@ -62,7 +65,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                         <div className='col-sm-12'>
                            <div className='row'>
                               <div className='panel panel-default inside-bar' id='reserve-station-zone'>
-                                 <div className='panel-heading'>Reserve Stations</div>
+                                 <div className='panel-heading'>{t('Reserve Stations')}</div>
                                  <div className='panel-body'>
                                     <ReserveStationComponent title='Integer +' />
                                     <ReserveStationComponent title='Integer x' />
@@ -81,7 +84,7 @@ export class GeneralTabComponent extends React.Component<any, any> {
                         <div className='col-sm-12'>
                            <div className='row'>
                               <div className='panel panel-default inside-bar' id='functional-unit-zone'>
-                                 <div className='panel-heading'>U. F.</div>
+                                 <div className='panel-heading'>{t('UF')}</div>
                                  <div className='panel-body'>
                                     <FunctionalUnitComponent title='+Entera' />
                                     <FunctionalUnitComponent title='xEntera' />
@@ -102,3 +105,5 @@ export class GeneralTabComponent extends React.Component<any, any> {
       </div>);
    }
 }
+
+export default translate('common')(GeneralTabComponent);

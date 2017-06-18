@@ -4,7 +4,7 @@ import { Superescalar } from '../core/Superescalar';
 import FileBarComponent from './navbar/FileBarComponent';
 import AccessBarComponent from './navbar/AccessBarComponent';
 
-import { GeneralTabComponent } from './tab/GeneralTabComponent';
+import GeneralTabComponent from './tab/GeneralTabComponent';
 import { RegisterTabComponent } from './tab/RegistersTabComponent';
 
 import LoadModalComponent from './modal/LoadModalComponent';
