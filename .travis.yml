@@ -2,7 +2,10 @@ language: node_js
 node_js:
 - stable
 
-script: bash ./deploy.sh
+script: 
+   - yarn unit
+   - bash ./deploy.sh
+
 env:
   global:
   - ENCRYPTION_LABEL: "64badfd13920"
