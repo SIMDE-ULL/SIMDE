@@ -9,4 +9,4 @@ env:
   - COMMIT_AUTHOR_EMAIL: "me@adrianabreu.com"
 
 after_success:
-	- './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
+  - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
