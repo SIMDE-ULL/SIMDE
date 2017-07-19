@@ -5,7 +5,7 @@ node_js:
 script: bash ./deploy.sh
 env:
   global:
-  - ENCRYPTION_LABEL: "f3240093dff6"
+  - ENCRYPTION_LABEL: "64badfd13920"
   - COMMIT_AUTHOR_EMAIL: "me@adrianabreu.com"
 
 after_success:
