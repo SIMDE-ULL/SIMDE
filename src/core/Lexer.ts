@@ -1,4 +1,4 @@
-import * as Lexer from 'lex';
+import * as LexerJs from 'lex';
 
 export interface Lexema {
    value?: any;
@@ -15,7 +15,7 @@ export enum LEX {
    LINESNUMBER
 }
 
-export class Parser {
+export class Lexer {
 
    private LEX: LEX;
 
@@ -23,7 +23,7 @@ export class Parser {
 
    constructor() {
 
-      this._lexer = new Lexer();
+      this._lexer = new LexerJs();
 
       this._lexer.addRule(/^[0-9]+/i, function (lexeme) {
          this.yytext = lexeme;

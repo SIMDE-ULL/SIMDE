@@ -1,8 +1,10 @@
 export class BasicBlock {
-   private _lineNumber: number;
-   private _id: number;
-   private _next: BasicBlock;
-   private _successor: SuccessorBlock;
+   constructor(
+      private _id: number,
+      private _lineNumber: number,
+      private _next: BasicBlock,
+      private _successor: SuccessorBlock
+   ) { }
 
    public get lineNumber(): number {
       return this._lineNumber;

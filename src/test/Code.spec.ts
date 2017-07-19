@@ -1,5 +1,5 @@
 import { test } from 'ava';
-import { Parser } from '../core/Parser';
+import { Lexer } from '../core/Lexer';
 import { Code } from '../core/Code';
 
 const input = `2

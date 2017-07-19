@@ -18,7 +18,6 @@ export enum SuperescalarStatus {
    SUPER_OK = 0
 }
 
-
 export function stageToString(index: number): string {
    let toReturn = '';
    /* tslint:disable:ter-indent */
