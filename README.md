@@ -1,4 +1,5 @@
 # SIMDE
+[![Build Status](https://travis-ci.org/adrianabreu/SIMDE-Simulator.svg?branch=master)](https://travis-ci.org/adrianabreu/SIMDE-Simulator)
 [![Coverage Status](https://coveralls.io/repos/github/adrianabreu/SIMDE-Simulator/badge.svg?branch=master)](https://coveralls.io/github/adrianabreu/SIMDE-Simulator?branch=master)
 
 ## What is SIMDE?
