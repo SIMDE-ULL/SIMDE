@@ -58,7 +58,7 @@ ENCRYPTED_IV=${!ENCRYPTED_IV_VAR}
 openssl aes-256-cbc -K $ENCRYPTED_KEY -iv $ENCRYPTED_IV -in ../travis_rsa.enc -out ../travis_rsa -d
 chmod 600 ../travis_rsa
 eval `ssh-agent -s`
-ssh-add travis_rsa
+ssh-add ../travis_rsa
 
 # Now that we're all set up, we can push.
 git push $SSH_REPO $TARGET_BRANCH
