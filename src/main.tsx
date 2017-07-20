@@ -1,7 +1,7 @@
-import { Code } from './core/common/Code';
-import { Superescalar } from './core/superescalar/Superescalar';
-import { SuperescalarStatus } from './core/superescalar/SuperescalarEnums';
-import { FunctionalUnitType } from './core/common/FunctionalUnit';
+import { Code } from './core/Common/Code';
+import { Superescalar } from './core/Superescalar/Superescalar';
+import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
+import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 import { ExecutionStatus } from './main-consts';
 
 import 'jquery';
