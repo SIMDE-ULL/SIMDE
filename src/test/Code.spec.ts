@@ -1,6 +1,6 @@
 import { test } from 'ava';
-import { Lexer } from '../core/Lexer';
-import { Code } from '../core/Code';
+import { Lexer } from '../core/common/Lexer';
+import { Code } from '../core/common/Code';
 
 const input = `2
 ADDI	R2 R0 #50

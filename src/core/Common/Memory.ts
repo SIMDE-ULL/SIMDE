@@ -1,4 +1,4 @@
-import { randomNumber } from './utils/Random';
+import { randomNumber } from '../utils/Random';
 
 export interface Datum {
    datum: number;

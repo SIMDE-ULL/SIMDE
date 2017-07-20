@@ -1,13 +1,15 @@
-import { Machine } from './Machine';
-import { Opcodes, Code } from './Code';
+import { Machine } from '../common/Machine';
+import { Opcodes } from '../common/Opcodes';
+import { Code } from '../common/Code';
+import { Parser } from '../common/Parser';
 
 import { ReorderBufferEntry } from './ReorderBufferEntry';
 import { PrefetchEntry } from './PrefetchEntry';
 import { DecoderEntry } from './DecoderEntry';
 import { ReserveStationEntry } from './ReserveStationEntry';
-import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from './FunctionalUnit';
-import { Queue } from './collections/Queue';
-import { Instruction } from './Instruction';
+import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../common/FunctionalUnit';
+import { Queue } from '../collections/Queue';
+import { Instruction } from '../common/Instruction';
 import { CommitStatus, SuperStage, SuperescalarStatus } from './SuperescalarEnums';
 
 export class Superescalar extends Machine {
@@ -256,7 +258,7 @@ export class Superescalar extends Machine {
          if (this.reorderBuffer.isFull()) {
             break;
          }
-         let fuType: FunctionalUnitType = Code.opcodeToFunctionalUnitType(instruction.opcode);
+         let fuType: FunctionalUnitType = Parser.opcodeToFunctionalUnitType(instruction.opcode);
          if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
             break;
          }

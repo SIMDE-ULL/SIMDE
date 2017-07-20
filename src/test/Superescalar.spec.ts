@@ -1,8 +1,8 @@
 import { test } from 'ava';
-import { Superescalar } from '../core/Superescalar';
-import { SuperescalarStatus } from '../core/SuperescalarEnums';
+import { Superescalar } from '../core/superescalar/Superescalar';
+import { SuperescalarStatus } from '../core/superescalar/SuperescalarEnums';
 
-import { Code } from '../core/Code';
+import { Code } from '../core/common/Code';
 
 let superescalar = new Superescalar();
 let code;

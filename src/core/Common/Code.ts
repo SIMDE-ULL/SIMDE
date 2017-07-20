@@ -4,34 +4,10 @@ import { BasicBlock, SuccessorBlock } from './Blocks';
 import { LEX, Lexema, Lexer } from './Lexer';
 import { Label } from './Label';
 
-export enum Opcodes {
-   NOP = 0,
-   ADD,
-   ADDI,
-   SUB,
-   ADDF,
-   SUBF,
-   MULT,
-   MULTF,
-   OR,
-   AND,
-   XOR,
-   NOR,
-   SLLV,
-   SRLV,
-   SW,
-   SF,
-   LW,
-   LF,
-   BNE,
-   BEQ,
-   BGT,
-   OPERROR
-}
+import { Opcodes, OpcodesNames } from './Opcodes';
+import { Parser } from './Parser';
 
 export class Code {
-   public static OpcodesNames: string[] =
-   ['NOP', 'ADD', 'ADDI', 'SUB', 'ADDF', 'SUBF', 'MULT', 'MULTF', 'OR', 'AND', 'XOR', 'NOR', 'SLLV', 'SRLV', 'SW', 'SF', 'LW', 'LF', 'BNE', 'BEQ', 'BGT'];
 
    private _lines: number;
    private _instructions: Instruction[];
@@ -39,6 +15,7 @@ export class Code {
    private _basicBlocks: BasicBlock;
    private _numberOfBlocks: number;
    private _lexer: Lexer;
+   private _parser: Parser;
 
    constructor() {
       this._labels = new Array();
@@ -46,35 +23,9 @@ export class Code {
       this._basicBlocks = null;
       this._instructions = new Array();
       this._lexer = new Lexer();
+      this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
    }
 
-   public static opcodeToFunctionalUnitType(opcode: number): FunctionalUnitType {
-      /* tslint:disable:ter-indent */
-      switch (opcode) {
-         case Opcodes.ADD:
-         case Opcodes.ADDI:
-         case Opcodes.SUB:
-         case Opcodes.OR:
-         case Opcodes.AND:
-         case Opcodes.NOR:
-         case Opcodes.XOR:
-         case Opcodes.SLLV:
-         case Opcodes.SRLV: return FunctionalUnitType.INTEGERSUM;
-         case Opcodes.ADDF:
-         case Opcodes.SUBF: return FunctionalUnitType.FLOATINGSUM;
-         case Opcodes.MULT: return FunctionalUnitType.INTEGERMULTIPLY;
-         case Opcodes.MULTF: return FunctionalUnitType.FLOATINGMULTIPLY;
-         case Opcodes.SW:
-         case Opcodes.SF:
-         case Opcodes.LW:
-         case Opcodes.LF: return FunctionalUnitType.MEMORY;
-         case Opcodes.BNE:
-         case Opcodes.BEQ:
-         case Opcodes.BGT: return FunctionalUnitType.JUMP;
-         default: return FunctionalUnitType.INTEGERSUM;
-      }
-      /* tslint:enable:ter-indent */
-   }
 
    checkLabel(str: string, actual: BasicBlock): number {
       let index: number = -1;
@@ -155,8 +106,7 @@ export class Code {
 
    replaceLabels() {
       for (let i = 0; i < this._lines; i++) {
-         if (this._instructions[i].opcode === Opcodes.BNE
-            || this._instructions[i].opcode === Opcodes.BEQ || this._instructions[i].opcode === Opcodes.BGT) {
+         if (this.isJump(this._instructions[i].opcode)) {
             let basicBlock: BasicBlock = this._labels[this._instructions[i].getOperand(2)].blocks;
             if (basicBlock.lineNumber === -1) {
                return -1;
@@ -185,6 +135,7 @@ export class Code {
          this.instructions[i] = new Instruction();
          this.instructions[i].id = i;
          lexema = this._lexer.lex();
+
          if (lexema.value === LEX.LABEL) {
             this._numberOfBlocks++;
             this.instructions[i].label = lexema.yytext;
@@ -213,13 +164,13 @@ export class Code {
          }
          newBlock = false;
          this.checkLexema(lexema, LEX.ID, i);
-         let opcode = this.stringToOpcode(lexema.yytext);
+         let opcode = this._parser.stringToOpcode(lexema.yytext);
          this._instructions[i].opcode = opcode;
          this._instructions[i].basicBlock = this._numberOfBlocks - 1;
          /* tslint:disable:ter-indent */
          switch (opcode) {
             case Opcodes.NOP:
-               this.parseNooP(i);
+               this._parser.parseNooP(this._instructions[i]);
                break;
             case Opcodes.ADD:
             case Opcodes.SUB:
@@ -230,28 +181,28 @@ export class Code {
             case Opcodes.NOR:
             case Opcodes.SLLV:
             case Opcodes.SRLV:
-               this.parseOperationWithTwoGeneralRegisters(i);
+               this._parser.parseOperationWithTwoGeneralRegisters(i, this._instructions[i]);
                break;
             case Opcodes.ADDF:
             case Opcodes.SUBF:
             case Opcodes.MULTF:
-               this.parseOperationWithTwoFloatingRegisters(i);
+               this._parser.parseOperationWithTwoFloatingRegisters(i, this._instructions[i]);
                break;
             case Opcodes.ADDI:
-               this.parseOperationWithGeneralRegisterAndInmediate(i);
+               this._parser.parseOperationWithGeneralRegisterAndInmediate(i, this._instructions[i]);
                break;
             case Opcodes.SW:
             case Opcodes.LW:
-               this.parseGeneralLoadStoreOperation(i);
+               this._parser.parseGeneralLoadStoreOperation(i, this._instructions[i]);
                break;
             case Opcodes.SF:
             case Opcodes.LF:
-               this.parseFloatingLoadStoreOperation(i);
+               this._parser.parseFloatingLoadStoreOperation(i, this._instructions[i]);
                break;
             case Opcodes.BNE:
             case Opcodes.BEQ:
             case Opcodes.BGT:
-               this.parseJumpOperation(i, actual);
+               this._parser.parseJumpOperation(i, this._instructions[i], actual, this.checkLabel.bind(this));
                newBlock = true;
                break;
             case Opcodes.OPERROR:
@@ -262,35 +213,6 @@ export class Code {
          /* tslint:enable:ter-indent */
       }
       this.replaceLabels();
-   }
-
-   public stringToOpcode(stringOpcode: string): number {
-      let opcode: number = Code.OpcodesNames.indexOf(stringOpcode);
-      if (opcode !== -1) {
-         return opcode;
-      } else {
-         return Opcodes.OPERROR;
-      }
-   }
-
-   public stringToAddress(stringAddress: string): number[] {
-      let result: number[] = new Array(2);
-      let position = stringAddress.indexOf('(');
-      if (position === 0) {
-         result[0] = 0;
-      } else {
-         result[0] = +stringAddress.substring(0, position);
-      }
-      result[1] = this.stringToRegister(stringAddress.substr(position + 1, stringAddress.length - position - 2));
-      return result;
-   }
-
-   public stringToRegister(stringRegister: string): number {
-      return +stringRegister.substring(1, stringRegister.length);
-   }
-
-   public stringToInmediate(stringInmediate: string): number {
-      return +stringInmediate.substring(1, stringInmediate.length);
    }
 
    public checkLexema(lexema: Lexema, expectedLexema: number, i: number) {
@@ -310,32 +232,9 @@ export class Code {
       return actual.lineNumber;
    }
 
-   public getFunctionalUnitType(index: number): number {
-      /* tslint:disable:ter-indent */
-      switch (this._instructions[index].opcode) {
-         case Opcodes.ADD:
-         case Opcodes.ADDI:
-         case Opcodes.SUB:
-         case Opcodes.OR:
-         case Opcodes.AND:
-         case Opcodes.NOR:
-         case Opcodes.XOR: return FunctionalUnitType.INTEGERSUM;
-         case Opcodes.ADDF:
-         case Opcodes.SUBF: return FunctionalUnitType.FLOATINGSUM;
-         case Opcodes.MULT: return FunctionalUnitType.INTEGERMULTIPLY;
-         case Opcodes.MULTF: return FunctionalUnitType.FLOATINGMULTIPLY;
-         case Opcodes.SW:
-         case Opcodes.SF:
-         case Opcodes.LW:
-         case Opcodes.LF: return FunctionalUnitType.MEMORY;
-         case Opcodes.BNE:
-         case Opcodes.BEQ:
-         case Opcodes.BGT: return FunctionalUnitType.JUMP;
-         default: return FunctionalUnitType.INTEGERSUM;
-      }
-      /* tslint:enable:ter-indent */
-   }
-
+   /*
+    * SETTERS Y GETTERS
+    */
    public get instructions(): Instruction[] {
       return this._instructions;
    }
@@ -376,79 +275,8 @@ export class Code {
       this._basicBlocks = value;
    }
 
-   private parseNooP(index: number) {
-      this._instructions[index].setOperand(0, 0, '');
-      this._instructions[index].setOperand(1, 0, '');
-      this._instructions[index].setOperand(2, 0, '');
+   private isJump(opcode: number) {
+      return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
    }
 
-   private parseOperationWithTwoGeneralRegisters(index: number) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(2, this.stringToRegister(lexema.yytext), lexema.yytext);
-   }
-
-   private parseOperationWithTwoFloatingRegisters(index: number) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGFP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGFP, index);
-      this._instructions[index].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGFP, index);
-      this._instructions[index].setOperand(2, this.stringToRegister(lexema.yytext), lexema.yytext);
-   }
-
-   private parseOperationWithGeneralRegisterAndInmediate(index: number) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.INMEDIATE, index);
-      this._instructions[index].setOperand(2, this.stringToInmediate(lexema.yytext), lexema.yytext);
-   }
-
-   private parseGeneralLoadStoreOperation(index: number) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.ADDRESS, index);
-      let result: number[] = this.stringToAddress(lexema.yytext);
-      this._instructions[index].setOperand(1, result[0], lexema.yytext);
-      this._instructions[index].setOperand(2, result[1], '');
-   }
-
-   private parseFloatingLoadStoreOperation(index: number) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGFP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.ADDRESS, index);
-      let result2: number[] = this.stringToAddress(lexema.yytext);
-      this._instructions[index].setOperand(1, result2[0], lexema.yytext);
-      this._instructions[index].setOperand(2, result2[1], '');
-   }
-
-   private parseJumpOperation(index: number, actual: BasicBlock) {
-      let lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(0, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.REGGP, index);
-      this._instructions[index].setOperand(1, this.stringToRegister(lexema.yytext), lexema.yytext);
-      lexema = this._lexer.lex();
-      this.checkLexema(lexema, LEX.ID, index);
-      this._instructions[index].setOperand(2, this.checkLabel(lexema.yytext, actual), lexema.yytext);
-   }
 }
