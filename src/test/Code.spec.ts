@@ -1,6 +1,6 @@
 import { test } from 'ava';
-import { Lexer } from '../core/common/Lexer';
-import { Code } from '../core/common/Code';
+import { Lexer } from '../core/Common/Lexer';
+import { Code } from '../core/Common/Code';
 
 const input = `2
 ADDI	R2 R0 #50
@@ -21,66 +21,66 @@ BNE	R2 R5 LOOP
 // PARSING ERRORS
 // =============================
 test('Lines are being parsed properly', t => {
-   let code: Code = new Code();
-   code.load(input);
-   t.deepEqual(2, code.lines, 'Lines message should have been 2');
-   code = new Code();
-   code.load(input2);
-   t.deepEqual(1, code.lines, 'Lines message should have been 1');
+	let code: Code = new Code();
+	code.load(input);
+	t.deepEqual(2, code.lines, 'Lines message should have been 2');
+	code = new Code();
+	code.load(input2);
+	t.deepEqual(1, code.lines, 'Lines message should have been 1');
 });
 
 test('Parsing operand errors are being thrown', t => {
-   const input = `3
+	const input = `3
         LF F1 (R2)
         LOOP:
         ADDF F1 F1 H0
         BNE	R2 R5 LOOP
         `;
-   let code: Code = new Code();
-   let error = t.throws(() => code.load(input));
-   t.is(error, 'Error at line 4, expected: REGFP got: H0');
+	let code: Code = new Code();
+	let error = t.throws(() => code.load(input));
+	t.is(error, 'Error at line 4, expected: REGFP got: H0');
 });
 
 test('Parsing addresses errors are being throw', t => {
-   const input = `3
+	const input = `3
     LF F1 (R-2)
     LOOP:
     ADDF F1 F1 F0
     BNE	R2 R5 LOOP
     `;
 
-   let code = new Code();
-   let error = t.throws(() => code.load(input));
-   t.is(error, 'Error at line 2, expected: ADDRESS got: R');
+	let code = new Code();
+	let error = t.throws(() => code.load(input));
+	t.is(error, 'Error at line 2, expected: ADDRESS got: R');
 });
 
 test('Parsing opcodes errors are being thrown', t => {
-   const input = `3
+	const input = `3
     LF F1 (R2)
     LOOP:
     ADF F1 F1 F0
     BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   let error = t.throws(() => code.load(input));
-   t.is(error, 'Error at line 4 unknown opcode ADF');
+	let code: Code = new Code();
+	let error = t.throws(() => code.load(input));
+	t.is(error, 'Error at line 4 unknown opcode ADF');
 });
 
 test('Repeated labels errors are being thrown', t => {
-   const input = `3
+	const input = `3
     LF F1 (R2)
     LOOP:
     ADDF F1 F1 F0
     LOOP:
     BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   let error = t.throws(() => code.load(input));
-   t.is(error, 'Error at line 5, label LOOP: already exists');
+	let code: Code = new Code();
+	let error = t.throws(() => code.load(input));
+	t.is(error, 'Error at line 5, label LOOP: already exists');
 });
 
 test('Example code 1 does not throws errors', t => {
-   const input = `11
+	const input = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -94,12 +94,12 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   let error = t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	let error = t.notThrows(() => code.load(input));
 });
 
 test('Example code 2 does not throws errors', t => {
-   const input = `14
+	const input = `14
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -116,12 +116,12 @@ LOOP:
 	ADDI	R3 R3 #2
 	BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 3 does not throws errors', t => {
-   const input = `20
+	const input = `20
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -144,12 +144,12 @@ LOOP:
 	ADDI	R3 R3 #4
 	BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 4 does not throws errors', t => {
-   const input = `32
+	const input = `32
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -184,12 +184,12 @@ LOOP:
 	ADDI	R3 R3 #8
 	BNE	R2 R5 LOOP
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 5 does not throws errors', t => {
-   const input = `18
+	const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -211,12 +211,12 @@ LOOP2:
 	ADDI	R3 R3 #1
 	BNE	R3 R5 LOOP2
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 6 does not throws errors', t => {
-   const input = `8
+	const input = `8
 	ADDI	R1 R0 #1
 	ADDI	R2 R0 #2
 	ADDI	R3 R0 #0
@@ -227,12 +227,12 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R3 R4 LOOP
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 7 does not throws errors', t => {
-   const input = `18
+	const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -255,12 +255,12 @@ LOOP:
 	ADDF	F2 F1 F0
 	SF	F2 1(R3)
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 8 does not throws errors', t => {
-   const input = `27
+	const input = `27
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -292,12 +292,12 @@ LOOP:
 	SF	F2 2(R3)
 	SF	F4 3(R3)
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 9 does not throws errors', t => {
-   const input = `13
+	const input = `13
 // CODIGO:
 	ADDI	R10, R0, #10
 	ADDI	R1, R0, #0
@@ -316,12 +316,12 @@ B:
 FIN:
 	SF		F3, 2(R10)
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 10 does not throws errors', t => {
-   const input = `7
+	const input = `7
 ADDI R2 R0 #3
 BGT R0 R2 ET1
 ADDI R3 R0 #2
@@ -332,12 +332,12 @@ SUB R5 R2 R3
 ET2:
 SUB R6 R2 R3
     `;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });
 
 test('Example code 11 does not throws errors', t => {
-   const input = `26
+	const input = `26
 	ADDI	R33 R0 #-1
 	ADDI	R34 R0 #400
 	ADDI	R1 R0 #-1
@@ -382,6 +382,6 @@ FIN:
 	// Operación nula: Es necesaria porque el simulador exige que todas las etiquetas
 	// vayan asociadas a una operación.
 	ADDI	R0 R0 #0`;
-   let code: Code = new Code();
-   t.notThrows(() => code.load(input));
+	let code: Code = new Code();
+	t.notThrows(() => code.load(input));
 });

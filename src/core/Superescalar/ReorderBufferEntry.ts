@@ -1,4 +1,4 @@
-import { Instruction } from '../common/Instruction';
+import { Instruction } from '../Common/Instruction';
 import { SuperStage } from './SuperescalarEnums';
 
 export class ReorderBufferEntry {

@@ -1,4 +1,4 @@
-import { Instruction } from '../common/Instruction';
+import { Instruction } from '../Common/Instruction';
 
 export class ReserveStationEntry {
     private _instruction: Instruction;

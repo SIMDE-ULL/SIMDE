@@ -1,4 +1,4 @@
-import { Instruction } from '../common/Instruction';
+import { Instruction } from '../Common/Instruction';
 
 export class PrefetchEntry {
     private _instruction: Instruction;
