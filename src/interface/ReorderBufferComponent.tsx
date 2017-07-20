@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
-import { stageToString } from '../core/SuperescalarEnums';
+import { stageToString } from '../core/Superescalar/SuperescalarEnums';
 
 import { translate } from 'react-i18next';
 import { t } from 'i18next';

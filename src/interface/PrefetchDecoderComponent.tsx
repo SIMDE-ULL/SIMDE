@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
-import { Queue } from '../core/collections/Queue';
+import { Queue } from '../core/Collections/Queue';
 
 import { translate } from 'react-i18next';
 import { t } from 'i18next';

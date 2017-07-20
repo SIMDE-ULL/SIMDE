@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Superescalar } from '../core/Superescalar';
+import { Superescalar } from '../core/Superescalar/Superescalar';
 
 import FileBarComponent from './navbar/FileBarComponent';
 import AccessBarComponent from './navbar/AccessBarComponent';
