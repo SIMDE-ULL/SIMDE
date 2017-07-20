@@ -1,6 +1,6 @@
 import { test } from 'ava';
-import { Superescalar } from '../core/superescalar/Superescalar';
-import { SuperescalarStatus } from '../core/superescalar/SuperescalarEnums';
+import { Superescalar } from '../core/Superescalar/Superescalar';
+import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 
 import { Code } from '../core/Common/Code';
 
@@ -8,13 +8,13 @@ let superescalar = new Superescalar();
 let code;
 
 test.beforeEach('Setup machine', () => {
-	superescalar = new Superescalar();
-	superescalar.init(true);
-	code = new Code();
+   superescalar = new Superescalar();
+   superescalar.init(true);
+   code = new Code();
 });
 
 test('Code 1 is executed properly', t => {
-	const input = `11
+   const input = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -28,14 +28,14 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 72);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 72);
 });
 
 test('Code 2 is executed properly', t => {
-	const input = `14
+   const input = `14
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -52,14 +52,14 @@ LOOP:
 	ADDI	R3 R3 #2
 	BNE	R2 R5 LOOP
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 68);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 68);
 });
 
 test('Code 3 is executed properly', t => {
-	const input = `20
+   const input = `20
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -82,14 +82,14 @@ LOOP:
 	ADDI	R3 R3 #4
 	BNE	R2 R5 LOOP
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 61);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 61);
 });
 
 test('Code 4 is executed properly', t => {
-	const input = `32
+   const input = `32
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -124,14 +124,14 @@ LOOP:
 	ADDI	R3 R3 #8
 	BNE	R2 R5 LOOP
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 43);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 43);
 });
 
 test('Code 5 is executed properly', t => {
-	const input = `18
+   const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -153,14 +153,14 @@ LOOP2:
 	ADDI	R3 R3 #1
 	BNE	R3 R5 LOOP2
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 107);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 107);
 });
 
 test('Code 6 is executed properly', t => {
-	const input = `8
+   const input = `8
 	ADDI	R1 R0 #1
 	ADDI	R2 R0 #2
 	ADDI	R3 R0 #0
@@ -171,14 +171,14 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R3 R4 LOOP
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 31);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 31);
 });
 
 test('Code 7 is executed properly', t => {
-	const input = `18
+   const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -201,14 +201,14 @@ LOOP:
 	ADDF	F2 F1 F0
 	SF	F2 1(R3)
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 69);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 69);
 });
 
 test('Code 8 is executed properly', t => {
-	const input = `27
+   const input = `27
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -240,14 +240,14 @@ LOOP:
 	SF	F2 2(R3)
 	SF	F4 3(R3)
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 62);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 62);
 });
 
 test('Code 10 is executed properly', t => {
-	const input = `7
+   const input = `7
 ADDI R2 R0 #3
 BGT R0 R2 ET1
 ADDI R3 R0 #2
@@ -258,8 +258,8 @@ SUB R5 R2 R3
 ET2:
 SUB R6 R2 R3
     `;
-	code.load(input);
-	superescalar.code = code;
-	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-	t.deepEqual(superescalar.status.cycle, 14);
+   code.load(input);
+   superescalar.code = code;
+   while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+   t.deepEqual(superescalar.status.cycle, 14);
 });
