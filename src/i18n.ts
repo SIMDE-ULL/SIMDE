@@ -7,34 +7,34 @@ import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 
 
 i18n
-   .use(XHR)
-   .use(LngDetector)
-   .init({
-      fallbackLng: 'en',
-      wait: true, // globally set to wait for loaded translations in translate hoc
-      backend: {
-         loadPath: 'SIMDE-Simulator/locales/{{lng}}/{{ns}}.json',
-      },
-      // have a common namespace used around the full app
-      ns: ['common'],
-      defaultNS: 'common',
+    .use(XHR)
+    .use(LngDetector)
+    .init({
+        fallbackLng: 'en',
+        wait: true, // globally set to wait for loaded translations in translate hoc
+        backend: {
+            loadPath: '/SIMDE-Simulator/locales/{{lng}}/{{ns}}.json',
+        },
+        // have a common namespace used around the full app
+        ns: ['common'],
+        defaultNS: 'common',
 
-      debug: true,
+        debug: true,
 
-      // cache: {
-      //   enabled: true
-      // },
+        // cache: {
+        //   enabled: true
+        // },
 
-      interpolation: {
-         escapeValue: false, // not needed for react!!
-         formatSeparator: ',',
-         format: function (value, format, lng) {
-            if (format === 'uppercase') {
-               return value.toUpperCase();
-            };
-            return value;
-         }
-      }
-   });
+        interpolation: {
+            escapeValue: false, // not needed for react!!
+            formatSeparator: ',',
+            format: function (value, format, lng) {
+                if (format === 'uppercase') {
+                    return value.toUpperCase();
+                };
+                return value;
+            }
+        }
+    });
 
 export default i18n;
