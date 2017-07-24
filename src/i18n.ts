@@ -13,7 +13,7 @@ i18n
         fallbackLng: 'en',
         wait: true, // globally set to wait for loaded translations in translate hoc
         backend: {
-            loadPath: '/SIMDE-Simulator/locales/{{lng}}/{{ns}}.json',
+            loadPath: '/locales/{{lng}}/{{ns}}.json',
         },
         // have a common namespace used around the full app
         ns: ['common'],
