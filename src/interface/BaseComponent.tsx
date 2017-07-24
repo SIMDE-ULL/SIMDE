@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Queue } from '../core/collections/Queue';
+import { Queue } from '../core/Collections/Queue';
 
 declare var window: any;
 
