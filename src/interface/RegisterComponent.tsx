@@ -42,8 +42,8 @@ class RegisterComponent extends BaseRegisterComponent {
                      <tbody>
                         {
                            this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
-                              <td width='30%' key={`${this.state.title + i + 65}`}>{row.index}</td>
-                              <td width='70%' key={`${this.state.title + i + 131}`}>{row.value}</td>
+                              <td key={`${this.state.title + i + 65}`}>{row.index}</td>
+                              <td  key={`${this.state.title + i + 131}`}>{row.vmalue}</td>
                            </tr>)
                         }
                      </tbody>

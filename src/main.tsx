@@ -9,10 +9,10 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import i18n from './i18n'; // initialized i18next instance
 import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
 
 import App from './interface/App';
-import i18n from './i18n'; // initialized i18next instance
 
 const styles = require('./main.scss');
 
@@ -28,7 +28,7 @@ window.state = state;
 window.backStep = 0;
 
 /*
- * This functions relates the component name with the 
+ * These functions matches the component name with the 
  * appropiate function content.
  * Parameter: the title of the component.
  * Returns: Component content.

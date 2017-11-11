@@ -9,8 +9,8 @@ declare var window: any;
 
 class IntervalModalComponent extends React.Component<any, any> {
 
-   constructor() {
-      super();
+    constructor(public props: any, public state: any) {
+        super(props);  
       this.close = this.close.bind(this);
       this.accept = this.accept.bind(this);
       this.handleChange = this.handleChange.bind(this);

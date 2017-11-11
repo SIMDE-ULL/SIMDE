@@ -9,8 +9,8 @@ declare var window: any;
 
 class SuperescalarConfigModalComponent extends React.Component<any, any> {
 
-   constructor() {
-      super();
+   constructor(props: any) {
+      super(props);
       window['superConfigModal'] = (showModal) => {
          this.setState({
             showModal: showModal

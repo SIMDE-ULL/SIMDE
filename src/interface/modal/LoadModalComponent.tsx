@@ -10,8 +10,8 @@ declare var window: any;
 
 export class LoadModalComponent extends React.Component<any, any> {
 
-   constructor() {
-      super();
+    constructor(public props: any, public state: any) {
+        super(props);  
       window['loadModal'] = (showModal) => {
          this.setState({ showModal: showModal });
       };

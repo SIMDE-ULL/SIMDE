@@ -1,17 +1,16 @@
-import * as i18n from 'i18next';
-
-// Please note thas my change in future releases 
-// https://github.com/i18next/i18next-browser-languageDetector/issues/129
+import * as _i18n from 'i18next';
 import XHR from 'i18next-xhr-backend/dist/es/index.js';
 import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
 
 
-i18n
-    .use(XHR)
-    .use(LngDetector)
+let i18n = _i18n
+.use(XHR)
+.use(LngDetector)
     .init({
         fallbackLng: 'en',
-        wait: true, // globally set to wait for loaded translations in translate hoc
+        react: {
+            wait: true // globally set to wait for loaded translations in translate hoc
+        },
         backend: {
             loadPath: 'locales/{{lng}}/{{ns}}.json',
         },
@@ -36,5 +35,7 @@ i18n
             }
         }
     });
+
+
 
 export default i18n;

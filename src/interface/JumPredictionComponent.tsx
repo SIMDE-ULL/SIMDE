@@ -9,8 +9,9 @@ export class JumpPredictionComponent extends BaseComponent {
 
    history: any[];
    historyLength: 10;
+   state: any;
 
-   constructor(props: any) {
+   constructor(public props: any) {
       super(props);
    }
 
@@ -54,8 +55,8 @@ export class JumpPredictionComponent extends BaseComponent {
                   <tbody>
                      {
                         this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
-                           <td width='40%' key={`${this.state.title + i + 65}`}>{i}</td>
-                           <td width='60%' key={`${this.state.title + i + 131}`}>{row}</td>
+                           <td key={`${this.state.title + i + 65}`}>{i}</td>
+                           <td key={`${this.state.title + i + 131}`}>{row}</td>
                         </tr>)
                      }
                   </tbody>

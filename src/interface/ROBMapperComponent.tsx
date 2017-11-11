@@ -51,8 +51,8 @@ export class ROBMapperComponent extends BaseRegisterComponent {
                   <tbody>
                      {
                         this.state.showableContent.map((row, i) => <tr key={`${this.props.title + i}`}>
-                           <td width='40%' key={`${this.props.title + i + 65}`}>{row.index}</td>
-                           <td width='60%' key={`${this.props.title + i + 131}`}>{row.value}</td>
+                           <td key={`${this.props.title + i + 65}`}>{row.index}</td>
+                           <td key={`${this.props.title + i + 131}`}>{row.value}</td>
                         </tr>)
                      }
                   </tbody>

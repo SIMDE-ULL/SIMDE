@@ -9,8 +9,8 @@ declare var window: any;
 
 class OptionsModalComponent extends React.Component<any, any> {
 
-   constructor() {
-      super();
+    constructor(public props: any, public state: any) {
+        super(props);  
       window['options'] = (showModal) => {
          this.setState({ showModal: showModal });
       };

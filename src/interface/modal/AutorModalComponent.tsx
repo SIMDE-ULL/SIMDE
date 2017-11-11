@@ -7,8 +7,8 @@ declare var window: any;
 
 class AutorModalComponent extends React.Component<any, any> {
 
-   constructor() {
-      super();
+   constructor(public props: any, public state: any) {
+      super(props);
       window['autorModal'] = (showModal) => {
          this.setState({ showModal: showModal });
       };
