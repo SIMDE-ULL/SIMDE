@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
-import './FileBarComponent.scss';
+
 declare var window: any;
 
 class FileBarComponent extends React.Component<any, any> {

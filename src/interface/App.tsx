@@ -1,22 +1,18 @@
 import * as React from 'react';
 import { Superescalar } from '../core/Superescalar/Superescalar';
 
-import FileBarComponent from './navbar/FileBarComponent';
-import AccessBarComponent from './navbar/AccessBarComponent';
+import FileBarComponent from './components/navbar/FileBarComponent';
+import AccessBarComponent from './components/navbar/AccessBarComponent';
 
-import GeneralTabComponent from './tab/GeneralTabComponent';
-import { RegisterTabComponent } from './tab/RegistersTabComponent';
+import GeneralTabComponent from './components/tab/GeneralTabComponent';
+import { RegisterTabComponent } from './components/tab/RegistersTabComponent';
 
-import LoadModalComponent from './modal/LoadModalComponent';
-import SuperescalarConfigModalComponent from './modal/SuperescalarConfigModalComponent';
-import OptionsModalComponent from './modal/OptionsModalComponent';
-import AutorModalComponent from './modal/AutorModalComponent';
+import LoadModalComponent from './components/modal/LoadModalComponent';
+import SuperescalarConfigModalComponent from './components/modal/SuperescalarConfigModalComponent';
+import OptionsModalComponent from './components/modal/OptionsModalComponent';
+import AutorModalComponent from './components/modal/AutorModalComponent';
 
 import { translate } from 'react-i18next';
-
-import './App.scss';
-
-declare var window: any;
 
 class App extends React.Component<any, any> {
 

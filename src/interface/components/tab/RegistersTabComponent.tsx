@@ -1,8 +1,5 @@
 import * as React from 'react';
 import RegisterComponent from '../RegisterComponent';
-import * as _ from 'lodash';
-
-import './RegistersTabComponent.scss';
 
 export class RegisterTabComponent extends React.Component<any, any> {
 

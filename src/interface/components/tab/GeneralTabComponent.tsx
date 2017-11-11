@@ -11,7 +11,6 @@ import JumpPredictionComponent from '../JumPredictionComponent';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-import './GeneralTabComponent.scss';
 declare var window: any;
 
 class GeneralTabComponent extends React.Component<any, any> {
