@@ -14,27 +14,26 @@ test.beforeEach('Setup machine', () => {
 });
 
 test('Despl is executed properly', t => {
-	const input = `10
-    ADDI R1 R0 #3
-    ADDI R2 R0 #2
-    SLLV R3 R1 R2
-    SRLV R4 R1 R2
-    ADDI R5 R0 #11
-    ADDI R6 R0 #6
-    OR   R7 R5 R6
-    AND  R8 R5 R6
-    NOR  R9 R5 R6
-    XOR  R10 R5 R6    
+	const input = `7
+    ADDI R2 R0 #3
+    BGT R0 R2 ET1
+    ADDI R3 R0 #2
+    ET1:
+    SUB R4 R3 R2
+    BGT R2 R3 ET2
+    SUB R5 R2 R3
+    ET2:
+    SUB R6 R2 R3    
     `;
 	code.load(input);
 	superescalar.code = code;
 	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-    t.deepEqual(superescalar.status.cycle, 10);
-    t.deepEqual(superescalar.gpr.content[1], 3);    
-    t.deepEqual(superescalar.gpr.content[2], 2);
-	t.deepEqual(superescalar.gpr.content[3], 16);
+    t.deepEqual(superescalar.status.cycle, 14);
+    t.deepEqual(superescalar.gpr.content[1], 0);    
+    t.deepEqual(superescalar.gpr.content[2], 3);
+	t.deepEqual(superescalar.gpr.content[3], -1);
 	t.deepEqual(superescalar.gpr.content[4], 0);
-    t.deepEqual(superescalar.gpr.content[5], 11);
-    t.deepEqual(superescalar.gpr.content[6], 6);
-    t.deepEqual(superescalar.gpr.content[7], 15);    
+    t.deepEqual(superescalar.gpr.content[5], 0);
+    t.deepEqual(superescalar.gpr.content[6], 1);
+    t.deepEqual(superescalar.gpr.content[7], 0);    
 });

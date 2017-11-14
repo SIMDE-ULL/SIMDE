@@ -33,8 +33,9 @@ NOINCR:
     ADDI    R1 R1 #1
     BGT     R2 R1 LOOP1
     `;
-	code.load(input);
-	superescalar.code = code;
+    code.load(input);
+    superescalar.code = code;
+    // superescalar.memory.setDatum(1,1);
 	while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
     t.deepEqual(superescalar.status.cycle, 22);
     t.deepEqual(superescalar.gpr.content[1], 2);
