@@ -31,8 +31,8 @@ test('Despl is executed properly', t => {
     t.deepEqual(superescalar.status.cycle, 14);
     t.deepEqual(superescalar.gpr.content[1], 0);    
     t.deepEqual(superescalar.gpr.content[2], 3);
-	t.deepEqual(superescalar.gpr.content[3], -1);
-	t.deepEqual(superescalar.gpr.content[4], 0);
+	t.deepEqual(superescalar.gpr.content[3], 2);
+	t.deepEqual(superescalar.gpr.content[4], -1);
     t.deepEqual(superescalar.gpr.content[5], 0);
     t.deepEqual(superescalar.gpr.content[6], 1);
     t.deepEqual(superescalar.gpr.content[7], 0);    
