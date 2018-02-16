@@ -8,7 +8,7 @@ script:
 
 env:
   global:
-  - ENCRYPTION_LABEL: "f3240093dff6"
+  - ENCRYPTION_LABEL: "8386efa1a4c7"
   - COMMIT_AUTHOR_EMAIL: "me@adrianabreu.com"
 
 after_success:
