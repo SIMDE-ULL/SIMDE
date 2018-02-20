@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 import { Queue } from '../../core/Collections/Queue';
-import { connect } from 'react-redux'
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
@@ -13,9 +12,6 @@ class PrefetchDecoderComponent extends React.Component<any, any> {
       super(props);
    }
 
-
-
-
    render() {
       return (
          <div className='panel panel-default prefetch-decoder-zone'>
@@ -25,7 +21,8 @@ class PrefetchDecoderComponent extends React.Component<any, any> {
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.props.prefetchUnit.map((element, i) =>
+                        
+                        this.props.data && this.props.data.map((element, i) =>
                            <tr key={this.props.title + 'row' + i}>
                               <td key={this.props.title + i}>{element}</td>
                            </tr>)
@@ -37,11 +34,5 @@ class PrefetchDecoderComponent extends React.Component<any, any> {
    }
 }
 
-const mapStateToProps = state => {
-      console.log(state);
-      return {
-        prefetchUnit: state.prefetchUnit
-      }
-}
 
-export default translate('common', { wait: true })(connect(mapStateToProps)(PrefetchDecoderComponent));
+export default translate('common', { wait: true })(PrefetchDecoderComponent);

@@ -11,12 +11,16 @@ import JumpPredictionComponent from '../JumPredictionComponent';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-declare var window: any;
+import { connect } from 'react-redux'
 
 class GeneralTabComponent extends React.Component<any, any> {
 
-   render() {
-      return (<div id='home' className='tab-pane fade in active'>
+    constructor(props: any) {
+        super(props);
+    }
+
+    render() {
+        return (<div id='home' className='tab-pane fade in active'>
          <div className='row'>
             <div className='col-sm-3' id='code-zone'>
                <div className='row'>
@@ -29,12 +33,12 @@ class GeneralTabComponent extends React.Component<any, any> {
                      <div className='row'>
                         <div className='col-sm-6'>
                            <div className='row'>
-                              <PrefetchDecoderComponent title='Prefetch' />
+                              <PrefetchDecoderComponent  data={this.props.prefetchUnit} title='Prefetch' />
                            </div>
                         </div>
                         <div className='col-sm-6'>
                            <div className='row'>
-                              <PrefetchDecoderComponent title='Decoder' />
+                              <PrefetchDecoderComponent data={this.props.decoder} title='Decoder' />
                            </div>
                         </div>
                      </div>
@@ -105,4 +109,11 @@ class GeneralTabComponent extends React.Component<any, any> {
    }
 }
 
-export default translate('common')(GeneralTabComponent);
+const mapStateToProps = state => {
+    return {
+      prefetchUnit: state.prefetchUnit,
+      decoder: state.decoder
+    }
+}
+
+export default translate('common')(connect(mapStateToProps)(GeneralTabComponent));

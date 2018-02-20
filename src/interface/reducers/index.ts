@@ -5,6 +5,7 @@ import {
 
 export const initialState = {
     prefetchUnit : [],
+    decoder: []
 }
 
 export function SuperescalarReducers(state = initialState, action) {
