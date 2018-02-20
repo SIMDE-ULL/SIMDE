@@ -1,6 +1,6 @@
 # SIMDE
-[![Build Status](https://travis-ci.org/adrianabreu/SIMDE-Simulator.svg?branch=master)](https://travis-ci.org/adrianabreu/SIMDE-Simulator)
-[![Coverage Status](https://coveralls.io/repos/github/adrianabreu/SIMDE-Simulator/badge.svg?branch=master)](https://coveralls.io/github/adrianabreu/SIMDE-Simulator?branch=master)
+[![Build Status](https://travis-ci.org/etsiiull/SIMDE.svg?branch=master)](https://travis-ci.org/etsiiull/SIMDE)
+[![Coverage Status](https://coveralls.io/repos/github/etsiiull/SIMDE/badge.svg?branch=master)](https://coveralls.io/github/etsiiull/SIMDE?branch=master)
 
 
 ![Live exec](/assets/exec.gif)
@@ -21,7 +21,7 @@ The project has been released under GPLv3 License.
 
 ## Live DEMO
 
-[Check the project live](http://adrianabreu.com/SIMDE-Simulator/)
+[Check the project live](https://etsiiull.github.io/SIMDE/)
 
 ## Docs
 
@@ -31,4 +31,4 @@ If you have any doubt you should check the official docs [here](http://adrianabr
 
 This project has been rewrite from scratch by me using the original simulator made by [Iván Castilla Rodríguez](https://github.com/icasrod).
 
-All credit for the core design should go to him.
+All credit for the modeling and the core design should go to him.
