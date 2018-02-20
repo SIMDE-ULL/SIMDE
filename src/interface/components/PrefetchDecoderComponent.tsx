@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { BaseComponent } from './BaseComponent';
 import { Queue } from '../../core/Collections/Queue';
-
+import { connect } from 'react-redux'
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-class PrefetchDecoderComponent extends BaseComponent {
+class PrefetchDecoderComponent extends React.Component<any, any> {
 
    history: any[];
 
@@ -13,18 +13,7 @@ class PrefetchDecoderComponent extends BaseComponent {
       super(props);
    }
 
-   buildShowableContent(data: Queue<any>) {
-      let toReturnObject = {
-         showableContent: []
-      };
-      let toReturn = new Array(data.elements.length - 1);
-      toReturn.fill(' ');
-      for (let i = data.first, j = 0; i !== data.last; i = data.nextIterator(i), j++) {
-         toReturn[j] = ((data.getElement(i) != null) ? data.getElement(i).instruction.id : '0');
-      }
-      toReturnObject.showableContent = toReturn;
-      return toReturnObject;
-   }
+
 
 
    render() {
@@ -36,7 +25,7 @@ class PrefetchDecoderComponent extends BaseComponent {
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.showableContent.map((element, i) =>
+                        this.props.prefetchUnit.map((element, i) =>
                            <tr key={this.props.title + 'row' + i}>
                               <td key={this.props.title + i}>{element}</td>
                            </tr>)
@@ -48,4 +37,11 @@ class PrefetchDecoderComponent extends BaseComponent {
    }
 }
 
-export default translate('common', { wait: true })(PrefetchDecoderComponent);
+const mapStateToProps = state => {
+      console.log(state);
+      return {
+        prefetchUnit: state.prefetchUnit
+      }
+}
+
+export default translate('common', { wait: true })(connect(mapStateToProps)(PrefetchDecoderComponent));

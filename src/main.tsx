@@ -3,6 +3,10 @@ import { Superescalar } from './core/Superescalar/Superescalar';
 import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
 import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 import { ExecutionStatus } from './main-consts';
+import { createStore } from 'redux';
+import { SuperescalarReducers } from './interface/reducers';
+import { Provider } from 'react-redux';
+import { nextPrefetchCycle } from './interface/actions';
 
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap.min.js';
@@ -137,6 +141,7 @@ let componentContent = (title: string): any => {
 let callAllCallbacks = (step?: number) => {
    // Code should only be setted on the first iteration
    if (step) {
+
       for (let callbackName in state) {
          if (callbackName !== 'Code') {
             state[callbackName]({
@@ -176,6 +181,7 @@ let superStep = () => {
       }
       let resul = superescalar.tic();
       callAllCallbacks();
+      store.dispatch(nextPrefetchCycle(superescalar.prefetchUnit));
       return resul;
    }
 };
@@ -338,11 +344,20 @@ window.stopCondition = ExecutionStatus.EXECUTABLE;
 window.finishedExecution = false;
 window.executing = false;
 
+
+ 
+let store = createStore(SuperescalarReducers);
+
+
 /*
  * Here is where the react endpoint appears
  *
  */
 ReactDOM.render(
-   <I18nextProvider i18n={i18n}><App machine={superescalar} /></I18nextProvider>,
+   <I18nextProvider i18n={i18n}>
+   <Provider store={store}>
+   <App machine={superescalar}/>
+   </Provider>
+   </I18nextProvider>,
    document.getElementById('app')
 );
