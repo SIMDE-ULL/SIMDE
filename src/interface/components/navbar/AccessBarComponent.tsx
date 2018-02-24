@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
+import { connect } from 'react-redux';
 
 declare var window: any;
 
@@ -19,17 +20,17 @@ class AccessBarComponent extends React.Component<any, any> {
             showableContent: null
         };
 
-        window.state['cycle'] = (data) => {
-            if (data.step) {
-                if (data.step === -1) {
-                    this.setState({ content: 0, showableContent: 0 });
-                } else {
-                    this.setState({ showableContent: this.state.content - data.step });
-                }
-            } else {
-                this.setState({ content: data.content, showableContent: data.content });
-            }
-        };
+        // window.state['cycle'] = (data) => {
+        //     if (data.step) {
+        //         if (data.step === -1) {
+        //             this.setState({ content: 0, showableContent: 0 });
+        //         } else {
+        //             this.setState({ showableContent: this.state.content - data.step });
+        //         }
+        //     } else {
+        //         this.setState({ content: data.content, showableContent: data.content });
+        //     }
+        // };
     }
 
     stepForward() {
@@ -84,7 +85,7 @@ class AccessBarComponent extends React.Component<any, any> {
                     <li>
                         <a >
                             <label htmlFor='cycle'>{t('accessBar.cycle')}</label>
-                            <span className='cycle'>{this.state.showableContent}</span>
+                            <span className='cycle'>{this.props.cycle}</span>
                         </a>
                     </li>
                     <li>
@@ -102,5 +103,9 @@ class AccessBarComponent extends React.Component<any, any> {
         </div >);
     }
 }
-
-export default translate('common', { wait: true })(AccessBarComponent);
+const mapStateToProps = state => {
+    return {
+        cycle: state.cycle
+    }
+}
+export default translate('common', { wait: true })(connect(mapStateToProps)(AccessBarComponent));

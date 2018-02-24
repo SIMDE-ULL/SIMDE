@@ -1,5 +1,4 @@
 import { Instruction } from './Instruction';
-import { FunctionalUnit, FunctionalUnitType } from './FunctionalUnit';
 import { BasicBlock, SuccessorBlock } from './Blocks';
 import { LEX, Lexema, Lexer } from './Lexer';
 import { Label } from './Label';

@@ -5,7 +5,7 @@ import IntervalModalComponent from './modal/IntervalModalComponent';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-class RegisterComponent extends BaseRegisterComponent {
+class RegisterComponent extends React.Component<any, any> {
 
       history: any[];
       historyLength = 10;
@@ -13,20 +13,20 @@ class RegisterComponent extends BaseRegisterComponent {
       constructor(props: any) {
             super(props);
             // Bind functions for not losing context
-            this.openWithAddInterval = this.openWithAddInterval.bind(this);
-            this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
-            this.addInterval = this.addInterval.bind(this);
-            this.parseInterval = this.parseInterval.bind(this);
-            this.removeInterval = this.removeInterval.bind(this);
+            // this.openWithAddInterval = this.openWithAddInterval.bind(this);
+            // this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+            // this.addInterval = this.addInterval.bind(this);
+            // this.parseInterval = this.parseInterval.bind(this);
+            // this.removeInterval = this.removeInterval.bind(this);
       }
 
-      openWithAddInterval() {
-            this.setState({ open: true, onAccept: this.addInterval });
-      }
+      // openWithAddInterval() {
+      //       this.setState({ open: true, onAccept: this.addInterval });
+      // }
 
-      openWithRemoveInterval() {
-            this.setState({ open: true, onAccept: this.removeInterval });
-      }
+      // openWithRemoveInterval() {
+      //       this.setState({ open: true, onAccept: this.removeInterval });
+      // }
 
       render() {
             return (
@@ -37,24 +37,24 @@ class RegisterComponent extends BaseRegisterComponent {
                                     <table className='table table-bordered'>
                                           <tbody>
                                                 {
-                                                      this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
-                                                            <td key={`${this.state.title + i + 65}`}>{row.index}</td>
-                                                            <td key={`${this.state.title + i + 131}`}>{row.vmalue}</td>
+                                                      this.props.content && this.props.content.map((row, i) => <tr key={`${this.props.title + i}`}>
+                                                            <td key={`${this.props.title + i + 65}`}>{row.index}</td>
+                                                            <td key={`${this.props.title + i + 131}`}>{row.vmalue}</td>
                                                       </tr>)
                                                 }
                                           </tbody>
                                     </table>
                               </div>
                               <div className='panel-footer'>
-                                    <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
+                                    {/* <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
                                     </button>
-                                    <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
+                                    <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button> */}
                                     <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
                                     <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
                                     <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
                               </div>
                         </div>
-                        {<IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />}
+                        {/* {<IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />} */}
                   </div>);
       }
 }

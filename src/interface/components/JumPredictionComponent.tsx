@@ -1,49 +1,16 @@
 import * as React from 'react';
-import { BaseComponent } from './BaseComponent';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
 declare var window: any;
 
-export class JumpPredictionComponent extends BaseComponent {
+export class JumpPredictionComponent extends React.Component<any, any> {
 
    history: any[];
    historyLength: 10;
-   state: any;
 
    constructor(public props: any) {
       super(props);
-   }
-
-   buildShowableContent(data): any {
-      let toReturnObject = {
-         showableContent: []
-      };
-      let toReturn = [];
-      for (let i = 0; i < data.length; i++) {
-         toReturn.push(this.changeValue(data[i]));
-      }
-      toReturnObject.showableContent = toReturn;
-      return toReturnObject;
-   }
-
-   changeValue(value): string {
-      let valueToShow;
-      switch (value) {
-         case 0:
-            valueToShow = 'F(00)';
-            break;
-         case 1:
-            valueToShow = 'F(01)';
-            break;
-         case 2:
-            valueToShow = 'V(10)';
-            break;
-         case 3:
-            valueToShow = 'V(11)';
-            break;
-      }
-      return valueToShow;
    }
 
    render() {
@@ -54,9 +21,9 @@ export class JumpPredictionComponent extends BaseComponent {
                <table className='table table-bordered'>
                   <tbody>
                      {
-                        this.state.showableContent.map((row, i) => <tr key={`${this.state.title + i}`}>
-                           <td key={`${this.state.title + i + 65}`}>{i}</td>
-                           <td key={`${this.state.title + i + 131}`}>{row}</td>
+                        this.props.jumpPrediction.map((row, i) => <tr key={`${this.props.title + i}`}>
+                           <td key={`${this.props.title + i + 65}`}>{i}</td>
+                           <td key={`${this.props.title + i + 131}`}>{row}</td>
                         </tr>)
                      }
                   </tbody>
