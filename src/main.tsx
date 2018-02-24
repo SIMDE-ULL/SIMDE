@@ -3,33 +3,37 @@ import { Superescalar } from './core/Superescalar/Superescalar';
 import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
 import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 import { ExecutionStatus } from './main-consts';
-import { Provider } from 'react-redux';
 
-import { nextPrefetchCycle, nextDecoderCycle } from './interface/actions';
-import { nextJumpTableCycle } from './interface/actions/jump-table-actions';
-import { nextFunctionalUnitCycle } from './interface/actions/functional-unit-actions';
-import { nextReserveStationCycle } from './interface/actions/reserve-station-actions';
-import { nextReorderBufferCycle } from './interface/actions/reorder-buffer-actions';
-import { nextRegistersCycle } from './interface/actions/register-actions';
-import { nextMemoryCycle } from './interface/actions/memory-actions';
+import { 
+      nextPrefetchCycle,
+      nextDecoderCycle,
+      nextJumpTableCycle,
+      nextFunctionalUnitCycle,
+      nextReserveStationCycle,
+      nextReorderBufferCycle,
+      nextRegistersCycle,
+      nextMemoryCycle,
+      nextReorderBufferMapperCycle,
+      nextCycle,
+      batchActions
+} from './interface/actions';
 
 import { SuperescalarReducers } from './interface/reducers';
+import { enableBatching } from './interface/reducers/batching';
 
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-import { batchActions } from './interface/actions/batch';
-import { enableBatching } from './interface/reducers/batching';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import i18n from './i18n'; // initialized i18next instance
 import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
 
 import App from './interface/App';
-import { nextReorderBufferMapperCycle } from './interface/actions/reorder-buffer-mapper-actions';
-import { nextCycle } from './interface/actions/cycle-actions';
+
 
 const styles = require('./main.scss');
 
