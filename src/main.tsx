@@ -15,6 +15,7 @@ import {
       nextMemoryCycle,
       nextReorderBufferMapperCycle,
       nextCycle,
+      superescalarLoad,
       batchActions
 } from './interface/actions';
 
@@ -147,7 +148,7 @@ let loadSuper = () => {
 
       // There is no need to update the code with the rest,
       // it should remain the same during all the program execution
-      state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
+      store.dispatch(superescalarLoad(superescalar.code.instructions));
       callAllCallbacks();
       //    } catch (err) {
       //       // alert(err);

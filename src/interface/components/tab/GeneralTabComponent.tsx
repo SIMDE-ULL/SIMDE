@@ -24,7 +24,7 @@ class GeneralTabComponent extends React.Component<any, any> {
             <div className='row'>
                 <div className='col-sm-3' id='code-zone'>
                     <div className='row'>
-                        <CodeComponent />
+                        <CodeComponent code={this.props.code}/>
                     </div>
                 </div>
                 <div className='col-sm-9' id='simulation-zone'>
@@ -129,7 +129,8 @@ const mapStateToProps = state => {
         reserveStationJump: state.reserveStationJump,
         ROBGpr: state.ROBGpr,
         ROBFpr: state.ROBFpr,
-        reorderBuffer: state.reorderBuffer
+        reorderBuffer: state.reorderBuffer,
+        code: state.code
     }
 }
 

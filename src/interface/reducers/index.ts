@@ -8,7 +8,8 @@ import {
     NEXT_REORDER_BUFFER_CYCLE,
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
-    NEXT_CYCLE
+    NEXT_CYCLE,
+    SUPERESCALAR_LOAD
 } from '../actions';
 
     // STEP_FORWARD,
@@ -41,7 +42,8 @@ export const initialState = {
     generalRegisters: [],
     floatingRegisters: [],
     memory: [],
-    cycle: 0
+    cycle: 0,
+    code: []
 }
 
 export function SuperescalarReducers(state = initialState, action) {
@@ -103,6 +105,11 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = {
                 ...state,
                 cycle: action.value
+            };
+        case SUPERESCALAR_LOAD:
+            return state = {
+                ...state,
+                code: action.value
             };
         default:
             return state

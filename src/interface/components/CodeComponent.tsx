@@ -24,9 +24,6 @@ class CodeComponent extends React.Component<any, any> {
                         'pink'
                   ]
             };
-            window.state['Code'] = (data) => {
-                  this.setState(data);
-            };
             this.setBreakpoint = this.setBreakpoint.bind(this);
       }
 
@@ -53,7 +50,7 @@ class CodeComponent extends React.Component<any, any> {
                                     </thead>
                                     <tbody>
                                           {
-                                                this.state.code.map((row: Instruction, i) =>
+                                                this.props.code && this.props.code.map((row: Instruction, i) =>
                                                       <tr key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(e, i); }}>
                                                             <td className={`${row.breakPoint ? 'breakPoint' : ''}`}>{row.label} {i}</td>
                                                             <td className={`${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</td>
