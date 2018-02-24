@@ -1,33 +1,18 @@
 import {
-    nextPrefetchCycle,
     NEXT_PREFETCH_CYCLE,
-    NEXT_DECODER_CYCLE
+    NEXT_DECODER_CYCLE,
+    NEXT_JUMP_TABLE_CYCLE,
+    FUNCTIONAL_UNIT_CYCLE,
+    NEXT_RESERVE_STATION_CYCLE,
+    NEXT_REORDER_BUFFER_MAPPER_CYCLE,
+    NEXT_REORDER_BUFFER_CYCLE,
+    NEXT_REGISTERS_CYCLE,
+    NEXT_MEMORY_CYCLE,
+    NEXT_CYCLE
 } from '../actions';
 
-import {
-    NEXT_JUMP_TABLE_CYCLE
-} from '../actions/jump-table-actions';
-
-import {
-    STEP_FORWARD,
-    STEP_BACK
-} from '../actions/history';
-
-import {
-    FUNCTIONAL_UNIT_CYCLE
-} from '../actions/functional-unit-actions';
-
-import {
-    NEXT_RESERVE_STATION_CYCLE
-} from '../actions/reserve-station-actions';
-
-import {
-    NEXT_REORDER_BUFFER_MAPPER_CYCLE
-} from '../actions/reorder-buffer-mapper-actions';
-import { NEXT_REORDER_BUFFER_CYCLE } from '../actions/reorder-buffer-actions';
-import { NEXT_REGISTERS_CYCLE } from '../actions/register-actions';
-import { NEXT_MEMORY_CYCLE } from '../actions/memory-actions';
-import { NEXT_CYCLE } from '../actions/cycle-actions';
+    // STEP_FORWARD,
+    // STEP_BACK
 
 const MAX_HISTORY_SIZE = 10;
 
@@ -67,10 +52,10 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = { ...state, decoder: action.value };
         case NEXT_JUMP_TABLE_CYCLE:
             return state = { ...state, jumpPrediction: action.value };
-        case STEP_FORWARD:
-            let { history, ...currentState } = state;
-            history = [history.slice(-9), currentState];
-            return state = { ...state, history: history };
+        // case STEP_FORWARD:
+        //     let { history, ...currentState } = state;
+        //     history = [history.slice(-9), currentState];
+        //     return state = { ...state, history: history };
         case FUNCTIONAL_UNIT_CYCLE:
             return state = {
                 ...state,
