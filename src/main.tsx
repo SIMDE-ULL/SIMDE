@@ -54,18 +54,52 @@ window.backStep = 0;
  * if there is a step param, the components will use
  * their history to set the appropiate content
  */
-let callAllCallbacks = (step?: number) => {
+let dispatchAllSuperescalarActions = (step?: number) => {
       // Code should only be setted on the first iteration
-      if (step) {
+      store.dispatch(
+            batchActions(
+                  nextJumpTableCycle(superescalar.jumpPrediction),
+                  nextPrefetchCycle(superescalar.prefetchUnit),
+                  nextDecoderCycle(superescalar.decoder),
+                  nextFunctionalUnitCycle([...superescalar.functionalUnit, superescalar.aluMem]),
+                  nextReserveStationCycle(
+                        [{
+                              data: superescalar.reserveStationEntry[0],
+                              size: superescalar.getReserveStationSize(0)
+                        },
 
-            for (let callbackName in state) {
-                  if (callbackName !== 'Code') {
-                        state[callbackName]({
-                              step: step
-                        });
-                  }
-            }
-      }
+                        {
+                              data: superescalar.reserveStationEntry[1],
+                              size: superescalar.getReserveStationSize(1)
+                        },
+
+                        {
+                              data: superescalar.reserveStationEntry[2],
+                              size: superescalar.getReserveStationSize(2)
+                        },
+
+                        {
+                              data: superescalar.reserveStationEntry[3],
+                              size: superescalar.getReserveStationSize(3)
+                        },
+
+                        {
+                              data: superescalar.reserveStationEntry[4],
+                              size: superescalar.getReserveStationSize(4)
+                        },
+
+                        {
+                              data: superescalar.reserveStationEntry[5],
+                              size: superescalar.getReserveStationSize(5)
+                        }
+                  ]),
+                  nextReorderBufferMapperCycle([superescalar.ROBGpr, superescalar.ROBFpr]),
+                  nextReorderBufferCycle(superescalar.reorderBuffer.elements),
+                  nextRegistersCycle([superescalar.gpr.content, superescalar.fpr.content]),
+                  nextMemoryCycle(superescalar.memory.data),
+                  nextCycle(superescalar.status.cycle)
+            )
+      );
 };
 
 let superExe = () => {
@@ -77,11 +111,11 @@ let superExe = () => {
 let superStep = () => {
       if (window.backStep > 0) {
             window.backStep--;
-            callAllCallbacks(window.backStep);
+            dispatchAllSuperescalarActions(window.backStep);
       } else {
             if (window.finishedExecution) {
                   window.finishedExecution = false;
-                  callAllCallbacks(-1);
+                  dispatchAllSuperescalarActions(-1);
                   superescalar.status.cycle = 0;
             }
             if (superescalar.status.cycle === 0) {
@@ -90,51 +124,8 @@ let superStep = () => {
                   superescalar.code = code;
             }
             let resul = superescalar.tic();
-            callAllCallbacks();
-            store.dispatch(
-                  batchActions(
-                        nextJumpTableCycle(superescalar.jumpPrediction),
-                        nextPrefetchCycle(superescalar.prefetchUnit),
-                        nextDecoderCycle(superescalar.decoder),
-                        nextFunctionalUnitCycle([...superescalar.functionalUnit, superescalar.aluMem]),
-                        nextReserveStationCycle(
-                              [{
-                                    data: superescalar.reserveStationEntry[0],
-                                    size: superescalar.getReserveStationSize(0)
-                              },
+            dispatchAllSuperescalarActions();
 
-                              {
-                                    data: superescalar.reserveStationEntry[1],
-                                    size: superescalar.getReserveStationSize(1)
-                              },
-
-                              {
-                                    data: superescalar.reserveStationEntry[2],
-                                    size: superescalar.getReserveStationSize(2)
-                              },
-
-                              {
-                                    data: superescalar.reserveStationEntry[3],
-                                    size: superescalar.getReserveStationSize(3)
-                              },
-
-                              {
-                                    data: superescalar.reserveStationEntry[4],
-                                    size: superescalar.getReserveStationSize(4)
-                              },
-
-                              {
-                                    data: superescalar.reserveStationEntry[5],
-                                    size: superescalar.getReserveStationSize(5)
-                              }
-                        ]),
-                        nextReorderBufferMapperCycle([superescalar.ROBGpr, superescalar.ROBFpr]),
-                        nextReorderBufferCycle(superescalar.reorderBuffer.elements),
-                        nextRegistersCycle([superescalar.gpr.content, superescalar.fpr.content]),
-                        nextMemoryCycle(superescalar.memory.data),
-                        nextCycle(superescalar.status.cycle)
-                  )
-            );
             return resul;
       }
 };
@@ -149,7 +140,7 @@ let loadSuper = () => {
       // There is no need to update the code with the rest,
       // it should remain the same during all the program execution
       store.dispatch(superescalarLoad(superescalar.code.instructions));
-      callAllCallbacks();
+      dispatchAllSuperescalarActions();
       //    } catch (err) {
       //       // alert(err);
       //    }
@@ -164,7 +155,7 @@ let play = () => {
       // Check if the execution has finished 
       if (window.finishedExecution) {
             window.finishedExecution = false;
-            callAllCallbacks(-1);
+            dispatchAllSuperescalarActions(-1);
             superescalar.status.cycle = 0;
       }
       if (superescalar.status.cycle === 0) {
@@ -177,7 +168,7 @@ let play = () => {
       } else {
             // tslint:disable-next-line:no-empty
             while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-            callAllCallbacks();
+            dispatchAllSuperescalarActions();
             window.finishedExecution = true;
             window.alert('Done');
       }
@@ -197,7 +188,7 @@ let stop = () => {
 
       if (!window.executing) {
             window.executing = false;
-            callAllCallbacks(-1);
+            dispatchAllSuperescalarActions(-1);
             superescalar.status.cycle = 0;
             let code = Object.assign(new Code(), superescalar.code);
             superExe();
@@ -210,7 +201,7 @@ let stepBack = () => {
       if (superescalar.status.cycle > 0 && window.backStep < 10 &&
             (superescalar.status.cycle - window.backStep > 0)) {
             window.backStep++;
-            callAllCallbacks(window.backStep);
+            dispatchAllSuperescalarActions(window.backStep);
       }
 };
 
@@ -245,7 +236,7 @@ function executionLoop(speed) {
             let code = Object.assign(new Code(), superescalar.code);
             superExe();
             superescalar.code = code;
-            callAllCallbacks(-1);
+            dispatchAllSuperescalarActions(-1);
       }
 }
 
@@ -290,7 +281,6 @@ window.stop = stop;
 window.pause = pause;
 window.stepBack = stepBack;
 window.saveSuperConfig = saveSuperConfig;
-window.callAllCallbacks = callAllCallbacks;
 window.colorBlocks = colorBlocks;
 window.setBreakpoint = setBreakpoint;
 window.stopCondition = ExecutionStatus.EXECUTABLE;

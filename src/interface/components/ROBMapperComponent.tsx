@@ -47,10 +47,10 @@ export class ROBMapperComponent extends React.Component<any, any> {
                 <div className='panel-body'>
                     <table className='table table-bordered'>
                         <tbody>
-                            {
-                                this.props.data && this.props.data.map((row, i) => <tr key={`${this.props.title + i}`}>
-                                    <td key={`${this.props.title + i + 65}`}>{row.index}</td>
-                                    <td key={`${this.props.title + i + 131}`}>{row.value}</td>
+                            {                                
+                                this.props.data && this.props.data.map((element, i) => <tr key={`${this.props.title + i}`}>
+                                    <td key={`${this.props.title + i + 65}`}>{i}</td>
+                                    <td key={`${this.props.title + i + 131}`}>{element}</td>
                                 </tr>)
                             }
                         </tbody>
