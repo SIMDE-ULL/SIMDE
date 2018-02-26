@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
+import { connect } from 'react-redux';
+import { toggleLoadModal } from '../../actions/modals';
+import { bindActionCreators } from 'redux';
+
 
 declare var window: any;
 
@@ -19,7 +23,7 @@ class FileBarComponent extends React.Component<any, any> {
                     <li className='dropdown'>
                         <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.file.name')}</a>
                         <ul className='dropdown-menu'>
-                            <li><a onClick={() => { window['loadModal'](true); }}>{t('fileBar.file.load')}</a></li>
+                            <li><a onClick={() => { this.props.actions.toggleLoadModal(true) }}>{t('fileBar.file.load')}</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -69,4 +73,15 @@ class FileBarComponent extends React.Component<any, any> {
     }
 }
 
-export default translate('common', { wait: true })(FileBarComponent);
+const mapStateToProps = state => {
+    return {
+        isLoadModalOpen: state.isLoadModalOpen,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return { actions: bindActionCreators({toggleLoadModal}, dispatch)};
+}
+
+
+export default translate('common', { wait: true })(connect(mapStateToProps,mapDispatchToProps)(FileBarComponent));

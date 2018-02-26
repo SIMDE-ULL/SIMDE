@@ -11,6 +11,7 @@ import {
     NEXT_CYCLE,
     SUPERESCALAR_LOAD
 } from '../actions';
+import { TOGGLE_LOAD_MODAL } from '../actions/modals';
 
     // STEP_FORWARD,
     // STEP_BACK
@@ -43,7 +44,8 @@ export const initialState = {
     floatingRegisters: [],
     memory: [],
     cycle: 0,
-    code: []
+    code: [],
+    isLoadModalOpen: false
 }
 
 export function SuperescalarReducers(state = initialState, action) {
@@ -110,6 +112,11 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = {
                 ...state,
                 code: action.value
+            };
+        case TOGGLE_LOAD_MODAL:
+            return state = {
+                ...state,
+                isLoadModalOpen: action.value
             };
         default:
             return state
