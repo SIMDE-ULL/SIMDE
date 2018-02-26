@@ -95,10 +95,10 @@ class AccessBarComponent extends React.Component<any, any> {
                         </a>
                     </li>
                 </ul>
-                <ul className='nav nav-tabs'>
+                {/* <ul className='nav nav-tabs'>
                     <li className='active'><a data-toggle='tab' href='#home'>{t('accessBar.superescalar')}</a></li>
                     <li><a data-toggle='tab' href='#menu1'>{t('accessBar.memReg')}</a></li>
-                </ul>
+                </ul> */}
             </nav>
         </div >);
     }

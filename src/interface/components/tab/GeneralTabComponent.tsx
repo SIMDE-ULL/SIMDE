@@ -20,7 +20,7 @@ class GeneralTabComponent extends React.Component<any, any> {
     }
 
     render() {
-        return (<div id='home' className='tab-pane fade in active'>
+        return (<div id='home'>
             <div className='row'>
                 <div className='col-sm-3' id='code-zone'>
                     <div className='row'>

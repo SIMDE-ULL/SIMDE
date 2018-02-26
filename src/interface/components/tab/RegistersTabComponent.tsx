@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 export class RegisterTabComponent extends React.Component<any, any> {
 
    render() {
-      return (<div id='menu1' className='tab-pane fade'>
+      return (<div id='menu1'>
          <div className='row'>
             <div className='col-sm-4'>
                <RegisterComponent title='Memoria' content={this.props.memory} />

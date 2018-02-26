@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Tabs, Tab } from 'react-bootstrap';
+
 import { Superescalar } from '../core/Superescalar/Superescalar';
 
 import FileBarComponent from './components/navbar/FileBarComponent';
@@ -29,8 +31,14 @@ class App extends React.Component<any, any> {
                   <AccessBarComponent />
                </div>
                <div className='tab-content'>
-                  <GeneralTabComponent />
-                  <RegisterTabComponent />
+               <Tabs defaultActiveKey={2}  id="uncontrolled-tab-example">
+                <Tab eventKey={1} title="Tab 1">
+                    <GeneralTabComponent />
+                </Tab>
+                <Tab eventKey={2} title="Tab 2">
+                    <RegisterTabComponent />
+                </Tab>
+                </Tabs>;
                </div>
             </div>
             <LoadModalComponent />

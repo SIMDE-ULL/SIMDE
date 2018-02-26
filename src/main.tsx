@@ -22,10 +22,6 @@ import {
 import { SuperescalarReducers } from './interface/reducers';
 import { enableBatching } from './interface/reducers/batching';
 
-import 'jquery';
-import 'bootstrap/dist/js/bootstrap.min.js';
-
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import i18n from './i18n'; // initialized i18next instance
