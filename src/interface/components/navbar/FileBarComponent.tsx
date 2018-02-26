@@ -4,7 +4,7 @@ import { t } from 'i18next';
 import { connect } from 'react-redux';
 import { toggleLoadModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
-
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 declare var window: any;
 
@@ -20,12 +20,13 @@ class FileBarComponent extends React.Component<any, any> {
         return (<div className='filebar'>
             <nav className='navbar'>
                 <ul className='nav navbar-nav'>
-                    <li className='dropdown'>
-                        <a className='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>{t('fileBar.file.name')}</a>
-                        <ul className='dropdown-menu'>
-                            <li><a onClick={() => { this.props.actions.toggleLoadModal(true) }}>{t('fileBar.file.load')}</a></li>
-                        </ul>
-                    </li>
+                <DropdownButton
+                    title={t('fileBar.file.name')}
+                    key={'dropdown-load'}
+                    id={'dropdown-load'}
+                >
+                    <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{t('fileBar.file.load')}</MenuItem>
+                </DropdownButton>
                 </ul>
                 <ul className='nav navbar-nav'>
                     <li className='dropdown'>
