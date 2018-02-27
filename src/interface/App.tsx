@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Tabs, Tab } from 'react-bootstrap';
 
 import { Superescalar } from '../core/Superescalar/Superescalar';
+import { t } from 'i18next';
 
 import FileBarComponent from './components/navbar/FileBarComponent';
 import AccessBarComponent from './components/navbar/AccessBarComponent';
@@ -31,11 +32,11 @@ class App extends React.Component<any, any> {
                   <AccessBarComponent />
                </div>
                <div className='tab-content'>
-               <Tabs defaultActiveKey={2}  id="uncontrolled-tab-example">
-                <Tab eventKey={1} title="Tab 1">
+               <Tabs defaultActiveKey={1}  id="working-area-tabs">
+                <Tab eventKey={1} title={t('accessBar.superescalar')}>
                     <GeneralTabComponent />
                 </Tab>
-                <Tab eventKey={2} title="Tab 2">
+                <Tab eventKey={2} title={t('accessBar.memReg')}>
                     <RegisterTabComponent />
                 </Tab>
                 </Tabs>;
@@ -50,4 +51,4 @@ class App extends React.Component<any, any> {
    }
 }
 
-export default App;
+export default translate('common', { wait: true })(App);
