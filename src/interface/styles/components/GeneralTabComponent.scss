@@ -1,60 +1,108 @@
 @import '../base/variables';
 
-#code-zone {
-   min-height: calc(#{$work-zone});
-   height: calc(#{$work-zone});
-   max-height: calc(#{$work-zone});
+
+.smd-general_tab {
+    width: 100%;
+    display: flex;
+
+    &-code {
+        flex: 1 0 auto;
+    }
+
+    &-simulation {
+        flex: 3 0 auto;
+        display: flex;
+    
+        &_left {
+            flex: 5 0 auto;
+            display: flex;
+            flex-flow: column;
+        }
+
+        &_center {
+            flex: 5 0 auto;
+        }
+
+        &_right {
+            flex: 2 0 auto;
+        }
+        
+        &_prefetch_decoder {
+            flex: 1 0 auto;
+            display: flex;
+        }
+
+        &_mappers {
+            flex: 1 0 auto;
+            display: flex;
+        }
+
+        &_register_mapper {
+            flex: 1 0 auto;
+        }
+
+        &_reorder_buffer {
+            flex: 2 0 auto;
+        }
+    }
 }
 
-#reserve-station-zone{
-   height: calc(90vh);
-   max-height: calc(90vh);
 
-   & > .panel-body{
-   max-height: calc(85vh);
-   }
-}
+// #code-zone {
+//    min-height: calc(#{$work-zone});
+//    height: calc(#{$work-zone});
+//    max-height: calc(#{$work-zone});
+// }
 
-.prefetch-decoder-zone {
-   height: calc(20vh);
-   max-height: calc(20vh);
-   & > .panel-body{
-      max-height: calc(15vh);
-   }
-}
+// #reserve-station-zone{
+//    height: calc(90vh);
+//    max-height: calc(90vh);
 
-.register-mapper {
-   height: calc(25vh);
-   & .panel {
-      & .panel-body {
-         max-height: calc(15vh);
-      }
+//    & > .panel-body{
+//    max-height: calc(85vh);
+//    }
+// }
 
-      & .panel-footer {
-         padding-top: 0px;
-         padding-bottom: 0px;
-         padding-right: 0px;
-      }
-   }
+// .prefetch-decoder-zone {
+//    height: calc(20vh);
+//    max-height: calc(20vh);
+//    & > .panel-body{
+//       max-height: calc(15vh);
+//    }
+// }
 
-}
+// .register-mapper {
+//    height: calc(25vh);
+//    & .panel {
+//       & .panel-body {
+//          max-height: calc(15vh);
+//       }
 
-.jump-table {
-   height: calc(20vh);
+//       & .panel-footer {
+//          padding-top: 0px;
+//          padding-bottom: 0px;
+//          padding-right: 0px;
+//       }
+//    }
 
-   & .panel-body {
-      max-height: calc(13vh);
-   }
-}
+// }
+
+// .jump-table {
+//    height: calc(20vh);
+
+//    & .panel-body {
+//       max-height: calc(13vh);
+//    }
+// }
 
 
-.rob-zone {
-  height: calc(20vh);
-}
+// .rob-zone {
+//   height: calc(20vh);
+// }
 
-.reorder-zone {
-   height: calc(50vh);
-   & > .panel-body{
-      max-height: calc(40vh);
-   }
-}
+// .reorder-zone {
+//    height: calc(50vh);
+//    & > .panel-body{
+//       max-height: calc(40vh);
+//    }
+// }
