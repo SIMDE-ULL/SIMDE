@@ -24,7 +24,7 @@ class PrefetchDecoderComponent extends React.Component<any, any> {
                         
                         this.props.data && this.props.data.map((element, i) =>
                            <tr key={this.props.title + 'row' + i}>
-                              <td key={this.props.title + i}>{element}</td>
+                              <td key={this.props.title + i}>{element != null ? element : `&nbsp;`}</td>
                            </tr>)
                      }
                   </tbody>

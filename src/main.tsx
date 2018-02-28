@@ -39,7 +39,7 @@ declare var document;
 declare var window;
 
 // Global objects for binding React to the View
-let superescalar = new Superescalar();
+export let superescalar = new Superescalar();
 let state: any = {};
 window.interval = null;
 window.state = state;
@@ -126,20 +126,22 @@ let superStep = () => {
       }
 };
 
-let loadSuper = () => {
+export let loadSuper = () => {
       let code = new Code();
-      //    try {
-      code.load(document.getElementById('codeInput').value);
-      superExe();
-      superescalar.code = code;
+      try {
+            code.load(document.getElementById('codeInput').value);
+            superExe();
+            superescalar.code = code;
 
-      // There is no need to update the code with the rest,
-      // it should remain the same during all the program execution
-      store.dispatch(superescalarLoad(superescalar.code.instructions));
-      dispatchAllSuperescalarActions();
-      //    } catch (err) {
-      //       // alert(err);
-      //    }
+            // There is no need to update the code with the rest,
+            // it should remain the same during all the program execution
+            store.dispatch(superescalarLoad(superescalar.code.instructions));
+            dispatchAllSuperescalarActions();
+      } catch (err) {
+            console.log(err);
+
+            // TODO store.dispatch(codeLoadError(err));
+      }
 };
 
 let play = () => {

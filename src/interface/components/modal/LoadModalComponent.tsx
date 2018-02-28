@@ -7,6 +7,7 @@ import { toggleLoadModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 import * as FileReaderInput from 'react-file-reader-input';
 
+import { loadSuper } from '../../../main';
 
 export class LoadModalComponent extends React.Component<any, any> {
 
@@ -21,7 +22,7 @@ export class LoadModalComponent extends React.Component<any, any> {
     };
 
     loadSuper() {
-        // window.loadSuper();
+        loadSuper();
         this.close();
     }
 
