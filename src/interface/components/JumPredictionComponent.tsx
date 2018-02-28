@@ -17,18 +17,17 @@ export class JumpPredictionComponent extends React.Component<any, any> {
       return (
          <div className='smd-jump_prediction panel panel-default'>
             <div className='panel-heading'>{t(this.props.title)}</div>
-            <div className='smd-jump_prediction-body panel-body'>
-               <table className='table table-bordered'>
-                  <tbody>
-                     {
-                        this.props.jumpPrediction.map((row, i) => <tr key={`${this.props.title + i}`}>
-                           <td key={`${this.props.title + i + 65}`}>{i}</td>
-                           <td key={`${this.props.title + i + 131}`}>{row}</td>
-                        </tr>)
-                     }
-                  </tbody>
-               </table>
-            </div>
+                  <div className='smd-jump_prediction-body panel-body'>
+                        <div className='smd-table'>
+                        {
+                              this.props.jumpPrediction.map((row, i) => 
+                              <div className="smd-table_row" key={`${this.props.title + i}`}>
+                                    <div className="smd-table_cell" key={`${this.props.title + i + 65}`}>{i}</div>
+                                    <div className="smd-table_cell" key={`${this.props.title + i + 131}`}>{row}</div>
+                              </div>)
+                        }
+                        </div>
+                  </div>
          </div>);
    }
 }

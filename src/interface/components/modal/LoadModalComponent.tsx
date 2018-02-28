@@ -63,6 +63,11 @@ LOOP:
    ADDF	F2 F1 F0
    SF	F2 1(R3)`}>
                 </textarea>
+                <div className="smd-load_modal-errors">
+                    {this.props.errors && this.props.errors.map(error => 
+                        <div className="smd-load_modal_error">{error}</div>
+                    )}
+                </div>
             </Modal.Body>
 
             <Modal.Footer className="smd-load_modal-footer">
