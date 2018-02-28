@@ -35,7 +35,7 @@ export class LoadModalComponent extends React.Component<any, any> {
     }
 
     render() {
-        return (<Modal show={this.props.isLoadModalOpen} onHide={this.close}>
+        return (<Modal className="smd-load_modal" show={this.props.isLoadModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{t('loadModal.title')}</Modal.Title>
             </Modal.Header>
@@ -65,12 +65,16 @@ LOOP:
                 </textarea>
             </Modal.Body>
 
-            <Modal.Footer>
-                <FileReaderInput as='text' onChange={this.handleChange} accept='.pla'>
-                    <Button className='btn btn-primary'>{t('commonButtons.uploadFromFile')}</Button>
-                </FileReaderInput>
-                <Button onClick={this.close}>{t('commonButtons.close')}</Button>
-                <Button className='btn btn-primary' onClick={this.loadSuper}>{t('loadModal.load')}</Button>
+            <Modal.Footer className="smd-load_modal-footer">
+                <div className="smd-load_modal-file_input">
+                    <FileReaderInput as='text' onChange={this.handleChange} accept='.pla'>
+                        <Button className='btn btn-primary'>{t('commonButtons.uploadFromFile')}</Button>
+                    </FileReaderInput>
+                </div>
+                <div className="smd-load_modal-actions">
+                    <Button onClick={this.close}>{t('commonButtons.close')}</Button>
+                    <Button className='btn btn-primary' onClick={this.loadSuper}>{t('loadModal.load')}</Button>
+                </div>
             </Modal.Footer>
         </Modal>);
     }
