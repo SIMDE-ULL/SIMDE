@@ -51,7 +51,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                     </div>
                     <div className='smd-general_tab-simulation_center'>
-                        <div className='panel panel-default inside-bar' id='reserve-station-zone'>
+                        <div className='panel panel-default inside-bar panel--stack'>
                             <div className='panel-heading'>{t('Reserve Stations')}</div>
                             <div className='panel-body'>
                                 <ReserveStationComponent title='Integer +' data={this.props.reserveStationIntAdd} />
@@ -64,7 +64,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                     </div>
                     <div className='smd-general_tab-simulation_right'>
-                        <div className='panel panel-default inside-bar' id='functional-unit-zone'>
+                        <div className='panel panel-default inside-bar panel--stack'>
                             <div className='panel-heading'>{t('UF')}</div>
                             <div className='panel-body'>
                                 <FunctionalUnitComponent title='+Entera' header={this.props.functionalUnitIntAdd.header} content={this.props.functionalUnitIntAdd.content} />

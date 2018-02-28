@@ -3,6 +3,7 @@
 
 .smd-general_tab {
     width: 100%;
+    height: 100%;
     display: flex;
 
     &-code {
@@ -46,63 +47,3 @@
         }
     }
 }
-
-
-// #code-zone {
-//    min-height: calc(#{$work-zone});
-//    height: calc(#{$work-zone});
-//    max-height: calc(#{$work-zone});
-// }
-
-// #reserve-station-zone{
-//    height: calc(90vh);
-//    max-height: calc(90vh);
-
-//    & > .panel-body{
-//    max-height: calc(85vh);
-//    }
-// }
-
-// .prefetch-decoder-zone {
-//    height: calc(20vh);
-//    max-height: calc(20vh);
-//    & > .panel-body{
-//       max-height: calc(15vh);
-//    }
-// }
-
-// .register-mapper {
-//    height: calc(25vh);
-//    & .panel {
-//       & .panel-body {
-//          max-height: calc(15vh);
-//       }
-
-//       & .panel-footer {
-//          padding-top: 0px;
-//          padding-bottom: 0px;
-//          padding-right: 0px;
-//       }
-//    }
-
-// }
-
-// .jump-table {
-//    height: calc(20vh);
-
-//    & .panel-body {
-//       max-height: calc(13vh);
-//    }
-// }
-
-
-// .rob-zone {
-//   height: calc(20vh);
-// }
-
-// .reorder-zone {
-//    height: calc(50vh);
-//    & > .panel-body{
-//       max-height: calc(40vh);
-//    }
-// }

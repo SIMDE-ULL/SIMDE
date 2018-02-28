@@ -18,8 +18,6 @@ class FileBarComponent extends React.Component<any, any> {
 
     render() {
         return (<div className='smd-filebar'>
-            <nav className='navbar'>
-                <ul className='nav navbar-nav'>
                     <DropdownButton
                         title={t('fileBar.file.name')}
                         key={'dropdown-load'}
@@ -28,8 +26,6 @@ class FileBarComponent extends React.Component<any, any> {
                     >
                         <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{t('fileBar.file.load')}</MenuItem>
                     </DropdownButton>
-                </ul>
-                <ul className='nav navbar-nav'>
                     <DropdownButton
                         title={t('fileBar.view.name')}
                         key={'dropdown-view'}
@@ -41,8 +37,6 @@ class FileBarComponent extends React.Component<any, any> {
                             window['colorBlocks'](this.color);
                         }}>{t('fileBar.view.basicBlocks')}</MenuItem>
                     </DropdownButton>
-                </ul>
-                <ul className='nav navbar-nav'>
                     <DropdownButton
                         title={t('fileBar.config.name')}
                         key={'dropdown-options'}
@@ -53,8 +47,6 @@ class FileBarComponent extends React.Component<any, any> {
 
                         <MenuItem eventKey="2" onClick={() => { window['options'](true); }}>{t('fileBar.config.options')}</MenuItem>
                     </DropdownButton>
-                </ul>
-                <ul className='nav navbar-nav'>
                     <DropdownButton
                         title={t('fileBar.help.name')}
                         key={'dropdown-help'}
@@ -69,8 +61,6 @@ class FileBarComponent extends React.Component<any, any> {
 
                         <MenuItem eventKey="2" onClick={() => { window['autorModal'](true); }}>{t('fileBar.help.about')}</MenuItem>
                     </DropdownButton>
-                </ul>
-            </nav>
         </div>);
     }
 }

@@ -11,7 +11,7 @@ export class FunctionalUnitComponent extends React.Component<any,any> {
 
       render() {
             return (
-                  <div className='panel panel-default'>
+                  <div className='smd-functional_unit panel panel-default'>
                         <div className='panel-heading'>{t(this.props.title)}</div>
                         <div className='panel-body'>
                               <table className='table table-bordered'>

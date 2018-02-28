@@ -1,31 +1,6 @@
 @import '../base/variables';
 
-#reserve-station-zone.panel {
-   margin-bottom: 0px !important;
-   border-radius: 0px;
-   & .panel-heading {
-      padding-top: 5px;
-      padding-bottom: 5px;
-      background-color: $primary-color !important;
-      color: $text;
-      font-weight: bold !important;
-      border-radius: 0px;
-   }
-   &>.panel-body {
-      overflow-y: hidden;
-      padding-right: 0px;
-      padding: 0px 0px 0px 0px;
-      & .panel {
-         max-height: 100px;
-         .panel-body {
-            max-height: 60px;
-            & > table {
-               border: 0px solid gray;
-            }
-         }
-      }
-   }
-   &.panel-default .register .panel-body {
-      overflow-x: hidden;
-   }
+
+.smd-reserve_station {
+    flex: 1 0 auto;
 }

@@ -15,9 +15,9 @@ export class JumpPredictionComponent extends React.Component<any, any> {
 
    render() {
       return (
-         <div className='panel panel-default'>
+         <div className='smd-jump_prediction panel panel-default'>
             <div className='panel-heading'>{t(this.props.title)}</div>
-            <div className='panel-body'>
+            <div className='smd-jump_prediction-body panel-body'>
                <table className='table table-bordered'>
                   <tbody>
                      {

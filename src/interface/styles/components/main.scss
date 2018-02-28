@@ -5,20 +5,18 @@
 @import './FunctionalUnitComponent';
 @import './GeneralTabComponent';
 @import './IntervalModalComponent';
+@import './JumpPredictionComponent';
 @import './LoadModalComponent';
 @import './OptionsModalComponent';
 @import './RegisterComponent';
 @import './RegistersTabComponent';
 @import './ReserveStationComponent';
 @import './ROBMapperComponent';
+@import './ReorderBufferComponent';
+
 @import './SuperescalarConfigModalComponent';
 
+
+@import './Panel.scss';
 @import './Tabs.scss';
 
-.w-50 {
-    width: 50%;
-}
-
-.w-100 {
-    width: 100%;
-}

@@ -15,9 +15,9 @@ class ReorderBufferComponent extends React.Component<any, any> {
 
       render() {
             return (
-                  <div className='panel panel-default reorder-zone'>
+                  <div className='smd-reorder_buffer panel panel-default reorder-zone'>
                         <div className='panel-heading'>{'ReorderBuffer'}</div>
-                        <div className='panel-body'>
+                        <div className='panel-body smd-reorder_buffer-body'>
                               <table className='table table-bordered'>
                                     <thead>
                                           <tr>

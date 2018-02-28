@@ -39,12 +39,12 @@ export class ROBMapperComponent extends React.Component<any, any> {
 
     render() {
         return (
-            <div className='panel panel-default'>
+            <div className='smd-rob_mapper panel panel-default'>
                 {
                     // <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
                 }
                 <div className='panel-heading'>{this.props.title}</div>
-                <div className='panel-body'>
+                <div className='smd-rob_mapper-body panel-body'>
                     <table className='table table-bordered'>
                         <tbody>
                             {                                

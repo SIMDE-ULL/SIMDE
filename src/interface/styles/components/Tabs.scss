@@ -1,7 +1,22 @@
 #working-area-tabs {
+    
+    height: 100%;
+
     .nav.nav-tabs {
         position: absolute;
-        top: 4rem;
-        right: .5rem;
+        top: 1.75rem;
+        right: 2rem;
     }
+
+    .tab-content {
+        &>div {
+            height: 100%;
+        }
+    }
+}
+
+.tab-content {
+    height: -webkit-calc(100% - 4.5rem);
+    height:    -moz-calc(100% - 4.5rem);
+    height:         calc(100% - 4.5rem);
 }
