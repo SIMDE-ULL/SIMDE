@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { BaseComponent } from './BaseComponent';
-
 
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
@@ -9,12 +7,16 @@ declare var window: any;
 
 class ReorderBufferComponent extends React.Component<any, any> {
 
-      constructor(props: any) {
-            super(props);
-      }
+   constructor(props: any) {
+      super(props);
+   }
 
-      render() {
-            return (
+   componentWillReceiveProps(nextProps) {
+      console.log(nextProps.content);
+   }
+
+   render() {
+      return (
                   <div className='smd-reorder_buffer panel panel-default reorder-zone'>
                         <div className='panel-heading'>{'ReorderBuffer'}</div>
                         <div className='panel-body smd-reorder_buffer-body'>
@@ -31,7 +33,8 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     </thead>
                                     <tbody>
                                           {
-                                                this.props.content && this.props.content.map((row, i) => <tr key={'ReorderBuffer' + i}>
+                                                this.props.content && this.props.content.map((row, i) =>
+                                                <tr key={'ReorderBuffer' + i}>
                                                       <td>{i}</td>
                                                       <td>{row.instruction.id}</td>
                                                       <td>{row.destinyRegister}</td>
@@ -44,7 +47,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
                               </table>
                         </div>
                   </div>);
-      }
+   }
 }
 
 export default translate('common', { wait: true })(ReorderBufferComponent);

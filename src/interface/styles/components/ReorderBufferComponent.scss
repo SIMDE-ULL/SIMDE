@@ -1,12 +1,7 @@
 .smd-reorder_buffer {
     
     height: 100%;
-    display: flex;
-    flex-flow: column;
-    
-    &-body {
-        flex: 1 1 0;
-        overflow-y: scroll;
-    }
+    color: black !important;
+
 }
 

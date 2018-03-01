@@ -7,34 +7,34 @@
     display: flex;
 
     &-code {
-        flex: 1 0 auto;
+        width: 25%;
     }
 
     &-simulation {
-        flex: 3 0 auto;
+        width: 75%;
         display: flex;
     
         &_left {
-            flex: 5 0 auto;
-            display: flex;
-            flex-flow: column;
+            width: 40%;
+            height: 100%;
         }
 
         &_center {
-            flex: 5 0 auto;
+            width: 40%;
+            height: 100%;
         }
 
         &_right {
-            flex: 2 0 auto;
+            width: 20%;
         }
         
         &_prefetch_decoder {
-            flex: 1 0 auto;
+            height: 25%;
             display: flex;
         }
 
         &_mappers {
-            flex: 1 0 auto;
+            height: 25%;
             display: flex;
         }
 
@@ -43,7 +43,7 @@
         }
 
         &_reorder_buffer {
-            flex: 2 0 auto;
+            height: 50%;
         }
     }
 }
