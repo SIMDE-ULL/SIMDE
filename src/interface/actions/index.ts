@@ -9,4 +9,6 @@ export * from './reorder-buffer-mapper-actions';
 export * from './reserve-station-actions';
 
 export * from './load';
+export * from './basic-blocks-actions';
+
 export * from './batch';

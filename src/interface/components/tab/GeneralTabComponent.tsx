@@ -25,7 +25,7 @@ class GeneralTabComponent extends React.Component<any, any> {
         return (
             <div className="smd-general_tab">
                 <div className="smd-general_tab-code">
-                    <CodeComponent code={this.props.code} toggleBreakPoint={this.props.actions.superescalarLoad} />
+                    <CodeComponent code={this.props.code} toggleBreakPoint={this.props.actions.superescalarLoad} colorBasicBlocks={this.props.colorBasicBlocks} />
                 </div>
                 <div className="smd-general_tab-simulation">
                     <div className='smd-general_tab-simulation_left'>
@@ -106,7 +106,8 @@ const mapStateToProps = state => {
         ROBGpr: state.ROBGpr,
         ROBFpr: state.ROBFpr,
         reorderBuffer: state.reorderBuffer,
-        code: state.code
+        code: state.code,
+        colorBasicBlocks: state.colorBasicBlocks
     }
 }
 

@@ -9,7 +9,8 @@ import {
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
-    SUPERESCALAR_LOAD
+    SUPERESCALAR_LOAD,
+    VIEW_BASIC_BLOCKS
 } from '../actions';
 import { TOGGLE_LOAD_MODAL } from '../actions/modals';
 
@@ -45,6 +46,7 @@ export const initialState = {
     memory: [],
     cycle: 0,
     code: [],
+    colorBasicBlocks: false,
     isLoadModalOpen: false
 }
 
@@ -118,6 +120,11 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 isLoadModalOpen: action.value
             };
+        case VIEW_BASIC_BLOCKS:
+            return state = {
+                ...state,
+                colorBasicBlocks: action.value
+            };        
         default:
             return state
     }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { toggleLoadModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { viewBasicBlocks } from '../../actions';
 
 declare var window: any;
 
@@ -34,7 +35,7 @@ class FileBarComponent extends React.Component<any, any> {
                     >
                         <MenuItem eventKey="1" onClick={() => {
                             this.color = !this.color;
-                            window['colorBlocks'](this.color);
+                            this.props.actions.viewBasicBlocks(this.color);
                         }}>{t('fileBar.view.basicBlocks')}</MenuItem>
                     </DropdownButton>
                     <DropdownButton
@@ -72,7 +73,7 @@ const mapStateToProps = state => {
 }
 
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
+    return { actions: bindActionCreators({ toggleLoadModal, viewBasicBlocks }, dispatch) };
 }
 
 
