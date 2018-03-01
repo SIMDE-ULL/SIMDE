@@ -1,9 +1,12 @@
 @import 'interface/styles/main';
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-body {
+body, html {
 	font-family: 'Montserrat', sans-serif;
 	font-size: $font-size-base;
-	overflow-y: hidden;
+}
+
+body {
 	width: 100%;
+	overflow-y: hidden;
 }

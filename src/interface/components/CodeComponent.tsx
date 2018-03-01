@@ -1,69 +1,65 @@
 import * as React from 'react';
-import { Code } from '../../core/Common/Code';
 import { OpcodesNames } from '../../core/Common/Opcodes';
 
 import { Instruction } from '../../core/Common/Instruction';
 
 import { translate } from 'react-i18next';
-import { t } from 'i18next';
 
 declare var window: any;
 
 class CodeComponent extends React.Component<any, any> {
 
-      constructor(props: any) {
-            super(props);
-            this.state = {
-                  content: [],
-                  code: [],
-                  color: false,
-                  colorPalette: [
-                        'blue',
-                        'green',
-                        'yellow',
-                        'pink'
-                  ]
+   constructor(props: any) {
+      super(props);
+      this.state = {
+               content: [],
+               code: [],
+               color: false,
+               colorPalette: [
+                  'blue',
+                  'green',
+                  'yellow',
+                  'pink'
+               ]
             };
-            this.setBreakpoint = this.setBreakpoint.bind(this);
-      }
+      this.setBreakpoint = this.setBreakpoint.bind(this);
+   }
 
-      setBreakpoint(e, i) {
-            window.setBreakpoint(i);
-      }
+   setBreakpoint(e, i) {
+      window.setBreakpoint(i);
+   }
 
-      render() {
-            return (
-                  <div className='panel panel-default'>
+   render() {
+      return (
+                  <div className='smd-code panel panel-default'>
                         <div className='panel-heading'>
                               Code
             </div>
                         <div className='panel-body'>
-                              <table className='table'>
-                                    <thead>
-                                          <tr>
-                                                <th>#</th>
-                                                <th>OPCODE</th>
-                                                <th>OP1</th>
-                                                <th>OP2</th>
-                                                <th>OP3</th>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
+                              <div className='smd-table'>
+                                    <div className='smd-table-header'>
+                                          <div className='smd-table-header_title'>#</div>
+                                          <div className='smd-table-header_title'>OPCODE</div>
+                                          <div className='smd-table-header_title'>OP1</div>
+                                          <div className='smd-table-header_title'>OP2</div>
+                                          <div className='smd-table-header_title'>OP3</div>
+                                    </div>
+                                    <div className='smd-table-body'>
                                           {
                                                 this.props.code && this.props.code.map((row: Instruction, i) =>
-                                                      <tr key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(e, i); }}>
-                                                            <td className={`${row.breakPoint ? 'breakPoint' : ''}`}>{row.label} {i}</td>
-                                                            <td className={`${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</td>
-                                                            <td className={`${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[0]}</td>
-                                                            <td className={`${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[1]}</td>
-                                                            <td className={`${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[2]}</td>
-                                                      </tr>)
+                                                      <div className='smd-table_row' key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(e, i); }}>
+                                                            <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakPoint' : ''}`}>{row.label} {i}</div>
+                                                            <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</div>
+                                                            <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[0]}</div>
+                                                            <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[1]}</div>
+                                                            <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[2]}</div>
+                                                      </div>)
                                           }
-                                    </tbody>
-                              </table>
+                                    </div>
+                              </div>
                         </div>
                   </div>);
-      }
+   }
 }
 
 export default translate('common', { wait: true })(CodeComponent);
