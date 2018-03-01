@@ -2,11 +2,16 @@
     &-header {
         font-size: 0;
 
+
         &_title {
+            border: 1px solid rgba(0,0,0,.1);
             display: inline-block;
             font-size: 1rem;
-            width: 20%;
+            font-weight: bold;
+            overflow: hidden;
             text-align: center;
+            text-overflow: ellipsis;
+            width: 20%;
         }
     }
 
@@ -20,6 +25,8 @@
         min-height: 2rem;
         padding: .25rem .5rem;
         text-align: center;
+        overflow: hidden;
+        text-overflow: elipsis;
         width: 50%;
     }
 }

@@ -20,31 +20,29 @@ class ReorderBufferComponent extends React.Component<any, any> {
                   <div className='smd-reorder_buffer panel panel-default reorder-zone'>
                         <div className='panel-heading'>{'ReorderBuffer'}</div>
                         <div className='panel-body smd-reorder_buffer-body'>
-                              <table className='table table-bordered'>
-                                    <thead>
-                                          <tr>
-                                                <td>#</td>
-                                                <td>Inst</td>
-                                                <td>{t('reorderBuffer.Destiny')}</td>
-                                                <td>{t('reorderBuffer.Value')}</td>
-                                                <td>{t('reorderBuffer.A')}</td>
-                                                <td>{t('reorderBuffer.Stage')}</td>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
+                              <div className='smd-table'>
+                                    <div className='smd-table-header'>
+                                          <div className='smd-table-header_title'>#</div>
+                                          <div className='smd-table-header_title'>Inst</div>
+                                          <div className='smd-table-header_title'>{t('reorderBuffer.Destiny')}</div>
+                                          <div className='smd-table-header_title'>{t('reorderBuffer.Value')}</div>
+                                          <div className='smd-table-header_title'>{t('reorderBuffer.A')}</div>
+                                          <div className='smd-table-header_title'>{t('reorderBuffer.Stage')}</div>
+                                    </div>
+                                    <div className='smd-table-body'>
                                           {
                                                 this.props.content && this.props.content.map((row, i) =>
-                                                <tr key={'ReorderBuffer' + i}>
-                                                      <td>{i}</td>
-                                                      <td>{row.instruction.id}</td>
-                                                      <td>{row.destinyRegister}</td>
-                                                      <td>{row.value}</td>
-                                                      <td>{row.address}</td>
-                                                      <td>{row.superStage}</td>
-                                                </tr>)
+                                                <div className='smd-table_row' key={'ReorderBuffer' + i}>
+                                                      <div className='smd-table_cell'>{i}</div>
+                                                      <div className='smd-table_cell'>{row.instruction.id}</div>
+                                                      <div className='smd-table_cell'>{row.destinyRegister}</div>
+                                                      <div className='smd-table_cell'>{row.value}</div>
+                                                      <div className='smd-table_cell'>{row.address}</div>
+                                                      <div className='smd-table_cell'>{row.superStage}</div>
+                                                </div>)
                                           }
-                                    </tbody>
-                              </table>
+                                    </div>
+                              </div>
                         </div>
                   </div>);
    }

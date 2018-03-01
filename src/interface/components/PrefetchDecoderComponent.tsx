@@ -14,7 +14,7 @@ class PrefetchDecoderComponent extends React.Component<any, any> {
 
     render() {
         return (
-                <div className='panel panel-default prefetch-decoder-zone'>
+                <div className='panel panel-default smd-prefetch_decoder'>
                     <div className='panel-heading'>
                             {t(this.props.title)}</div>
                     <div className='panel-body'>
