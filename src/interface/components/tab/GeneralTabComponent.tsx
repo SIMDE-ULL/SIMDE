@@ -12,6 +12,8 @@ import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { superescalarLoad } from '../../actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
 
@@ -23,7 +25,7 @@ class GeneralTabComponent extends React.Component<any, any> {
         return (
             <div className="smd-general_tab">
                 <div className="smd-general_tab-code">
-                    <CodeComponent code={this.props.code} />
+                    <CodeComponent code={this.props.code} toggleBreakPoint={this.props.actions.superescalarLoad} />
                 </div>
                 <div className="smd-general_tab-simulation">
                     <div className='smd-general_tab-simulation_left'>
@@ -108,4 +110,8 @@ const mapStateToProps = state => {
     }
 }
 
-export default translate('common')(connect(mapStateToProps)(GeneralTabComponent));
+const mapDispatchToProps = dispatch => {
+    return { actions: bindActionCreators({superescalarLoad}, dispatch)};
+}
+
+export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(GeneralTabComponent));

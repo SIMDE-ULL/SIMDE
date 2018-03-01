@@ -1,5 +1,8 @@
 .smd-code {
 
+    .smd-table_row {
+        position: relative;
+    }
     .smd-table_cell {
         width: 20%;
     }
@@ -7,12 +10,15 @@
 
 .smd-breakPoint {
     &::after {
-            height: 2rem;
-            content: '';
-            width: 2rem;
-            background-color: red;
-            border-radius: 1rem;
-            display: block;
+        height: .875rem;
+        content: '';
+        width: .875rem;
+        background-color: red;
+        border-radius: 1rem;
+        display: block;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
     }
 }
 

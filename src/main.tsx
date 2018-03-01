@@ -261,11 +261,6 @@ let colorBlocks = (color) => {
       state['Code']({ color: color });
 };
 
-let setBreakpoint = (i) => {
-      superescalar.code.instructions[i].breakPoint = !superescalar.code.instructions[i].breakPoint;
-      state['Code']({ code: superescalar.code.instructions, content: superescalar.code });
-};
-
 /*
  * For exposing the functions to react and the ts code
  * we need to attach them to the Windows object, so
@@ -280,7 +275,6 @@ window.pause = pause;
 window.stepBack = stepBack;
 window.saveSuperConfig = saveSuperConfig;
 window.colorBlocks = colorBlocks;
-window.setBreakpoint = setBreakpoint;
 window.stopCondition = ExecutionStatus.EXECUTABLE;
 window.finishedExecution = false;
 window.executing = false;

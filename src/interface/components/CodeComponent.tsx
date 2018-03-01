@@ -4,8 +4,8 @@ import { OpcodesNames } from '../../core/Common/Opcodes';
 import { Instruction } from '../../core/Common/Instruction';
 
 import { translate } from 'react-i18next';
+import { superescalar } from '../../main';
 
-declare var window: any;
 
 class CodeComponent extends React.Component<any, any> {
 
@@ -25,8 +25,10 @@ class CodeComponent extends React.Component<any, any> {
         this.setBreakpoint = this.setBreakpoint.bind(this);
     }
 
-    setBreakpoint(e, i) {
-        window.setBreakpoint(i);
+    setBreakpoint(index) {
+        superescalar.code.instructions[index].breakPoint = !superescalar.code.instructions[index].breakPoint;
+        superescalar.code.instructions = [...superescalar.code.instructions];
+        this.props.toggleBreakPoint(superescalar.code.instructions);
     }
 
    render() {
@@ -47,8 +49,8 @@ class CodeComponent extends React.Component<any, any> {
                         <div className='smd-table-body'>
                             {
                                 this.props.code && this.props.code.map((row: Instruction, i) =>
-                                    <div className='smd-table_row' key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(e, i); }}>
-                                        <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakPoint' : ''}`}>{row.label} {i}</div>
+                                    <div className='smd-table_row' key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(i); }}>
+                                        <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakPoint' : 'nope'}`}>{row.label} {i}</div>
                                         <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</div>
                                         <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[0]}</div>
                                         <div className={`smd-table_cell ${this.state.color ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[1]}</div>
@@ -61,5 +63,7 @@ class CodeComponent extends React.Component<any, any> {
             </div>);
     }
 }
+
+
 
 export default translate('common', { wait: true })(CodeComponent);
