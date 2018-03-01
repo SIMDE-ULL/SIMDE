@@ -3,4 +3,12 @@
 
 .smd-reserve_station {
     flex: 1 0 auto;
+
+    .smd-table-header_title {
+        width: 14%;
+    }
+    
+    .smd-table_cell {
+        width: 14%;
+    }
 }

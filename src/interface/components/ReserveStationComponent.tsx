@@ -14,33 +14,32 @@ class ReserveStationComponent extends React.Component<any, any> {
                   <div className='smd-reserve_station panel panel-default'>
                         <div className='panel-heading'>{t(this.props.title)}</div>
                         <div className='smd-reserve_station-body panel-body'>
-                              <table className='table table-bordered'>
-                                    <thead>
-                                          <tr>
-                                                <td>Inst</td>
-                                                <td>Qj</td>
-                                                <td>Vj</td>
-                                                <td>Qk</td>
-                                                <td>Vk</td>
-                                                <td>A</td>
-                                                <td>ROB</td>
-                                          </tr>
-                                    </thead>
-                                    <tbody>
+                              <div className='smd-table'>
+                                    <div className='smd-table-header'>
+                                          <div className='smd-table-header_title'>Inst</div>
+                                          <div className='smd-table-header_title'>Qj</div>
+                                          <div className='smd-table-header_title'>Vj</div>
+                                          <div className='smd-table-header_title'>Qk</div>
+                                          <div className='smd-table-header_title'>Vk</div>
+                                          <div className='smd-table-header_title'>A</div>
+                                          <div className='smd-table-header_title'>ROB</div>
+                                    </div>
+                                    <div className='smd-table-body'>
                                           {
                                                 this.props.data
-                                                 && this.props.data.map((row, i) => <tr key={`${this.props.title + i}`}>
-                                                      <td>{row.instruction.id}</td>
-                                                      <td>{row.Qj}</td>
-                                                      <td>{row.Vj}</td>
-                                                      <td>{row.Qk}</td>
-                                                      <td>{row.Vk}</td>
-                                                      <td>{row.A}</td>
-                                                      <td>{row.ROB}</td>
-                                                </tr>)
+                                                 && this.props.data.map((row, i) => 
+                                                 <div className='smd-table_row' key={`${this.props.title + i}`}>
+                                                      <div className='smd-table_cell'>{row.instruction.id}</div>
+                                                      <div className='smd-table_cell'>{row.Qj}</div>
+                                                      <div className='smd-table_cell'>{row.Vj}</div>
+                                                      <div className='smd-table_cell'>{row.Qk}</div>
+                                                      <div className='smd-table_cell'>{row.Vk}</div>
+                                                      <div className='smd-table_cell'>{row.A}</div>
+                                                      <div className='smd-table_cell'>{row.ROB}</div>
+                                                </div>)
                                           }
-                                    </tbody>
-                              </table>
+                                    </div>
+                              </div>
                         </div>
                   </div>);
       }

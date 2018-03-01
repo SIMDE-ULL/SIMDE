@@ -14,25 +14,23 @@ export class FunctionalUnitComponent extends React.Component<any,any> {
                   <div className='smd-functional_unit panel panel-default'>
                         <div className='panel-heading'>{t(this.props.title)}</div>
                         <div className='panel-body'>
-                              <table className='table table-bordered'>
-                                    {<thead>
-                                          <tr>
-                                                {this.props.header && this.props.header.map((element, i) =>
-                                                      <th key={this.props.title + 'FUTitle' + i}>{element}</th>)}
-                                          </tr>
-                                    </thead>}
-                                    <tbody>
+                              <div className='smd-table'>
+                                    {<div className='smd-table-header'>
+                                          {this.props.header && this.props.header.map((element, i) =>
+                                                <div className='smd-table-header_title' key={this.props.title + 'FUTitle' + i}>{element}</div>)}
+                                    </div>}
+                                    <div className='smd-table-body'>
                                           {
                                                 this.props.content && this.props.content.map((element, i) =>
-                                                      <tr key={this.props.title + 'FU' + i}>
+                                                      <div className='smd-table_row' key={this.props.title + 'FU' + i}>
                                                             {element.map((content, j) =>
-                                                                  <td key={this.props.title + 'FU' + i + j}>{content}</td>
+                                                                  <div className='smd-table_cell' key={this.props.title + 'FU' + i + j}>{content}</div>
                                                             )}
-                                                      </tr>
+                                                      </div>
                                                 )
                                           }
-                                    </tbody>
-                              </table>
+                                    </div >
+                              </div>
                         </div>
                   </div>);
       }
