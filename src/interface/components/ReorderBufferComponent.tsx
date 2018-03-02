@@ -11,10 +11,6 @@ class ReorderBufferComponent extends React.Component<any, any> {
       super(props);
    }
 
-   componentWillReceiveProps(nextProps) {
-      console.log(nextProps.content);
-   }
-
    render() {
       return (
                   <div className='smd-reorder_buffer panel panel-default reorder-zone'>
