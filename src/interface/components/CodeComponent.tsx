@@ -47,7 +47,7 @@ class CodeComponent extends React.Component<any, any> {
                             {
                                 this.props.code && this.props.code.map((row: Instruction, i) =>
                                     <div className='smd-table_row' key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(i); }}>
-                                        <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakPoint' : 'nope'}`}>{row.label} {i}</div>
+                                        <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakpoint' : 'nope'}`}>{row.label} {i}</div>
                                         <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</div>
                                         <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[0]}</div>
                                         <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[1]}</div>

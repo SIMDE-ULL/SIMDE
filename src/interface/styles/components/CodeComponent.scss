@@ -8,17 +8,18 @@
     }
 }
 
-.smd-breakPoint {
+.smd-breakpoint {
     &::after {
-        height: .875rem;
-        content: '';
-        width: .875rem;
         background-color: red;
         border-radius: 1rem;
+        box-shadow: 1px 1px rgba(0,0,0,0.2);
+        content: '';
         display: block;
+        height: .875rem;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
+        width: .875rem;
     }
 }
 
