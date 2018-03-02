@@ -13,6 +13,7 @@ import {
     VIEW_BASIC_BLOCKS
 } from '../actions';
 import { TOGGLE_LOAD_MODAL, TOGGLE_AUTHOR_MODAL, TOGGLE_OPTIONS_MODAL, TOGGLE_SUPER_CONFIG_MODAL } from '../actions/modals';
+import { ADD_ROB_FPR_INTERVAL } from '../actions/intervals-actions';
 
     // STEP_FORWARD,
     // STEP_BACK
@@ -38,8 +39,16 @@ export const initialState = {
     reserveStationFloSub: [],
     reserveStationMemory: [],
     reserveStationJump: [],
-    ROBGpr: {},
-    ROBFpr: {},
+    ROBGpr: {
+        data: [],
+        showableData: [],
+        visibleRangeValues: []
+    },
+    ROBFpr: {
+        datat: [],
+        showableData: [],
+        visibleRangeValues: []
+    },
     reorderBuffer: [],
     generalRegisters: [],
     floatingRegisters: [],
@@ -61,10 +70,6 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = { ...state, decoder: action.value };
         case NEXT_JUMP_TABLE_CYCLE:
             return state = { ...state, jumpPrediction: action.value };
-        // case STEP_FORWARD:
-        //     let { history, ...currentState } = state;
-        //     history = [history.slice(-9), currentState];
-        //     return state = { ...state, history: history };
         case FUNCTIONAL_UNIT_CYCLE:
             return state = {
                 ...state,
@@ -142,7 +147,12 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = {
                 ...state,
                 colorBasicBlocks: action.value
-            };        
+            };
+        case ADD_ROB_FPR_INTERVAL:
+            return state = {
+                ...state,
+                ROBGpr: action.value
+            }        
         default:
             return state
     }

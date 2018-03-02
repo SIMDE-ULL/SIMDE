@@ -14,6 +14,7 @@ import { t } from 'i18next';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { superescalarLoad } from '../../actions';
+import { addRobFprInterval } from '../../actions/intervals-actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
 
@@ -39,10 +40,17 @@ class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-general_tab-simulation_mappers">
                             <div className='smd-general_tab-simulation_register_mapper'>
-                                <ROBMapperComponent title='ROB<->GPR' data={this.props.ROBGpr.content} />
+                                <ROBMapperComponent title='ROB<->GPR' data={this.props.ROBGpr.showableData} />
                             </div>
                             <div className='smd-general_tab-simulation_register_mapper'>
-                                <ROBMapperComponent title='ROB<->FPR' data={this.props.ROBFpr.content} />
+                                <ROBMapperComponent 
+                                    title='ROB<->FPR'
+                                    data={this.props.ROBFpr.data}
+                                    showableData={this.props.ROBFpr.showableData}
+                                    visible={this.props.visibleRangeValues} 
+                                    addInterval={this.props.actions.addRobFprInterval}
+                                    removeInterval={this.props.actions.removeRobFprInterval}
+                                />
                             </div>
                             <div className='smd-general_tab-simulation_register_mapper'>
                                 <JumpPredictionComponent title='Jump table' jumpPrediction={this.props.jumpPrediction} />
@@ -112,7 +120,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { actions: bindActionCreators({superescalarLoad}, dispatch)};
+    return { actions: bindActionCreators({superescalarLoad, addRobFprInterval}, dispatch)};
 }
 
 export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(GeneralTabComponent));

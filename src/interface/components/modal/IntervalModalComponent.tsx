@@ -31,7 +31,7 @@ class IntervalModalComponent extends React.Component<any, any> {
     // Parent component has to decide where the modal appears or not,
     // so we don't close the modal here.
     close() {
-        this.props.onAccept('');
+        this.props.close();
     }
 
     accept() {

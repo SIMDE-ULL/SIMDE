@@ -14,34 +14,55 @@ export class ROBMapperComponent extends React.Component<any, any> {
 
    constructor(props: any) {
       super(props);
-        // this.state = {
-        //     content: new Array(64).fill(0),
-        //     showableContent: [],
-        //     show: this.show,
-        //     open: false,
-        //     renderModal: false
-        // };
+
+      this.state = {
+        isAddModalOpen: false,
+        isRemoveModalOpen: false
+      }
         // Bind functions for not losing context
-        // this.openWithAddInterval = this.openWithAddInterval.bind(this);
-        // this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+        this.openWithAddInterval = this.openWithAddInterval.bind(this);
+        this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+        this.closeAddInterval = this.closeAddInterval.bind(this);
+        this.closeRemoveInterval = this.closeRemoveInterval.bind(this);
         // this.addInterval = this.addInterval.bind(this);
         // this.parseInterval = this.parseInterval.bind(this);
         // this.removeInterval = this.removeInterval.bind(this);
    }
 
-    // openWithAddInterval() {
-    //     this.setState({ open: true, onAccept: this.addInterval });
-    // }
+    openWithAddInterval() {
+        this.setState({ ...this.state, isAddModalOpen: true});
+    }
 
-    // openWithRemoveInterval() {
-    //     this.setState({ open: true, onAccept: this.removeInterval });
-    // }
+    openWithRemoveInterval() {
+        this.setState({ ...this.state, isRemoveModalOpen: true});
+    }
+
+    closeAddInterval() {
+        this.setState({ ...this.state, isAddModalOpen: false });
+    }
+
+    closeRemoveInterval() {
+        this.setState({ ...this.state, isRemoveModalOpen: false });
+    }
 
    render() {
       return (
             <div className='smd-rob_mapper panel panel-default'>
                 {
-                    // <IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />
+                    <IntervalModalComponent
+                        title={this.props.title}
+                        onAccept={this.props.onAccept}
+                        open={this.state.isAddModalOpen}
+                        close={this.closeAddInterval}
+                    />
+                }
+                {
+                    <IntervalModalComponent 
+                        title={this.props.title}
+                        onAccept={this.props.onAccept}
+                        open={this.state.isRemoveModalOpen}
+                        close={this.closeRemoveInterval}
+                    />
                 }
                 <div className='panel-heading'>{this.props.title}</div>
                 <div className='smd-rob_mapper-body panel-body'>
@@ -55,9 +76,9 @@ export class ROBMapperComponent extends React.Component<any, any> {
                     </div>
                 </div>
                 <div className='panel-footer'>
-                    {/* <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
+                    <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
                     </button>
-                    <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button> */}
+                    <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button>
                 </div>
 
             </div>
