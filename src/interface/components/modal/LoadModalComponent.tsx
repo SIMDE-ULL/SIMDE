@@ -93,6 +93,6 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators({toggleLoadModal}, dispatch)};
-  }
+}
 
 export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(LoadModalComponent));

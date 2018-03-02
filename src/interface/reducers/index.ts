@@ -12,7 +12,7 @@ import {
     SUPERESCALAR_LOAD,
     VIEW_BASIC_BLOCKS
 } from '../actions';
-import { TOGGLE_LOAD_MODAL } from '../actions/modals';
+import { TOGGLE_LOAD_MODAL, TOGGLE_AUTHOR_MODAL, TOGGLE_OPTIONS_MODAL, TOGGLE_SUPER_CONFIG_MODAL } from '../actions/modals';
 
     // STEP_FORWARD,
     // STEP_BACK
@@ -47,7 +47,10 @@ export const initialState = {
     cycle: 0,
     code: [],
     colorBasicBlocks: false,
-    isLoadModalOpen: false
+    isLoadModalOpen: false,
+    isAuthorModalOpen: false,
+    isOptionsModalOpen: false,
+    isSuperConfigModalOpen: false
 }
 
 export function SuperescalarReducers(state = initialState, action) {
@@ -119,6 +122,21 @@ export function SuperescalarReducers(state = initialState, action) {
             return state = {
                 ...state,
                 isLoadModalOpen: action.value
+            };
+        case TOGGLE_AUTHOR_MODAL:
+            return state = {
+                ...state,
+                isAuthorModalOpen: action.value
+            };
+        case TOGGLE_OPTIONS_MODAL:
+            return state = {
+                ...state,
+                isOptionsModalOpen: action.value
+            };
+        case TOGGLE_SUPER_CONFIG_MODAL:
+            return state = {
+                ...state,
+                isSuperConfigModalOpen: action.value
             };
         case VIEW_BASIC_BLOCKS:
             return state = {

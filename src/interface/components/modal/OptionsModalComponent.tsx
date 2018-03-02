@@ -2,19 +2,16 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
-
-declare var window: any;
+import { bindActionCreators } from 'redux';
+import { toggleOptionsModal } from '../../actions/modals';
+import { connect } from 'react-redux';
 
 class OptionsModalComponent extends React.Component<any, any> {
 
     constructor(public props: any, public state: any) {
         super(props);
-        window['options'] = (showModal) => {
-            this.setState({ showModal: showModal });
-        };
 
         this.close = this.close.bind(this);
-        this.open = this.open.bind(this);
         this.setOptions = this.setOptions.bind(this);
     }
 
@@ -23,11 +20,7 @@ class OptionsModalComponent extends React.Component<any, any> {
     }
 
     close() {
-        this.setState({ showModal: false });
-    };
-
-    open() {
-        this.setState({ showModal: true });
+        this.props.actions.toggleOptionsModal(false);
     };
 
     handleChange(event) {
@@ -37,12 +30,12 @@ class OptionsModalComponent extends React.Component<any, any> {
     }
 
     setOptions() {
-        window.setOptions(this.state.cacheFailPercentage);
+        // setOptions(this.state.cacheFailPercentage);
         this.close();
     }
 
     render() {
-        return (<Modal show={this.state.showModal} onHide={this.close}>
+        return (<Modal show={this.props.isOptionsModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{t('optionsModal.title')}</Modal.Title>
             </Modal.Header>
@@ -75,4 +68,14 @@ class OptionsModalComponent extends React.Component<any, any> {
     }
 }
 
-export default translate('common', { wait: true })(OptionsModalComponent);
+const mapStateToProps = state => {
+    return {
+        isOptionsModalOpen: state.isOptionsModalOpen,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return { actions: bindActionCreators({toggleOptionsModal}, dispatch)};
+} 
+
+export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(OptionsModalComponent));

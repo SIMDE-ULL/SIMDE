@@ -2,7 +2,7 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { connect } from 'react-redux';
-import { toggleLoadModal } from '../../actions/modals';
+import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { viewBasicBlocks } from '../../actions';
@@ -44,9 +44,13 @@ class FileBarComponent extends React.Component<any, any> {
                         id={'dropdown-options'}
                         noCaret
                     >
-                        <MenuItem eventKey="1" onClick={() => { window['superConfigModal'](true); }}>{t('fileBar.config.superescalar')}</MenuItem>
+                        <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleSuperConfigModal(true)}}>
+                            {t('fileBar.config.superescalar')}
+                        </MenuItem>
 
-                        <MenuItem eventKey="2" onClick={() => { window['options'](true); }}>{t('fileBar.config.options')}</MenuItem>
+                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleOptionsModal(true) }}>
+                            {t('fileBar.config.options')}
+                        </MenuItem>
                     </DropdownButton>
                     <DropdownButton
                         title={t('fileBar.help.name')}
@@ -60,7 +64,7 @@ class FileBarComponent extends React.Component<any, any> {
                             }
                         </MenuItem>
 
-                        <MenuItem eventKey="2" onClick={() => { window['autorModal'](true); }}>{t('fileBar.help.about')}</MenuItem>
+                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleAuthorModal(true) }}>{t('fileBar.help.about')}</MenuItem>
                     </DropdownButton>
         </div>);
     }
@@ -73,7 +77,13 @@ const mapStateToProps = state => {
 }
 
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ toggleLoadModal, viewBasicBlocks }, dispatch) };
+    return { actions: bindActionCreators({ 
+        toggleLoadModal,
+        toggleAuthorModal,
+        toggleOptionsModal,
+        toggleSuperConfigModal,
+        viewBasicBlocks
+    }, dispatch) };
 }
 
 

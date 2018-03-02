@@ -2,6 +2,10 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
+import { toggleSuperConfigModal } from '../../actions/modals';
+import { bindActionCreators } from 'redux';
+
+import { connect } from 'react-redux';
 
 declare var window: any;
 
@@ -9,15 +13,9 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
-        window['superConfigModal'] = (showModal) => {
-            this.setState({
-                showModal: showModal
-            });
-        };
 
         this.cancel = this.cancel.bind(this);
         this.close = this.close.bind(this);
-        this.open = this.open.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.setDefault = this.setDefault.bind(this);
         this.saveSuperConfig = this.saveSuperConfig.bind(this);
@@ -40,8 +38,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 jumpLatency: 2,
                 cacheFailLatency: 9,
                 issueGrade: 4
-            },
-            showModal: false
+            }
         });
     }
 
@@ -83,15 +80,11 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
     }
 
     close() {
-        this.setState({ showModal: false });
-    };
-
-    open() {
-        this.setState({ showModal: true });
+        this.props.actions.toggleSuperConfigModal(false);
     };
 
     render() {
-        return (<Modal show={this.state.showModal} onHide={this.close}>
+        return (<Modal show={this.props.isSuperConfigModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{t('superescalarModal.name')}</Modal.Title>
             </Modal.Header>
@@ -327,4 +320,13 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
     }
 }
 
-export default translate('common', { wait: true })(SuperescalarConfigModalComponent);
+const mapStateToProps = state => {
+    return {
+        isSuperConfigModalOpen: state.isSuperConfigModalOpen,
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return { actions: bindActionCreators({toggleSuperConfigModal}, dispatch)};
+}
+export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(SuperescalarConfigModalComponent));

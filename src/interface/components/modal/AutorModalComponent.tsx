@@ -2,35 +2,25 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
+import { connect } from 'react-redux';
 
-declare var window: any;
+import { bindActionCreators } from 'redux';
+import { toggleAuthorModal } from '../../actions/modals';
 
 class AutorModalComponent extends React.Component<any, any> {
 
       constructor(public props: any, public state: any) {
             super(props);
-            window['autorModal'] = (showModal) => {
-                  this.setState({ showModal: showModal });
-            };
 
             this.close = this.close.bind(this);
-            this.open = this.open.bind(this);
-      }
-
-      componentWillMount() {
-            this.setState({ showModal: false });
       }
 
       close() {
-            this.setState({ showModal: false });
-      };
-
-      open() {
-            this.setState({ showModal: true });
+            this.props.actions.toggleAuthorModal(false);
       };
 
       render() {
-            return (<Modal show={this.state.showModal} onHide={this.close}>
+            return (<Modal show={this.props.isAuthorModalOpen} onHide={this.close}>
                   <Modal.Header closeButton>
                         <Modal.Title>{t('authorModal.title')}</Modal.Title>
                   </Modal.Header>
@@ -55,4 +45,13 @@ class AutorModalComponent extends React.Component<any, any> {
       }
 }
 
-export default translate('common', { wait: true })(AutorModalComponent);
+const mapStateToProps = state => {
+      return {
+          isAuthorModalOpen: state.isAuthorModalOpen,
+      }
+  }
+  
+function mapDispatchToProps(dispatch) {
+      return { actions: bindActionCreators({toggleAuthorModal}, dispatch)};
+} 
+export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(AutorModalComponent));
