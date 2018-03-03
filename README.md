@@ -25,7 +25,7 @@ The project has been released under GPLv3 License.
 
 ## Docs
 
-If you have any doubt you should check the official docs [here](http://adrianabreu.com/SIMDE-Docs/).
+If you have any doubt you should check the official docs [here](https://etsiiull.gitbooks.io/simde/).
 
 ## Author
 

@@ -58,10 +58,8 @@ class FileBarComponent extends React.Component<any, any> {
                         id={'dropdown-help'}
                         noCaret
                     >
-                        <MenuItem eventKey="1">
-                            {
-                                // <a href="https://etsiiull.github.io/SIMDE/">{t('fileBar.help.docs')}</a>
-                            }
+                        <MenuItem eventKey="1" href="https://etsiiull.gitbooks.io/simde/">
+                            {t('fileBar.help.docs')}
                         </MenuItem>
 
                         <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleAuthorModal(true) }}>{t('fileBar.help.about')}</MenuItem>
