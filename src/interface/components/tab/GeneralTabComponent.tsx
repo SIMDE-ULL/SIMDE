@@ -46,8 +46,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ROBMapperComponent 
                                     title='ROB<->FPR'
                                     data={this.props.ROBFpr.data}
-                                    showableData={this.props.ROBFpr.showableData}
-                                    visible={this.props.visibleRangeValues} 
+                                    visibleRange={this.props.ROBFpr.visibleRangeValues} 
                                     addInterval={this.props.actions.addRobFprInterval}
                                     removeInterval={this.props.actions.removeRobFprInterval}
                                 />

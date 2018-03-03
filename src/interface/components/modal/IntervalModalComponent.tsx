@@ -28,15 +28,16 @@ class IntervalModalComponent extends React.Component<any, any> {
         this.setState({ value: event.target.value });
     }
 
-    // Parent component has to decide where the modal appears or not,
-    // so we don't close the modal here.
     close() {
         this.props.close();
     }
 
     accept() {
-        let value = this.state.value;
         this.setState({ value: '' });
+
+        // TODO Fix range parsing and data validation
+        let value = this.state.value ? this.state.value.split(',') : [];
+        value = value.map(v => +v);
         this.props.onAccept(value);
     }
 

@@ -41,12 +41,10 @@ export const initialState = {
     reserveStationJump: [],
     ROBGpr: {
         data: [],
-        showableData: [],
         visibleRangeValues: []
     },
     ROBFpr: {
-        datat: [],
-        showableData: [],
+        data: [],
         visibleRangeValues: []
     },
     reorderBuffer: [],
@@ -94,8 +92,8 @@ export function SuperescalarReducers(state = initialState, action) {
         case NEXT_REORDER_BUFFER_MAPPER_CYCLE:
             return state = {
                 ...state,
-                ROBGpr: action.value[0],
-                ROBFpr: action.value[1]
+                ROBGpr: { ...state.ROBGpr, data: action.value[0] },
+                ROBFpr: { ...state.ROBFpr, data: action.value[1] }
             };
         case NEXT_REORDER_BUFFER_CYCLE:
             return state = {
@@ -148,11 +146,14 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 colorBasicBlocks: action.value
             };
-        case ADD_ROB_FPR_INTERVAL:
+        case ADD_ROB_FPR_INTERVAL: 
             return state = {
                 ...state,
-                ROBGpr: action.value
-            }        
+                ROBFpr: {
+                    ...state.ROBFpr,
+                    visibleRangeValues: action.value
+                }
+            }
         default:
             return state
     }

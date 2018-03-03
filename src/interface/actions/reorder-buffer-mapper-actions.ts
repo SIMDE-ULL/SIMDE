@@ -3,15 +3,6 @@ export const NEXT_REORDER_BUFFER_MAPPER_CYCLE = 'NEXT_REORDER_BUFFER_MAPPER_CYCL
 export function nextReorderBufferMapperCycle(data) {
     return {
         type: NEXT_REORDER_BUFFER_MAPPER_CYCLE,
-        value: data.map(element => mapReorderBufferMapperData(element))
+        value: data
     }
-}
-
-function mapReorderBufferMapperData(data): any {
-    let newState = { content: data, show: true, open: false };
-    // Add show data
-    // this.show.forEach(e => {
-    //     newState.content.push({ index: e, value: data[e] });
-    // });
-    return newState;
 }
