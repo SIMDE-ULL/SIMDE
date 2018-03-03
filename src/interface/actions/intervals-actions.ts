@@ -20,13 +20,13 @@ export function addRobGprInterval(data) {
 export function removeRobFprInterval(data) {
     return {
       type: REMOVE_ROB_FPR_INTERVAL,
-      value: data
+      value: new Set(data)
     }
 }
 
 export function removeRobGprInterval(data) {
     return {
       type: REMOVE_ROB_GPR_INTERVAL,
-      value: data
+      value: new Set(data)
     }
 }

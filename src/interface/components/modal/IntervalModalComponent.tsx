@@ -3,7 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-declare var window: any;
+import { generateIntervalFromImput } from '../../utils/interval';
+
 
 class IntervalModalComponent extends React.Component<any, any> {
 
@@ -25,7 +26,7 @@ class IntervalModalComponent extends React.Component<any, any> {
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.setState({ value: event.target.value, error: '' });
     }
 
     close() {
@@ -33,12 +34,14 @@ class IntervalModalComponent extends React.Component<any, any> {
     }
 
     accept() {
-        this.setState({ value: '' });
-
-        // TODO Fix range parsing and data validation
-        let value = this.state.value ? this.state.value.split(',') : [];
-        value = value.map(v => +v);
-        this.props.onAccept(value);
+        try {
+            const value = generateIntervalFromImput(this.state.value, this.props.max);
+            this.props.onAccept(value);
+            this.setState({ value: '' });
+            this.props.close();
+        } catch (err) {
+            this.setState({...this.state, error: err })
+        }
     }
 
     render() {
@@ -58,6 +61,11 @@ class IntervalModalComponent extends React.Component<any, any> {
                         </div>
                     </div>
                 </form>
+                {   
+                    this.state.error ? <div className="smd-forms_error">
+                    { t(`intervalModal.errors.${this.state.error}`) }
+                    </div> : <div></div>
+                }
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={this.close}>{t('commonButtons.close')}</Button>

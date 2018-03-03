@@ -37,12 +37,14 @@ export class ROBMapperComponent extends React.Component<any, any> {
     }
 
    render() {
+        const renderCondition = this.props.visibleRange && this.props.data && this.props.data.length > 0;
       return (
             <div className='smd-rob_mapper panel panel-default'>
                 {
                     <IntervalModalComponent
                         title={this.props.title}
                         onAccept={this.props.addInterval}
+                        max={64}
                         open={this.state.isAddModalOpen}
                         close={this.closeAddInterval}
                     />
@@ -50,7 +52,8 @@ export class ROBMapperComponent extends React.Component<any, any> {
                 {
                     <IntervalModalComponent 
                         title={this.props.title}
-                        onAccept={this.props.onRemoveAccept}
+                        onAccept={this.props.removeInterval}
+                        max={64}
                         open={this.state.isRemoveModalOpen}
                         close={this.closeRemoveInterval}
                     />
@@ -59,21 +62,12 @@ export class ROBMapperComponent extends React.Component<any, any> {
                 <div className='smd-rob_mapper-body panel-body'>
                     <div className='smd-table'>
                             {
-                                (this.props.visibleRange && this.props.visibleRange.length) ? 
-
-                                    this.props.data && this.props.visibleRange.map((index) =>
-                                        <div className='smd-table_row' key={`${this.props.title + index}`}>
-                                            <div className='smd-table_cell' key={`${this.props.title + index + 65}`}>{index}</div>
-                                            <div className='smd-table_cell' key={`${this.props.title + index + 131}`}>{this.props.data[index]}</div>
-                                        </div>
-                                    ) 
-                                :  
-                                    this.props.data && this.props.data.map((element, i) =>
-                                        <div className='smd-table_row' key={`${this.props.title + i}`}>
-                                            <div className='smd-table_cell' key={`${this.props.title + i + 65}`}>{i}</div>
-                                            <div className='smd-table_cell' key={`${this.props.title + i + 131}`}>{element}</div>
-                                        </div>
-                                    ) 
+                                renderCondition && this.props.visibleRange.map((index) =>
+                                    <div className='smd-table_row' key={`${this.props.title + index}`}>
+                                        <div className='smd-table_cell' key={`${this.props.title + index + 65}`}>{index}</div>
+                                        <div className='smd-table_cell' key={`${this.props.title + index + 131}`}>{this.props.data[index]}</div>
+                                    </div>
+                                )
                             }
                     </div>
                 </div>

@@ -14,7 +14,7 @@ import { t } from 'i18next';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { superescalarLoad } from '../../actions';
-import { addRobFprInterval } from '../../actions/intervals-actions';
+import { addRobFprInterval, removeRobFprInterval, addRobGprInterval, removeRobGprInterval } from '../../actions/intervals-actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
 
@@ -40,7 +40,13 @@ class GeneralTabComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-general_tab-simulation_mappers">
                             <div className='smd-general_tab-simulation_register_mapper'>
-                                <ROBMapperComponent title='ROB<->GPR' data={this.props.ROBGpr.showableData} />
+                                <ROBMapperComponent 
+                                title='ROB<->GPR'
+                                data={this.props.ROBGpr.data}
+                                visibleRange={this.props.ROBGpr.visibleRangeValues} 
+                                addInterval={this.props.actions.addRobGprInterval}
+                                removeInterval={this.props.actions.removeRobGprInterval}
+                                />
                             </div>
                             <div className='smd-general_tab-simulation_register_mapper'>
                                 <ROBMapperComponent 
@@ -119,7 +125,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return { actions: bindActionCreators({superescalarLoad, addRobFprInterval}, dispatch)};
+    return { actions: bindActionCreators({
+        superescalarLoad,
+        addRobFprInterval,
+        removeRobFprInterval,
+        addRobGprInterval,
+        removeRobGprInterval
+    }, dispatch)};
 }
 
 export default translate('common')(connect(mapStateToProps, mapDispatchToProps)(GeneralTabComponent));

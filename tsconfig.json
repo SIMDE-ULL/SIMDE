@@ -14,6 +14,7 @@
       "traceResolution": false,
       "pretty": true,
       "jsx": "react",
+      "downlevelIteration": true,
       "lib": [
          "es6",
          "dom"

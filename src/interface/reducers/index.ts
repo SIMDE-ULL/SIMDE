@@ -13,12 +13,14 @@ import {
     VIEW_BASIC_BLOCKS
 } from '../actions';
 import { TOGGLE_LOAD_MODAL, TOGGLE_AUTHOR_MODAL, TOGGLE_OPTIONS_MODAL, TOGGLE_SUPER_CONFIG_MODAL } from '../actions/modals';
-import { ADD_ROB_FPR_INTERVAL } from '../actions/intervals-actions';
+import { ADD_ROB_FPR_INTERVAL, ADD_ROB_GPR_INTERVAL, REMOVE_ROB_FPR_INTERVAL, REMOVE_ROB_GPR_INTERVAL } from '../actions/intervals-actions';
+import { generateRangeArray } from '../utils/interval';
 
     // STEP_FORWARD,
     // STEP_BACK
 
 const MAX_HISTORY_SIZE = 10;
+const MACHINE_ROB_MAPPER_SIZE = 64;
 
 export const initialState = {
     prefetchUnit: [],
@@ -41,11 +43,11 @@ export const initialState = {
     reserveStationJump: [],
     ROBGpr: {
         data: [],
-        visibleRangeValues: []
+        visibleRangeValues: generateRangeArray(MACHINE_ROB_MAPPER_SIZE)
     },
     ROBFpr: {
         data: [],
-        visibleRangeValues: []
+        visibleRangeValues: generateRangeArray(MACHINE_ROB_MAPPER_SIZE)
     },
     reorderBuffer: [],
     generalRegisters: [],
@@ -151,7 +153,31 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 ROBFpr: {
                     ...state.ROBFpr,
-                    visibleRangeValues: action.value
+                    visibleRangeValues: Array.from(new Set([...state.ROBFpr.visibleRangeValues, ...action.value])).sort()
+                }
+            }
+        case ADD_ROB_GPR_INTERVAL: 
+            return state = {
+                ...state,
+                ROBGpr: {
+                    ...state.ROBGpr,
+                    visibleRangeValues: Array.from(new Set([...state.ROBGpr.visibleRangeValues, ...action.value])).sort()
+                }
+            }
+        case REMOVE_ROB_FPR_INTERVAL: 
+            return state = {
+                ...state,
+                ROBFpr: {
+                    ...state.ROBFpr,
+                    visibleRangeValues: state.ROBFpr.visibleRangeValues.filter(x => !action.value.has(x))
+                }
+            }
+        case REMOVE_ROB_GPR_INTERVAL:
+            return state = {
+                ...state,
+                ROBGpr: {
+                    ...state.ROBGpr,
+                    visibleRangeValues: state.ROBGpr.visibleRangeValues.filter(x => !action.value.has(x))
                 }
             }
         default:

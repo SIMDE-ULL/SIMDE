@@ -43,7 +43,12 @@
         "load": "Cargar"
     },
     "intervalModal": {
-        "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8..."
+        "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8...",
+        "errors": {
+            "noEmptyInput": "Debe rellenar el campo del formulario",
+            "inputOutOfRange": "Alguno de los valores excede el máximo rango visible",
+            "noInputNumber": "Introduzca solamente números para el rango"
+        }
     },
     "superescalarModal": {
         "name": "Configuración Superescalar",

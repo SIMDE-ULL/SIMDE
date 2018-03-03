@@ -27,14 +27,14 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     </div>
                                     <div className='smd-table-body'>
                                           {
-                                                this.props.content && this.props.content.map((row, i) =>
-                                                <div className='smd-table_row' key={'ReorderBuffer' + i}>
-                                                      <div className='smd-table_cell'>{i}</div>
-                                                      <div className='smd-table_cell'>{row.instruction.id}</div>
-                                                      <div className='smd-table_cell'>{row.destinyRegister}</div>
-                                                      <div className='smd-table_cell'>{row.value}</div>
-                                                      <div className='smd-table_cell'>{row.address}</div>
-                                                      <div className='smd-table_cell'>{row.superStage}</div>
+                                                this.props.content && this.props.content.map((row, i) => ({ row, i })).filter(e => e.row.instruction.id != '').map((e) =>
+                                                <div className='smd-table_row' key={'ReorderBuffer' + e.i}>
+                                                      <div className='smd-table_cell'>{e.i}</div>
+                                                      <div className='smd-table_cell'>{e.row.instruction.id}</div>
+                                                      <div className='smd-table_cell'>{e.row.destinyRegister}</div>
+                                                      <div className='smd-table_cell'>{e.row.value}</div>
+                                                      <div className='smd-table_cell'>{e.row.address}</div>
+                                                      <div className='smd-table_cell'>{e.row.superStage}</div>
                                                 </div>)
                                           }
                                     </div>
