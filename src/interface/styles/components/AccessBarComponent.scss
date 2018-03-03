@@ -8,4 +8,12 @@
         color: black;
         cursor: pointer;
     }
+
+    .smd-cycle {
+        display: inline-block;
+        
+        &_label {
+            margin-right: 0.5rem;
+        }
+    }
 }

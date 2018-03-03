@@ -1,0 +1,8 @@
+@import '../base/variables';
+
+.btn {
+    &.btn-primary {
+        background-color: $color-brand;
+        color: $color-text-primary;
+    }
+}

@@ -69,10 +69,10 @@ class AccessBarComponent extends React.Component<any, any> {
             <a onClick={this.stepForward}>
               <i className="fa fa-step-forward" aria-hidden="true" />
             </a>
-            <a>
-              <label htmlFor="cycle">{t("accessBar.cycle")}</label>
-              <span className="cycle">{this.props.cycle}</span>
-            </a>
+            <div className='smd-cycle'>
+              <label htmlFor="cycle" className='smd-cycle_label'>{t("accessBar.cycle")}</label>
+              <span className="smd-cycle_value">{this.props.cycle}</span>
+            </div>
             <a>
               <label htmlFor="velocidad">{t("accessBar.speed")}</label>
               <input
