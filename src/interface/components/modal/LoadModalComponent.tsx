@@ -8,30 +8,41 @@ import { bindActionCreators } from 'redux';
 import * as FileReaderInput from 'react-file-reader-input';
 
 import { loadSuper } from '../../../main';
+import { Code } from '../../../core/Common/Code';
 
 export class LoadModalComponent extends React.Component<any, any> {
 
     constructor(public props: any) {
         super(props);
         this.close = this.close.bind(this);
-        this.loadSuper = this.loadSuper.bind(this);
+        this.loadCode = this.loadCode.bind(this);
+        this.state = {
+            error: ''
+        }
     }
 
     close() {
         this.props.actions.toggleLoadModal(false);
     };
 
-    loadSuper() {
-        loadSuper();
-        this.close();
-    }
-
-    handleChange = (e, results) => {
+    handleInputFileChange = (e, results) => {
         results.forEach(result => {
             const [e, file] = result;
             let a = document.getElementById('codeInput') as HTMLInputElement;
             a.value = e.target.result;
         });
+    }
+
+    loadCode() {
+        try {
+            let code = new Code();
+            code.load((document.getElementById('codeInput') as HTMLInputElement).value);
+            this.setState({error: ''})
+            loadSuper(code);
+            this.close();
+        } catch (err) {
+            this.setState({error: err});
+        }
     }
 
     render() {
@@ -64,21 +75,19 @@ LOOP:
    SF	F2 1(R3)`}>
                 </textarea>
                 <div className="smd-load_modal-errors">
-                    {this.props.errors && this.props.errors.map(error => 
-                        <div className="smd-load_modal_error">{error}</div>
-                    )}
+                    {this.state.error && <div className="smd-forms_error">{this.state.error}</div>}
                 </div>
             </Modal.Body>
 
             <Modal.Footer className="smd-load_modal-footer">
                 <div className="smd-load_modal-file_input">
-                    <FileReaderInput as='text' onChange={this.handleChange} accept='.pla'>
+                    <FileReaderInput as='text' onChange={this.handleInputFileChange} accept='.pla'>
                         <Button className='btn btn-primary'>{t('commonButtons.uploadFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-actions">
                     <Button onClick={this.close}>{t('commonButtons.close')}</Button>
-                    <Button className='btn btn-primary' onClick={this.loadSuper}>{t('loadModal.load')}</Button>
+                    <Button className='btn btn-primary' onClick={this.loadCode}>{t('loadModal.load')}</Button>
                 </div>
             </Modal.Footer>
         </Modal>);

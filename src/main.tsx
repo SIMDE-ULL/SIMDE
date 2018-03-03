@@ -126,22 +126,14 @@ let superStep = () => {
       }
 };
 
-export let loadSuper = () => {
-      let code = new Code();
-      try {
-            code.load(document.getElementById('codeInput').value);
-            superExe();
-            superescalar.code = code;
+export let loadSuper = (code: Code) => {
+      superExe();
+      superescalar.code = code;
 
-            // There is no need to update the code with the rest,
-            // it should remain the same during all the program execution
-            store.dispatch(superescalarLoad(superescalar.code.instructions));
-            dispatchAllSuperescalarActions();
-      } catch (err) {
-            console.log(err);
-
-            // TODO store.dispatch(codeLoadError(err));
-      }
+      // There is no need to update the code with the rest,
+      // it should remain the same during all the program execution
+      store.dispatch(superescalarLoad(superescalar.code.instructions));
+      dispatchAllSuperescalarActions();
 };
 
 let play = () => {
