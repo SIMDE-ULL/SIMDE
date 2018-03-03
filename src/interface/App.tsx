@@ -8,7 +8,7 @@ import FileBarComponent from './components/navbar/FileBarComponent';
 import AccessBarComponent from "./components/navbar/AccessBarComponent";
 
 import GeneralTabComponent from "./components/tab/GeneralTabComponent";
-import { RegisterTabComponent } from './components/tab/RegistersTabComponent';
+import RegisterTabComponent from './components/tab/RegistersTabComponent';
 
 import LoadModalComponent from "./components/modal/LoadModalComponent";
 import SuperescalarConfigModalComponent from "./components/modal/SuperescalarConfigModalComponent";

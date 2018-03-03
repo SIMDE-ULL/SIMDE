@@ -7,54 +7,86 @@ import { t } from 'i18next';
 
 class RegisterComponent extends React.Component<any, any> {
 
-      history: any[];
-      historyLength = 10;
-
       constructor(props: any) {
             super(props);
+            this.state = {
+                isAddModalOpen: false,
+                isRemoveModalOpen: false
+            }
             // Bind functions for not losing context
-            // this.openWithAddInterval = this.openWithAddInterval.bind(this);
-            // this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
-            // this.addInterval = this.addInterval.bind(this);
-            // this.parseInterval = this.parseInterval.bind(this);
-            // this.removeInterval = this.removeInterval.bind(this);
+            this.openWithAddInterval = this.openWithAddInterval.bind(this);
+            this.openWithRemoveInterval = this.openWithRemoveInterval.bind(this);
+            this.closeAddInterval = this.closeAddInterval.bind(this);
+            this.closeRemoveInterval = this.closeRemoveInterval.bind(this);
       }
 
-      // openWithAddInterval() {
-      //       this.setState({ open: true, onAccept: this.addInterval });
-      // }
+      openWithAddInterval() {
+            this.setState({ ...this.state, isAddModalOpen: true});
+      }
 
-      // openWithRemoveInterval() {
-      //       this.setState({ open: true, onAccept: this.removeInterval });
-      // }
+      openWithRemoveInterval() {
+            this.setState({ ...this.state, isRemoveModalOpen: true});
+      }
+
+      closeAddInterval() {
+            this.setState({ ...this.state, isAddModalOpen: false });
+      }
+
+      closeRemoveInterval() {
+            this.setState({ ...this.state, isRemoveModalOpen: false });
+      }
 
       render() {
+            const renderCondition = this.props.visibleRange && this.props.data && this.props.data.length > 0;
             return (
-                  <div className='registerPanel'>
+                  <div className='smd-register'>
+                        {
+                              <IntervalModalComponent
+                              title={this.props.title}
+                              onAccept={this.props.addInterval}
+                              max={this.props.max}
+                              open={this.state.isAddModalOpen}
+                              close={this.closeAddInterval}
+                              />
+                        }
+                        {
+                              <IntervalModalComponent 
+                              title={this.props.title}
+                              onAccept={this.props.removeInterval}
+                              max={this.props.max}
+                              open={this.state.isRemoveModalOpen}
+                              close={this.closeRemoveInterval}
+                              />
+                        }
                         <div className='panel panel-default'>
                               <div className='panel-heading'>{t(this.props.title)}</div>
                               <div className='panel-body'>
-                                    <table className='table table-bordered'>
-                                          <tbody>
-                                                {
-                                                      this.props.content && this.props.content.map((row, i) => <tr key={`${this.props.title + i}`}>
-                                                            <td key={`${this.props.title + i + 65}`}>{row.index}</td>
-                                                            <td key={`${this.props.title + i + 131}`}>{row.vmalue}</td>
-                                                      </tr>)
-                                                }
-                                          </tbody>
-                                    </table>
+                                    <div className='smd-table'>
+                                    {
+                                          renderCondition && this.props.visibleRange.map(index => 
+                                          <div className='smd-table_row' key={`${this.props.title + index}`}>
+                                                <div className='smd-table_cell' key={`${this.props.title + index + 65}`}>{index}</div>
+                                                <div className='smd-table_cell' key={`${this.props.title + index + 131}`}>{this.props.data[index]}</div>
+                                          </div>)
+                                    }
+                                    </div>
                               </div>
                               <div className='panel-footer'>
-                                    {/* <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}><i className='fa fa-plus' aria-hidden='true'></i>
-                                    </button>
-                                    <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}><i className='fa fa-minus' aria-hidden='true'></i></button> */}
+                              <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}>
+                                    <i className='fa fa-plus' aria-hidden='true'></i>
+                              </button>
+                              <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}>
+                                    <i className='fa fa-minus' aria-hidden='true'></i>
+                              </button>
+                              {
+                                    /* 
                                     <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
                                     <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
                                     <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+                                    */
+                              }
                               </div>
                         </div>
-                        {/* {<IntervalModalComponent title={this.props.title} onAccept={this.state.onAccept} open={this.state.open} />} */}
                   </div>);
       }
 }

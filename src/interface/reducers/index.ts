@@ -13,14 +13,15 @@ import {
     VIEW_BASIC_BLOCKS
 } from '../actions';
 import { TOGGLE_LOAD_MODAL, TOGGLE_AUTHOR_MODAL, TOGGLE_OPTIONS_MODAL, TOGGLE_SUPER_CONFIG_MODAL } from '../actions/modals';
-import { ADD_ROB_FPR_INTERVAL, ADD_ROB_GPR_INTERVAL, REMOVE_ROB_FPR_INTERVAL, REMOVE_ROB_GPR_INTERVAL } from '../actions/intervals-actions';
+import { ADD_ROB_FPR_INTERVAL, ADD_ROB_GPR_INTERVAL, REMOVE_ROB_FPR_INTERVAL, REMOVE_ROB_GPR_INTERVAL, ADD_MEMORY_INTERVAL, REMOVE_MEMORY_INTERVAL, ADD_GENERAL_REGISTERS_INTERVAL, REMOVE_GENERAL_REGISTERS_INTERVAL, ADD_FLOATING_REGISTERS_INTERVAL, REMOVE_FLOATING_REGISTERS_INTERVAL } from '../actions/intervals-actions';
 import { generateRangeArray } from '../utils/interval';
 
     // STEP_FORWARD,
     // STEP_BACK
 
 const MAX_HISTORY_SIZE = 10;
-const MACHINE_ROB_MAPPER_SIZE = 64;
+const MACHINE_REGISTER_SIZE = 64;
+const MACHINE_MEMORY_SIZE = 1024;
 
 export const initialState = {
     prefetchUnit: [],
@@ -43,16 +44,25 @@ export const initialState = {
     reserveStationJump: [],
     ROBGpr: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_ROB_MAPPER_SIZE)
+        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
     },
     ROBFpr: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_ROB_MAPPER_SIZE)
+        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
     },
     reorderBuffer: [],
-    generalRegisters: [],
-    floatingRegisters: [],
-    memory: [],
+    generalRegisters: {
+        data: [],
+        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+    },
+    floatingRegisters: {
+        data: [],
+        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+    },
+    memory: {
+        data: [],
+        visibleRangeValues: generateRangeArray(MACHINE_MEMORY_SIZE)
+    },
     cycle: 0,
     code: [],
     colorBasicBlocks: false,
@@ -105,13 +115,22 @@ export function SuperescalarReducers(state = initialState, action) {
         case NEXT_REGISTERS_CYCLE:
             return state = {
                 ...state,
-                generalRegisters: action.value[0],
-                floatingRegisters: action.value[1]
+                generalRegisters: {
+                    ...state.generalRegisters,
+                    data: action.value[0]
+                },
+                floatingRegisters: {
+                    ...state.floatingRegisters,
+                    data: action.value[1]
+                }
             };
         case NEXT_MEMORY_CYCLE:
             return state = {
                 ...state,
-                memory: action.value
+                memory: {
+                    ...state.memory,
+                    data: action.value
+                }
             };
         case NEXT_CYCLE:
             return state = {
@@ -178,6 +197,54 @@ export function SuperescalarReducers(state = initialState, action) {
                 ROBGpr: {
                     ...state.ROBGpr,
                     visibleRangeValues: state.ROBGpr.visibleRangeValues.filter(x => !action.value.has(x))
+                }
+            }
+        case ADD_MEMORY_INTERVAL:
+            return state = {
+                ...state,
+                memory: {
+                    ...state.memory,
+                    visibleRangeValues: Array.from(new Set([...state.memory.visibleRangeValues, ...action.value])).sort()
+                }
+            }
+        case REMOVE_MEMORY_INTERVAL:
+            return state = {
+                ...state,
+                memory: {
+                    ...state.memory,
+                    visibleRangeValues: state.memory.visibleRangeValues.filter(x => !action.value.has(x))
+                }
+            }
+        case ADD_GENERAL_REGISTERS_INTERVAL:
+            return state = {
+                ...state,
+                generalRegisters: {
+                    ...state.generalRegisters,
+                    visibleRangeValues: Array.from(new Set([...state.generalRegisters.visibleRangeValues, ...action.value])).sort()
+                }
+            }
+        case REMOVE_GENERAL_REGISTERS_INTERVAL:
+            return state = {
+                ...state,
+                generalRegisters: {
+                    ...state.generalRegisters,
+                    visibleRangeValues: state.generalRegisters.visibleRangeValues.filter(x => !action.value.has(x))
+                }
+            }
+        case ADD_FLOATING_REGISTERS_INTERVAL:
+            return state = {
+                ...state,
+                floatingRegisters: {
+                    ...state.floatingRegisters,
+                    visibleRangeValues: Array.from(new Set([...state.floatingRegisters.visibleRangeValues, ...action.value])).sort()
+                }
+            }
+        case REMOVE_FLOATING_REGISTERS_INTERVAL:
+            return state = {
+                ...state,
+                floatingRegisters: {
+                    ...state.floatingRegisters,
+                    visibleRangeValues: state.floatingRegisters.visibleRangeValues.filter(x => !action.value.has(x))
                 }
             }
         default:

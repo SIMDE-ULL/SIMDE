@@ -1,27 +1,3 @@
-.panel-footer:first-child{
-   margin-left: 2px;
-}
-
-.panel-footer:last-child{
-   margin-right: 2px;
-}
-.btn {
-   margin-left: 1px;
-   margin-right: 1px;
-}
-
-.registerPanel {
-   height: calc(70vh);
-   & .panel {
-      & .panel-body {
-         max-height: calc(60vh);
-      }
-
-      & .panel-footer {
-         padding-top: 0px;
-         padding-bottom: 0px;
-         padding-right: 0px;
-      }
-   }
-
+.smd-register {
+    height: 100%;
 }
