@@ -1,3 +1,5 @@
+@import '../base/variables';
+
 #working-area-tabs {
     height: -webkit-calc(100% - 4.5rem);
     height:    -moz-calc(100% - 4.5rem);
@@ -5,8 +7,17 @@
 
     .nav.nav-tabs {
         position: absolute;
-        top: 1.75rem;
-        right: 2rem;
+        top: 2rem;
+        right: 1rem;
+
+        &>li.active>a {
+            background-color: $color-brand;
+            color: $color-text-primary;
+        }
+
+        &>li>a{
+            border: 1px solid rgba(0,0,0,0.2);
+        }
     }
 
     .tab-content {
