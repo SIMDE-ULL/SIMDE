@@ -223,11 +223,11 @@ export class SuperescalarIntegration {
 
         for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
-                    this.superescalar.setFunctionalUnitNumber(i,
-                        +superConfig[superConfigKeys[i]]);
+                this.superescalar.setFunctionalUnitNumber(i,
+                    +superConfig[superConfigKeys[i]]);
             } else {
-                    this.superescalar.setFunctionalUnitLatency(i,
-                        +superConfig[superConfigKeys[i]]);
+                this.superescalar.setFunctionalUnitLatency(i,
+                    +superConfig[superConfigKeys[i]]);
             }
         }
         this.superescalar.memoryFailLatency = +superConfig.cacheFailLatency;

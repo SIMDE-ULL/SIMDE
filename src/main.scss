@@ -10,3 +10,9 @@ body {
 	width: 100%;
 	overflow-y: hidden;
 }
+
+@media (max-width: 1280px) {
+	body, html {
+		font-size: $font-size-base-sm;
+	}
+}
