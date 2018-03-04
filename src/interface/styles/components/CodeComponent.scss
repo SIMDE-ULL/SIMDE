@@ -2,6 +2,9 @@
 
     .smd-table_row {
         position: relative;
+        .smd-table_cell:first-child {
+            padding-left:1rem;
+        }
     }
     .smd-table_cell {
         width: 20%;
@@ -16,6 +19,7 @@
         content: '';
         display: block;
         height: .875rem;
+        left: 3px;
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
