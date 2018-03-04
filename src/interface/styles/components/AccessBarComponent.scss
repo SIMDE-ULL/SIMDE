@@ -11,9 +11,17 @@
 
     .smd-cycle {
         display: inline-block;
+        margin-right: 1rem;
         
         &_label {
             margin-right: 0.5rem;
+        }
+    }
+
+    .smd-speed {
+        &_value {
+            margin-left: .5rem;
+            text-align: center;
         }
     }
 }

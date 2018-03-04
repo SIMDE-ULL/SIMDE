@@ -95,13 +95,13 @@ let dispatchAllSuperescalarActions = (step?: number) => {
       );
 };
 
-let superExe = () => {
+export let superExe = () => {
       superescalar.init(true);
 };
 
 // https://github.com/reactjs/redux/issues/911#issuecomment-149361073
 
-let superStep = () => {
+export let superStep = () => {
       if (backStep > 0) {
             backStep--;
             dispatchAllSuperescalarActions(backStep);
@@ -133,7 +133,7 @@ export let loadSuper = (code: Code) => {
       dispatchAllSuperescalarActions();
 };
 
-let play = () => {
+export let play = () => {
       stopCondition = ExecutionStatus.EXECUTABLE;
       backStep = 0;
       executing = true;
@@ -162,12 +162,12 @@ let play = () => {
 
 };
 
-let pause = () => {
+export let pause = () => {
       stopCondition = ExecutionStatus.PAUSE;
       executing = false;
 };
 
-let stop = () => {
+export let stop = () => {
 
       // In normal execution I have to avoid the asynchrnous way of
       // js entering in the interval, the only way I have is to check this
@@ -183,7 +183,7 @@ let stop = () => {
       }
 };
 
-let stepBack = () => {
+export let stepBack = () => {
       // There is no time travelling for batch mode and initial mode
       if (superescalar.status.cycle > 0 && backStep < 10 &&
             (superescalar.status.cycle - backStep > 0)) {

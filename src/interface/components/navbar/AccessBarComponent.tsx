@@ -2,8 +2,8 @@ import * as React from "react";
 import { translate } from "react-i18next";
 import { t } from "i18next";
 import { connect } from "react-redux";
+import { superStep, stepBack, play, pause, stop } from "../../../main";
 
-declare var window: any;
 
 class AccessBarComponent extends React.Component<any, any> {
   constructor(props: any) {
@@ -18,37 +18,26 @@ class AccessBarComponent extends React.Component<any, any> {
       showableContent: null
     };
 
-    // window.state['cycle'] = (data) => {
-    //     if (data.step) {
-    //         if (data.step === -1) {
-    //             this.setState({ content: 0, showableContent: 0 });
-    //         } else {
-    //             this.setState({ showableContent: this.state.content - data.step });
-    //         }
-    //     } else {
-    //         this.setState({ content: data.content, showableContent: data.content });
-    //     }
-    // };
   }
 
   stepForward() {
-    window.superStep();
+    superStep();
   }
 
   stepBack() {
-    window.stepBack();
+    stepBack();
   }
 
   play() {
-    window.play();
+    play();
   }
 
   pause() {
-    window.pause();
+    pause();
   }
 
   stop() {
-    window.stop();
+    stop();
   }
 
   render() {
@@ -73,21 +62,17 @@ class AccessBarComponent extends React.Component<any, any> {
               <label htmlFor="cycle" className='smd-cycle_label'>{t("accessBar.cycle")}</label>
               <span className="smd-cycle_value">{this.props.cycle}</span>
             </div>
-            <a>
-              <label htmlFor="velocidad">{t("accessBar.speed")}</label>
+            <span className='smd-speed'>
+              <label className='smd-speed_label' htmlFor="velocidad">{t("accessBar.speed")}</label>
               <input
                 type="number"
                 id="velocidad"
-                className="speed"
+                className="smd-speed_value"
                 defaultValue={"5"}
                 min="0"
                 max="10"
               />
-            </a>
-        {/* <ul className='nav nav-tabs'>
-                    <li className='active'><a data-toggle='tab' href='#home'>{t('accessBar.superescalar')}</a></li>
-                    <li><a data-toggle='tab' href='#menu1'>{t('accessBar.memReg')}</a></li>
-                </ul> */}
+            </span>
       </div>
     );
   }
