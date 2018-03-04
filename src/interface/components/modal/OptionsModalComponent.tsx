@@ -25,7 +25,7 @@ class OptionsModalComponent extends React.Component<any, any> {
     };
 
     handleChange(event) {
-        let newState = Object.assign({}, this.state);
+        let newState = {...this.state};
         newState.superConfig[event.target.name] = event.target.value;
         this.setState(newState);
     }

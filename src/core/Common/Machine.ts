@@ -2,7 +2,7 @@ import { Register } from './Register';
 import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType } from './FunctionalUnit';
 import { Memory } from './Memory';
 import { MachineStatus } from './MachineStatus';
-import { MACHINE_REGISTER_SIZE } from '../constants';
+import { MACHINE_REGISTER_SIZE } from '../Constants';
 
 export class Machine {
 

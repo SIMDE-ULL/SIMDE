@@ -1,43 +1,5 @@
-import { Code } from './core/Common/Code';
-import { Superescalar } from './core/Superescalar/Superescalar';
-import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
-import { FunctionalUnitType } from './core/Common/FunctionalUnit';
-import { ExecutionStatus } from './main-consts';
-
-import { 
-      nextPrefetchCycle,
-      nextDecoderCycle,
-      nextJumpTableCycle,
-      nextFunctionalUnitCycle,
-      nextReserveStationCycle,
-      nextReorderBufferCycle,
-      nextRegistersCycle,
-      nextMemoryCycle,
-      nextReorderBufferMapperCycle,
-      nextCycle,
-      superescalarLoad,
-      batchActions
-} from './interface/actions';
-
-import { pushHistory, takeHistory } from './interface/actions/history';
-
-
-import { store } from './store';
-
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-
-import i18n from './i18n'; // initialized i18next instance
-import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
-
-import App from './interface/App';
-
-const styles = require('./main.scss');
-
-
-// Global objects for binding React to the View
-export let superescalar = new Superescalar();
+export SuperescalarIntegration = {
+    export let superescalar = new Superescalar();
 let interval = null;
 let backStep = 0;
 let stopCondition = ExecutionStatus.EXECUTABLE;
@@ -227,7 +189,7 @@ function executionLoop(speed) {
       }
 }
 
-export let saveSuperConfig = (superConfig) => {
+export let saveSuperConfig = (superConfig: SuperescalarConfig) => {
       const superConfigKeys = Object.keys(superConfig);
       for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
@@ -245,16 +207,4 @@ export let saveSuperConfig = (superConfig) => {
 export let setOptions = (cacheFailPercentage: number) => {
       superescalar.memory.failProbability = cacheFailPercentage;
 };
-
-/*
- * Here is where the react endpoint appears
- *
- */
-ReactDOM.render(
-      <I18nextProvider i18n={i18n}>
-            <Provider store={store}>
-                  <App machine={superescalar} />
-            </Provider>
-      </I18nextProvider>,
-      document.getElementById('app')
-);
+}
