@@ -6,6 +6,7 @@ import { toggleSuperConfigModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 
 import SuperescalarIntegration from '../../../superescalar-integration';
+import { SUPERESCALAR_CONFIG } from '../../../core/Constants';
 
 import { connect } from 'react-redux';
 
@@ -109,8 +110,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='integerSumQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.integerSumQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -120,8 +121,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='integerSumLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.integerSumLatency}
                                     onChange={this.handleChange}
                                 />
@@ -138,8 +139,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='integerMultQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.integerMultQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -149,8 +150,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='integerMultLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.integerMultLatency}
                                     onChange={this.handleChange}
                                 />
@@ -167,8 +168,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='floatingSumQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.floatingSumQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -178,8 +179,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='floatingSumLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.floatingSumLatency}
                                     onChange={this.handleChange}
                                 />
@@ -196,8 +197,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='floatingMultQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.floatingMultQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -207,8 +208,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='floatingMultLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.floatingMultLatency}
                                     onChange={this.handleChange}
                                 />
@@ -225,8 +226,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='memoryQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.memoryQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -236,8 +237,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='memoryLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.memoryLatency}
                                     onChange={this.handleChange}
                                 />
@@ -254,8 +255,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='jumpQuantity'
                                     type='number'
-                                    min='1'
-                                    max='10'
+                                    min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                                    max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
                                     value={this.state.superConfig.jumpQuantity}
                                     onChange={this.handleChange}
                                 />
@@ -265,8 +266,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='jumpLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.jumpLatency}
                                     onChange={this.handleChange}
                                 />
@@ -285,8 +286,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='cacheFailLatency'
                                     type='number'
-                                    min='1'
-                                    max='100'
+                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
+                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
                                     value={this.state.superConfig.cacheFailLatency}
                                     onChange={this.handleChange}
                                 />
@@ -302,8 +303,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                                     className='form-control'
                                     name='issueGrade'
                                     type='number'
-                                    min='2'
-                                    max='16'
+                                    min={SUPERESCALAR_CONFIG.ISSUE_GRADE_MIN}
+                                    max={SUPERESCALAR_CONFIG.ISSUE_GRADE_MAX}
                                     value={this.state.superConfig.issueGrade}
                                     onChange={this.handleChange}
                                 />
