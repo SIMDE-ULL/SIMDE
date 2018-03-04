@@ -84,14 +84,14 @@ export class ROBMapperComponent extends React.Component<any, any> {
         <div className="panel-footer">
           <button
             type="button"
-            className="btn btn-xs"
+            className="btn smd-register_button"
             onClick={this.openWithAddInterval}
           >
             <i className="fa fa-plus" aria-hidden="true" />
           </button>
           <button
             type="button"
-            className="btn btn-xs"
+            className="btn smd-register_button"
             onClick={this.openWithRemoveInterval}
           >
             <i className="fa fa-minus" aria-hidden="true" />

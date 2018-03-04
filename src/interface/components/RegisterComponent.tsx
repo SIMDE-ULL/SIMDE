@@ -71,17 +71,17 @@ class RegisterComponent extends React.Component<any, any> {
                                     </div>
                               </div>
                               <div className='panel-footer'>
-                              <button type='button' className='btn btn-xs' onClick={this.openWithAddInterval}>
+                              <button type='button' className='btn smd-register_button' onClick={this.openWithAddInterval}>
                                     <i className='fa fa-plus' aria-hidden='true'></i>
                               </button>
-                              <button type='button' className='btn btn-xs' onClick={this.openWithRemoveInterval}>
+                              <button type='button' className='btn smd-register_button' onClick={this.openWithRemoveInterval}>
                                     <i className='fa fa-minus' aria-hidden='true'></i>
                               </button>
                               {
                                     /* 
-                                    <button type='button' className='btn btn-xs'><i className='fa fa-check' aria-hidden='true'></i></button>
-                                    <button type='button' className='btn btn-xs'><i className='fa fa-times' aria-hidden='true'></i></button>
-                                    <button type='button' className='btn btn-xs'><i className='fa fa-repeat' aria-hidden='true'></i></button>
+                                    <button type='button' className='btn smd-register_button'><i className='fa fa-check' aria-hidden='true'></i></button>
+                                    <button type='button' className='btn smd-register_button'><i className='fa fa-times' aria-hidden='true'></i></button>
+                                    <button type='button' className='btn smd-register_button'><i className='fa fa-repeat' aria-hidden='true'></i></button>
                                     */
                               }
                               </div>

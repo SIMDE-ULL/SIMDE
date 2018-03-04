@@ -1,3 +1,9 @@
 .smd-register {
     height: 100%;
+
+    &_button {
+        font-size: .875rem;
+        margin-right: .125rem;
+        padding: 0 .35rem;
+    }
 }
