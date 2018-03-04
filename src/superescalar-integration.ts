@@ -1,210 +1,236 @@
-export SuperescalarIntegration = {
-    export let superescalar = new Superescalar();
-let interval = null;
-let backStep = 0;
-let stopCondition = ExecutionStatus.EXECUTABLE;
-let finishedExecution = false;
-let executing = false;
+import { Superescalar } from './core/Superescalar/Superescalar';
+import { ExecutionStatus } from './main-consts';
+import { store } from './store';
+import { 
+    nextPrefetchCycle,
+    nextDecoderCycle,
+    nextJumpTableCycle,
+    nextFunctionalUnitCycle,
+    nextReserveStationCycle,
+    nextReorderBufferCycle,
+    nextRegistersCycle,
+    nextMemoryCycle,
+    nextReorderBufferMapperCycle,
+    nextCycle,
+    superescalarLoad,
+    batchActions
+} from './interface/actions';
 
-/*
- * This call all the components to update the state
- * if there is a step param, the components will use
- * their history to set the appropiate content
- */
-let dispatchAllSuperescalarActions = (step?: number) => {
-      // Code should only be setted on the first iteration
-      store.dispatch(
-            batchActions(
-                  nextJumpTableCycle(superescalar.jumpPrediction),
-                  nextPrefetchCycle(superescalar.prefetchUnit),
-                  nextDecoderCycle(superescalar.decoder),
-                  nextFunctionalUnitCycle([...superescalar.functionalUnit, superescalar.aluMem]),
-                  nextReserveStationCycle(
-                        [{
-                              data: superescalar.reserveStationEntry[0],
-                              size: superescalar.getReserveStationSize(0)
-                        },
+import { pushHistory, takeHistory } from './interface/actions/history';
 
-                        {
-                              data: superescalar.reserveStationEntry[1],
-                              size: superescalar.getReserveStationSize(1)
-                        },
+import { Code } from './core/Common/Code';
+import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
+import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 
-                        {
-                              data: superescalar.reserveStationEntry[2],
-                              size: superescalar.getReserveStationSize(2)
-                        },
+export class SuperescalarIntegration {
+    // Global objects for binding React to the View
+    superescalar = new Superescalar();
+    interval = null;
+    backStep = 0;
+    stopCondition = ExecutionStatus.EXECUTABLE;
+    finishedExecution = false;
+    executing = false;
 
-                        {
-                              data: superescalar.reserveStationEntry[3],
-                              size: superescalar.getReserveStationSize(3)
-                        },
+    /*
+    * This call all the components to update the state
+    * if there is a step param, the components will use
+    * their history to set the appropiate content
+    */
+    dispatchAllSuperescalarActions = (step?: number) => {
+        // Code should only be setted on the first iteration
+        store.dispatch(
+                batchActions(
+                    nextJumpTableCycle(this.superescalar.jumpPrediction),
+                    nextPrefetchCycle(this.superescalar.prefetchUnit),
+                    nextDecoderCycle(this.superescalar.decoder),
+                    nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
+                    nextReserveStationCycle(
+                            [{
+                                data: this.superescalar.reserveStationEntry[0],
+                                size: this.superescalar.getReserveStationSize(0)
+                            },
 
-                        {
-                              data: superescalar.reserveStationEntry[4],
-                              size: superescalar.getReserveStationSize(4)
-                        },
+                            {
+                                data: this.superescalar.reserveStationEntry[1],
+                                size: this.superescalar.getReserveStationSize(1)
+                            },
 
-                        {
-                              data: superescalar.reserveStationEntry[5],
-                              size: superescalar.getReserveStationSize(5)
-                        }
-                  ]),
-                  nextReorderBufferMapperCycle([superescalar.ROBGpr, superescalar.ROBFpr]),
-                  nextReorderBufferCycle(superescalar.reorderBuffer.elements),
-                  nextRegistersCycle([superescalar.gpr.content, superescalar.fpr.content]),
-                  nextMemoryCycle(superescalar.memory.data),
-                  nextCycle(superescalar.status.cycle),
-                  pushHistory()
-            )
-      );
-};
+                            {
+                                data: this.superescalar.reserveStationEntry[2],
+                                size: this.superescalar.getReserveStationSize(2)
+                            },
 
-export let superExe = () => {
-      superescalar.init(true);
-};
+                            {
+                                data: this.superescalar.reserveStationEntry[3],
+                                size: this.superescalar.getReserveStationSize(3)
+                            },
 
-// https://github.com/reactjs/redux/issues/911#issuecomment-149361073
+                            {
+                                data: this.superescalar.reserveStationEntry[4],
+                                size: this.superescalar.getReserveStationSize(4)
+                            },
 
-export let superStep = () => {
-      if (backStep > 0) {
-            backStep--;
-            store.dispatch(takeHistory(backStep));
+                            {
+                                data: this.superescalar.reserveStationEntry[5],
+                                size: this.superescalar.getReserveStationSize(5)
+                            }
+                    ]),
+                    nextReorderBufferMapperCycle([this.superescalar.ROBGpr, this.superescalar.ROBFpr]),
+                    nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
+                    nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
+                    nextMemoryCycle(this.superescalar.memory.data),
+                    nextCycle(this.superescalar.status.cycle),
+                    pushHistory()
+                )
+        );
+    }
+
+    superExe = () => {
+        this.superescalar.init(true);
+    }
+
+    superStep = () => {
+      if (this.backStep > 0) {
+            this.backStep--;
+            store.dispatch(takeHistory(this.backStep));
       } else {
-            if (finishedExecution) {
-                  finishedExecution = false;
-                  dispatchAllSuperescalarActions(-1);
-                  superescalar.status.cycle = 0;
+            if (this.finishedExecution) {
+                  this.finishedExecution = false;
+                  this.dispatchAllSuperescalarActions(-1);
+                  this.superescalar.status.cycle = 0;
             }
-            if (superescalar.status.cycle === 0) {
-                  let code = Object.assign(new Code(), superescalar.code);
-                  superExe();
-                  superescalar.code = code;
+            if (this.superescalar.status.cycle === 0) {
+                  let code = Object.assign(new Code(), this.superescalar.code);
+                  this.superExe();
+                  this.superescalar.code = code;
             }
-            let resul = superescalar.tic();
-            dispatchAllSuperescalarActions();
+            let resul = this.superescalar.tic();
+            this.dispatchAllSuperescalarActions();
 
             return resul;
       }
-};
+    }
 
-export let loadSuper = (code: Code) => {
-      superExe();
-      superescalar.code = code;
+    loadSuper = (code: Code) => {
+      this.superExe();
+      this.superescalar.code = code;
 
       // There is no need to update the code with the rest,
       // it should remain the same during all the program execution
-      store.dispatch(superescalarLoad(superescalar.code.instructions));
-      dispatchAllSuperescalarActions();
-};
+      store.dispatch(superescalarLoad(this.superescalar.code.instructions));
+      this.dispatchAllSuperescalarActions();
+    }
 
-export let play = () => {
-      stopCondition = ExecutionStatus.EXECUTABLE;
-      backStep = 0;
-      executing = true;
-      let speed = calculateSpeed();
+    play = () => {
+        this.stopCondition = ExecutionStatus.EXECUTABLE;
+        this.backStep = 0;
+        this.executing = true;
+        let speed = this.calculateSpeed();
 
-      // Check if the execution has finished 
-      if (finishedExecution) {
-            finishedExecution = false;
-            dispatchAllSuperescalarActions(-1);
-            superescalar.status.cycle = 0;
-      }
-      if (superescalar.status.cycle === 0) {
-            let code = Object.assign(new Code(), superescalar.code);
-            superExe();
-            superescalar.code = code;
-      }
-      if (speed) {
-            executionLoop(speed);
-      } else {
+        // Check if the execution has finished 
+        if (this.finishedExecution) {
+            this.finishedExecution = false;
+            this.dispatchAllSuperescalarActions(-1);
+            this.superescalar.status.cycle = 0;
+        }
+        if (this.superescalar.status.cycle === 0) {
+            let code = Object.assign(new Code(), this.superescalar.code);
+            this.superExe();
+            this.superescalar.code = code;
+        }
+        if (speed) {
+            this.executionLoop(speed);
+        } else {
             // tslint:disable-next-line:no-empty
-            while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-            dispatchAllSuperescalarActions();
-            finishedExecution = true;
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            this.dispatchAllSuperescalarActions();
+            this.finishedExecution = true;
             alert('Done');
-      }
+        }
 
-};
+}
 
-export let pause = () => {
-      stopCondition = ExecutionStatus.PAUSE;
-      executing = false;
-};
+    pause = () => {
+        this.stopCondition = ExecutionStatus.PAUSE;
+        this.executing = false;
+    }
 
-export let stop = () => {
-
+    stop = () => {
       // In normal execution I have to avoid the asynchrnous way of
-      // js entering in the interval, the only way I have is to check this
-      stopCondition = ExecutionStatus.STOP;
+      // js entering in the interval, the only way I have is to using a semaphore
+      this.stopCondition = ExecutionStatus.STOP;
 
-      if (!executing) {
-            executing = false;
-            dispatchAllSuperescalarActions(-1);
-            superescalar.status.cycle = 0;
-            let code = Object.assign(new Code(), superescalar.code);
-            superExe();
-            superescalar.code = code;
-      }
-};
-
-export let stepBack = () => {
-      // There is no time travelling for batch mode and initial mode
-      if (superescalar.status.cycle > 0 && backStep < 10 &&
-            (superescalar.status.cycle - backStep > 0)) {
-            backStep++;
-            store.dispatch(takeHistory(backStep));
-      }
-};
-
-function calculateSpeed() {
-      let speed = parseInt((document.getElementById('velocidad') as HTMLInputElement).value);
-
-      let calculatedSpeed = 2000;
-      calculatedSpeed = speed ?  calculatedSpeed / speed : 0;
-
-      return calculatedSpeed;
-};
-
-function executionLoop(speed) {
-      if (!stopCondition) {
-            setTimeout(() => {
-                  let result = superStep();
-                  if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
-                        executionLoop(speed);
-                  } else {
-                        if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
-                              alert('Ejecución detenida, breakpoint');
-                        } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
-                              finishedExecution = true;
-                              alert('Ejecución finalizada');
-                        }
-                  }
-            }, speed);
-      } else if (stopCondition === ExecutionStatus.STOP) {
-            let code = Object.assign(new Code(), superescalar.code);
-            superExe();
-            superescalar.code = code;
-            dispatchAllSuperescalarActions(-1);
+      if (!this.executing) {
+            this.executing = false;
+            this.dispatchAllSuperescalarActions(-1);
+            this.superescalar.status.cycle = 0;
+            let code = Object.assign(new Code(), this.superescalar.code);
+            this.superExe();
+            this.superescalar.code = code;
       }
 }
 
-export let saveSuperConfig = (superConfig: SuperescalarConfig) => {
-      const superConfigKeys = Object.keys(superConfig);
-      for (let i = 0; i < (superConfigKeys.length - 2); i++) {
+    stepBack = () => {
+        // There is no time travelling for batch mode and initial mode
+        // TODO HISTORY_SIZE
+        if (this.superescalar.status.cycle > 0 && this.backStep < 10 &&
+            (this.superescalar.status.cycle - this.backStep > 0)) {
+            this.backStep++;
+            store.dispatch(takeHistory(this.backStep));
+        }
+    }
+
+    calculateSpeed() {
+        let speed = parseInt((<HTMLInputElement>document.getElementById('velocidad')).value);
+
+        let calculatedSpeed = 2000;
+        calculatedSpeed = speed ?  calculatedSpeed / speed : 0;
+
+        return calculatedSpeed;
+    }
+
+    executionLoop = (speed) => {
+        if (!this.stopCondition) {
+                setTimeout(() => {
+                    let result = this.superStep();
+                    if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
+                            this.executionLoop(speed);
+                    } else {
+                            if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
+                                // TODO translate
+                                alert('Ejecución detenida, breakpoint');
+                            } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
+                                this.finishedExecution = true;
+                                alert('Ejecución finalizada');
+                            }
+                    }
+                }, speed);
+        } else if (this.stopCondition === ExecutionStatus.STOP) {
+                let code = Object.assign(new Code(), this.superescalar.code);
+                this.superExe();
+                this.superescalar.code = code;
+                this.dispatchAllSuperescalarActions(-1);
+        }
+    }
+
+    saveSuperConfig = (superConfig) => {
+        const superConfigKeys = Object.keys(superConfig);
+        for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
-                  superescalar.setFunctionalUnitNumber(i,
+                    this.superescalar.setFunctionalUnitNumber(i,
                         +superConfig[superConfigKeys[i]]);
             } else {
-                  superescalar.setFunctionalUnitLatency(i,
+                    this.superescalar.setFunctionalUnitLatency(i,
                         +superConfig[superConfigKeys[i]]);
             }
-      }
-      superescalar.memoryFailLatency = +superConfig.cacheFailLatency;
-      superescalar.issue = +superConfig.issueGrade;
-};
+        }
+        this.superescalar.memoryFailLatency = +superConfig.cacheFailLatency;
+        this.superescalar.issue = +superConfig.issueGrade;
+    }
 
-export let setOptions = (cacheFailPercentage: number) => {
-      superescalar.memory.failProbability = cacheFailPercentage;
-};
+    setOptions = (cacheFailPercentage: number) => {
+        this.superescalar.memory.failProbability = cacheFailPercentage;
+    }
 }
+
+export default new SuperescalarIntegration();

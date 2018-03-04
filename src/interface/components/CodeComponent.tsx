@@ -4,7 +4,7 @@ import { OpcodesNames } from '../../core/Common/Opcodes';
 import { Instruction } from '../../core/Common/Instruction';
 
 import { translate } from 'react-i18next';
-import { superescalar } from '../../main';
+import SuperescalarIntegration from '../../superescalar-integration';
 
 
 class CodeComponent extends React.Component<any, any> {
@@ -23,9 +23,9 @@ class CodeComponent extends React.Component<any, any> {
     }
 
     setBreakpoint(index) {
-        superescalar.code.instructions[index].breakPoint = !superescalar.code.instructions[index].breakPoint;
-        superescalar.code.instructions = [...superescalar.code.instructions];
-        this.props.toggleBreakPoint(superescalar.code.instructions);
+        SuperescalarIntegration.superescalar.code.instructions[index].breakPoint = !SuperescalarIntegration.superescalar.code.instructions[index].breakPoint;
+        SuperescalarIntegration.superescalar.code.instructions = [...SuperescalarIntegration.superescalar.code.instructions];
+        this.props.toggleBreakPoint(SuperescalarIntegration.superescalar.code.instructions);
     }
 
    render() {

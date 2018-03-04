@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import { toggleSuperConfigModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 
-import { saveSuperConfig } from '../../../main';
+import SuperescalarIntegration from '../../../superescalar-integration';
 
 import { connect } from 'react-redux';
 
@@ -44,7 +44,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
     }
 
     saveSuperConfig() {
-        saveSuperConfig(this.state.superConfig);
+        SuperescalarIntegration.saveSuperConfig(this.state.superConfig);
         this.close();
     }
 
