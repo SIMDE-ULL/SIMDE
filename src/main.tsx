@@ -31,19 +31,16 @@ import { I18nextProvider } from 'react-i18next'; // as we build ourself via webp
 
 import App from './interface/App';
 
-
 const styles = require('./main.scss');
 
-// Declare browser vars for Typescript
-declare var document;
-declare var window;
 
 // Global objects for binding React to the View
 export let superescalar = new Superescalar();
-let state: any = {};
-window.interval = null;
-window.state = state;
-window.backStep = 0;
+let interval = null;
+let backStep = 0;
+let stopCondition = ExecutionStatus.EXECUTABLE;
+let finishedExecution = false;
+let executing = false;
 
 /*
  * This call all the components to update the state
@@ -105,12 +102,12 @@ let superExe = () => {
 // https://github.com/reactjs/redux/issues/911#issuecomment-149361073
 
 let superStep = () => {
-      if (window.backStep > 0) {
-            window.backStep--;
-            dispatchAllSuperescalarActions(window.backStep);
+      if (backStep > 0) {
+            backStep--;
+            dispatchAllSuperescalarActions(backStep);
       } else {
-            if (window.finishedExecution) {
-                  window.finishedExecution = false;
+            if (finishedExecution) {
+                  finishedExecution = false;
                   dispatchAllSuperescalarActions(-1);
                   superescalar.status.cycle = 0;
             }
@@ -137,14 +134,14 @@ export let loadSuper = (code: Code) => {
 };
 
 let play = () => {
-      window.stopCondition = ExecutionStatus.EXECUTABLE;
-      window.backStep = 0;
-      window.executing = true;
+      stopCondition = ExecutionStatus.EXECUTABLE;
+      backStep = 0;
+      executing = true;
       let speed = calculateSpeed();
 
       // Check if the execution has finished 
-      if (window.finishedExecution) {
-            window.finishedExecution = false;
+      if (finishedExecution) {
+            finishedExecution = false;
             dispatchAllSuperescalarActions(-1);
             superescalar.status.cycle = 0;
       }
@@ -159,25 +156,25 @@ let play = () => {
             // tslint:disable-next-line:no-empty
             while (superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
             dispatchAllSuperescalarActions();
-            window.finishedExecution = true;
-            window.alert('Done');
+            finishedExecution = true;
+            alert('Done');
       }
 
 };
 
 let pause = () => {
-      window.stopCondition = ExecutionStatus.PAUSE;
-      window.executing = false;
+      stopCondition = ExecutionStatus.PAUSE;
+      executing = false;
 };
 
 let stop = () => {
 
       // In normal execution I have to avoid the asynchrnous way of
       // js entering in the interval, the only way I have is to check this
-      window.stopCondition = ExecutionStatus.STOP;
+      stopCondition = ExecutionStatus.STOP;
 
-      if (!window.executing) {
-            window.executing = false;
+      if (!executing) {
+            executing = false;
             dispatchAllSuperescalarActions(-1);
             superescalar.status.cycle = 0;
             let code = Object.assign(new Code(), superescalar.code);
@@ -188,27 +185,24 @@ let stop = () => {
 
 let stepBack = () => {
       // There is no time travelling for batch mode and initial mode
-      if (superescalar.status.cycle > 0 && window.backStep < 10 &&
-            (superescalar.status.cycle - window.backStep > 0)) {
-            window.backStep++;
-            dispatchAllSuperescalarActions(window.backStep);
+      if (superescalar.status.cycle > 0 && backStep < 10 &&
+            (superescalar.status.cycle - backStep > 0)) {
+            backStep++;
+            dispatchAllSuperescalarActions(backStep);
       }
 };
 
 function calculateSpeed() {
-      let speed = +document.getElementById('velocidad').value;
+      let speed = parseInt((document.getElementById('velocidad') as HTMLInputElement).value);
+
       let calculatedSpeed = 2000;
-      if (speed) {
-            calculatedSpeed /= speed;
-      } else {
-            calculatedSpeed = 0;
-      }
+      calculatedSpeed = speed ?  calculatedSpeed / speed : 0;
 
       return calculatedSpeed;
 };
 
 function executionLoop(speed) {
-      if (!window.stopCondition) {
+      if (!stopCondition) {
             setTimeout(() => {
                   let result = superStep();
                   if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
@@ -217,12 +211,12 @@ function executionLoop(speed) {
                         if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
                               alert('Ejecución detenida, breakpoint');
                         } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
-                              window.finishedExecution = true;
+                              finishedExecution = true;
                               alert('Ejecución finalizada');
                         }
                   }
             }, speed);
-      } else if (window.stopCondition === ExecutionStatus.STOP) {
+      } else if (stopCondition === ExecutionStatus.STOP) {
             let code = Object.assign(new Code(), superescalar.code);
             superExe();
             superescalar.code = code;
@@ -249,30 +243,9 @@ let setOptions = (cacheFailPercentage: number) => {
       superescalar.memory.failProbability = cacheFailPercentage;
 };
 
-let colorBlocks = (color) => {
-      state['Code']({ color: color });
-};
-
-/*
- * For exposing the functions to react and the ts code
- * we need to attach them to the Windows object, so
- * in runtime they will be visible from anywhere.
- */
-window.loadSuper = loadSuper;
-window.superStep = superStep;
-window.superExe = superExe;
-window.play = play;
-window.stop = stop;
-window.pause = pause;
-window.stepBack = stepBack;
-window.saveSuperConfig = saveSuperConfig;
-window.colorBlocks = colorBlocks;
-window.stopCondition = ExecutionStatus.EXECUTABLE;
-window.finishedExecution = false;
-window.executing = false;
 
 
-
+declare var: window;
 let store = createStore(
       enableBatching(SuperescalarReducers),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
