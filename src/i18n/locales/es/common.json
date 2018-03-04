@@ -104,5 +104,9 @@
     },
     "Memoria": "Memoria",
     "Registros generales": "Registros generales",
-    "Registros de punto flotante": "Registros de punto flotante"
+    "Registros de punto flotante": "Registros de punto flotante",
+    "execution": {
+        "stopped": "Ejecución detenida en breakpoint",
+        "finished": "Ejecución finalizada"
+    }
 }

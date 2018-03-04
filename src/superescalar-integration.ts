@@ -18,6 +18,7 @@ import {
 
 import { pushHistory, takeHistory } from './interface/actions/history';
 
+import { t } from 'i18next';
 import { Code } from './core/Common/Code';
 import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
 import { FunctionalUnitType } from './core/Common/FunctionalUnit';
@@ -145,7 +146,7 @@ export class SuperescalarIntegration {
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
             this.dispatchAllSuperescalarActions();
             this.finishedExecution = true;
-            alert('Done');
+            alert(t('execution.finished'));
         }
 
 }
@@ -197,11 +198,10 @@ export class SuperescalarIntegration {
                             this.executionLoop(speed);
                     } else {
                             if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
-                                // TODO translate
-                                alert('Ejecución detenida, breakpoint');
+                                alert(t('execution.stopped'));
                             } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
                                 this.finishedExecution = true;
-                                alert('Ejecución finalizada');
+                                alert(t('execution.finished'));
                             }
                     }
                 }, speed);

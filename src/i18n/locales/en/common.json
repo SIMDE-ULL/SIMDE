@@ -104,5 +104,9 @@
     },
     "Memoria": "Memory",
     "Registros generales": "General Registers",
-    "Registros de punto flotante": "Floating point Registers"
+    "Registros de punto flotante": "Floating point Registers",
+    "execution": {
+        "stopped": "Execution stopped at breakpoint",
+        "finished": "Execution finished"
+    }
 }
