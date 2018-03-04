@@ -16,7 +16,8 @@ import {
     batchActions
 } from './interface/actions';
 
-import { pushHistory, takeHistory } from './interface/actions/history';
+import { pushHistory, takeHistory, resetHistory } from './interface/actions/history';
+import { MAX_HISTORY_SIZE } from './interface/reducers';
 
 import { t } from 'i18next';
 import { Code } from './core/Common/Code';
@@ -97,8 +98,7 @@ export class SuperescalarIntegration {
       } else {
             if (this.finishedExecution) {
                   this.finishedExecution = false;
-                  this.dispatchAllSuperescalarActions(-1);
-                  this.superescalar.status.cycle = 0;
+                  this.resetMachine();
             }
             if (this.superescalar.status.cycle === 0) {
                   let code = Object.assign(new Code(), this.superescalar.code);
@@ -113,13 +113,11 @@ export class SuperescalarIntegration {
     }
 
     loadSuper = (code: Code) => {
-      this.superExe();
       this.superescalar.code = code;
-
+      this.resetMachine();
       // There is no need to update the code with the rest,
       // it should remain the same during all the program execution
-      store.dispatch(superescalarLoad(this.superescalar.code.instructions));
-      this.dispatchAllSuperescalarActions();
+      store.dispatch(superescalarLoad(code.instructions));
     }
 
     play = () => {
@@ -131,8 +129,7 @@ export class SuperescalarIntegration {
         // Check if the execution has finished 
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            this.dispatchAllSuperescalarActions(-1);
-            this.superescalar.status.cycle = 0;
+            this.resetMachine();
         }
         if (this.superescalar.status.cycle === 0) {
             let code = Object.assign(new Code(), this.superescalar.code);
@@ -163,18 +160,13 @@ export class SuperescalarIntegration {
 
       if (!this.executing) {
             this.executing = false;
-            this.dispatchAllSuperescalarActions(-1);
-            this.superescalar.status.cycle = 0;
-            let code = Object.assign(new Code(), this.superescalar.code);
-            this.superExe();
-            this.superescalar.code = code;
+            this.resetMachine();
       }
 }
 
     stepBack = () => {
         // There is no time travelling for batch mode and initial mode
-        // TODO HISTORY_SIZE
-        if (this.superescalar.status.cycle > 0 && this.backStep < 10 &&
+        if (this.superescalar.status.cycle > 0 && this.backStep < MAX_HISTORY_SIZE &&
             (this.superescalar.status.cycle - this.backStep > 0)) {
             this.backStep++;
             store.dispatch(takeHistory(this.backStep));
@@ -193,28 +185,26 @@ export class SuperescalarIntegration {
     executionLoop = (speed) => {
         if (!this.stopCondition) {
                 setTimeout(() => {
-                    let result = this.superStep();
-                    if (!(result === SuperescalarStatus.SUPER_BREAKPOINT || result === SuperescalarStatus.SUPER_ENDEXE)) {
+                    let machineStatus = this.superStep();
+                    if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
                             this.executionLoop(speed);
                     } else {
-                            if (result === SuperescalarStatus.SUPER_BREAKPOINT) {
+                            if (machineStatus === SuperescalarStatus.SUPER_BREAKPOINT) {
                                 alert(t('execution.stopped'));
-                            } else if (result === SuperescalarStatus.SUPER_ENDEXE) {
+                            } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
                                 this.finishedExecution = true;
                                 alert(t('execution.finished'));
                             }
                     }
                 }, speed);
         } else if (this.stopCondition === ExecutionStatus.STOP) {
-                let code = Object.assign(new Code(), this.superescalar.code);
-                this.superExe();
-                this.superescalar.code = code;
-                this.dispatchAllSuperescalarActions(-1);
+            this.resetMachine();
         }
     }
 
     saveSuperConfig = (superConfig) => {
         const superConfigKeys = Object.keys(superConfig);
+
         for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
                     this.superescalar.setFunctionalUnitNumber(i,
@@ -230,6 +220,14 @@ export class SuperescalarIntegration {
 
     setOptions = (cacheFailPercentage: number) => {
         this.superescalar.memory.failProbability = cacheFailPercentage;
+    }
+
+    private resetMachine() {
+        let code = Object.assign(new Code(), this.superescalar.code);
+        this.superExe();
+        this.superescalar.code = code;
+        this.dispatchAllSuperescalarActions();
+        store.dispatch(resetHistory());
     }
 }
 

@@ -35,7 +35,7 @@ class AccessBarComponent extends React.Component<any, any> {
     }
 
     stop() {
-        stop();
+        SuperescalarIntegration.stop();
     }
 
     render() {
