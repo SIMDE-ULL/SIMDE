@@ -226,7 +226,7 @@ function executionLoop(speed) {
       }
 }
 
-let saveSuperConfig = (superConfig) => {
+export let saveSuperConfig = (superConfig) => {
       const superConfigKeys = Object.keys(superConfig);
       for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
@@ -241,7 +241,7 @@ let saveSuperConfig = (superConfig) => {
       superescalar.issue = +superConfig.issueGrade;
 };
 
-let setOptions = (cacheFailPercentage: number) => {
+export let setOptions = (cacheFailPercentage: number) => {
       superescalar.memory.failProbability = cacheFailPercentage;
 };
 

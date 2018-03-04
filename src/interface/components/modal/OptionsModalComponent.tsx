@@ -5,6 +5,7 @@ import { t } from 'i18next';
 import { bindActionCreators } from 'redux';
 import { toggleOptionsModal } from '../../actions/modals';
 import { connect } from 'react-redux';
+import { setOptions } from '../../../main';
 
 class OptionsModalComponent extends React.Component<any, any> {
 
@@ -30,7 +31,7 @@ class OptionsModalComponent extends React.Component<any, any> {
     }
 
     setOptions() {
-        // setOptions(this.state.cacheFailPercentage);
+        setOptions(this.state.cacheFailPercentage);
         this.close();
     }
 
