@@ -27,6 +27,7 @@ import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 export class SuperescalarIntegration {
     // Global objects for binding React to the View
     superescalar = new Superescalar();
+    codeLoaded = false;
     interval = null;
     backStep = 0;
     stopCondition = ExecutionStatus.EXECUTABLE;
@@ -92,10 +93,15 @@ export class SuperescalarIntegration {
     }
 
     superStep = () => {
-      if (this.backStep > 0) {
+
+        if (!this.superescalar.code) {
+            return;
+        }
+
+        if (this.backStep > 0) {
             this.backStep--;
             store.dispatch(takeHistory(this.backStep));
-      } else {
+        } else {
             if (this.finishedExecution) {
                   this.finishedExecution = false;
                   this.resetMachine();
@@ -105,11 +111,11 @@ export class SuperescalarIntegration {
                   this.superExe();
                   this.superescalar.code = code;
             }
-            let resul = this.superescalar.tic();
+            let machineStatus = this.superescalar.tic();
             this.dispatchAllSuperescalarActions();
 
-            return resul;
-      }
+            return machineStatus;
+        }
     }
 
     loadSuper = (code: Code) => {
@@ -121,6 +127,11 @@ export class SuperescalarIntegration {
     }
 
     play = () => {
+
+        if (!this.superescalar.code) {
+            return;
+        }
+
         this.stopCondition = ExecutionStatus.EXECUTABLE;
         this.backStep = 0;
         this.executing = true;
@@ -131,11 +142,13 @@ export class SuperescalarIntegration {
             this.finishedExecution = false;
             this.resetMachine();
         }
+
         if (this.superescalar.status.cycle === 0) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
         }
+
         if (speed) {
             this.executionLoop(speed);
         } else {
@@ -145,8 +158,7 @@ export class SuperescalarIntegration {
             this.finishedExecution = true;
             alert(t('execution.finished'));
         }
-
-}
+    }
 
     pause = () => {
         this.stopCondition = ExecutionStatus.PAUSE;
@@ -154,6 +166,10 @@ export class SuperescalarIntegration {
     }
 
     stop = () => {
+        if (!this.superescalar.code) {
+            return;
+        }
+        
       // In normal execution I have to avoid the asynchrnous way of
       // js entering in the interval, the only way I have is to using a semaphore
       this.stopCondition = ExecutionStatus.STOP;
