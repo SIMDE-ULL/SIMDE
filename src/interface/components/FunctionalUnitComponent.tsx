@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { BaseComponent } from './BaseComponent';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 

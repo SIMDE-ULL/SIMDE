@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { BaseRegisterComponent } from './BaseRegisterComponent';
 import IntervalModalComponent from './modal/IntervalModalComponent';
 
 import { translate } from 'react-i18next';
