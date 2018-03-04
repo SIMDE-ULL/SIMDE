@@ -245,7 +245,7 @@ let setOptions = (cacheFailPercentage: number) => {
 
 
 
-declare var: window;
+declare var window;
 let store = createStore(
       enableBatching(SuperescalarReducers),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
