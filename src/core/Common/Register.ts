@@ -1,6 +1,8 @@
+import { MACHINE_REGISTER_SIZE } from '../Constants';
+
 export class Register {
 
-   private static REGISTRY_NUMBER: number = 64;
+   private static REGISTRY_NUMBER: number = MACHINE_REGISTER_SIZE;
 
    private _content: number[];
    private _bufferIn: number[];

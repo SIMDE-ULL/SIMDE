@@ -7,8 +7,6 @@ import { bindActionCreators } from 'redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { viewBasicBlocks } from '../../actions';
 
-declare var window: any;
-
 class FileBarComponent extends React.Component<any, any> {
     private color: boolean;
 

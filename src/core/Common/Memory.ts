@@ -1,4 +1,5 @@
 import { randomNumber } from '../Utils/Random';
+import { MEMORY_SIZE } from '../Constants';
 
 export interface Datum {
     datum: number;
@@ -7,7 +8,7 @@ export interface Datum {
 
 export class Memory {
 
-    private static MEMORY_NUMBER: number = 1024;
+    private static MEMORY_NUMBER: number = MEMORY_SIZE;
 
     private _data: number[];
     private _fail: boolean[];

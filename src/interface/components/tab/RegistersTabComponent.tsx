@@ -10,6 +10,7 @@ import {
     addMemoryInterval,
     removeMemoryInterval
 } from '../../actions/intervals-actions';
+import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../../../core/Constants';
 
 export class RegisterTabComponent extends React.Component<any, any> {
 
@@ -27,7 +28,7 @@ export class RegisterTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.memory.visibleRangeValues} 
                         addInterval={this.props.actions.addMemoryInterval}
                         removeInterval={this.props.actions.removeMemoryInterval}
-                        max={1024}
+                        max={MEMORY_SIZE}
                     />
                 </div>
                 <div className='smd-register-tab_register'>
@@ -37,7 +38,7 @@ export class RegisterTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.generalRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addGeneralRegistersInterval}
                         removeInterval={this.props.actions.removeGeneralRegistersInterval}
-                        max={64}
+                        max={MACHINE_REGISTER_SIZE}
                     />
                </div>
                <div className='smd-register-tab_register'>
@@ -47,7 +48,7 @@ export class RegisterTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.floatingRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addFloatingRegistersInterval}
                         removeInterval={this.props.actions.removeFloatingRegistersInterval}
-                        max={64}
+                        max={MACHINE_REGISTER_SIZE}
                     />
                 </div>
             </div>

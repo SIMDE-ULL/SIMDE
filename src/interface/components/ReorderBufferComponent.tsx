@@ -3,8 +3,6 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-declare var window: any;
-
 class ReorderBufferComponent extends React.Component<any, any> {
 
    constructor(props: any) {

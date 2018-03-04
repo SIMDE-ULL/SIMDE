@@ -21,8 +21,8 @@ import { PUSH_HISTORY, TAKE_HISTORY } from '../actions/history';
     // STEP_BACK
 
 const MAX_HISTORY_SIZE = 10;
-const MACHINE_REGISTER_SIZE = 64;
-const MACHINE_MEMORY_SIZE = 1024;
+import { MACHINE_REGISTER_SIZE, MEMORY_SIZE } from '../../core/Constants';
+
 
 export const initialState = {
     prefetchUnit: [],
@@ -62,7 +62,7 @@ export const initialState = {
     },
     memory: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_MEMORY_SIZE)
+        visibleRangeValues: generateRangeArray(MEMORY_SIZE)
     },
     cycle: 0,
     code: [],

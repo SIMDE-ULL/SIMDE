@@ -1,7 +1,6 @@
 import * as React from "react";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
-
-declare var window: any;
+import { MACHINE_REGISTER_SIZE } from '../../core/Constants';
 
 export class ROBMapperComponent extends React.Component<any, any> {
   constructor(props: any) {
@@ -43,7 +42,7 @@ export class ROBMapperComponent extends React.Component<any, any> {
           <IntervalModalComponent
             title={this.props.title}
             onAccept={this.props.addInterval}
-            max={64}
+            max={MACHINE_REGISTER_SIZE}
             open={this.state.isAddModalOpen}
             close={this.closeAddInterval}
           />
@@ -52,7 +51,7 @@ export class ROBMapperComponent extends React.Component<any, any> {
           <IntervalModalComponent
             title={this.props.title}
             onAccept={this.props.removeInterval}
-            max={64}
+            max={MACHINE_REGISTER_SIZE}
             open={this.state.isRemoveModalOpen}
             close={this.closeRemoveInterval}
           />

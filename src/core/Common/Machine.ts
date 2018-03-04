@@ -2,6 +2,7 @@ import { Register } from './Register';
 import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType } from './FunctionalUnit';
 import { Memory } from './Memory';
 import { MachineStatus } from './MachineStatus';
+import { MACHINE_REGISTER_SIZE } from '../constants';
 
 export class Machine {
 
@@ -18,8 +19,8 @@ export class Machine {
    protected static MEMORYFAILLATENCYMAX = 100;
 
    protected static WORD_SIZE: number = 32;
-   protected static NGP: number = 64;
-   protected static NFP: number = 64;
+   protected static NGP: number = MACHINE_REGISTER_SIZE;
+   protected static NFP: number = MACHINE_REGISTER_SIZE;
 
    protected _functionalUnitNumbers: number[];
    protected _functionalUnitLatencies: number[];

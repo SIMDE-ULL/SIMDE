@@ -2,13 +2,7 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-declare var window: any;
-
 export class JumpPredictionComponent extends React.Component<any, any> {
-
-   history: any[];
-   historyLength: 10;
-
    constructor(public props: any) {
       super(props);
    }
