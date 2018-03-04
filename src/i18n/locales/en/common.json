@@ -43,7 +43,12 @@
         "load": "Load"
     },
     "intervalModal": {
-        "intervalMessage": "Select the elements that you would like to show. You can use numbers and intervals separated by commas. Ex: 1,4,6-8..."
+        "intervalMessage": "Select the elements that you would like to show. You can use numbers and intervals separated by commas. Ex: 1,4,6-8...",
+        "errors": {
+            "noEmptyInput": "Form field required",
+            "inputOutOfRange": "There is a value exceeding the maximum visible range",
+            "noInputNumber": "Only number fields are accepted"
+        }
     },
     "superescalarModal": {
         "name": "Superescalar Configuration",
