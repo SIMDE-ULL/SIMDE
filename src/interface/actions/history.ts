@@ -1,17 +1,24 @@
-export const STEP_FORWARD = 'STEP_FORWARD';
-export const STEP_BACK = 'STEP_BACK';
 export const RESET_HISTORY = 'RESET_HISTORY';
+export const PUSH_HISTORY = 'PUSH_HISTORY';
+export const TAKE_HISTORY = 'TAKE_HISTORY';
 
-export function stepForward(data) {
+export function takeHistory(index) {
     return {
-      type: STEP_FORWARD,
-      value: 1
-    }
+        type: TAKE_HISTORY,
+        value: index
+    };
 }
 
-export function stepBack(data) {
+export function pushHistory() {
     return {
-      type: STEP_BACK,
-      value: -1
-    }
+        type: PUSH_HISTORY,
+        value: true
+    };
+}
+
+export function resetHistory() {
+    return {
+        type: RESET_HISTORY,
+        value: true
+    };
 }

@@ -30,6 +30,7 @@ import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
 
 import App from './interface/App';
+import { pushHistory, takeHistory } from './interface/actions/history';
 
 const styles = require('./main.scss');
 
@@ -90,7 +91,8 @@ let dispatchAllSuperescalarActions = (step?: number) => {
                   nextReorderBufferCycle(superescalar.reorderBuffer.elements),
                   nextRegistersCycle([superescalar.gpr.content, superescalar.fpr.content]),
                   nextMemoryCycle(superescalar.memory.data),
-                  nextCycle(superescalar.status.cycle)
+                  nextCycle(superescalar.status.cycle),
+                  pushHistory()
             )
       );
 };
@@ -104,7 +106,7 @@ export let superExe = () => {
 export let superStep = () => {
       if (backStep > 0) {
             backStep--;
-            dispatchAllSuperescalarActions(backStep);
+            store.dispatch(takeHistory(backStep));
       } else {
             if (finishedExecution) {
                   finishedExecution = false;
@@ -188,7 +190,7 @@ export let stepBack = () => {
       if (superescalar.status.cycle > 0 && backStep < 10 &&
             (superescalar.status.cycle - backStep > 0)) {
             backStep++;
-            dispatchAllSuperescalarActions(backStep);
+            store.dispatch(takeHistory(backStep));
       }
 };
 

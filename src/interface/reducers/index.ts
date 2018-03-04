@@ -15,6 +15,7 @@ import {
 import { TOGGLE_LOAD_MODAL, TOGGLE_AUTHOR_MODAL, TOGGLE_OPTIONS_MODAL, TOGGLE_SUPER_CONFIG_MODAL } from '../actions/modals';
 import { ADD_ROB_FPR_INTERVAL, ADD_ROB_GPR_INTERVAL, REMOVE_ROB_FPR_INTERVAL, REMOVE_ROB_GPR_INTERVAL, ADD_MEMORY_INTERVAL, REMOVE_MEMORY_INTERVAL, ADD_GENERAL_REGISTERS_INTERVAL, REMOVE_GENERAL_REGISTERS_INTERVAL, ADD_FLOATING_REGISTERS_INTERVAL, REMOVE_FLOATING_REGISTERS_INTERVAL } from '../actions/intervals-actions';
 import { generateRangeArray } from '../utils/interval';
+import { PUSH_HISTORY, TAKE_HISTORY } from '../actions/history';
 
     // STEP_FORWARD,
     // STEP_BACK
@@ -69,7 +70,7 @@ export const initialState = {
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,
-    isSuperConfigModalOpen: false
+    isSuperConfigModalOpen: false,
 }
 
 export function SuperescalarReducers(state = initialState, action) {
@@ -246,6 +247,40 @@ export function SuperescalarReducers(state = initialState, action) {
                     ...state.floatingRegisters,
                     visibleRangeValues: state.floatingRegisters.visibleRangeValues.filter(x => !action.value.has(x))
                 }
+            }
+        case PUSH_HISTORY: 
+            return state = {
+                ...state,
+                history: [...state.history, {
+                    prefetchUnit: state.prefetchUnit,
+                    decoder: state.decoder,
+                    jumpPrediction: state.jumpPrediction,
+                    functionalUnitIntAdd: state.functionalUnitIntAdd,
+                    functionalUnitIntSub: state.functionalUnitIntSub,
+                    functionalUnitFloAdd: state.functionalUnitFloAdd,
+                    functionalUnitFloSub: state.functionalUnitFloSub,
+                    functionalUnitMemory: state.functionalUnitMemory,
+                    functionalUnitJump: state.functionalUnitJump,
+                    functionalUnitAluMem: state.functionalUnitAluMem,
+                    reserveStationIntAdd: state.reserveStationIntAdd,
+                    reserveStationIntSub: state.reserveStationIntSub,
+                    reserveStationFloAdd: state.reserveStationFloAdd,
+                    reserveStationFloSub: state.reserveStationFloSub,
+                    reserveStationMemory: state.reserveStationMemory,
+                    reserveStationJump: state.reserveStationJump,
+                    ROBGpr: state.ROBGpr,
+                    ROBFpr: state.ROBFpr,
+                    reorderBuffer: state.reorderBuffer,
+                    generalRegisters: state.generalRegisters,
+                    floatingRegisters: state.floatingRegisters,
+                    memory: state.memory,
+                    cycle: state.cycle,
+                }].slice(-MAX_HISTORY_SIZE)
+            }
+        case TAKE_HISTORY:
+            return state = {
+                ...state,
+                ...state.history[state.history.length - 1 - action.value]
             }
         default:
             return state
