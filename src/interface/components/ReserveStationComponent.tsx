@@ -28,7 +28,7 @@ class ReserveStationComponent extends React.Component<any, any> {
                                           {
                                                 this.props.data
                                                  && this.props.data.map((row, i) => 
-                                                 <div className='smd-table_row' key={`${this.props.title + i}`}>
+                                                 <div className='smd-table_row' key={`${this.props.title + i}`} style={{background: row.instruction.color}}>
                                                       <div className='smd-table_cell'>{row.instruction.id}</div>
                                                       <div className='smd-table_cell'>{row.Qj}</div>
                                                       <div className='smd-table_cell'>{row.Vj}</div>

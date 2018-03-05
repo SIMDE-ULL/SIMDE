@@ -13,7 +13,7 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
     let toReturn = new Array();
     for (let i = 0; i < data.length; i++) {
         let aux = {
-            instruction: { id: '', value: '' },
+            instruction: { id: '', value: '', color: '' },
             destinyRegister: '',
             value: '',
             address: '',
@@ -21,7 +21,7 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
         };
         if (data[i] != null) {
             aux = {
-                instruction: { id: '', value: '' },
+                instruction: { id: '', value: '', color: ''},
                 destinyRegister: '' + data[i].destinyRegister,
                 value: '' + data[i].value,
                 address: '' + data[i].address,
@@ -30,6 +30,7 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
             if (data[i].instruction != null) {
                 aux.instruction.id = '' + data[i].instruction.id;
                 aux.instruction.value = data[i].instruction.toString();
+                aux.instruction.color = data[i].instruction.color;
             }
         }
         toReturn.push(aux);

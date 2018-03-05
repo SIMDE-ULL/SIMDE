@@ -23,7 +23,7 @@ export class FunctionalUnitComponent extends React.Component<any,any> {
                                                 this.props.content && this.props.content.map((element, i) =>
                                                       <div className='smd-table_row' key={this.props.title + 'FU' + i}>
                                                             {element.map((content, j) =>
-                                                                  <div className='smd-table_cell' key={this.props.title + 'FU' + i + j}>{content}</div>
+                                                                  <div className='smd-table_cell' key={this.props.title + 'FU' + i + j} style={{background: content.color}}>{content.id}</div>
                                                             )}
                                                       </div>
                                                 )

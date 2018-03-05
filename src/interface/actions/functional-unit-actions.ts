@@ -17,9 +17,9 @@ function mapFunctionalUnitData(data): any {
                 let aux = [];
                 for (let j = 0; j < data.length; j++) {
                       if (((data[j]).flow[i]) != null) {
-                            aux.push((data[j]).flow[i].id);
+                            aux.push({id: (data[j]).flow[i].id, color: (data[j]).flow[i].color});
                       } else {
-                            aux.push(' ');
+                            aux.push({id:' ', color: ''});
                       }
                 }
                 content.push(aux);
