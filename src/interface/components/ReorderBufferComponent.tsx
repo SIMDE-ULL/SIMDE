@@ -26,7 +26,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     <div className='smd-table-body'>
                                           {
                                                 this.props.content && this.props.content.map((row, i) => ({ row, i })).filter(e => e.row.instruction.id != '').map((e) =>
-                                                <div className='smd-table_row' key={'ReorderBuffer' + e.i}>
+                                                <div className='smd-table_row' title={e.row.instruction.value} key={'ReorderBuffer' + e.i}>
                                                       <div className='smd-table_cell'>{e.i}</div>
                                                       <div className='smd-table_cell'>{e.row.instruction.id}</div>
                                                       <div className='smd-table_cell'>{e.row.destinyRegister}</div>

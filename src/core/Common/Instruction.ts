@@ -1,3 +1,5 @@
+import { OpcodesNames } from './Opcodes';
+
 export class Instruction {
    private _id: number;
    private _basicBlock: number;
@@ -20,21 +22,22 @@ export class Instruction {
       this._basicBlock = other.basicBlock;
       this._opcode = other.opcode;
       this._operands = other.operands.slice();
+      this._operandsString = other.operandsString.slice();
       this._breakPoint = other.breakPoint;
       this._color = other.color;
    }
 
    toString(): string {
       let aux: string = '';
-      if (this._operands[1]) {
-         aux = ' ' + this._operands[1];
+      if (this._operandsString[1]) {
+         aux = ' ' + this._operandsString[1];
       }
 
-      if (this._operands[2]) {
-         aux = ' ' + this._operands[2];
+      if (this._operandsString[2]) {
+         aux = ' ' + this._operandsString[2];
       }
-
-      return '' + this._opcode + ' ' + this._operands[0] + aux;
+      debugger;
+      return '' + OpcodesNames[this._opcode] + ' ' + this._operandsString[0] + aux;
    }
 
    setOperand(index: number, value: number, valueString: string) {
