@@ -181,7 +181,6 @@ export class SuperescalarIntegration {
     }
 
     colorCell = (instructionId, color) => {
-        debugger;
         this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id == instructionId)[0].instruction.color = color.hex;
         store.dispatch(
             batchActions(
