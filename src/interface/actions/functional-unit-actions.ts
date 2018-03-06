@@ -4,26 +4,34 @@ export function nextFunctionalUnitCycle(data) {
     return {
         type: FUNCTIONAL_UNIT_CYCLE,
         value: data.map(element => mapFunctionalUnitData(element))
-    }
+    };
 }
 function mapFunctionalUnitData(data): any {
     let toReturnObject = {
-          content: [],
-          header: []
+        content: [],
+        header: []
     };
     let content = new Array();
     if (data != null && data[0] != null) {
-          for (let i = 0; i < data[0].flow.length; i++) {
-                let aux = [];
-                for (let j = 0; j < data.length; j++) {
-                      if (((data[j]).flow[i]) != null) {
-                            aux.push({id: (data[j]).flow[i].id, color: (data[j]).flow[i].color});
-                      } else {
-                            aux.push({id:' ', color: ''});
-                      }
+        for (let i = 0; i < data[0].flow.length; i++) {
+            let aux = [];
+            for (let j = 0; j < data.length; j++) {
+                if (data[j].flow[i] != null) {
+                    aux.push({
+                        id: data[j].flow[i].id,
+                        value: data[j].flow[i].toString(),
+                        color: data[j].flow[i].color
+                    });
+                } else {
+                    aux.push({
+                        id: ' ',
+                        value: '',
+                        color: ''
+                    });
                 }
-                content.push(aux);
-          }
+            }
+            content.push(aux);
+        }
     }
     toReturnObject.content = content;
     toReturnObject.header = generateFunctionalUnitHeader(data);
@@ -33,9 +41,9 @@ function mapFunctionalUnitData(data): any {
 function generateFunctionalUnitHeader(data): string[] {
     let toReturn = [];
     if (data != null) {
-          for (let i = 0; i < data.length; i++) {
-                toReturn.push(`#${i}`);
-          }
+        for (let i = 0; i < data.length; i++) {
+            toReturn.push(`#${i}`);
+        }
     }
     return toReturn;
 }

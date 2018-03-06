@@ -30,14 +30,12 @@ export class Instruction {
    toString(): string {
       let aux: string = '';
       if (this._operandsString[1]) {
-         aux = ' ' + this._operandsString[1];
+         aux += ' ' + this._operandsString[1];
       }
-
       if (this._operandsString[2]) {
-         aux = ' ' + this._operandsString[2];
+         aux += ' ' + this._operandsString[2];
       }
-      debugger;
-      return '' + OpcodesNames[this._opcode] + ' ' + this._operandsString[0] + aux;
+      return `${OpcodesNames[this._opcode]} ${this._operandsString[0]} ${aux}`;
    }
 
    setOperand(index: number, value: number, valueString: string) {

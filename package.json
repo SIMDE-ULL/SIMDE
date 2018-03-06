@@ -64,6 +64,7 @@
     "node-sass": "4.6.0",
     "react": "16.1.0",
     "react-bootstrap": "0.31.5",
+    "react-color": "^2.14.0",
     "react-dom": "16.1.0",
     "react-file-reader-input": "1.1.4",
     "react-i18next": "6.1.0",
