@@ -1,4 +1,6 @@
 export const NEXT_REORDER_BUFFER_CYCLE = 'NEXT_REORDER_BUFFER_CYCLE';
+export const COLOR_CELL = 'COLOR_CELL';
+
 import { stageToString } from '../../core/Superescalar/SuperescalarEnums';
 import { ReorderBufferEntry } from '../../core/Superescalar/ReorderBufferEntry';
 
@@ -36,4 +38,11 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
         toReturn.push(aux);
     }
     return toReturn;
+}
+
+export function colorCell(instructionid, color) {
+    return {
+        type: COLOR_CELL,
+        value: [instructionid, color]
+    };  
 }

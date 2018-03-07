@@ -13,7 +13,8 @@ import {
     nextReorderBufferMapperCycle,
     nextCycle,
     superescalarLoad,
-    batchActions
+    batchActions,
+    colorCell
 } from './interface/actions';
 
 import { pushHistory, takeHistory, resetHistory } from './interface/actions/history';
@@ -184,39 +185,42 @@ export class SuperescalarIntegration {
         this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id == instructionId)[0].instruction.color = color.hex;
         store.dispatch(
             batchActions(
-        nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
-        nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
-        nextReserveStationCycle(
-            [{
-                data: this.superescalar.reserveStationEntry[0],
-                size: this.superescalar.getReserveStationSize(0)
-            },
+                nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
+                nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
+                nextReserveStationCycle(
+                    [{
+                        data: this.superescalar.reserveStationEntry[0],
+                        size: this.superescalar.getReserveStationSize(0)
+                    },
 
-            {
-                data: this.superescalar.reserveStationEntry[1],
-                size: this.superescalar.getReserveStationSize(1)
-            },
+                    {
+                        data: this.superescalar.reserveStationEntry[1],
+                        size: this.superescalar.getReserveStationSize(1)
+                    },
 
-            {
-                data: this.superescalar.reserveStationEntry[2],
-                size: this.superescalar.getReserveStationSize(2)
-            },
+                    {
+                        data: this.superescalar.reserveStationEntry[2],
+                        size: this.superescalar.getReserveStationSize(2)
+                    },
 
-            {
-                data: this.superescalar.reserveStationEntry[3],
-                size: this.superescalar.getReserveStationSize(3)
-            },
+                    {
+                        data: this.superescalar.reserveStationEntry[3],
+                        size: this.superescalar.getReserveStationSize(3)
+                    },
 
-            {
-                data: this.superescalar.reserveStationEntry[4],
-                size: this.superescalar.getReserveStationSize(4)
-            },
+                    {
+                        data: this.superescalar.reserveStationEntry[4],
+                        size: this.superescalar.getReserveStationSize(4)
+                    },
 
-            {
-                data: this.superescalar.reserveStationEntry[5],
-                size: this.superescalar.getReserveStationSize(5)
-            }
-    ])));
+                    {
+                        data: this.superescalar.reserveStationEntry[5],
+                        size: this.superescalar.getReserveStationSize(5)
+                    }]
+                ),
+                colorCell(instructionId, color.hex)
+            )
+        );
     }
 
     stepBack = () => {
