@@ -36,6 +36,7 @@ import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
 
 import { MACHINE_REGISTER_SIZE, MEMORY_SIZE } from '../../core/Constants';
 import { colorHistoryInstruction } from './color';
+import { removeInterval, addInterval } from './interval';
 
 export const MAX_HISTORY_SIZE = 10;
 
@@ -255,61 +256,4 @@ export function SuperescalarReducers(state = initialState, action) {
         default:
             return state;
     }
-}
-
-function addInterval(state, field, interval) {
-    
-    const newVisibleRangeValues = Array.from(
-        new Set([...state[field].visibleRangeValues, ...interval])
-    ).sort((a, b) => +a - +b);
-    
-    let newState = {
-        ...state,
-        history : state.history.map(historyEntry => {
-            const newHistoryEntry = {
-                ...historyEntry
-            };
-            newHistoryEntry[field] = {
-                ...historyEntry[field],
-                visibleRangeValues: newVisibleRangeValues
-            };
-            return newHistoryEntry;
-        })
-    };
-    newState[field] = {
-        ...state[field],
-        visibleRangeValues: Array.from(
-            new Set([...state[field].visibleRangeValues, ...interval])
-        ).sort((a, b) => +a - +b)
-    };
-
-    return newState;
-}
-
-function removeInterval(state, field, interval) {
-    const newVisibleRangeValues = state[field].visibleRangeValues.filter(
-        x => !interval.has(x)
-    );
-    let newState = {
-        ...state,
-        history : state.history.map(historyEntry => {
-            const newHistoryEntry = {
-                ...historyEntry
-            };
-            newHistoryEntry[field] = {
-                ...historyEntry[field],
-                visibleRangeValues: newVisibleRangeValues
-            };
-            return newHistoryEntry;
-        })
-    };
-
-    newState[field] = {
-        ...state[field],
-        visibleRangeValues: state[field].visibleRangeValues.filter(
-            x => !interval.has(x)
-        )
-    };
-
-    return (state = newState);
 }
