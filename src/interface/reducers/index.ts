@@ -183,13 +183,13 @@ export function SuperescalarReducers(state = initialState, action) {
                 colorBasicBlocks: action.value
             });
         case ADD_ROB_FPR_INTERVAL:
-            return addInterval(state, 'robFpr', action.value);
+            return addInterval(state, 'ROBFpr', action.value);
         case ADD_ROB_GPR_INTERVAL:
-            return addInterval(state, 'robGpr', action.value);
+            return addInterval(state, 'ROBGpr', action.value);
         case REMOVE_ROB_FPR_INTERVAL:
-            return addInterval(state, 'robFpr', action.value);
+            return removeInterval(state, 'ROBFpr', action.value);
         case REMOVE_ROB_GPR_INTERVAL:
-            return addInterval(state, 'robGpr', action.value);
+            return removeInterval(state, 'ROBGpr', action.value);
         case ADD_MEMORY_INTERVAL:
             return addInterval(state, 'memory', action.value);
         case REMOVE_MEMORY_INTERVAL:
@@ -235,8 +235,12 @@ export function SuperescalarReducers(state = initialState, action) {
                 ].slice(-MAX_HISTORY_SIZE)
             });
         case COLOR_CELL:
-            let newState = {...state}
-            newState.history = colorHistoryInstruction(newState.history, action.value[0], action.value[1])
+            let newState = { ...state };
+            newState.history = colorHistoryInstruction(
+                newState.history,
+                action.value[0],
+                action.value[1]
+            );
             return newState;
         case TAKE_HISTORY:
             return (state = {
@@ -254,20 +258,14 @@ export function SuperescalarReducers(state = initialState, action) {
 }
 
 function addInterval(state, field, interval) {
-    let newState = {
-        ...state
-    };
-
+    
     const newVisibleRangeValues = Array.from(
         new Set([...state[field].visibleRangeValues, ...interval])
     ).sort((a, b) => +a - +b);
-
-    newState[field] = {
-        ...state[field],
-        visibleRangeValues: Array.from(
-            new Set([...state[field].visibleRangeValues, ...interval])
-        ).sort((a, b) => +a - +b),
-        history: state.history.map(historyEntry => {
+    
+    let newState = {
+        ...state,
+        history : state.history.map(historyEntry => {
             const newHistoryEntry = {
                 ...historyEntry
             };
@@ -277,25 +275,24 @@ function addInterval(state, field, interval) {
             };
             return newHistoryEntry;
         })
+    };
+    newState[field] = {
+        ...state[field],
+        visibleRangeValues: Array.from(
+            new Set([...state[field].visibleRangeValues, ...interval])
+        ).sort((a, b) => +a - +b)
     };
 
     return newState;
 }
 
 function removeInterval(state, field, interval) {
-    let newState = {
-        ...state
-    };
     const newVisibleRangeValues = state[field].visibleRangeValues.filter(
         x => !interval.has(x)
     );
-
-    newState[field] = {
-        ...state[field],
-        visibleRangeValues: state[field].visibleRangeValues.filter(
-            x => !interval.has(x)
-        ),
-        history: state.history.map(historyEntry => {
+    let newState = {
+        ...state,
+        history : state.history.map(historyEntry => {
             const newHistoryEntry = {
                 ...historyEntry
             };
@@ -307,5 +304,12 @@ function removeInterval(state, field, interval) {
         })
     };
 
-    return (state = { ...newState });
+    newState[field] = {
+        ...state[field],
+        visibleRangeValues: state[field].visibleRangeValues.filter(
+            x => !interval.has(x)
+        )
+    };
+
+    return (state = newState);
 }
