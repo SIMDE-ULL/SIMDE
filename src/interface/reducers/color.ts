@@ -79,7 +79,6 @@ export function colorHistoryInstruction(history, instructiondId, color) {
 }
 
 function colorReserveEntry(reserveEntry, instructiondId, color) {
-    debugger;
     return reserveEntry.map(e => {
         if (e.instruction.id == instructiondId) {
             e.instruction.color = color;

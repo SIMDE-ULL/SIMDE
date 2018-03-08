@@ -25,6 +25,7 @@ import { Code } from './core/Common/Code';
 import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
 import { FunctionalUnitType } from './core/Common/FunctionalUnit';
 import { ReserveStationEntry } from './core/Superescalar/ReserveStationEntry';
+import { displayBatchResults } from './interface/actions/modals';
 
 export class SuperescalarIntegration {
     // Global objects for binding React to the View
@@ -35,6 +36,9 @@ export class SuperescalarIntegration {
     stopCondition = ExecutionStatus.EXECUTABLE;
     finishedExecution = false;
     executing = false;
+    replications = 0;
+    cacheFailPercentage = 0;
+    cacheFailLatency = 0;
 
     /*
     * This call all the components to update the state
@@ -139,6 +143,9 @@ export class SuperescalarIntegration {
         this.executing = true;
         let speed = this.calculateSpeed();
 
+        if (this.replications) {
+            return this.makeBatchExecution();
+        }
         // Check if the execution has finished 
         if (this.finishedExecution) {
             this.finishedExecution = false;
@@ -160,6 +167,27 @@ export class SuperescalarIntegration {
             this.finishedExecution = true;
             alert(t('execution.finished'));
         }
+    }
+
+    makeBatchExecution() {
+        const results = [];
+        for (let i = 0; i < this.replications; i++) {
+            let code = Object.assign(new Code(), this.superescalar.code);
+            this.superExe();
+            this.superescalar.code = code;
+            this.superescalar.memory.failProbability = this.cacheFailPercentage;
+            this.superescalar.memoryFailLatency = this.cacheFailLatency;
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            results.push(this.superescalar.status.cycle);
+        }
+
+        const statistics =  {
+            replications:  this.replications,
+            average: (results.reduce( (a,b) => a +b ) / results.length).toFixed(2),
+            worst: Math.max(...results),
+            best: Math.min(...results)
+        }
+        store.dispatch(displayBatchResults(statistics));
     }
 
     pause = () => {
@@ -256,7 +284,7 @@ export class SuperescalarIntegration {
         return calculatedSpeed;
     }
 
-    executionLoop = (speed) => {
+    executionLoop = (speed) => { 
         if (!this.stopCondition) {
                 setTimeout(() => {
                     let machineStatus = this.superStep();
@@ -288,12 +316,13 @@ export class SuperescalarIntegration {
                     +superConfig[superConfigKeys[i]]);
             }
         }
-        this.superescalar.memoryFailLatency = +superConfig.cacheFailLatency;
         this.superescalar.issue = +superConfig.issueGrade;
     }
 
-    setOptions = (cacheFailPercentage: number) => {
-        this.superescalar.memory.failProbability = cacheFailPercentage;
+    setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
+        this.replications = replications;
+        this.cacheFailLatency = cacheFailLatency;
+        this.cacheFailPercentage = cacheFailPercentage;
     }
 
     private resetMachine() {

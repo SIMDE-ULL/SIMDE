@@ -1,0 +1,10 @@
+.smd-batch_results {
+    &-entry {
+        display: flex;
+
+        &_label {
+            font-weight: bold;
+            margin-right: .5rem;
+        }
+    }
+}

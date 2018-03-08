@@ -78,7 +78,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     .filter(e => e.row.instruction.id != '')
                                     .map(e => (
                                         <div
-                                            className="smd-table_row"
+                                            className="smd-table_row smd-reorder_buffer_entry"
                                             style={{background: e.row.instruction.color}}
                                             onClick={() => this.handleClick(e.row.instruction.id, e.row.instruction.color) as any}
                                             title={e.row.instruction.value}

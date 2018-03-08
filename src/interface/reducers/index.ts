@@ -17,7 +17,10 @@ import {
     TOGGLE_LOAD_MODAL,
     TOGGLE_AUTHOR_MODAL,
     TOGGLE_OPTIONS_MODAL,
-    TOGGLE_SUPER_CONFIG_MODAL
+    TOGGLE_SUPER_CONFIG_MODAL,
+    TOGGLE_BATCH_MODAL,
+    DISPLAY_BATCH_RESULTS,
+    CLEAR_BATCH_RESULTS
 } from '../actions/modals';
 import {
     ADD_ROB_FPR_INTERVAL,
@@ -85,7 +88,10 @@ export const initialState = {
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,
-    isSuperConfigModalOpen: false
+    isSuperConfigModalOpen: false,
+    isBatchModalOpen: false,
+    isBatchResultsModalOpen: false,
+    batchResults: {}
 };
 
 export function SuperescalarReducers(state = initialState, action) {
@@ -178,6 +184,11 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 isSuperConfigModalOpen: action.value
             });
+        case TOGGLE_BATCH_MODAL:
+            return (state = {
+                ...state,
+                isBatchModalOpen: action.value
+            });
         case VIEW_BASIC_BLOCKS:
             return (state = {
                 ...state,
@@ -252,6 +263,18 @@ export function SuperescalarReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 history: []
+            });
+        case DISPLAY_BATCH_RESULTS: 
+            return (state = {
+                ...state,
+                batchResults: action.value,
+                isBatchResultsModalOpen: true
+            });
+        case CLEAR_BATCH_RESULTS: 
+            return (state = {
+                ...state,
+                batchResults: {},
+                isBatchResultsModalOpen: false
             });
         default:
             return state;

@@ -24,7 +24,6 @@ export function addRobGprInterval(data) {
 }
 
 export function removeRobFprInterval(data) {
-    console.log(data);
     return {
       type: REMOVE_ROB_FPR_INTERVAL,
       value: new Set(data)

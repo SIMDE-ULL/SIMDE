@@ -2,7 +2,7 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { connect } from 'react-redux';
-import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal } from '../../actions/modals';
+import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal, toggleBatchModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { viewBasicBlocks } from '../../actions';
@@ -45,9 +45,15 @@ class FileBarComponent extends React.Component<any, any> {
                         <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleSuperConfigModal(true)}}>
                             {t('fileBar.config.superescalar')}
                         </MenuItem>
-
-                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleOptionsModal(true) }}>
-                            {t('fileBar.config.options')}
+                    </DropdownButton>
+                    <DropdownButton
+                        title={t('fileBar.experimentation.name')}
+                        key={'dropdown-experimentation'}
+                        id={'dropdown-experimentation'}
+                        noCaret
+                    >
+                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleBatchModal(true) }}>
+                            {t('fileBar.experimentation.batch')}
                         </MenuItem>
                     </DropdownButton>
                     <DropdownButton
@@ -78,6 +84,7 @@ function mapDispatchToProps(dispatch) {
         toggleAuthorModal,
         toggleOptionsModal,
         toggleSuperConfigModal,
+        toggleBatchModal,
         viewBasicBlocks
     }, dispatch) };
 }

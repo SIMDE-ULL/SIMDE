@@ -14,10 +14,10 @@ class OptionsModalComponent extends React.Component<any, any> {
 
         this.close = this.close.bind(this);
         this.setOptions = this.setOptions.bind(this);
-    }
-
-    componentWillMount() {
-        this.setState({ cacheFailPercentage: 0, showModal: false });
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            cacheFailPercentage: 0
+        }
     }
 
     close() {
@@ -26,12 +26,12 @@ class OptionsModalComponent extends React.Component<any, any> {
 
     handleChange(event) {
         let newState = {...this.state};
-        newState.superConfig[event.target.name] = event.target.value;
+        newState.cacheFailPercentage = event.target.value;
         this.setState(newState);
     }
 
     setOptions() {
-        SuperescalarIntegration.setOptions(this.state.cacheFailPercentage);
+        // SuperescalarIntegration.setOptions(this.state.cacheFailPercentage);
         this.close();
     }
 

@@ -21,6 +21,10 @@
             "back": "Back",
             "forward": "Forward"
         },
+        "experimentation": {
+            "name": "Experimentation",
+            "batch": "Batch Execution"
+        },
         "help": {
             "name": "Help",
             "docs": "Docs",
@@ -108,5 +112,18 @@
     "execution": {
         "stopped": "Execution stopped at breakpoint",
         "finished": "Execution finished"
+    },
+    "batchModal": {
+        "title": "Batch Execution",
+        "replications": "Replications",
+        "cacheFailPercentage": "Cache fail percentage",
+        "cacheFailLatency": "Cache miss latency"
+    },
+    "batchResults": {
+        "title": "Batch Results",
+        "replications": "Replications",
+        "average": "Average cycles per execution",
+        "worst": "Worst case",
+        "best": "Best case"
     }
 }

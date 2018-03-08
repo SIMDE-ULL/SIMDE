@@ -84,6 +84,7 @@ export class Machine {
       this._gpr.content.fill(0);
       this._fpr.content.fill(0);
       this.memory.setMem(0);
+      this.memory.fail.fill(false);
    }
 
    public getTotalFunctionalUnit(): number {

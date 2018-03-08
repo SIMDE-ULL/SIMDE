@@ -21,6 +21,10 @@
             "back": "Atrás",
             "forward": "Adelante"
         },
+        "experimentation": {
+            "name": "Experimentación",
+            "batch": "Ejecución por lotes"
+        },
         "help": {
             "name": "Ayuda",
             "docs": "Documentación",
@@ -108,5 +112,18 @@
     "execution": {
         "stopped": "Ejecución detenida en breakpoint",
         "finished": "Ejecución finalizada"
+    },
+    "batchModal": {
+        "title": "Ejecución por lotes",
+        "replications": "Réplicas",
+        "cacheFailPercentage": "Porcentaje de fallos de caché",
+        "cacheFailLatency": "Latencia en fallos de cachés"
+    },
+    "batchResults": {
+        "title": "Resultados de la ejecución por lotes",
+        "replications": "Réplicas",
+        "average": "Número medio de ciclos por ejecución",
+        "worst": "Peor caso",
+        "best": "Mejor caso"
     }
 }

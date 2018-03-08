@@ -16,6 +16,8 @@ import OptionsModalComponent from "./components/modal/OptionsModalComponent";
 import AutorModalComponent from "./components/modal/AutorModalComponent";
 
 import { translate } from "react-i18next";
+import BatchModalComponent from "./components/modal/BatchModalComponent";
+import BatchResultsModalComponent from "./components/modal/BatchResultsModalComponent";
 
 class App extends React.Component<any, any> {
    constructor(props: Superescalar) {
@@ -41,6 +43,8 @@ class App extends React.Component<any, any> {
             <SuperescalarConfigModalComponent />
             <OptionsModalComponent />
             <AutorModalComponent />
+            <BatchModalComponent />
+            <BatchResultsModalComponent />
         </div>
      );
    }

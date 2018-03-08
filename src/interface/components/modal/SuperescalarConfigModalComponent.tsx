@@ -38,7 +38,6 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 memoryLatency: 4,
                 jumpQuantity: 1,
                 jumpLatency: 2,
-                cacheFailLatency: 9,
                 issueGrade: 4
             }
         });
@@ -75,7 +74,6 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 memoryLatency: 4,
                 jumpQuantity: 1,
                 jumpLatency: 2,
-                cacheFailLatency: 9,
                 issueGrade: 4
             }
         });
@@ -276,23 +274,6 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     </div>
 
                     <div className='extraParams'>
-                        <div className='form-group'>
-                            <div className='col-sm-4'>
-                                <label htmlFor='cacheFailLatency' className='control-label'>{t('superescalarModal.cacheFail')}
-                                </label>
-                            </div>
-                            <div className='col-sm-8'>
-                                <input
-                                    className='form-control'
-                                    name='cacheFailLatency'
-                                    type='number'
-                                    min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-                                    max={SUPERESCALAR_CONFIG.LATENCY_MAX}
-                                    value={this.state.superConfig.cacheFailLatency}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                        </div>
                         <div className='form-group'>
                             <div className='col-sm-4'>
                                 <label htmlFor='issueGrade' className='control-label'>{t('superescalarModal.issue')}
