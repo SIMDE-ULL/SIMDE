@@ -24,7 +24,7 @@ class BatchModalComponent extends React.Component<any, any> {
         this.state = {
             replications: 0,
             cacheFailPercentage: 0,
-            cacheFailLatency: 0
+            cacheFailLatency: 9
         };
     }
 
