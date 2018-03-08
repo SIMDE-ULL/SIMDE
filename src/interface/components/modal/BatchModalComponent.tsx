@@ -9,9 +9,13 @@ import SuperescalarIntegration from '../../../superescalar-integration';
 import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../core/Constants';
 
 class BatchModalComponent extends React.Component<any, any> {
-    constructor(props: any, state: any) {
+    constructor(public props: any, public state: any) {
         super(props);
-
+        this.state = {
+            replications: 0,
+            cacheFailPercentage: 0,
+            cacheFailLatency: 9
+        };
         this.close = this.close.bind(this);
         this.setOptions = this.setOptions.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -21,11 +25,8 @@ class BatchModalComponent extends React.Component<any, any> {
         this.handleCacheFailLatencyChange = this.handleCacheFailLatencyChange.bind(
             this
         );
-        this.state = {
-            replications: 0,
-            cacheFailPercentage: 0,
-            cacheFailLatency: 9
-        };
+
+
     }
 
     close() {
@@ -45,6 +46,10 @@ class BatchModalComponent extends React.Component<any, any> {
             this.state.cacheFailLatency
         );
         this.close();
+
+        setTimeout( () => {
+            SuperescalarIntegration.makeBatchExecution();
+        }, 300);
     }
 
     handleCachePercentageChange(event) {
@@ -134,7 +139,7 @@ class BatchModalComponent extends React.Component<any, any> {
                         className="btn btn-primary"
                         onClick={this.setOptions}
                     >
-                        {t('commonButtons.save')}
+                        {t('commonButtons.launch')}
                     </Button>
                 </Modal.Footer>
             </Modal>

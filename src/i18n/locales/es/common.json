@@ -76,6 +76,7 @@
         "close": "Cerrar",
         "save": "Guardar",
         "accept": "Aceptar",
+        "launch": "Lanzar",
         "uploadFromFile": "Subir desde fichero"
     },
     "Code": "Código",

@@ -143,9 +143,6 @@ export class SuperescalarIntegration {
         this.executing = true;
         let speed = this.calculateSpeed();
 
-        if (this.replications) {
-            return this.makeBatchExecution();
-        }
         // Check if the execution has finished 
         if (this.finishedExecution) {
             this.finishedExecution = false;
@@ -169,7 +166,7 @@ export class SuperescalarIntegration {
         }
     }
 
-    makeBatchExecution() {
+    makeBatchExecution = () => {
         const results = [];
         for (let i = 0; i < this.replications; i++) {
             let code = Object.assign(new Code(), this.superescalar.code);
@@ -187,6 +184,10 @@ export class SuperescalarIntegration {
             worst: Math.max(...results),
             best: Math.min(...results)
         }
+
+        // Post launch machine clean
+        this.superescalar.memory.failProbability = 0;
+        this.superescalar.memoryFailLatency = 0;
         store.dispatch(displayBatchResults(statistics));
     }
 
@@ -324,6 +325,7 @@ export class SuperescalarIntegration {
         this.cacheFailLatency = cacheFailLatency;
         this.cacheFailPercentage = cacheFailPercentage;
     }
+
 
     private resetMachine() {
         let code = Object.assign(new Code(), this.superescalar.code);
