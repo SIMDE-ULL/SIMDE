@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import { toggleSuperConfigModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 
-import SuperescalarIntegration from '../../../superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
 import { SUPERESCALAR_CONFIG } from '../../../core/Constants';
 
 import { connect } from 'react-redux';

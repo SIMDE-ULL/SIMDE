@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import i18n from './i18n'; // initialized i18next instance
 import { I18nextProvider } from 'react-i18next'; // as we build ourself via webpack
 
-import SuperescalarIntegration from './superescalar-integration';
 import App from './interface/App';
 
 const styles = require('./main.scss');
@@ -19,7 +18,7 @@ const styles = require('./main.scss');
 ReactDOM.render(
       <I18nextProvider i18n={i18n}>
             <Provider store={store}>
-                  <App machine={SuperescalarIntegration.superescalar} />
+                  <App />
             </Provider>
       </I18nextProvider>,
       document.getElementById('app')

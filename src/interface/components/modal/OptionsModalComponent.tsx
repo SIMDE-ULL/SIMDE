@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import { bindActionCreators } from 'redux';
 import { toggleOptionsModal } from '../../actions/modals';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
 
 class OptionsModalComponent extends React.Component<any, any> {
 

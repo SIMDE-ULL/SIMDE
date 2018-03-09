@@ -9,7 +9,7 @@ import {
     clearBatchResults
 } from '../../actions/modals';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
 
 class BatchResultsModalComponent extends React.Component<any, any> {
     constructor(props: any, state: any) {

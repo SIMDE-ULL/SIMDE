@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PhotoshopPicker } from 'react-color';
-import SuperescalarIntegration from '../../superescalar-integration';
+import SuperescalarIntegration from '../../integration/superescalar-integration';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 

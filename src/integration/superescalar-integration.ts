@@ -169,6 +169,10 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     makeBatchExecution = () => {
+        if(!this.superescalar.code) {
+            return;
+        }
+
         const results = [];
         for (let i = 0; i < this.replications; i++) {
             let code = Object.assign(new Code(), this.superescalar.code);
@@ -180,19 +184,8 @@ export class SuperescalarIntegration extends MachineIntegration {
             results.push(this.superescalar.status.cycle);
         }
 
-        const average =  (results.reduce( (a,b) => a +b ) / results.length);
-        const statistics =  {
-            replications:  this.replications,
-            average: average.toFixed(2),
-            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
-            worst: Math.max(...results),
-            best: Math.min(...results)
-        }
-
-        // Post launch machine clean
-        this.superescalar.memory.failProbability = 0;
-        this.superescalar.memoryFailLatency = 0;
-        this.resetMachine();
+        const statistics = this.calculateBatchStatistics(results);
+        this.clearBatchStateEffects();
         store.dispatch(displayBatchResults(statistics));
     }
 
@@ -328,6 +321,24 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.superescalar.code = code;
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
+    }
+
+    private calculateBatchStatistics(results: number[]) {
+        const average =  (results.reduce( (a,b) => a +b ) / results.length);
+        return {
+            replications:  this.replications,
+            average: average.toFixed(2),
+            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
+            worst: Math.max(...results),
+            best: Math.min(...results)
+        }
+    }
+
+    private clearBatchStateEffects() {
+        // Post launch machine clean
+        this.superescalar.memory.failProbability = 0;
+        this.superescalar.memoryFailLatency = 0;
+        this.resetMachine();
     }
 }
 
