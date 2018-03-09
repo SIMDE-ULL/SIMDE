@@ -58,7 +58,6 @@
     "i18next-browser-languagedetector": "2.1.0",
     "i18next-localstorage-cache": "1.1.1",
     "i18next-xhr-backend": "1.5.0",
-    "jquery": "^3.2.1",
     "lex": "1.7.9",
     "lodash": "4.17.4",
     "node-sass": "4.6.0",
