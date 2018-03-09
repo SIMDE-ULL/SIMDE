@@ -1,6 +1,6 @@
-import { Superescalar } from './core/Superescalar/Superescalar';
-import { ExecutionStatus } from './main-consts';
-import { store } from './store';
+import { Superescalar } from '../core/Superescalar/Superescalar';
+import { ExecutionStatus } from '../main-consts';
+import { store } from '../store';
 import { 
     nextPrefetchCycle,
     nextDecoderCycle,
@@ -15,19 +15,21 @@ import {
     superescalarLoad,
     batchActions,
     colorCell
-} from './interface/actions';
+} from '../interface/actions';
 
-import { pushHistory, takeHistory, resetHistory } from './interface/actions/history';
-import { MAX_HISTORY_SIZE } from './interface/reducers';
+import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
+import { MAX_HISTORY_SIZE } from '../interface/reducers';
 
 import { t } from 'i18next';
-import { Code } from './core/Common/Code';
-import { SuperescalarStatus } from './core/Superescalar/SuperescalarEnums';
-import { FunctionalUnitType } from './core/Common/FunctionalUnit';
-import { ReserveStationEntry } from './core/Superescalar/ReserveStationEntry';
-import { displayBatchResults } from './interface/actions/modals';
+import { Code } from '../core/Common/Code';
+import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
+import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
+import { ReserveStationEntry } from '../core/Superescalar/ReserveStationEntry';
+import { displayBatchResults } from '../interface/actions/modals';
 
-export class SuperescalarIntegration {
+import { MachineIntegration } from './machine-integration';
+
+export class SuperescalarIntegration extends MachineIntegration {
     // Global objects for binding React to the View
     superescalar = new Superescalar();
     codeLoaded = false;
@@ -98,7 +100,7 @@ export class SuperescalarIntegration {
         this.superescalar.init(true);
     }
 
-    superStep = () => {
+    stepForward = () => {
 
         if (!this.superescalar.code) {
             return;
@@ -124,7 +126,7 @@ export class SuperescalarIntegration {
         }
     }
 
-    loadSuper = (code: Code) => {
+    loadCode = (code: Code) => {
       this.superescalar.code = code;
       this.resetMachine();
       // There is no need to update the code with the rest,
@@ -279,19 +281,10 @@ export class SuperescalarIntegration {
         }
     }
 
-    calculateSpeed() {
-        let speed = parseInt((<HTMLInputElement>document.getElementById('velocidad')).value);
-
-        let calculatedSpeed = 2000;
-        calculatedSpeed = speed ?  calculatedSpeed / speed : 0;
-
-        return calculatedSpeed;
-    }
-
     executionLoop = (speed) => { 
         if (!this.stopCondition) {
                 setTimeout(() => {
-                    let machineStatus = this.superStep();
+                    let machineStatus = this.stepForward();
                     if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
                             this.executionLoop(speed);
                     } else {
@@ -328,16 +321,6 @@ export class SuperescalarIntegration {
         this.cacheFailLatency = cacheFailLatency;
         this.cacheFailPercentage = cacheFailPercentage;
     }
-
-    calculateStandardDeviation(avg, values): number {
-        const diffs = values.map((value) => value - avg);
-        const squareDiffs = diffs.map(diff => diff * diff);
-
-        const avgSquareDiff = squareDiffs.reduce( (a,b) => a + b) / squareDiffs.length;
-
-        return Math.sqrt(avgSquareDiff);
-    }
-
 
     private resetMachine() {
         let code = Object.assign(new Code(), this.superescalar.code);

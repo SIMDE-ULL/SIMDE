@@ -7,7 +7,7 @@ import { toggleLoadModal } from '../../actions/modals';
 import { bindActionCreators } from 'redux';
 import * as FileReaderInput from 'react-file-reader-input';
 
-import SuperescalarIntegration from '../../../superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
 import { Code } from '../../../core/Common/Code';
 
 export class LoadModalComponent extends React.Component<any, any> {
@@ -38,7 +38,7 @@ export class LoadModalComponent extends React.Component<any, any> {
             let code = new Code();
             code.load((document.getElementById('codeInput') as HTMLInputElement).value);
             this.setState({error: ''})
-            SuperescalarIntegration.loadSuper(code);
+            SuperescalarIntegration.loadCode(code);
             this.close();
         } catch (err) {
             this.setState({error: err});
