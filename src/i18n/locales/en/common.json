@@ -124,6 +124,7 @@
         "title": "Batch Results",
         "replications": "Replications",
         "average": "Average cycles per execution",
+        "standardDeviation": "Standard Deviation",
         "worst": "Worst case",
         "best": "Best case"
     }

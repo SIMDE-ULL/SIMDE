@@ -51,6 +51,15 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
+                            {t('batchResults.standardDeviation')}
+                            </div>
+                            <div className="smd-batch_results-entry_value">
+                                {this.props.results.standardDeviation}
+                        
+                            </div>
+                        </div>
+                        <div className="smd-batch_results-entry">
+                            <div className="smd-batch_results-entry_label">
                             {t('batchResults.worst')}:
                             </div>
                             <div className="smd-batch_results-entry_value">

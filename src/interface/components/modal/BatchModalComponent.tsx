@@ -46,10 +46,7 @@ class BatchModalComponent extends React.Component<any, any> {
             this.state.cacheFailLatency
         );
         this.close();
-
-        setTimeout( () => {
-            SuperescalarIntegration.makeBatchExecution();
-        }, 300);
+        SuperescalarIntegration.makeBatchExecution();
     }
 
     handleCachePercentageChange(event) {

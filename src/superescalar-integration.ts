@@ -178,9 +178,11 @@ export class SuperescalarIntegration {
             results.push(this.superescalar.status.cycle);
         }
 
+        const average =  (results.reduce( (a,b) => a +b ) / results.length);
         const statistics =  {
             replications:  this.replications,
-            average: (results.reduce( (a,b) => a +b ) / results.length).toFixed(2),
+            average: average.toFixed(2),
+            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
             worst: Math.max(...results),
             best: Math.min(...results)
         }
@@ -188,6 +190,7 @@ export class SuperescalarIntegration {
         // Post launch machine clean
         this.superescalar.memory.failProbability = 0;
         this.superescalar.memoryFailLatency = 0;
+        this.resetMachine();
         store.dispatch(displayBatchResults(statistics));
     }
 
@@ -324,6 +327,15 @@ export class SuperescalarIntegration {
         this.replications = replications;
         this.cacheFailLatency = cacheFailLatency;
         this.cacheFailPercentage = cacheFailPercentage;
+    }
+
+    calculateStandardDeviation(avg, values): number {
+        const diffs = values.map((value) => value - avg);
+        const squareDiffs = diffs.map(diff => diff * diff);
+
+        const avgSquareDiff = squareDiffs.reduce( (a,b) => a + b) / squareDiffs.length;
+
+        return Math.sqrt(avgSquareDiff);
     }
 
 

@@ -124,6 +124,7 @@
         "title": "Resultados de la ejecución por lotes",
         "replications": "Réplicas",
         "average": "Número medio de ciclos por ejecución",
+        "standardDeviation": "Desviación éstandar",
         "worst": "Peor caso",
         "best": "Mejor caso"
     }
