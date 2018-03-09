@@ -1,18 +1,25 @@
 {
-   "extends": "tslint-config-standard",
-   "rules": {
-      "semicolon": [
-         true,
-         "always"
-      ],
-      "max-line-length": [
-         100
-      ],
-      "ter-indent": [
-         true,
-         3,
-         {}
-      ],
-      "space-before-function-paren": false
-   }
+    "extends": "tslint-config-standard",
+    "rules": {
+        "semicolon": [
+            true,
+            "always"
+        ],
+        "max-line-length": [
+            100
+        ],
+        "indent": [true, "spaces", 4],
+        "ter-indent": [true, 4,
+        {
+            "SwitchCase": 1
+        }],
+        "space-before-function-paren": false,
+        "no-unused-variable": true,
+        "no-duplicate-imports": true,
+        "no-reference-import": false,
+        "no-return-await": false,
+        "return-undefined": false,
+        "space-within-parens": true,
+        "no-unnecessary-type-assertion": false
+    }
 }

@@ -14,6 +14,12 @@ module.exports = function (options) {
       },
       module: {
          loaders: [
+            {
+                  test: /\.ts$/,
+                  enforce: 'pre',
+                  loader: 'tslint-loader',
+                  options: { /* Loader options go here */ }
+            },
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
             {
@@ -30,10 +36,6 @@ module.exports = function (options) {
          new ExtractTextPlugin({
             filename: '[name].[hash:8].css',
             allChunks: true
-         }),
-         new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery"
          }),
          new CheckerPlugin()]
    }

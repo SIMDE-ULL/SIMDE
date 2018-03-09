@@ -1,9 +1,9 @@
 export function addInterval(state, field, interval) {
-    
+
     const newVisibleRangeValues = Array.from(
         new Set([...state[field].visibleRangeValues, ...interval])
     ).sort((a, b) => +a - +b);
-    
+
     let newState = {
         ...state,
         history : state.history.map(historyEntry => {

@@ -12,8 +12,7 @@ export function nextReorderBufferCycle(data) {
 }
 
 export function mapReorderBufferData(data: ReorderBufferEntry[]) {
-    let toReturn = new Array();
-    for (let i = 0; i < data.length; i++) {
+    return data.map(element => {
         let aux = {
             instruction: { id: '', value: '', color: '' },
             destinyRegister: '',
@@ -21,28 +20,26 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
             address: '',
             superStage: ''
         };
-        if (data[i] != null) {
+        if (element != null) {
             aux = {
-                instruction: { id: '', value: '', color: ''},
-                destinyRegister: '' + data[i].destinyRegister,
-                value: '' + data[i].value,
-                address: '' + data[i].address,
-                superStage: stageToString(data[i].superStage)
+                instruction: { id: '', value: '', color: '' },
+                destinyRegister: '' + element.destinyRegister,
+                value: '' + element.value,
+                address: '' + element.address,
+                superStage: stageToString(element.superStage)
             };
-            if (data[i].instruction != null) {
-                aux.instruction.id = '' + data[i].instruction.id;
-                aux.instruction.value = data[i].instruction.toString();
-                aux.instruction.color = data[i].instruction.color;
+            if (element.instruction != null) {
+                aux.instruction.id = '' + element.instruction.id;
+                aux.instruction.value = element.instruction.toString();
+                aux.instruction.color = element.instruction.color;
             }
         }
-        toReturn.push(aux);
-    }
-    return toReturn;
+    });
 }
 
 export function colorCell(instructionid, color) {
     return {
         type: COLOR_CELL,
         value: [instructionid, color]
-    };  
+    };
 }

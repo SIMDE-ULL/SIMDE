@@ -1,6 +1,6 @@
 export function batchActions(...actions) {
     return {
-      type: 'BATCH_ACTIONS',
-      actions: actions
+        type: 'BATCH_ACTIONS',
+        actions: actions
     };
-  }
+}

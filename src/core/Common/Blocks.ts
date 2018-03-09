@@ -1,62 +1,62 @@
 export class BasicBlock {
-   constructor(
-      private _id: number,
-      private _lineNumber: number,
-      private _next: BasicBlock,
-      private _successor: SuccessorBlock
-   ) { }
+    constructor(
+        private _id: number,
+        private _lineNumber: number,
+        private _next: BasicBlock,
+        private _successor: SuccessorBlock
+    ) { }
 
-   public get lineNumber(): number {
-      return this._lineNumber;
-   }
+    public get lineNumber(): number {
+        return this._lineNumber;
+    }
 
-   public set lineNumber(value: number) {
-      this._lineNumber = value;
-   }
+    public set lineNumber(value: number) {
+        this._lineNumber = value;
+    }
 
-   public get id(): number {
-      return this._id;
-   }
+    public get id(): number {
+        return this._id;
+    }
 
-   public set id(value: number) {
-      this._id = value;
-   }
+    public set id(value: number) {
+        this._id = value;
+    }
 
-   public get next(): BasicBlock {
-      return this._next;
-   }
+    public get next(): BasicBlock {
+        return this._next;
+    }
 
-   public set next(value: BasicBlock) {
-      this._next = value;
-   }
+    public set next(value: BasicBlock) {
+        this._next = value;
+    }
 
-   public get successor(): SuccessorBlock {
-      return this._successor;
-   }
+    public get successor(): SuccessorBlock {
+        return this._successor;
+    }
 
-   public set successor(value: SuccessorBlock) {
-      this._successor = value;
-   }
+    public set successor(value: SuccessorBlock) {
+        this._successor = value;
+    }
 }
 
 export class SuccessorBlock {
-   private _block: BasicBlock;
-   private _next: SuccessorBlock;
+    private _block: BasicBlock;
+    private _next: SuccessorBlock;
 
-   public get block(): BasicBlock {
-      return this._block;
-   }
+    public get block(): BasicBlock {
+        return this._block;
+    }
 
-   public set block(value: BasicBlock) {
-      this._block = value;
-   }
+    public set block(value: BasicBlock) {
+        this._block = value;
+    }
 
-   public get next(): SuccessorBlock {
-      return this._next;
-   }
+    public get next(): SuccessorBlock {
+        return this._next;
+    }
 
-   public set next(value: SuccessorBlock) {
-      this._next = value;
-   }
+    public set next(value: SuccessorBlock) {
+        this._next = value;
+    }
 
 }

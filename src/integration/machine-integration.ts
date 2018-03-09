@@ -1,28 +1,27 @@
 export abstract class MachineIntegration {
     abstract loadCode: ( code: any) => void;
-  
+
     abstract makeBatchExecution: () => void;
 
     abstract play: () => void;
 
     abstract pause: () => void;
-  
+
     abstract stop: () => void;
-    
+
     abstract stepBack: () => void;
-  
+
     abstract stepForward: () => void;
 
-    abstract setBatchMode: (...config) => void
-    
+    abstract setBatchMode: (...config) => void;
+
     calculateSpeed() {
-         let speed = parseInt((<HTMLInputElement>document.getElementById('velocidad')).value);
- 
-         let calculatedSpeed = 2000;
-         calculatedSpeed = speed ?  calculatedSpeed / speed : 0;
- 
-         return calculatedSpeed;
-   }
+        let speed = parseInt((document.getElementById('velocidad')as HTMLInputElement).value, 10);
+
+        const defaultStep = 2000;
+        return speed ? defaultStep / speed : 0;
+    }
+
     calculateStandardDeviation(average, values): number {
         const diffs = values.map((value) => value - average);
         const squareDiffs = diffs.map(diff => diff * diff);

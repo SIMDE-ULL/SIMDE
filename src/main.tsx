@@ -16,10 +16,10 @@ const styles = require('./main.scss');
  *
  */
 ReactDOM.render(
-      <I18nextProvider i18n={i18n}>
-            <Provider store={store}>
-                  <App />
-            </Provider>
-      </I18nextProvider>,
-      document.getElementById('app')
+    <I18nextProvider i18n={i18n}>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </I18nextProvider>,
+    document.getElementById('app')
 );

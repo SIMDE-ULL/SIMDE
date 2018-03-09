@@ -1,7 +1,7 @@
 import { Superescalar } from '../core/Superescalar/Superescalar';
 import { ExecutionStatus } from '../main-consts';
 import { store } from '../store';
-import { 
+import {
     nextPrefetchCycle,
     nextDecoderCycle,
     nextJumpTableCycle,
@@ -23,8 +23,6 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers';
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
-import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
-import { ReserveStationEntry } from '../core/Superescalar/ReserveStationEntry';
 import { displayBatchResults } from '../interface/actions/modals';
 
 import { MachineIntegration } from './machine-integration';
@@ -56,36 +54,36 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextDecoderCycle(this.superescalar.decoder),
                     nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                     nextReserveStationCycle(
-                            [{
-                                data: this.superescalar.reserveStationEntry[0],
-                                size: this.superescalar.getReserveStationSize(0)
-                            },
+                        [{
+                            data: this.superescalar.reserveStationEntry[0],
+                            size: this.superescalar.getReserveStationSize(0)
+                        },
 
-                            {
-                                data: this.superescalar.reserveStationEntry[1],
-                                size: this.superescalar.getReserveStationSize(1)
-                            },
+                        {
+                            data: this.superescalar.reserveStationEntry[1],
+                            size: this.superescalar.getReserveStationSize(1)
+                        },
 
-                            {
-                                data: this.superescalar.reserveStationEntry[2],
-                                size: this.superescalar.getReserveStationSize(2)
-                            },
+                        {
+                            data: this.superescalar.reserveStationEntry[2],
+                            size: this.superescalar.getReserveStationSize(2)
+                        },
 
-                            {
-                                data: this.superescalar.reserveStationEntry[3],
-                                size: this.superescalar.getReserveStationSize(3)
-                            },
+                        {
+                            data: this.superescalar.reserveStationEntry[3],
+                            size: this.superescalar.getReserveStationSize(3)
+                        },
 
-                            {
-                                data: this.superescalar.reserveStationEntry[4],
-                                size: this.superescalar.getReserveStationSize(4)
-                            },
+                        {
+                            data: this.superescalar.reserveStationEntry[4],
+                            size: this.superescalar.getReserveStationSize(4)
+                        },
 
-                            {
-                                data: this.superescalar.reserveStationEntry[5],
-                                size: this.superescalar.getReserveStationSize(5)
-                            }
-                    ]),
+                        {
+                            data: this.superescalar.reserveStationEntry[5],
+                            size: this.superescalar.getReserveStationSize(5)
+                        }]
+                    ),
                     nextReorderBufferMapperCycle([this.superescalar.ROBGpr, this.superescalar.ROBFpr]),
                     nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
@@ -111,13 +109,13 @@ export class SuperescalarIntegration extends MachineIntegration {
             store.dispatch(takeHistory(this.backStep));
         } else {
             if (this.finishedExecution) {
-                  this.finishedExecution = false;
-                  this.resetMachine();
+                this.finishedExecution = false;
+                this.resetMachine();
             }
             if (this.superescalar.status.cycle === 0) {
-                  let code = Object.assign(new Code(), this.superescalar.code);
-                  this.superExe();
-                  this.superescalar.code = code;
+                let code = Object.assign(new Code(), this.superescalar.code);
+                this.superExe();
+                this.superescalar.code = code;
             }
             let machineStatus = this.superescalar.tic();
             this.dispatchAllSuperescalarActions();
@@ -127,11 +125,11 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     loadCode = (code: Code) => {
-      this.superescalar.code = code;
-      this.resetMachine();
-      // There is no need to update the code with the rest,
-      // it should remain the same during all the program execution
-      store.dispatch(superescalarLoad(code.instructions));
+        this.superescalar.code = code;
+        this.resetMachine();
+        // There is no need to update the code with the rest,
+        // it should remain the same during all the program execution
+        store.dispatch(superescalarLoad(code.instructions));
     }
 
     play = () => {
@@ -145,7 +143,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.executing = true;
         let speed = this.calculateSpeed();
 
-        // Check if the execution has finished 
+        // Check if the execution has finished
         if (this.finishedExecution) {
             this.finishedExecution = false;
             this.resetMachine();
@@ -169,7 +167,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     makeBatchExecution = () => {
-        if(!this.superescalar.code) {
+        if (!this.superescalar.code) {
             return;
         }
 
@@ -180,6 +178,8 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.superescalar.code = code;
             this.superescalar.memory.failProbability = this.cacheFailPercentage;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
+
+            // tslint:disable-next-line:no-empty
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
             results.push(this.superescalar.status.cycle);
         }
@@ -198,7 +198,6 @@ export class SuperescalarIntegration extends MachineIntegration {
         if (!this.superescalar.code) {
             return;
         }
-        
         // In normal execution I have to avoid the asynchrnous way of
         // js entering in the interval, the only way I have is to using a semaphore
         this.stopCondition = ExecutionStatus.STOP;
@@ -210,20 +209,21 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     colorCell = (instructionId, color) => {
-        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id == instructionId)[0].instruction.color = color.hex;
+        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id === instructionId)[0].instruction.color = color.hex;
         this.superescalar.reserveStationEntry = this.superescalar.reserveStationEntry.map(ree => ree.map(reserveStationEntry => {
-            if (reserveStationEntry.instruction.id == instructionId)
+            if (reserveStationEntry.instruction.id === instructionId) {
                 reserveStationEntry.instruction.color = color.hex;
-            return reserveStationEntry
+            }
+            return reserveStationEntry;
         }));
         this.superescalar.functionalUnit = this.superescalar.functionalUnit.map( functionalUnit => functionalUnit.map( fu => {
-            fu.flow  = fu.flow.map(instruction => {
-                if (instruction && instruction.id == instructionId) {
+            fu.flow = fu.flow.map( instruction => {
+                if (instruction && instruction.id === instructionId) {
                     instruction.color = color.hex;
                 }
                 return instruction;
             });
-            return fu 
+            return fu;
         }));
         store.dispatch(
             batchActions(
@@ -274,21 +274,21 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
     }
 
-    executionLoop = (speed) => { 
+    executionLoop = (speed) => {
         if (!this.stopCondition) {
-                setTimeout(() => {
-                    let machineStatus = this.stepForward();
-                    if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
-                            this.executionLoop(speed);
-                    } else {
-                            if (machineStatus === SuperescalarStatus.SUPER_BREAKPOINT) {
-                                alert(t('execution.stopped'));
-                            } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
-                                this.finishedExecution = true;
-                                alert(t('execution.finished'));
-                            }
+            setTimeout(() => {
+                let machineStatus = this.stepForward();
+                if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
+                    this.executionLoop(speed);
+                } else {
+                    if (machineStatus === SuperescalarStatus.SUPER_BREAKPOINT) {
+                        alert(t('execution.stopped'));
+                    } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
+                        this.finishedExecution = true;
+                        alert(t('execution.finished'));
                     }
-                }, speed);
+                }
+            }, speed);
         } else if (this.stopCondition === ExecutionStatus.STOP) {
             this.resetMachine();
         }
@@ -324,14 +324,14 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     private calculateBatchStatistics(results: number[]) {
-        const average =  (results.reduce( (a,b) => a +b ) / results.length);
+        const average = (results.reduce( (a,b) => a + b ) / results.length);
         return {
             replications:  this.replications,
             average: average.toFixed(2),
             standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
             worst: Math.max(...results),
             best: Math.min(...results)
-        }
+        };
     }
 
     private clearBatchStateEffects() {

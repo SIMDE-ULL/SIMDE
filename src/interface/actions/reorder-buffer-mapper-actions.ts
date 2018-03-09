@@ -4,5 +4,5 @@ export function nextReorderBufferMapperCycle(data) {
     return {
         type: NEXT_REORDER_BUFFER_MAPPER_CYCLE,
         value: data
-    }
+    };
 }

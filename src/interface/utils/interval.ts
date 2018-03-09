@@ -1,13 +1,13 @@
 export function generateIntervalFromImput(input: string, max: number): number[] {
-        
+
     let newInterval = new Set<number>();
 
-    if(!input) {
-        throw 'noEmptyInput';
+    if (!input) {
+        throw new Error('noEmptyInput');
     }
 
     input.split(',').map((value: string) => {
-        
+
         if (value.includes('-')) {
             let range = value.split('-');
 
@@ -15,12 +15,11 @@ export function generateIntervalFromImput(input: string, max: number): number[] 
             let num2 = parseInt(range[1]);
 
             if (isNaN(num1) || isNaN(num2)) {
-                throw 'noInputNumber';
+                throw new Error('noInputNumber');
             }
 
-            if (num1 >= max || num2 >= max)
-            {
-                throw `inputOutOfRange`;
+            if (num1 >= max || num2 >= max) {
+                throw new Error(`inputOutOfRange`);
             }
 
             if (num1 >= max) {
@@ -42,13 +41,13 @@ export function generateIntervalFromImput(input: string, max: number): number[] 
             let num = parseInt(value);
 
             if (isNaN(num)) {
-                throw 'noInputNumber';
+                throw new Error('noInputNumber');
             }
 
             if (num >= max) {
-                throw `inputOutOfRange`;
+                throw new Error(`inputOutOfRange`);
             }
-            
+
             newInterval.add(num);
         }
     });
@@ -58,7 +57,7 @@ export function generateIntervalFromImput(input: string, max: number): number[] 
 
 export function generateRangeArray(size) {
     if (size < 0) {
-        throw 'Invalid array range';
+        throw new Error('Invalid array range');
     }
 
     let range = [];

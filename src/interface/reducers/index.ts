@@ -264,13 +264,13 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 history: []
             });
-        case DISPLAY_BATCH_RESULTS: 
+        case DISPLAY_BATCH_RESULTS:
             return (state = {
                 ...state,
                 batchResults: action.value,
                 isBatchResultsModalOpen: true
             });
-        case CLEAR_BATCH_RESULTS: 
+        case CLEAR_BATCH_RESULTS:
             return (state = {
                 ...state,
                 batchResults: {},

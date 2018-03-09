@@ -80,7 +80,7 @@ export function colorHistoryInstruction(history, instructiondId, color) {
 
 function colorReserveEntry(reserveEntry, instructiondId, color) {
     return reserveEntry.map(e => {
-        if (e.instruction.id == instructiondId) {
+        if (e.instruction.id === instructiondId) {
             e.instruction.color = color;
         }
         return e;
@@ -92,7 +92,9 @@ function colorFunctionalUnit(functionalUnit, instructiondId, color) {
 
     newFunctionalUnit.content = newFunctionalUnit.content.map(ce =>
         ce.map(cee => {
-            if (cee.id == instructiondId) cee.color = color;
+            if (cee.id === instructiondId) {
+                cee.color = color;
+            }
             return cee;
         })
     );
