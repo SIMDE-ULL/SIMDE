@@ -38,7 +38,7 @@ test('Parsing operand errors are being thrown', t => {
         `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error, 'Error at line 4, expected: REGFP got: H0');
+	t.is(error.message, 'Error at line 4, expected: REGFP got: H0');
 });
 
 test('Parsing addresses errors are being throw', t => {
@@ -51,7 +51,7 @@ test('Parsing addresses errors are being throw', t => {
 
 	let code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error, 'Error at line 2, expected: ADDRESS got: R');
+	t.is(error.message, 'Error at line 2, expected: ADDRESS got: R');
 });
 
 test('Parsing opcodes errors are being thrown', t => {
@@ -63,7 +63,7 @@ test('Parsing opcodes errors are being thrown', t => {
     `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error, 'Error at line 4 unknown opcode ADF');
+	t.is(error.message, 'Error at line 4 unknown opcode ADF');
 });
 
 test('Repeated labels errors are being thrown', t => {
@@ -76,7 +76,7 @@ test('Repeated labels errors are being thrown', t => {
     `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error, 'Error at line 5, label LOOP: already exists');
+	t.is(error.message, 'Error at line 5, label LOOP: already exists');
 });
 
 test('Example code 1 does not throws errors', t => {

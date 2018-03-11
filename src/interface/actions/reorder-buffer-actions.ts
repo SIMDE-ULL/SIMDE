@@ -34,6 +34,7 @@ export function mapReorderBufferData(data: ReorderBufferEntry[]) {
                 aux.instruction.color = element.instruction.color;
             }
         }
+        return aux;
     });
 }
 

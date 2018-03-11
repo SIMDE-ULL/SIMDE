@@ -12,8 +12,8 @@ class BatchModalComponent extends React.Component<any, any> {
     constructor(public props: any, public state: any) {
         super(props);
         this.state = {
-            replications: 0,
-            cacheFailPercentage: 0,
+            replications: 10,
+            cacheFailPercentage: 30,
             cacheFailLatency: 9
         };
         this.close = this.close.bind(this);

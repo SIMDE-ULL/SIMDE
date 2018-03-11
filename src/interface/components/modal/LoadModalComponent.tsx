@@ -40,8 +40,8 @@ export class LoadModalComponent extends React.Component<any, any> {
             this.setState({error: ''})
             SuperescalarIntegration.loadCode(code);
             this.close();
-        } catch (err) {
-            this.setState({error: err});
+        } catch (error) {
+            this.setState({error: error.message});
         }
     }
 
