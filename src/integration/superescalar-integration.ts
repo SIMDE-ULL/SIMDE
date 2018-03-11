@@ -209,16 +209,16 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     colorCell = (instructionId, color) => {
-        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id === instructionId)[0].instruction.color = color.hex;
+        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
         this.superescalar.reserveStationEntry = this.superescalar.reserveStationEntry.map(ree => ree.map(reserveStationEntry => {
-            if (reserveStationEntry.instruction.id === instructionId) {
+            if (reserveStationEntry.instruction.id === +instructionId) {
                 reserveStationEntry.instruction.color = color.hex;
             }
             return reserveStationEntry;
         }));
         this.superescalar.functionalUnit = this.superescalar.functionalUnit.map(functionalUnit => functionalUnit.map(fu => {
             fu.flow = fu.flow.map(instruction => {
-                if (instruction && instruction.id === instructionId) {
+                if (instruction && instruction.id === +instructionId) {
                     instruction.color = color.hex;
                 }
                 return instruction;
