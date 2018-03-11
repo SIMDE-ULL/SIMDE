@@ -13,6 +13,7 @@
         {
             "SwitchCase": 1
         }],
+        "radix": false,
         "space-before-function-paren": false,
         "no-unused-variable": true,
         "no-duplicate-imports": true,
@@ -20,6 +21,11 @@
         "no-return-await": false,
         "return-undefined": false,
         "space-within-parens": true,
-        "no-unnecessary-type-assertion": false
+        "no-unnecessary-type-assertion": false,
+        "await-promise": "false",
+        "no-use-before-declare": "false",
+        "no-floating-promises": "false",
+        "no-unnecessary-qualifier": "false",
+        "strict-type-predicates": "false"
     }
 }

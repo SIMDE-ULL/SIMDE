@@ -2,17 +2,17 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body, html {
-	font-family: 'Montserrat', sans-serif;
-	font-size: $font-size-base;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-size: $font-size-base;
 }
 
 body {
-	width: 100%;
-	overflow-y: hidden;
+    width: 100%;
+    overflow-y: hidden;
 }
 
 @media (max-width: 1280px) {
-	body, html {
-		font-size: $font-size-base-sm;
-	}
+    body, html {
+        font-size: $font-size-base-sm;
+    }
 }

@@ -10,14 +10,15 @@
         top: 2rem;
         right: 1rem;
 
+        &>li>a{
+            border: 1px solid rgba(0,0,0,0.2);
+        }
+        
         &>li.active>a {
             background-color: $color-brand;
             color: $color-text-primary;
         }
 
-        &>li>a{
-            border: 1px solid rgba(0,0,0,0.2);
-        }
     }
 
     .tab-content {

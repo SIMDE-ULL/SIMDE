@@ -26,7 +26,7 @@ let i18n = _i18n
         format: function (value, format, lng) {
             if (format === 'uppercase') {
                 return value.toUpperCase();
-            };
+            }
             return value;
         }
     }

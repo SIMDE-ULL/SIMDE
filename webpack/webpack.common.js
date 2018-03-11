@@ -18,7 +18,9 @@ module.exports = function (options) {
                   test: /\.ts$/,
                   enforce: 'pre',
                   loader: 'tslint-loader',
-                  options: { /* Loader options go here */ }
+                  // options: { 
+                  //       typeCheck: true
+                  // }
             },
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
             { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },

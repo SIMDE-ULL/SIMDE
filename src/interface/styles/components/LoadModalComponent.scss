@@ -7,16 +7,16 @@
         height: 25rem;
         font-size: .875rem;
         font-family: Arial;
-     }
+    }
      
-     .btn.btn-primary {
+    .btn.btn-primary {
         background: $color-brand;
-     }
+    }
 
-     &-footer {
-         display: flex;
-         justify-content: space-between;
-     }
+    &-footer {
+        display: flex;
+        justify-content: space-between;
+    }
 
     &-actions {
         flex: 1 0 auto;

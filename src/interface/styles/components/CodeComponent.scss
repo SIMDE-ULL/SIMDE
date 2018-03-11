@@ -1,13 +1,14 @@
 .smd-code {
 
+    .smd-table_cell {
+        width: 20%;
+    }
+    
     .smd-table_row {
         position: relative;
         .smd-table_cell:first-child {
             padding-left:1rem;
         }
-    }
-    .smd-table_cell {
-        width: 20%;
     }
 }
 
@@ -28,14 +29,14 @@
 }
 
 .blue {
-   background: #019DEA;
+    background: #019DEA;
 }
 .green {
-   background: #A0C55F;
+    background: #A0C55F;
 }
 .yellow {
-   background: #FFD216;
+    background: #FFD216;
 } 
 .pink {
-   background: pink;
+    background: pink;
 }

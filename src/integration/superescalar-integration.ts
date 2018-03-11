@@ -216,8 +216,8 @@ export class SuperescalarIntegration extends MachineIntegration {
             }
             return reserveStationEntry;
         }));
-        this.superescalar.functionalUnit = this.superescalar.functionalUnit.map( functionalUnit => functionalUnit.map( fu => {
-            fu.flow = fu.flow.map( instruction => {
+        this.superescalar.functionalUnit = this.superescalar.functionalUnit.map(functionalUnit => functionalUnit.map(fu => {
+            fu.flow = fu.flow.map(instruction => {
                 if (instruction && instruction.id === instructionId) {
                     instruction.color = color.hex;
                 }
@@ -324,7 +324,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     private calculateBatchStatistics(results: number[]) {
-        const average = (results.reduce( (a,b) => a + b ) / results.length);
+        const average = (results.reduce((a,b) => a + b) / results.length);
         return {
             replications:  this.replications,
             average: average.toFixed(2),

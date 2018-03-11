@@ -5,6 +5,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const ENV = 'dev';
 
 
@@ -28,6 +29,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             }, {
                         reload: true
                   }),
+            new StyleLintPlugin(),
             new HtmlWebpackPlugin({
                   title: 'Sinde DEMO',
                   template: 'src/index.html'
