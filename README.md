@@ -7,28 +7,29 @@
 
 ## What is SIMDE?
 
-SIMDE is a simulator for supporting teaching of ILP (Instruction Level Parallelism) Architectures. This simulator is a visual representation of a Superecalar machine execution and the students are able to see how the instructions move through the multiple stages of the machine. 
+SIMDE is a simulator for supporting teaching of [ILP (Instruction Level Parallelism)](https://en.wikipedia.org/wiki/Instruction-level_parallelism) Architectures. 
+
+This simulator is a visual representation of a Superecalar machine execution and the students are able to see how the instructions move through the multiple stages of the pipeline. 
 
 This make easier to learn concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the reorderbuffer.
 
 ## Technologies
 
-SIMDE has been built using modern web technologies such as Typescript, React, Sass and Webpack.
+SIMDE is powered by Typescript, React, Redux, Sass and Webpack.
+
+## How to use
+
+[Go to the project website and start learning](https://etsiiull.github.io/SIMDE/)
+
+## Troubling?
+
+If you have any doubt you should check [the official docs](https://etsiiull.gitbooks.io/simde/).
 
 ## License
 
 The project has been released under GPLv3 License.
 
-## Live DEMO
+---
 
-[Check the project live](https://etsiiull.github.io/SIMDE/)
-
-## Docs
-
-If you have any doubt you should check the official docs [here](https://etsiiull.gitbooks.io/simde/).
-
-## Author
-
-This project has been rewrite from scratch by me using the original simulator made by [Iván Castilla Rodríguez](https://github.com/icasrod).
-
-All credit for the modeling and the core design should go to him.
+> [@adrianabreu](https://github.com/adrianabreu) &nbsp;&middot;&nbsp;
+> [@icasrod](https://twitter.com/icasrod)
