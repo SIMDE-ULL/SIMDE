@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Tabs, Tab } from "react-bootstrap";
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 import { Superescalar } from "../core/Superescalar/Superescalar";
 import { t } from 'i18next';
@@ -19,35 +20,49 @@ import { translate } from "react-i18next";
 import BatchModalComponent from "./components/modal/BatchModalComponent";
 import BatchResultsModalComponent from "./components/modal/BatchResultsModalComponent";
 
-class App extends React.Component<any, any> {
-   constructor(props: Superescalar) {
-      super(props);
-  }
 
+class App extends React.Component<any, any> {
    render() {
       return (
-        <div className='smd'>
-            <div className='navigation-bars'>
-                <FileBarComponent />
-                <AccessBarComponent />
-            </div>
-            <Tabs defaultActiveKey={1} id='working-area-tabs'>
-                <Tab eventKey={1} title={t('accessBar.superescalar')}>
-                    <GeneralTabComponent />
-                </Tab>
-                <Tab eventKey={2} title={t('accessBar.memReg')}>
-                    <RegisterTabComponent />
-                </Tab>
-            </Tabs>
-            <LoadModalComponent />
-            <SuperescalarConfigModalComponent />
-            <OptionsModalComponent />
-            <AutorModalComponent />
-            <BatchModalComponent />
-            <BatchResultsModalComponent />
-        </div>
+          <Structure />
      );
    }
 }
+
+const Structure = () => (
+  <Router>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">Superescalar</Link>
+        </li>
+      </ul>
+    </div>
+    <Route ecaxt path="/" component={Superescalares} />
+  </Router>
+);
+
+const Superescalares = () => (
+  <div className='smd'>
+      <div className='navigation-bars'>
+          <FileBarComponent />
+          <AccessBarComponent />
+      </div>
+      <Tabs defaultActiveKey={1} id='working-area-tabs'>
+          <Tab eventKey={1} title={t('accessBar.superescalar')}>
+              <GeneralTabComponent />
+          </Tab>
+          <Tab eventKey={2} title={t('accessBar.memReg')}>
+              <RegisterTabComponent />
+          </Tab>
+      </Tabs>
+      <LoadModalComponent />
+      <SuperescalarConfigModalComponent />
+      <OptionsModalComponent />
+      <AutorModalComponent />
+      <BatchModalComponent />
+      <BatchResultsModalComponent />
+  </div>
+);
 
 export default translate('common', { wait: true })(App);
