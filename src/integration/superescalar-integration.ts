@@ -274,6 +274,33 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
     }
 
+    setMemory = (data: number[]) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            this.superescalar.memory.setDatum(i, data[i]);
+        }
+    }
+
+    setFpr = (data: number[]) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            this.superescalar.fpr.setContent(i, data[i], false);
+        }
+    }
+
+    setGpr = (data: number[]) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            this.superescalar.fpr.setContent(i, data[i], false);
+        }
+    }
+
     executionLoop = (speed) => {
         if (!this.stopCondition) {
             setTimeout(() => {

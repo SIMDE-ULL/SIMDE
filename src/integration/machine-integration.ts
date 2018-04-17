@@ -15,6 +15,10 @@ export abstract class MachineIntegration {
 
     abstract setBatchMode: (...config) => void;
 
+    abstract setMemory: (data: number[]) => void;
+    abstract setFpr: (data: number[]) => void;
+    abstract setGpr: (data: number[]) => void;
+
     calculateSpeed() {
         let speed = parseInt((document.getElementById('velocidad')as HTMLInputElement).value, 10);
 

@@ -11,6 +11,7 @@ import GeneralTabComponent from "./components/tab/GeneralTabComponent";
 import RegisterTabComponent from './components/tab/RegistersTabComponent';
 
 import LoadModalComponent from "./components/modal/LoadModalComponent";
+import LoadContentModalComponent from "./components/modal/LoadContentModalComponent";
 import SuperescalarConfigModalComponent from "./components/modal/SuperescalarConfigModalComponent";
 import OptionsModalComponent from "./components/modal/OptionsModalComponent";
 import AutorModalComponent from "./components/modal/AutorModalComponent";
@@ -40,6 +41,7 @@ class App extends React.Component<any, any> {
                 </Tab>
             </Tabs>
             <LoadModalComponent />
+            <LoadContentModalComponent />
             <SuperescalarConfigModalComponent />
             <OptionsModalComponent />
             <AutorModalComponent />
