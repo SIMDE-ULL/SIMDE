@@ -7,7 +7,8 @@ import * as FileReaderInput from 'react-file-reader-input';
 
 import { bindActionCreators } from 'redux';
 import { toggleLoadContentModal } from '../../actions/modals';
-import { SuperescalarIntegration } from '../../../integration/superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
+import { ContentIntegration} from '../../../integration/content-integration';
 
 class LoadContentModalComponent extends React.Component<any, any> {
 
@@ -15,6 +16,7 @@ class LoadContentModalComponent extends React.Component<any, any> {
             super(props);
 
             this.close = this.close.bind(this);
+            this.loadContent = this.loadContent.bind(this);
       }
 
       close() {
@@ -32,8 +34,12 @@ class LoadContentModalComponent extends React.Component<any, any> {
       loadContent() {
             try {
                 const content = (document.getElementById('contentInput') as HTMLInputElement).value;
-                this.setState({error: ''})
-            //     SuperescalarIntegration.loadContent(content);
+                this.setState({error: ''});
+                const contentIntegration = new ContentIntegration(content);
+                SuperescalarIntegration.setFpr(contentIntegration.FPRContent);
+                SuperescalarIntegration.setGpr(contentIntegration.GPRContent);
+                SuperescalarIntegration.setMemory(contentIntegration.MEMContent);
+                SuperescalarIntegration.dispatchAllSuperescalarActions();
                 this.close();
             } catch (error) {
                 this.setState({error: error.message});
