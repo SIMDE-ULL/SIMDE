@@ -95,7 +95,8 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     superExe = () => {
-        this.superescalar.init(true);
+        // TODO puedo poner esto a false y ya?
+        this.superescalar.init(false);
     }
 
     stepForward = () => {

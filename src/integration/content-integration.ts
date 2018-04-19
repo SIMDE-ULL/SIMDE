@@ -25,7 +25,7 @@ export class ContentIntegration {
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].match(/^#\w+/)) {
                 this.parseContent(lines[i]);
-            } else if (lines[i].match(/^\[\d+\]/)){
+            } else if (lines[i].match(/^\[\d+\]/)) {
                 this.parseLine(lines[i]);
             }
         }
@@ -48,7 +48,7 @@ export class ContentIntegration {
     }
 
     parseLine(line: string) {
-        if  (this.currentContent == '') {
+        if (this.currentContent === '') {
             throw new Error('The data has no content (MEM, REG) associated');
         }
         const startPosition = +line.match(/\[(\d+)\]/)[1];
