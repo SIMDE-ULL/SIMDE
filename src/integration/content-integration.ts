@@ -25,7 +25,7 @@ export class ContentIntegration {
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].match(/^#\w+/)) {
                 this.parseContent(lines[i]);
-            } else {
+            } else if (lines[i].match(/^\[\d+\]/)){
                 this.parseLine(lines[i]);
             }
         }
@@ -48,10 +48,17 @@ export class ContentIntegration {
     }
 
     parseLine(line: string) {
+        if  (this.currentContent == '') {
+            throw new Error('The data has no content (MEM, REG) associated');
+        }
         const startPosition = +line.match(/\[(\d+)\]/)[1];
+
         let values: string[] | number[] = line.split(' ');
         values.shift();
+
+        // Not using the second value
         values.shift();
+
         values = values.map(v => +v);
         for (let i = 0; i < values.length; i++) {
             this[this.currentContent][startPosition + i] = values[i];
