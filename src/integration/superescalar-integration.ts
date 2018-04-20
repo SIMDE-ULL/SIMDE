@@ -94,9 +94,8 @@ export class SuperescalarIntegration extends MachineIntegration {
         );
     }
 
-    superExe = () => {
-        // TODO puedo poner esto a false y ya?
-        this.superescalar.init(false);
+    superExe = (reset: boolean = true) => {
+        this.superescalar.init(reset);
     }
 
     stepForward = () => {
@@ -111,9 +110,6 @@ export class SuperescalarIntegration extends MachineIntegration {
         } else {
             if (this.finishedExecution) {
                 this.finishedExecution = false;
-                this.resetMachine();
-            }
-            if (this.superescalar.status.cycle === 0) {
                 let code = Object.assign(new Code(), this.superescalar.code);
                 this.superExe();
                 this.superescalar.code = code;
@@ -147,10 +143,6 @@ export class SuperescalarIntegration extends MachineIntegration {
         // Check if the execution has finished
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            this.resetMachine();
-        }
-
-        if (this.superescalar.status.cycle === 0) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
@@ -345,7 +337,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private resetMachine() {
         let code = Object.assign(new Code(), this.superescalar.code);
-        this.superExe();
+        this.superExe(true);
         this.superescalar.code = code;
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
