@@ -28,6 +28,10 @@ export class ContentIntegration {
                 this.parseContent(lines[i]);
             } else if (lines[i].match(/^\[\d+\]/)) {
                 this.parseLine(lines[i]);
+            } else if (lines[i].match(/^\/\//)) {
+                continue;
+            } else {
+                throw new Error(`Unexpected line format at line ${i+1}`);
             }
         }
     }
@@ -69,7 +73,6 @@ export class ContentIntegration {
     }
 
     private validateInnerBounds(currentContent: string, startPosition: number, valuesLength: number) {
-        console.log(currentContent, startPosition, valuesLength);
         if (currentContent == 'MEMContent' && startPosition + valuesLength >= MEMORY_SIZE || 
             currentContent != 'MEMContent' && startPosition + valuesLength >= MACHINE_REGISTER_SIZE) {
             throw new Error('Setted data out of bounds');
