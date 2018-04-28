@@ -1,4 +1,5 @@
 import { start } from 'repl';
+import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
 
 export class ContentIntegration {
 
@@ -56,12 +57,22 @@ export class ContentIntegration {
         let values: string[] | number[] = line.split(' ');
         values.shift();
 
-        // Not using the second value
+        // Not parsing the second value at the moment
         values.shift();
+
+        this.validateInnerBounds(this.currentContent, startPosition, values.length);
 
         values = values.map(v => +v);
         for (let i = 0; i < values.length; i++) {
             this[this.currentContent][startPosition + i] = values[i];
+        }
+    }
+
+    private validateInnerBounds(currentContent: string, startPosition: number, valuesLength: number) {
+        console.log(currentContent, startPosition, valuesLength);
+        if (currentContent == 'MEMContent' && startPosition + valuesLength >= MEMORY_SIZE || 
+            currentContent != 'MEMContent' && startPosition + valuesLength >= MACHINE_REGISTER_SIZE) {
+            throw new Error('Setted data out of bounds');
         }
     }
 }

@@ -17,6 +17,11 @@ const input3 = `
 [33] 5 6 7 8 9 10 
 `
 
+const input4= `
+#MEM
+[1023] 2 6 7
+`
+
 
 test('Current content is selected properly', t => {
     let contentIntegration = new ContentIntegration(input);
@@ -42,4 +47,10 @@ test('Fills proper data', t => {
     t.is(contentIntegration.MEMContent[35], 8 , 'Should be 8 at position 35');
     t.is(contentIntegration.MEMContent[36], 9 , 'Should be 9 at position 36');
     t.is(contentIntegration.MEMContent[37], 10 , 'Should be 10 at position 37');
+});
+
+test('Throws error when exceeding bounds', t=> {
+    debugger; 
+    let error = t.throws(() => new ContentIntegration(input4));
+    t.is(error.message, 'Setted data out of bounds');
 });
