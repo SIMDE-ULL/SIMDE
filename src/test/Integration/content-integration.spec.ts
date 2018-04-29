@@ -22,10 +22,10 @@ const input4= `
 [1023] 2 6 7
 `
 
-const input5= `
-#MEM
-1023 2 6 7
-`
+// const input5= `
+// #MEM
+// 1023 2 6 7
+// `
 
 
 test('Current content is selected properly', t => {
@@ -59,7 +59,7 @@ test('Throws error when exceeding bounds', t=> {
     t.is(error.message, 'Setted data out of bounds');
 });
 
-test ('Throws error when memory address line isnt wrapped in brackets', t => {
-    let error = t.throws(() => new ContentIntegration(input5));
-    t.is(error.message, 'Unexpected line format at line 1');
-});
+// test ('Throws error when memory address line isnt wrapped in brackets', t => {
+//     let error = t.throws(() => new ContentIntegration(input5));
+//     t.is(error.message, 'Unexpected line format at line 1');
+// });
