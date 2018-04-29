@@ -28,10 +28,6 @@ export class ContentIntegration {
                 this.parseContent(lines[i]);
             } else if (lines[i].match(/^\[\d+\]/)) {
                 this.parseLine(lines[i]);
-            } else if (lines[i].match(/^\/\//)) {
-                continue;
-            } else {
-                throw new Error(`Unexpected line format at line ${i + 1}`);
             }
         }
     }
