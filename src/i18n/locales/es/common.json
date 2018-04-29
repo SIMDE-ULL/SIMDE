@@ -11,7 +11,8 @@
         "config": {
             "name": "Opciones",
             "superescalar": "Configurar Máquina Superescalar",
-            "options": "Opciones"
+            "options": "Opciones",
+            "content": "Cargar contenido Memoria - Registros"
         },
         "execute": {
             "name": "Ejecutar",
@@ -44,6 +45,10 @@
     },
     "loadModal": {
         "title": "Carga de código",
+        "load": "Cargar"
+    },
+    "loadContentModal": {
+        "title": "Carga de contenido Memoria - Registros",
         "load": "Cargar"
     },
     "intervalModal": {

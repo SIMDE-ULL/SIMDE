@@ -18,6 +18,7 @@ import {
     TOGGLE_AUTHOR_MODAL,
     TOGGLE_OPTIONS_MODAL,
     TOGGLE_SUPER_CONFIG_MODAL,
+    TOGGLE_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
     DISPLAY_BATCH_RESULTS,
     CLEAR_BATCH_RESULTS
@@ -89,6 +90,7 @@ export const initialState = {
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,
     isSuperConfigModalOpen: false,
+    isLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
     batchResults: {}
@@ -188,6 +190,11 @@ export function SuperescalarReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 isBatchModalOpen: action.value
+            });
+        case TOGGLE_LOAD_CONTENT_MODAL:
+            return (state = {
+                ...state,
+                isLoadContentModalOpen: action.value
             });
         case VIEW_BASIC_BLOCKS:
             return (state = {
