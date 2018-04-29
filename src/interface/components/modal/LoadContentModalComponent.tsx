@@ -36,6 +36,7 @@ class LoadContentModalComponent extends React.Component<any, any> {
                 const content = (document.getElementById('contentInput') as HTMLInputElement).value;
                 this.setState({error: ''});
                 const contentIntegration = new ContentIntegration(content);
+                SuperescalarIntegration.contentIntegration = contentIntegration;
                 SuperescalarIntegration.setFpr(contentIntegration.FPRContent);
                 SuperescalarIntegration.setGpr(contentIntegration.GPRContent);
                 SuperescalarIntegration.setMemory(contentIntegration.MEMContent);

@@ -31,7 +31,7 @@ export class ContentIntegration {
             } else if (lines[i].match(/^\/\//)) {
                 continue;
             } else {
-                throw new Error(`Unexpected line format at line ${i+1}`);
+                throw new Error(`Unexpected line format at line ${i + 1}`);
             }
         }
     }
@@ -73,8 +73,8 @@ export class ContentIntegration {
     }
 
     private validateInnerBounds(currentContent: string, startPosition: number, valuesLength: number) {
-        if (currentContent == 'MEMContent' && startPosition + valuesLength >= MEMORY_SIZE || 
-            currentContent != 'MEMContent' && startPosition + valuesLength >= MACHINE_REGISTER_SIZE) {
+        if (currentContent === 'MEMContent' && startPosition + valuesLength >= MEMORY_SIZE ||
+            currentContent !== 'MEMContent' && startPosition + valuesLength >= MACHINE_REGISTER_SIZE) {
             throw new Error('Setted data out of bounds');
         }
     }

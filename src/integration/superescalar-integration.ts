@@ -58,27 +58,22 @@ export class SuperescalarIntegration extends MachineIntegration {
                             data: this.superescalar.reserveStationEntry[0],
                             size: this.superescalar.getReserveStationSize(0)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[1],
                             size: this.superescalar.getReserveStationSize(1)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[2],
                             size: this.superescalar.getReserveStationSize(2)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[3],
                             size: this.superescalar.getReserveStationSize(3)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[4],
                             size: this.superescalar.getReserveStationSize(4)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[5],
                             size: this.superescalar.getReserveStationSize(5)
@@ -171,6 +166,13 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.superescalar.code = code;
             this.superescalar.memory.failProbability = this.cacheFailPercentage;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
+
+            // Load memory content
+            if (this.contentIntegration) {
+                this.setFpr(this.contentIntegration.FPRContent);
+                this.setGpr(this.contentIntegration.GPRContent);
+                this.setMemory(this.contentIntegration.MEMContent);
+            }
 
             // tslint:disable-next-line:no-empty
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }

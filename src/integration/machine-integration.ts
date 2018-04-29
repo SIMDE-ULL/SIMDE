@@ -1,4 +1,9 @@
+import { ContentIntegration } from './content-integration';
+
 export abstract class MachineIntegration {
+
+    public contentIntegration: ContentIntegration;
+
     abstract loadCode: (code: any) => void;
 
     abstract makeBatchExecution: () => void;
