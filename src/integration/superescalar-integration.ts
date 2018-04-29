@@ -108,6 +108,13 @@ export class SuperescalarIntegration extends MachineIntegration {
                 let code = Object.assign(new Code(), this.superescalar.code);
                 this.superExe();
                 this.superescalar.code = code;
+
+                // Load memory content
+                if (this.contentIntegration) {
+                    this.setFpr(this.contentIntegration.FPRContent);
+                    this.setGpr(this.contentIntegration.GPRContent);
+                    this.setMemory(this.contentIntegration.MEMContent);
+                }
             }
             let machineStatus = this.superescalar.tic();
             this.dispatchAllSuperescalarActions();
@@ -141,6 +148,13 @@ export class SuperescalarIntegration extends MachineIntegration {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
+
+            // Load memory content
+            if (this.contentIntegration) {
+                this.setFpr(this.contentIntegration.FPRContent);
+                this.setGpr(this.contentIntegration.GPRContent);
+                this.setMemory(this.contentIntegration.MEMContent);
+            }
         }
 
         if (speed) {
