@@ -355,6 +355,13 @@ export class SuperescalarIntegration extends MachineIntegration {
         let code = Object.assign(new Code(), this.superescalar.code);
         this.superExe(true);
         this.superescalar.code = code;
+        
+        // Reload memory content
+        if (this.contentIntegration) {
+            this.setFpr(this.contentIntegration.FPRContent);
+            this.setGpr(this.contentIntegration.GPRContent);
+            this.setMemory(this.contentIntegration.MEMContent);
+        }
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
     }
