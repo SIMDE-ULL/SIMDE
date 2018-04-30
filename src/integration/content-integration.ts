@@ -57,9 +57,6 @@ export class ContentIntegration {
         let values: string[] | number[] = line.split(' ');
         values.shift();
 
-        // Not parsing the second value at the moment
-        values.shift();
-
         this.validateInnerBounds(this.currentContent, startPosition, values.length);
 
         values = values.map(v => +v);
