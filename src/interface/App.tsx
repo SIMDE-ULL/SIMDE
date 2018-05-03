@@ -20,26 +20,25 @@ import { translate } from "react-i18next";
 import BatchModalComponent from "./components/modal/BatchModalComponent";
 import BatchResultsModalComponent from "./components/modal/BatchResultsModalComponent";
 
+import landingpage from "./components/landingpage/LandingPageComponent";
+import projectpage from "./components/landingpage/ProjectPageComponent";
 
 class App extends React.Component<any, any> {
    render() {
       return (
-          <Structure />
+          <Router>
+              <Structure />
+          </Router>
      );
    }
 }
 
 const Structure = () => (
-  <Router>
-    <div>
-      <ul>
-        <li>
-          <Link to="/">Superescalar</Link>
-        </li>
-      </ul>
+    <div className="pagebody">
+      <Route exact path="/" component={landingpage} />
+      <Route path="/Superescalares" component={Superescalares} />
+      <Route path="/Project" component={projectpage} />
     </div>
-    <Route ecaxt path="/" component={Superescalares} />
-  </Router>
 );
 
 const Superescalares = () => (
