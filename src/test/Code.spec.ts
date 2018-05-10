@@ -7,6 +7,15 @@ ADDI	R2 R0 #50
 ADD     R3 R0 R2
 `;
 
+const inputWithComments = 
+`// This is a comment
+// And just another comment
+2
+ADDI	R2 R0 #50
+ADD     R3 R0 R2
+`;
+
+
 const input2 = `1
 LF F0 (R4)
 `;
@@ -27,6 +36,12 @@ test('Lines are being parsed properly', t => {
 	code = new Code();
 	code.load(input2);
 	t.deepEqual(1, code.lines, 'Lines message should have been 1');
+});
+
+test('Commentaries on top should not affect the parsing', t => {
+	let code: Code = new Code();
+	code.load(inputWithComments);
+	t.deepEqual(2, code.lines, 'Lines message should have been 2');
 });
 
 test('Parsing operand errors are being thrown', t => {
