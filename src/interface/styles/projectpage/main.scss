@@ -1,0 +1,36 @@
+.page {
+    height: 100%;
+}
+
+.pageproject {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100% - 50px - 58px);
+    & > h1 {
+        margin-top: 1em;
+        text-align: center;
+        font-size: 60px;
+    }
+    & > h2 {
+        margin-top: 1.5em;
+        text-align: center;
+        font-size: 50px;
+    }
+    & > p {
+        text-align: center;
+        margin-top: 1em;
+    }
+    & > a {
+        text-align: center !important;
+        margin-top: 1.5em;
+    }
+}
+
+.simdegif {
+    margin-top: 3em;
+    & > img {
+        box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
+        border-radius: 4px 4px 4px 4px;
+        margin: auto;
+    }
+}

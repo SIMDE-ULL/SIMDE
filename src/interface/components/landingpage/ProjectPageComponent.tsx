@@ -13,7 +13,7 @@ const projectpage = (props) => (
      </div>
      <div className="pageproject">
        <h1>SIMDEWeb</h1>
-       <div className="simdegif"><img alt="simdegif" src="https://i.imgur.com/50m9kzv.gif"></img></div>
+       <div className="simdegif"><img className="img-responsive" alt="simdegif" src="https://i.imgur.com/50m9kzv.gif"></img></div>
        <h2>¿Qué es SIMDEWeb?</h2>
        <p>SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).</p>
        <p>Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.</p>
@@ -21,9 +21,9 @@ const projectpage = (props) => (
        <h2>Tecnologías</h2>
        <p>SIMDE esta desarrollado con TypeScript, React, Redux, Sass y Webpack.</p>
        <h2>¿Cómo se usa?</h2>
-       <Link to="/superescalares"> Prueba y aprende! </Link>
+       <Link to="/superescalares"><p>¡Prueba y aprende!</p></Link>
        <h2>¿Problemas?</h2>
-       <a href="https://etsiiull.gitbooks.io/simde/"> Puedes consultar nuestra documentación </a>
+       <a href="https://etsiiull.gitbooks.io/simde/"><p>Puedes consultar nuestra documentación</p></a>
      </div>
      <nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
        <div className="licence"><a>@liberado bajo licencia GPLv3</a></div>

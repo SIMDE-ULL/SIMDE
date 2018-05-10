@@ -12,23 +12,23 @@ const landingpage = (props) => (
         <li><Link to="/Project">Proyecto</Link></li>
       </ul>
      </div>
-     <div className="jumbotron">
-       <div className="container">
-         <h1>SIMDEWeb</h1>
-         <p>Mucho más que un simulador...</p>
-         <p><a className="btn btn-primary btn-lg" href="#" role="button">Leer más</a></p>
-       </div>
-     </div>
      <div className="pagecontent">
        <div className="row">
-        <div className=" architecture col-3 col-sm-8 col-md-10 col-lg-12">
+        <div className=" architecture col-3 col-sm-12 col-md-12 col-lg-12">
+          <div className="jumbotron">
+            <div className="container">
+              <h1>SIMDEWeb</h1>
+              <p>Mucho más que un simulador...</p>
+              <p><Link className="btn btn-primary btn-lg" to="/Project">Leer más</Link></p>
+            </div>
+          </div>
           <div className="thumbnail">
             <img src="" alt=""></img>
             <div className="caption">
               <h3>Superescalar</h3>
               <p>Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!</p>
               <div className="pagebtngroup">
-                <Link className="pagebtn btn btn-primary" to="/superescalares">Ir</Link><Link className="pagebtn btn btn-default" to="/">Leer más</Link>
+                <Link className="btn btn-primary" to="/superescalares">Ir</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">Leer más</a>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@ const landingpage = (props) => (
               <h3>VLIW</h3>
               <p>Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!</p>
               <div className="pagebtngroup">
-                <Link className="pagebtn btn btn-primary" to="/">Ir</Link><Link className="pagebtn btn btn-default" to="/">Leer más</Link>
+                <Link className="btn btn-primary" to="/">Ir</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">Leer más</a>
               </div>
             </div>
           </div>
