@@ -23,10 +23,7 @@ export class Lexer {
 
         this._lexer = new LexerJs();
 
-        this._lexer.addRule(/^[0-9]+/i, function (lexeme) {
-            this.yytext = lexeme;
-            return LEX.LINESNUMBER;
-        }).addRule(/[Ff][0-9]+/i, function (lexeme) {
+        this._lexer.addRule(/[Ff][0-9]+/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.REGFP;
         }).addRule(/[Rr][0-9]+/i, function (lexeme) {
@@ -44,13 +41,14 @@ export class Lexer {
         }).addRule(/[+-]?[0-9]*\([Rr][0-9]+\)/i, function (lexeme) {
             this.yytext = lexeme;
             return LEX.ADDRESS;
-        }).addRule(/^[0-9]+/i, function (lexeme) {
-            return;
+        }).addRule(/[0-9]+/i, function (lexeme) {
+            this.yytext = lexeme;
+            return LEX.LINESNUMBER;
         }).addRule(/[ \t\v\f]+/i, function (lexeme) {
             return;
-        }).addRule(/(.|\n)/i, function (lexeme) {
-            return;
         }).addRule(/\/\/.*/, function (lexeme) {
+            return;
+        }).addRule(/(.|\n)/i, function (lexeme) {
             return;
         });
     }
