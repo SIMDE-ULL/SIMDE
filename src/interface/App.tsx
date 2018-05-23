@@ -37,6 +37,7 @@ const Structure = () => (
     <div className="pagebody">
       <Route exact path="/" component={landingpage} />
       <Route path="/Superescalares" component={Superescalares} />
+      <Route path="/VLIW" component={VeryLong} />
       <Route path="/Project" component={projectpage} />
     </div>
 );
@@ -61,6 +62,15 @@ const Superescalares = () => (
       <AutorModalComponent />
       <BatchModalComponent />
       <BatchResultsModalComponent />
+  </div>
+);
+
+const VeryLong = () => (
+  <div className='smd'>
+      <div className='navigation-bars'>
+          <FileBarComponent />
+          <AccessBarComponent />
+      </div>
   </div>
 );
 

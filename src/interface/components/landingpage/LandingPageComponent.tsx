@@ -38,7 +38,7 @@ const landingpage = (props) => (
               <h3>VLIW</h3>
               <p>Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!</p>
               <div className="pagebtngroup">
-                <Link className="btn btn-primary" to="/">Ir</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">Leer más</a>
+                <Link className="btn btn-primary" to="/VLIW">Ir</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">Leer más</a>
               </div>
             </div>
           </div>
