@@ -7,22 +7,26 @@ export class LargeInstruction {
     private _breakPoint: boolean;
 
     constructor() {
+        this._operations = [];
         this._breakPoint = false;
     }
 
-    public get operation(index: number): TOperacionVLIW {
+    public getOperation(index: number): TOperacionVLIW {
+        if(index > this._operations.length) {
+            throw new Error("Index out of bounds at operations");
+        }
         return this._operations[index];
     }
 
-    public get nOper(): number {
-        return this._operations.length();
+    public getNOper(): number {
+        return this._operations.length;
     }
 
-    public set breakPoint(value: boolean) {
+    public setBreakPoint(value: boolean) {
         this._breakPoint = value;
     }
 
-    public get breakPoint(): boolean {
+    public getBreakPoint(): boolean {
         return this._breakPoint;
     }
 

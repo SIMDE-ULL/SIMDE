@@ -15,13 +15,13 @@ export class TOperacionVLIW extends Instruction {
         this._predFalse = 0;
     }
 
-    TOperacionVLIW(oper : TOperacionVLIW) {
-        super(oper);
-        this._tipoUF = oper._tipoUF;
-        this._numUF = oper._numUF;
-        this._pred = oper._pred;
-        this._predTrue = oper._predTrue;
-        this._predFalse = oper_predFalse;
+    TOperacionVLIW(operation : TOperacionVLIW) {
+        super(operation);
+        this._tipoUF = operation._tipoUF;
+        this._numUF = operation._numUF;
+        this._pred = operation._pred;
+        this._predTrue = operation._predTrue;
+        this._predFalse = operation._predFalse;
     }
 
     TOperacionVLIW(inst : TInstruction , t: TTipoUF, number n) {
@@ -34,44 +34,44 @@ export class TOperacionVLIW extends Instruction {
     }
 
     //Getters
-    public get tipoUF(): TTipoUF {
+    public getTipoUF(): TTipoUF {
         return _tipoUF;
     }
 
-    public get numUF(): number {
+    public getNumUF(): number {
         return _numUF;
     }
 
-    public get pred(): number {
+    public getPred(): number {
         return _pred;
     }
 
-    public get predTrue(): number {
+    public getPredTrue(): number {
         return _predTrue;
     }
 
-    public get predFalse(): number {
+    public getPredFalse(): number {
         return _predFalse;
     }
 
     // Setters
-    public set tipoUF(t: TTipoUF) {
+    public setTipoUF(t: TTipoUF) {
         this._tipoUF = t;
     }
 
-    public set numUF(n: number) {
+    public setNumUF(n: number) {
         this._numUF = n;
     }
 
-    public set pred(p: number) {
+    public setPred(p: number) {
         this._pred = p;
     }
 
-    public set predTrue(p: number) {
+    public setPredTrue(p: number) {
         this._predTrue = p;
     }
 
-    public set predFalse() {
+    public setPredFalse() {
         this._predFalse = p;
     }
 
