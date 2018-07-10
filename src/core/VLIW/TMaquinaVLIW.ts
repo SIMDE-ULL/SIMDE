@@ -4,19 +4,14 @@ import { Opcodes } from '../Common/Opcodes';
 import { TCodigoVLIW } from './TCodigoVLIW';
 import { LargeInstruction } from './LargeInstruction';
 import { FunctionalUnit } from '../Common/FunctionalUnit';
+import { TOperacionVLIW } from './TOperacionVLIW';
 
 export class TMaquinaVLIW extends Machine {
-
-/* typedef struct {
-    int lat;    // Latencia m�xima de ese registro
-    int reg;    // N�mero del registro
-} TChequeo;
-
+/*
 // Definici�n de valores de error
 typedef enum {VLIW_PCOUTOFRANGE = -3, VLIW_ENDEXE = -2, VLIW_BREAKPOINT = -1, VLIW_OK = 0} TVLIWStatus;
 typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_ERRPRED = -1, VLIW_ERRNO = 0} TVLIWError;
 */
-
   const static NPR = 64;
   private _predR[NPR]: boolean;
   private _NaTGP[NGP]: boolean;
@@ -27,12 +22,13 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
       super();
       //register int i
       _code = new TCodigoVLIW();
-      /*
-      memset(predR, false, sizeof(bool) * NPR);
-      predR[0] = true;
-      memset(NaTGP, false, sizeof(bool) * NGP);
-      memset(NaTFP, false, sizeof(bool) * NFP);
-      */
+      this._predR = new Array(Machine.NPR);  // memset(predR, false, sizeof(bool) * NPR);
+      this._predR.fill(-1);
+      this._predR[0] = true;
+      this._NaTGP = new Array(Machine.NGP);
+      this._NaTGP.fill(-1);
+      this._NaTFP = new Array(Machine.NFP);
+      this._NaTFP.fill(-1);
   }
 
 
@@ -41,28 +37,28 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
       switch(operation.opcode) {
           case Opcodes.ADD:
           case Opcodes.MULT:
-            result = _NaTGP[operation->getOperand(1)] || _NaTGP[operation->getOperand(2)];
+            result = _NaTGP[operation.getOperand(1)] || _NaTGP[operation.getOperand(2)];
             break;
         case Opcodes.ADDI:
-            result = _NaTGP[operation->getOperand(1)];
+            result = _NaTGP[operation.getOperand(1)];
             break;
         case Opcodes.ADDF:
         case Opcodes.MULTF:
-            result = _NaTFP[operation->getOperand(1)] || _NaTFP[operation->getOperand(2)];
+            result = _NaTFP[operation.getOperand(1)] || _NaTFP[operation.getOperand(2)];
             break;
         case Opcodes.SW:
-            result = _NaTGP[operation->getOperand(0)] || _NaTGP[operation->getOperand(2)];
+            result = _NaTGP[operation.getOperand(0)] || _NaTGP[operation.getOperand(2)];
             break;
         case Opcodes.SF:
-            result = _NaTFP[operation->getOperand(0)] || _NaTGP[operation->getOperand(2)];
+            result = _NaTFP[operation.getOperand(0)] || _NaTGP[operation.getOperand(2)];
             break;
         case Opcodes.LW:
         case Opcodes.LF:
-            result = _NaTGP[operation->getOperand(2)];
+            result = _NaTGP[operation.getOperand(2)];
             break;
         case Opcodes.BEQ:
         case Opcodes.BNE:
-            result = _NaTGP[operation->getOperand(0)] || _NaTGP[operation->getOperand(1)];
+            result = _NaTGP[operation.getOperand(0)] || _NaTGP[operation.getOperand(1)];
             break;
         default:
             result = true;
@@ -74,42 +70,42 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
   private runOperation(operation: TOperationVLIW, uf: FunctionalUnit) {
       switch(operation.opcode) {
         case Opcodes.ADD:
-            _gpr.setContent(operation->getOperand(0), _gpr.getContent(operation->getContent(1)) + _gpr.getContent(operation->getContent(2)), true);
+            _gpr.setContent(operation.getOperand(0), _gpr.getContent(operation.getContent(1)) + _gpr.getContent(operation.getContent(2)), true);
             break;
         case Opcodes.MULT:
-            _gpr.setContent(operation->getOperand(0), _gpr.getContent(operation->getContent(1)) * _gpr.getContent(operation->getContent(2)), true);
+            _gpr.setContent(operation.getOperand(0), _gpr.getContent(operation.getContent(1)) * _gpr.getContent(operation.getContent(2)), true);
             break;
         case Opcodes.ADDI:
-            _gpr.setContent(operation->getOperand(0), _gpr.getContent(operation->getContent(1)) + _gpr.getContent(operation->getContent(2)), true);
+            _gpr.setContent(operation.getOperand(0), _gpr.getContent(operation.getContent(1)) + _gpr.getContent(operation.getContent(2)), true);
             break;
         case Opcodes.ADDF:
-            _fpr.setContent(operation->getOperand(0), _fpr.getContent(operation->getContent(1)) + _fpr.getContent(operation->getContent(2)), true);
+            _fpr.setContent(operation.getOperand(0), _fpr.getContent(operation.getContent(1)) + _fpr.getContent(operation.getContent(2)), true);
             break;
         case Opcodes.MULTF:
-            _fpr.setContent(operation->getOperand(0), _fpr.getContent(operation->getContent(1)) * _fpr.getContent(operation->getContent(2)), true);
+            _fpr.setContent(operation.getOperand(0), _fpr.getContent(operation.getContent(1)) * _fpr.getContent(operation.getContent(2)), true);
             break;
         case Opcodes.SW:
-            _memory.setDatum(_gpr.getContent(operation->getOperand(2)) + operation->getOperand(1), _gpr.getOperand(operation->getOperand(0)));
+            _memory.setDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), _gpr.getOperand(operation.getOperand(0)));
             break;
         case Opcodes.SF:
-            _memory.setDatum(_gpr.getContent(operation->getOperand(2)) + operation->getOperand(1), _fpr.getContent(operation->getOperand(0)));
+            _memory.setDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), _fpr.getContent(operation.getOperand(0)));
             break;
         case Opcodes.LW:
             let datoI;
-            if (!memory.getDatum(_gpr.getContent(operation->getOperand(2)) + operation->getOperand(1), datoI)) {
+            if (!memory.getDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), datoI)) {
                 FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency()); //uf.setStall(latFalloMem - uf.getLatencia());
             } else {
-                _gpr.setContent(operation->getOperand(0), datoI, true);
-                _NaTGP[operation->getOperand(0)] = false;
+                _gpr.setContent(operation.getOperand(0), datoI, true);
+                _NaTGP[operation.getOperand(0)] = false;
             }
             break;
         case Opcodes.LF:
             let datoF;
-            if (!memory.getDatum(_gpr.getContent(operation->getOperand(2)) + operation->getOperand(1), datoF)) {
+            if (!memory.getDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), datoF)) {
                 FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency()); //uf.setStall(latFalloMem - uf.getLatencia());
             } else {
-                _fpr.setContent(operation->getOperand(0), datoF, true);
-                _NaTFP[operation->getOperand(0)] = false;
+                _fpr.setContent(operation.getOperand(0), datoF, true);
+                _NaTFP[operation.getOperand(0)] = false;
             }
             break;
         default:
@@ -122,120 +118,27 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
   private runJump(operation: TOperationVLIW): number {
     let newPC = this.pc(); //let newPC = PC;
     if (operation.opcode == Opcode.BEQ) {
-        if (_gpr.getContent(operation->getOperand(0)) == _gpr.getContent(operation->getOperand(1))) {
-            newPC = operation->getOperand(2);
-            _predR[operation->getPredTrue()] = true;
-            _predR[operation->getPredFalse()] = false;
+        if (_gpr.getContent(operation.getOperand(0)) == _gpr.getContent(operation.getOperand(1))) {
+            newPC = operation.getOperand(2);
+            _predR[operation.getPredTrue()] = true;
+            _predR[operation.getPredFalse()] = false;
         } else {
-            _predR[operation->getPredTrue()] = false;
-            _predR[operation->getPredFalse()] = true;
+            _predR[operation.getPredTrue()] = false;
+            _predR[operation.getPredFalse()] = true;
         }
     } else if (operation.opcode == Opcode.BNE) {
-        if (_gpr.getContent(operation->getOperand(0)) != _gpr.getContent(operation->getOperand(1))) {
-            newPC = operation->getOperand(2);
-            _predR[oper->getPredTrue()] = true;
-            _predR[oper->getPredFalse()] = false;
+        if (_gpr.getContent(operation.getOperand(0)) != _gpr.getContent(operation.getOperand(1))) {
+            newPC = operation.getOperand(2);
+            _predR[oper.getPredTrue()] = true;
+            _predR[oper.getPredFalse()] = false;
         } else {
-            _predR[oper->getPredTrue()] = false;
-            _predR[oper->getPredFalse()] = true;
+            _predR[oper.getPredTrue()] = false;
+            _predR[oper.getPredFalse()] = true;
         }
     }
     return newPC;
   }
 
-  private chkDestinoOp(operation: TOperationVLIW,/*TChequeo *chkGPR, TChequeo *chkFPR*/){
-      switch (operation.opcode) {
-          case Opcodes.ADD:
-          case Opcodes.ADDI:
-              /*if (chkGPR[operation->getOperand(0)].lat < latenciaUF[SUMAENT]) {
-                  chkGPR[oper->getOp(0)].lat = latenciaUF[SUMAENT];
-                  chkGPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.MULT:
-              /*if (chkGPR[oper->getOp(0)].lat < latenciaUF[MULTENT]) {
-                  chkGPR[oper->getOp(0)].lat = latenciaUF[MULTENT];
-                  chkGPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.ADDF:
-              /*if (chkFPR[oper->getOp(0)].lat < latenciaUF[SUMAFLOT]) {
-                  chkFPR[oper->getOp(0)].lat = latenciaUF[SUMAFLOT];
-                  chkFPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.MULTF:
-              /*if (chkFPR[oper->getOp(0)].lat < latenciaUF[MULTFLOT]) {
-                  chkFPR[oper->getOp(0)].lat = latenciaUF[MULTFLOT];
-                  chkFPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.LW:
-              /*if (chkGPR[oper->getOp(0)].lat < latenciaUF[MEM]) {
-                  chkGPR[oper->getOp(0)].lat = latenciaUF[MEM];
-                  chkGPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.LF:
-            /*  if (chkFPR[oper->getOp(0)].lat < latenciaUF[MEM]) {
-                  chkFPR[oper->getOp(0)].lat = latenciaUF[MEM];
-                  chkFPR[oper->getOp(0)].reg = oper->getId();
-              }*/
-              break;
-          case Opcodes.SW:
-          case Opcodes.SF:
-          case Opcodes.BEQ:
-          case Opcodes.BNE:
-          default:
-              break;
-      }
-  }
-  private chkFuenteOp(operation: TOperationVLIW, /*TChequeo *chkGPR, TChequeo *chkFPR*/): boolean {
-      let result = true;
-      switch (operation.opcode) {
-        case Opcodes.ADD:
-        case Opcodes.MULT:
-          /*  if (((chkGPR[oper->getOp(1)].lat > 0) && (chkGPR[oper->getOp(1)].reg < oper->getId()))
-            || ((chkGPR[oper->getOp(2)].lat > 0) && (chkGPR[oper->getOp(2)].reg < oper->getId())))
-                resul = false;*/
-            break;
-        case Opcodes.ADDI:
-            /*if ((chkGPR[oper->getOp(1)].lat > 0) && (chkGPR[oper->getOp(1)].reg < oper->getId()))
-                resul = false;*/
-            break;
-        case Opcodes.ADDF:
-        case Opcodes.MULTF:
-            /*if (((chkFPR[oper->getOp(1)].lat > 0) && (chkFPR[oper->getOp(1)].reg < oper->getId()))
-            || ((chkFPR[oper->getOp(2)].lat > 0) && (chkFPR[oper->getOp(2)].reg < oper->getId())))
-                resul = false;*/
-            break;
-        case Opcodes.LW:
-        case Opcodes.LF:
-          /*  if ((chkGPR[oper->getOp(2)].lat > 0) && (chkGPR[oper->getOp(2)].reg < oper->getId()))
-                resul = false;*/
-            break;
-        case Opcodes.SW:
-          /*  if (((chkGPR[oper->getOp(0)].lat > 0) && (chkGPR[oper->getOp(0)].reg < oper->getId()))
-            || ((chkGPR[oper->getOp(2)].lat > 0) && (chkGPR[oper->getOp(2)].reg < oper->getId())))
-                resul = false;*/
-            break;
-        case Opcodes.SF:
-            /*if (((chkFPR[oper->getOp(0)].lat > 0) && (chkFPR[oper->getOp(0)].reg < oper->getId()))
-            || ((chkGPR[oper->getOp(2)].lat > 0) && (chkGPR[oper->getOp(2)].reg < oper->getId())))
-                resul = false;*/
-            break;
-        case Opcodes.BEQ:
-        case Opcodes.BNE:
-          /*  if (((chkGPR[oper->getOp(0)].lat > 0) && (chkGPR[oper->getOp(0)].reg < oper->getId()))
-            || ((chkGPR[oper->getOp(1)].lat > 0) && (chkGPR[oper->getOp(1)].reg < oper->getId())))
-                resul = false;
-            break;*/
-        default:
-            result = true;
-            break;
-    }
-    return resul;
-  }
   /* TVLIWError __fastcall chkDependencias(int &fila, int &id) {
   TChequeo chkGPR[NGP];
     TChequeo chkFPR[NFP];
@@ -426,9 +329,12 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
 }*/
   public init(reset: boolean) {
     super().init; //TMaquina::init(reset);
-    //memset(NaTGP, false, sizeof(bool) * NGP);
-    //memset(NaTFP, false, sizeof(bool) * NFP);
-    //memset(predR, false, sizeof(bool) * NPR);
+    this._NaTGP = new Array(Machine.NGP);
+    this._NaTGP.fill(-1);
+    this._NaTFP = new Array(Machine.NFP);
+    this._NaTFP.fill(-1);
+    this._predR = new Array(Machine.NPR);
+    this._predR.fill(-1);
     _predR[0] = true;
   }
 }
