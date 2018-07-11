@@ -21,8 +21,8 @@ export class VLIWCode {
         return _nInst;
     }
 
-    public getPredTrue(ind: number): LargeInstruction {
-        if((ind < 0) || (ins >= this._nInst)) {
+    public getLargeInstruction(ind: number): LargeInstruction {
+        if((ind < 0) || (ind >= this._nInst)) {
             return NULL;
         }
         return this._instructions[ind];
@@ -74,7 +74,7 @@ export class VLIWCode {
       }
     }
 
-    public load(/*AnsiString nombre, TCodigo *&cod*/): boolean {
+    public load(input: string, cod: TCodigo): boolean {
       let n, noper, ind, tipo, num;
       //ifstream in(nombre.c_str());
       //in >> n;

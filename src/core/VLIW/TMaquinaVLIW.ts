@@ -5,13 +5,11 @@ import { TCodigoVLIW } from './TCodigoVLIW';
 import { LargeInstruction } from './LargeInstruction';
 import { FunctionalUnit } from '../Common/FunctionalUnit';
 import { TOperacionVLIW } from './TOperacionVLIW';
+import { TCheck } from './TCheck';
+import { Exception } from './TExeption';
 
 export class TMaquinaVLIW extends Machine {
-/*
-// Definici�n de valores de error
-typedef enum {VLIW_PCOUTOFRANGE = -3, VLIW_ENDEXE = -2, VLIW_BREAKPOINT = -1, VLIW_OK = 0} TVLIWStatus;
-typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_ERRPRED = -1, VLIW_ERRNO = 0} TVLIWError;
-*/
+
   const static NPR = 64;
   private _predR[NPR]: boolean;
   private _NaTGP[NGP]: boolean;
@@ -30,7 +28,6 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
       this._NaTFP = new Array(Machine.NFP);
       this._NaTFP.fill(-1);
   }
-
 
   private chkNaT(operation: TOperationVLIW): boolean {
       let result;
@@ -93,7 +90,7 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
         case Opcodes.LW:
             let datoI;
             if (!memory.getDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), datoI)) {
-                FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency()); //uf.setStall(latFalloMem - uf.getLatencia());
+                FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency());
             } else {
                 _gpr.setContent(operation.getOperand(0), datoI, true);
                 _NaTGP[operation.getOperand(0)] = false;
@@ -102,7 +99,7 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
         case Opcodes.LF:
             let datoF;
             if (!memory.getDatum(_gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), datoF)) {
-                FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency()); //uf.setStall(latFalloMem - uf.getLatencia());
+                FunctionalUnit._status.stall(latFalloMem - FunctionalUnit.latency());
             } else {
                 _fpr.setContent(operation.getOperand(0), datoF, true);
                 _NaTFP[operation.getOperand(0)] = false;
@@ -138,86 +135,95 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
     }
     return newPC;
   }
+/****************************************************/
+  private chkDependencies(row: number,id: number) {
+    TCheck chkGPR[NGP];
+    TCheck chkFPR[NFP];
 
-  /* TVLIWError __fastcall chkDependencias(int &fila, int &id) {
-  TChequeo chkGPR[NGP];
-    TChequeo chkFPR[NFP];
-
-    // Inicializaci�n de los arrays de control
-    for (int i = 0; i < NGP; i++)
-        chkGPR[i].lat = 0;
-    for (int i = 0; i < NFP; i++)
-        chkFPR[i].lat = 0;
-    // Comprobaci�n de dependencias verdaderas
-    for (fila = 0; fila < codigo->getNInst(); fila++) {
-        TInstruccionLarga *inst = codigo->getInstruccionLarga(fila);
-        // Primero compruebo los registros destino de operaciones
-        for (int j = 0; j < inst->getNOper(); j++)
-            chkDestinoOp(inst->getOperacion(j), chkGPR, chkFPR);
-        // Compruebo los registros fuente de operaciones
-        for (int j = 0; j < inst->getNOper(); j++)
-            if (!chkFuenteOp(inst->getOperacion(j), chkGPR, chkFPR)) {
-                id = inst->getOperacion(j)->getId();
-                return VLIW_ERRRAW;
-            }
-        // Decremento los contadores de los registros
-        for (int i = 0; i < NGP; i++)
-            if (chkGPR[i].lat > 0)
-                chkGPR[i].lat--;
-        for (int i = 0; i < NFP; i++)
-            if (chkFPR[i].lat > 0)
-                chkFPR[i].lat--;
+    for (let i = 0; i < NGP; i++) {
+        chkGPR[i].latency = 0;
     }
-    return VLIW_ERRNO;
-}
-    TVLIWError __fastcall chkPredicados(int &fila, int &id) {
-    list<TChequeo> chkPred;
-    // Comprobaci�n de saltos con predicaciones incorrectas
-    for (fila = 0; fila < codigo->getNInst(); fila++) {
-        // Se controla la lista de control
-        list<TChequeo>::iterator it = chkPred.begin();
-        while (it != chkPred.end()) {
-            if (it->lat == 1)
-                it = chkPred.erase(it);
-            else {
-                it->lat--;
-                it++;
+
+    for (let i = 0; i < NFP; i++) {
+        chkFPR[i].latency = 0;
+    }
+
+    for (row = 0; row < _code.getNInst(); row++) {
+        LargueInstruccion inst = _code.getLargueInstruction(row);
+        for (let j = 0; j < inst.getNOper(); j++) {
+            chkDestinoOp(inst.getOperacion(j), chkGPR, chkFPR);
+        }
+        for (let j = 0; j < inst.getNOper(); j++) {
+            if (!chkFuenteOp(inst.getOperacion(j), chkGPR, chkFPR)) {
+                id = inst->getOperacion(j).id();
+                throw new Error(' '); //VLIW_ERRRA;
             }
         }
-        TInstruccionLarga *inst = codigo->getInstruccionLarga(fila);
-        // Busco si hay alguna instrucci�n de salto
-        for (int j = 0; j < inst->getNOper(); j++)
-            if (inst->getOperacion(j)->getTipoUF() == SALTO) {
-                TChequeo chk1;
-                TChequeo chk2;
-                chk1.lat = latenciaUF[SALTO];
-                chk2.lat = latenciaUF[SALTO];
-                chk1.reg = inst->getOperacion(j)->getPredTrue();
-                chk2.reg = inst->getOperacion(j)->getPredFalse();
-                chkPred.push_back(chk1);
-                chkPred.push_back(chk2);
+        for (let i = 0; i < NGP; i++) {
+            if (chkGPR[i].latency > 0)
+                chkGPR[i].latency--;
+        }
+        for (let i = 0; i < NFP; i++) {
+            if (chkFPR[i].latency > 0)
+                chkFPR[i].latency--;
+        }
+    }
+    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
+  }
+
+  private chkPredicate(row: number, id: number) {
+    TCheck chkPred[]; //list<TChequeo> chkPred;
+    for (row = 0; row < _code.getNInst(); row++) {
+        let index = 0;
+        while (chkPred[index] != chkPred.length()) {
+            if (chkPred[index]->latency == 1) {
+                chkPred.splice(index, 1);
+            } else {
+                chkPred[index].latency--;
+                index++;
             }
-        // Compruebo las dependencias
-        for (int j = 0; j < inst->getNOper(); j++)
-            if (inst->getOperacion(j)->getPred() != 0) {
-                for (it = chkPred.begin(); it != chkPred.end(); it++)
-                    if (inst->getOperacion(j)->getPred() == it->reg)
+        }
+        LargeInstruction inst = _code.getLargeInstruction(row);
+        for (let j = 0; j < inst.getNOper(); j++)
+            if (inst.getOperacion(j).getTipoUF() == JUMP) {
+                TCheck chk1;
+                TCheck chk2;
+                chk1.latency = _functionalUnitLatencies[JUMP];
+                chk2.latency = _functionalUnitLatencies[JUMP];
+                chk1.register = inst.getOperacion(j).getPredTrue();
+                chk2.register = inst.getOperacion(j).getPredFalse();
+                chkPred.append(chk1);
+                chkPred.append(chk2);
+            }
+
+        for (let j = 0; j < inst.getNOper(); j++)
+            if (inst.getOperacion(j).getPred() != 0) {
+                for (index = chkPred[0]; index != chkPred.length(); index++)
+                    if (inst.getOperacion(j).getPred() == index.register)
                         break;
-                if (it == chkPred.end()) {
-                    id = inst->getOperacion(j)->getId();
-                    chkPred.clear();
-                    return VLIW_ERRPRED;
+                if (index == chkPred.length()){
+                    id = inst.getOperacion(j).id();
+                    for(let i = 0; i < chkPred.length; i++) {
+                      chkPred[i] == 0;
+                    }
+                    throw new Error('VLIW_ERRPRED'); //VLIW_ERRPRED;
                 }
-                else if (latenciaUF[inst->getOperacion(j)->getTipoUF()] < it->lat) {
-                    id = inst->getOperacion(j)->getId();
-                    chkPred.clear();
-                    return VLIW_ERRBRANCHDEP;
+                else if (_functionalUnitLatencies[inst.getOperacion(j).getTipoUF()] < index.latency) {
+                    id = inst.getOperacion(j).id();
+                    for(let i = 0; i < chkPred.length; i++) {
+                      chkPred[i] == 0;
+                    }
+                    throw new Error('VLIW_ERRBRANCHDEP'); //VLIW_ERRBRANCHDEP;
                 }
             }
     }
-    chkPred.clear();
-    return VLIW_ERRNO;
-  }*/
+    for(let i = 0; i < chkPred.length; i++) {
+      chkPred[i] == 0;
+    }
+    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
+  }
+
+  /********************************************************************/
 
   //Getters
   public getPredReg(ind: number): boolean { return predR[ind]; }
@@ -233,99 +239,109 @@ typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_
   public setNaTGP(ind: number, n: boolean) { NaTGP[ind] = n; }
   public setNaTFP(ind: number, n: boolean) { NaTFP[ind] = n; }
   public setNUF(ind: number, n: number) {
-        //nUF[ind] = ((TTipoUF) ind == SALTO) ? 1 : n;
+    functionalUnitNumbers[ind] = ((FunctionalUnitType) ind == JUMP) ? 1 : n;
   }
-  /*TVLIWError __fastcall chkCodigo() {
-    for (int i = 0; i < codigo->getNInst(); i++) {
-        TInstruccionLarga *inst = codigo->getInstruccionLarga(i);
-        for (int j = 0; j < inst->getNOper(); j++) {
-            TOperacionVLIW *oper = inst->getOperacion(j);
-            if (oper->getNumUF() >= nUF[oper->getTipoUF()])
-                return VLIW_ERRHARD;
+
+  public chkCode() {
+    for (let i = 0; i < _code.getNInst(); i++) {
+        LargeInstruction inst = _code.getLargeInstruction(i);
+        for (let j = 0; j < inst.getNOper(); j++) {
+            TOperacionVLIW oper = inst.getOperacion(j);
+            if (oper.getNumUF() >= nUF[oper.getTipoUF()])
+                throw new Error('VLIW_ERRHARD'); //VLIW_ERRHARD;
         }
     }
-    return VLIW_ERRNO;
-}*/
-  /*TVLIWError __fastcall chkErrores(int &fila, int &id){
-  TVLIWError resul = chkDependencias(fila, id);
-    if (resul != VLIW_ERRNO)
-        return resul;
-    return chkPredicados(fila, id);
-}*/
-  /*TVLIWStatus __fastcall tic() {
-  int i, j;
-  bool pendiente = false;
-  bool detenerFlujo = false;
-
-  status.ciclo++;
-  if (UF[SALTO][0].instruccionesPendientes())
-      pendiente = true;
-  if (UF[SALTO][0].getStall() == 0) {
-      TOperacionVLIW *oper = (TOperacionVLIW *)UF[SALTO][0].getTopInstruccion();
-      if (oper != NULL) {
-          if (predR[oper->getPred()])
-              PC = ejecutarSalto(oper);
-      }
+    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
   }
-  UF[SALTO][0].tic();
 
-  for (i = 0; i < NTIPOSUF - 1; i++)
-      for (j = 0; j < nUF[i]; j++) {
-          if (UF[i][j].instruccionesPendientes())
-              pendiente = true;
-          if (UF[i][j].getStall() == 0) {
-              TOperacionVLIW *oper = (TOperacionVLIW *)UF[i][j].getTopInstruccion();
-              if (oper != NULL) {
-                  if (predR[oper->getPred()])
-                      ejecutarOperacion(oper, UF[i][j]);
-              }
-          }
-
-          UF[i][j].tic();
+  public chkError(row: number, id: number) {
+    try {
+      chkDependencies(row, id);
+    }
+    catch(error) {
+      if (error.message != 'VLIW_ERRNO') {
+        throw error;
       }
-
-  gpr.tic();
-  fpr.tic();
-
-  if (!detenerFlujo) {
-
-      TInstruccionLarga *inst = codigo->getInstruccionLarga(PC);
-      if (inst == NULL) {
-          if (pendiente)
-              return VLIW_PCOUTOFRANGE;
-
-          return VLIW_ENDEXE;
-      }
-      for (i = 0; i < inst->getNOper(); i++) {
-          TTipoUF tipo = inst->getOperacion(i)->getTipoUF();
-          int num = inst->getOperacion(i)->getNumUF();
-          if (!UF[tipo][num].estaLibre() || chkNaT(inst->getOperacion(i))) {
-              detenerFlujo = true;
-              break;
-          }
-      }
-      if (!detenerFlujo) {
-          for (i = 0; i < inst->getNOper(); i++) {
-              TOperacionVLIW *oper = inst->getOperacion(i);
-              UF[oper->getTipoUF()][oper->getNumUF()].rellenarCauce(oper);
-              // Si son LOADS marco los registros destino como NaT
-              if (oper->getOpcode() == TCodigo::LW)
-                  NaTGP[oper->getOp(0)] = true;
-              if (oper->getOpcode() == TCodigo::LF)
-                  NaTFP[oper->getOp(0)] = true;
-                  if (oper->getTipoUF() == SALTO) {
-                  predR[oper->getPredTrue()] = false;
-                  predR[oper->getPredFalse()] = false;
-              }
-          }
-          PC++;
-      }
-      if (inst->getBreakPoint()) {
-          status.breakPoint = true;
-          return VLIW_BREAKPOINT;
-      }
+    }
+    chkPredicate(row, id);
   }
-  return VLIW_OK;
+
+
+/*
+  public tic() {
+    let i, j;
+    //pendiente: boolean = false;
+    //detenerFlujo: boolean = false;
+
+    //status.ciclo++;
+    if (UF[JUMP][0].instruccionesPendientes())
+        pendiente = true;
+    if (UF[JUMP][0].getStall() == 0) {
+        TOperacionVLIW *oper = (TOperacionVLIW *)UF[JUMP][0].getTopInstruccion();
+        if (operation != NULL) {
+            if (predR[operation.getPred()])
+                PC = ejecutarSalto(operation);
+        }
+    }
+    UF[JUMP][0].tic();
+
+    for (i = 0; i < NTIPOSUF - 1; i++)
+        for (j = 0; j < nUF[i]; j++) {
+            if (UF[i][j].instruccionesPendientes())
+                pendiente = true;
+            if (UF[i][j].getStall() == 0) {
+                TOperacionVLIW *oper = (TOperacionVLIW *)UF[i][j].getTopInstruccion();
+                if (oper != NULL) {
+                    if (predR[oper->getPred()])
+                        ejecutarOperacion(oper, UF[i][j]);
+                }
+            }
+
+            UF[i][j].tic();
+        }
+
+    gpr.tic();
+    fpr.tic();
+
+    if (!detenerFlujo) {
+
+        TInstruccionLarga *inst = codigo->getInstruccionLarga(PC);
+        if (inst == NULL) {
+            if (pendiente)
+                return VLIW_PCOUTOFRANGE;
+
+            return VLIW_ENDEXE;
+        }
+        for (i = 0; i < inst->getNOper(); i++) {
+            TTipoUF tipo = inst->getOperacion(i)->getTipoUF();
+            int num = inst->getOperacion(i)->getNumUF();
+            if (!UF[tipo][num].estaLibre() || chkNaT(inst->getOperacion(i))) {
+                detenerFlujo = true;
+                break;
+            }
+        }
+        if (!detenerFlujo) {
+            for (i = 0; i < inst->getNOper(); i++) {
+                TOperacionVLIW *oper = inst->getOperacion(i);
+                UF[oper->getTipoUF()][oper->getNumUF()].rellenarCauce(oper);
+                // Si son LOADS marco los registros destino como NaT
+                if (oper->getOpcode() == TCodigo::LW)
+                    NaTGP[oper->getOp(0)] = true;
+                if (oper->getOpcode() == TCodigo::LF)
+                    NaTFP[oper->getOp(0)] = true;
+                    if (oper->getTipoUF() == SALTO) {
+                    predR[oper->getPredTrue()] = false;
+                    predR[oper->getPredFalse()] = false;
+                }
+            }
+            PC++;
+        }
+        if (inst->getBreakPoint()) {
+            status.breakPoint = true;
+            return VLIW_BREAKPOINT;
+        }
+    }
+    return VLIW_OK;
 }*/
   public init(reset: boolean) {
     super().init; //TMaquina::init(reset);
