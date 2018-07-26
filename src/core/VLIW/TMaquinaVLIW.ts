@@ -156,7 +156,7 @@ export class TMaquinaVLIW extends Machine {
         for (let j = 0; j < inst.getNOper(); j++) {
             if (!chkFuenteOp(inst.getOperacion(j), chkGPR, chkFPR)) {
                 id = inst->getOperacion(j).id();
-                throw new Error(' '); //VLIW_ERRRA;
+                throw new Error(VLIWError.ERRRA); //VLIW_ERRRA;
             }
         }
         for (let i = 0; i < NGP; i++) {
@@ -168,7 +168,7 @@ export class TMaquinaVLIW extends Machine {
                 chkFPR[i].latency--;
         }
     }
-    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
+    throw new Error(VLIWError.ERRNO); //VLIW_ERRNO;
   }
 
   private chkPredicate(row: number, id: number) {
@@ -206,21 +206,21 @@ export class TMaquinaVLIW extends Machine {
                     for(let i = 0; i < chkPred.length; i++) {
                       chkPred[i] == 0;
                     }
-                    throw new Error('VLIW_ERRPRED'); //VLIW_ERRPRED;
+                    throw new Error(VLIWError.ERRPRED); //VLIW_ERRPRED;
                 }
                 else if (_functionalUnitLatencies[inst.getOperacion(j).getTipoUF()] < index.latency) {
                     id = inst.getOperacion(j).id();
                     for(let i = 0; i < chkPred.length; i++) {
                       chkPred[i] == 0;
                     }
-                    throw new Error('VLIW_ERRBRANCHDEP'); //VLIW_ERRBRANCHDEP;
+                    throw new Error(VLIWError.ERRBRANCHDEP); //VLIW_ERRBRANCHDEP;
                 }
             }
     }
     for(let i = 0; i < chkPred.length; i++) {
       chkPred[i] == 0;
     }
-    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
+    throw new Error(VLIWError.ERRNO); //VLIW_ERRNO;
   }
 
   /********************************************************************/
@@ -248,10 +248,10 @@ export class TMaquinaVLIW extends Machine {
         for (let j = 0; j < inst.getNOper(); j++) {
             TOperacionVLIW oper = inst.getOperacion(j);
             if (oper.getNumUF() >= nUF[oper.getTipoUF()])
-                throw new Error('VLIW_ERRHARD'); //VLIW_ERRHARD;
+                throw new Error(VLIWError.ERRHARD); //VLIW_ERRHARD;
         }
     }
-    throw new Error('VLIW_ERRNO'); //VLIW_ERRNO;
+    throw new Error(VLIWError.ERRNO); //VLIW_ERRNO;
   }
 
   public chkError(row: number, id: number) {
@@ -259,7 +259,7 @@ export class TMaquinaVLIW extends Machine {
       chkDependencies(row, id);
     }
     catch(error) {
-      if (error.message != 'VLIW_ERRNO') {
+      if (error.number != VLIWError.ERRNO) {
         throw error;
       }
     }

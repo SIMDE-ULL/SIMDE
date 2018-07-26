@@ -1,0 +1,16 @@
+
+export enum VLIWError {
+  /*
+  typedef enum {VLIW_PCOUTOFRANGE = -3, VLIW_ENDEXE = -2, VLIW_BREAKPOINT = -1, VLIW_OK = 0} TVLIWStatus;
+typedef enum {VLIW_ERRRAW = -4, VLIW_ERRHARD = -3, VLIW_ERRBRANCHDEP = -2, VLIW_ERRPRED = -1, VLIW_ERRNO = 0} TVLIWError;
+  */
+  PCOUTOFRANGE = 4,
+  ENDEXE = 3,
+  BREAKPOINT = 2,
+  OK = 1,
+  ERRRAW = -4,
+  ERRHARD = -3,
+  ERRBRANCHDEP = -2,
+  ERRPRED = -1,
+  ERRNO = 0
+}
