@@ -1,12 +1,12 @@
 import { Machine } from '../Common/Machine';
 import { Code } from '../Common/Code';
 import { Opcodes } from '../Common/Opcodes';
-import { TCodigoVLIW } from './TCodigoVLIW';
-import { LargeInstruction } from './LargeInstruction';
+import { VLIWCode } from './VLIWCode';
+import { LargeInstruction } from './LargeInstructions';
 import { FunctionalUnit } from '../Common/FunctionalUnit';
-import { TOperacionVLIW } from './TOperacionVLIW';
+import { TOperationVLIW } from './TOperationVLIW';
 import { TCheck } from './TCheck';
-import { Exception } from './TExeption';
+import { VLIWError } from './VLIWError';
 
 export class TMaquinaVLIW extends Machine {
 
@@ -19,7 +19,7 @@ export class TMaquinaVLIW extends Machine {
   constructor() {
       super();
       //register int i
-      _code = new TCodigoVLIW();
+      this._code = new TCodigoVLIW();
       this._predR = new Array(Machine.NPR);  // memset(predR, false, sizeof(bool) * NPR);
       this._predR.fill(-1);
       this._predR[0] = true;
@@ -267,48 +267,46 @@ export class TMaquinaVLIW extends Machine {
   }
 
 
-/*
   public tic() {
-    let i, j;
-    //pendiente: boolean = false;
-    //detenerFlujo: boolean = false;
 
-    //status.ciclo++;
-    if (UF[JUMP][0].instruccionesPendientes())
+    let i, j;
+    pendiente: boolean = false;
+    detenerFlujo: boolean = false;
+    this.status.cycle++;
+    if (UF[JUMP][0].hasPendingInstruction())
         pendiente = true;
-    if (UF[JUMP][0].getStall() == 0) {
-        TOperacionVLIW *oper = (TOperacionVLIW *)UF[JUMP][0].getTopInstruccion();
+    if (UF[JUMP][0].status.stall == 0) {
+        operation: TOperationVLIW = UF[JUMP][0].getTopInstruction();
         if (operation != NULL) {
             if (predR[operation.getPred()])
-                PC = ejecutarSalto(operation);
+                PC = runJump(operation);
         }
     }
     UF[JUMP][0].tic();
 
-    for (i = 0; i < NTIPOSUF - 1; i++)
-        for (j = 0; j < nUF[i]; j++) {
-            if (UF[i][j].instruccionesPendientes())
+    for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++)
+        for (j = 0; j < _functionalUnitNumbers[i]; j++) {
+            if (UF[i][j].hasPendingInstruction())
                 pendiente = true;
-            if (UF[i][j].getStall() == 0) {
-                TOperacionVLIW *oper = (TOperacionVLIW *)UF[i][j].getTopInstruccion();
-                if (oper != NULL) {
-                    if (predR[oper->getPred()])
-                        ejecutarOperacion(oper, UF[i][j]);
+            if (UF[i][j].status.stall == 0) {
+                oper: TOperacionVLIW= UF[i][j].getTopInstruccion();
+                if (operation != NULL) {
+                    if (predR[operation.getPred()])
+                        runOperation(operation, UF[i][j]);
                 }
             }
 
             UF[i][j].tic();
         }
 
-    gpr.tic();
-    fpr.tic();
+    _gpr.tic();
+    _fpr.tic();
 
     if (!detenerFlujo) {
-
-        TInstruccionLarga *inst = codigo->getInstruccionLarga(PC);
-        if (inst == NULL) {
+        instruction: TInstruccionLarga = code.getLargeInstruction(PC);
+        if (instruction == NULL) {
             if (pendiente)
-                return VLIW_PCOUTOFRANGE;
+                return VLIWError.PCOUTOFRANGE;
 
             return VLIW_ENDEXE;
         }
@@ -342,7 +340,7 @@ export class TMaquinaVLIW extends Machine {
         }
     }
     return VLIW_OK;
-}*/
+}
   public init(reset: boolean) {
     super().init; //TMaquina::init(reset);
     this._NaTGP = new Array(Machine.NGP);

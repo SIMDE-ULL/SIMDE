@@ -100,7 +100,7 @@ export class VLIWCode {
                   //in >> destino;
                   //operation.setOp(2, destino);
                   //in >> predTrue;
-                  //in >> predFalse;
+                `${predFalse}`  //in >> predFalse;``
                   operation.setPredTrue(predTrue);
                   operation.setPredFalse(predFalse);
               }

@@ -97,6 +97,10 @@ export class FunctionalUnit {
         return (this.flow[(this.status.lastInstruction + 1) % this.latency] == null);
     }
 
+    hasPendingInstruction(): boolean {
+        return (this._status.instructionNumber != 0);
+    }
+
     getTopInstruction(): Instruction {
         return this._flow[this._status.lastInstruction];
     }

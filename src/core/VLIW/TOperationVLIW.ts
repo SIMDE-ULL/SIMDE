@@ -1,6 +1,6 @@
 import { Instruction } from '../Common/Instruction';
 
-export class TOperacionVLIW extends Instruction {
+export class TOperationVLIW extends Instruction {
 
     private _tipoUF: TTipoUF;
     private _numUF: number;
@@ -15,7 +15,7 @@ export class TOperacionVLIW extends Instruction {
         this._predFalse = 0;
     }
 
-    TOperacionVLIW(operation : TOperacionVLIW) {
+    TOperationVLIW(operation : TOperationVLIW) {
         super(operation);
         this._tipoUF = operation._tipoUF;
         this._numUF = operation._numUF;

@@ -1,9 +1,9 @@
-import { TOperacionVLIW } from './TOperacionVLIW';
+import { TOperationVLIW } from './TOperationVLIW';
 import { FunctionalUnit } from '../Common/FunctionalUnit';
 
 export class LargeInstruction {
 
-    private _operations: TOperacionVLIW[];
+    private _operations: TOperationVLIW[];
     private _breakPoint: boolean;
 
     constructor() {
@@ -11,7 +11,7 @@ export class LargeInstruction {
         this._breakPoint = false;
     }
 
-    public getOperation(index: number): TOperacionVLIW {
+    public getOperation(index: number): TOperationVLIW {
         if(index > this._operations.length) {
             throw new Error("Index out of bounds at operations");
         }
