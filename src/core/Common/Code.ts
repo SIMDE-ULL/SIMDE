@@ -5,6 +5,7 @@ import { Label } from './Label';
 
 import { Opcodes } from './Opcodes';
 import { Parser } from './Parser';
+import { FunctionalUnitType } from './FunctionalUnit';
 
 export class Code {
 
@@ -275,4 +276,28 @@ export class Code {
         return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
     }
 
+    public getFunctionalUnitType(index: number) {
+        // TODO bgt not implemented
+        switch (this._instructions[index].opcode) {
+            case Opcodes.ADD:
+            case Opcodes.ADDI: 
+                return FunctionalUnitType.INTEGERSUM;
+            case Opcodes.ADDF: 
+                return FunctionalUnitType.FLOATINGSUM;
+            case Opcodes.MULT: 
+                return FunctionalUnitType.INTEGERMULTIPLY;
+            case Opcodes.MULTF: 
+                return FunctionalUnitType.FLOATINGMULTIPLY;
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.LW:
+            case Opcodes.LF: 
+                return FunctionalUnitType.MEMORY;
+            case Opcodes.BNE:
+            case Opcodes.BEQ: 
+                return FunctionalUnitType.JUMP;
+            default: 
+                return FunctionalUnitType.INTEGERSUM;
+        }
+    }
 }

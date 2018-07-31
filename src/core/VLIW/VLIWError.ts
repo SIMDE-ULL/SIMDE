@@ -1,4 +1,3 @@
-
 export enum VLIWError {
   /*
   typedef enum {VLIW_PCOUTOFRANGE = -3, VLIW_ENDEXE = -2, VLIW_BREAKPOINT = -1, VLIW_OK = 0} TVLIWStatus;

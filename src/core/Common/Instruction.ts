@@ -1,14 +1,14 @@
 import { OpcodesNames } from './Opcodes';
 
 export class Instruction {
-    private _id: number;
-    private _basicBlock: number;
-    private _opcode: number;
-    private _operands: number[];
-    private _operandsString: string[];
-    private _label: string;
-    private _breakPoint: boolean;
-    private _color: string;
+    protected _id: number;
+    protected _basicBlock: number;
+    protected _opcode: number;
+    protected _operands: number[];
+    protected _operandsString: string[];
+    protected _label: string;
+    protected _breakPoint: boolean;
+    protected _color: string;
 
     constructor() {
         this._breakPoint = false;

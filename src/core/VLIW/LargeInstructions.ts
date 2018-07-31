@@ -1,9 +1,8 @@
-import { TOperationVLIW } from './TOperationVLIW';
-import { FunctionalUnit } from '../Common/FunctionalUnit';
+import { VLIWOperation } from './VLIWOperation';
 
 export class LargeInstruction {
 
-    private _operations: TOperationVLIW[];
+    private _operations: VLIWOperation[];
     private _breakPoint: boolean;
 
     constructor() {
@@ -11,7 +10,7 @@ export class LargeInstruction {
         this._breakPoint = false;
     }
 
-    public getOperation(index: number): TOperationVLIW {
+    public getOperation(index: number): VLIWOperation {
         if(index > this._operations.length) {
             throw new Error("Index out of bounds at operations");
         }
@@ -30,7 +29,7 @@ export class LargeInstruction {
         return this._breakPoint;
     }
 
-    addOperation(operation: TOperationVLIW) {
+    addOperation(operation: VLIWOperation) {
         this._operations.push(operation);
     }
 }
