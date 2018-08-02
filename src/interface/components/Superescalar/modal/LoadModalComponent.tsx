@@ -3,12 +3,12 @@ import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { connect } from 'react-redux';
-import { toggleLoadModal } from '../../actions/modals';
+import { toggleLoadModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
 import * as FileReaderInput from 'react-file-reader-input';
 
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
-import { Code } from '../../../core/Common/Code';
+import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { Code } from '../../../../core/Common/Code';
 
 export class LoadModalComponent extends React.Component<any, any> {
 

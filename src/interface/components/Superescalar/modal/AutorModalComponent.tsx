@@ -5,7 +5,7 @@ import { t } from 'i18next';
 import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
-import { toggleAuthorModal } from '../../actions/modals';
+import { toggleAuthorModal } from '../../../actions/modals';
 
 class AutorModalComponent extends React.Component<any, any> {
 

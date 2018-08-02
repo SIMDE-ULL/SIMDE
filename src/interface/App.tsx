@@ -5,20 +5,20 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import { Superescalar } from "../core/Superescalar/Superescalar";
 import { t } from 'i18next';
 
-import FileBarComponent from './components/navbar/FileBarComponent';
-import AccessBarComponent from "./components/navbar/AccessBarComponent";
+import FileBarComponent from './components/Superescalar/navbar/FileBarComponent';
+import AccessBarComponent from "./components/Superescalar/navbar/AccessBarComponent";
 
-import GeneralTabComponent from "./components/tab/GeneralTabComponent";
-import RegisterTabComponent from './components/tab/RegistersTabComponent';
+import GeneralTabComponent from "./components/Superescalar/tab/GeneralTabComponent";
+import RegisterTabComponent from './components/Superescalar/tab/RegistersTabComponent';
 
-import LoadModalComponent from "./components/modal/LoadModalComponent";
-import SuperescalarConfigModalComponent from "./components/modal/SuperescalarConfigModalComponent";
-import OptionsModalComponent from "./components/modal/OptionsModalComponent";
-import AutorModalComponent from "./components/modal/AutorModalComponent";
+import LoadModalComponent from "./components/Superescalar/modal/LoadModalComponent";
+import SuperescalarConfigModalComponent from "./components/Superescalar/modal/SuperescalarConfigModalComponent";
+import OptionsModalComponent from "./components/Superescalar/modal/OptionsModalComponent";
+import AutorModalComponent from "./components/Superescalar/modal/AutorModalComponent";
 
 import { translate } from "react-i18next";
-import BatchModalComponent from "./components/modal/BatchModalComponent";
-import BatchResultsModalComponent from "./components/modal/BatchResultsModalComponent";
+import BatchModalComponent from "./components/Superescalar/modal/BatchModalComponent";
+import BatchResultsModalComponent from "./components/Superescalar/modal/BatchResultsModalComponent";
 
 import landingpage from "./components/landingpage/LandingPageComponent";
 import projectpage from "./components/landingpage/ProjectPageComponent";
@@ -71,6 +71,20 @@ const VeryLong = () => (
           <FileBarComponent />
           <AccessBarComponent />
       </div>
+      <Tabs defaultActiveKey={1} id='working-area-tabs'>
+          <Tab eventKey={1} title={t('accessBar.superescalar')}>
+              <GeneralTabComponent />
+          </Tab>
+          <Tab eventKey={2} title={t('accessBar.memReg')}>
+              <RegisterTabComponent />
+          </Tab>
+      </Tabs>
+      <LoadModalComponent />
+      <SuperescalarConfigModalComponent />
+      <OptionsModalComponent />
+      <AutorModalComponent />
+      <BatchModalComponent />
+      <BatchResultsModalComponent />
   </div>
 );
 

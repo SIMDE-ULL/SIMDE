@@ -13,13 +13,13 @@ import { t } from 'i18next';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { superescalarLoad } from '../../actions';
+import { superescalarLoad } from '../../../actions';
 import {
     addRobFprInterval,
     removeRobFprInterval,
     addRobGprInterval,
     removeRobGprInterval
-} from '../../actions/intervals-actions';
+} from '../../../actions/intervals-actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
     constructor(props: any) {

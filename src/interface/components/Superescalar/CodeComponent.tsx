@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { OpcodesNames } from '../../core/Common/Opcodes';
+import { OpcodesNames } from '../../../core/Common/Opcodes';
 
-import { Instruction } from '../../core/Common/Instruction';
+import { Instruction } from '../../../core/Common/Instruction';
 
 import { translate } from 'react-i18next';
-import SuperescalarIntegration from '../../integration/superescalar-integration';
+import SuperescalarIntegration from '../../../integration/superescalar-integration';
 
 
 class CodeComponent extends React.Component<any, any> {
