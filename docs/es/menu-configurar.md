@@ -14,6 +14,10 @@ Contiene las opciones de configuración de las máquinas.
 
 Abre la ventana de Configuración de la Máquina Superescalar, con la que se pueden modificar sus parámetros más importantes.
 
+### Configurar VLIW 
+
+Abre la ventana de Configuración de la Máquina Superescalar con la que se puede modificar sus parámetros más importantes.
+
 
 ### Opciones
 

@@ -10,6 +10,7 @@ next: configurar-parametros-superescalar.html
 La Ventana de Instrucciones permite visualizar el código secuencial cargado desde un fichero.
 
 ![](imgs/bm16_result.png)
+
 Las instrucciones se muestran en orden secuencial.
 
 En la primera columna aparece el número de orden de la instrucción, que servirá como Identificador. También aparecen en esta columna las etiquetas entre corchetes ([etiqueta:]) a continuación del número de instrucción.

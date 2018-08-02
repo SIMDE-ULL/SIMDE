@@ -4,7 +4,7 @@ lang: es
 id: configurar-parametros-superescalar
 title: Configurar parámetros Superescalar
 prev: ventana-de-instrucciones.html
-next: ventana-registros-memoria.html
+next: configurar-parámetros-vliw.html
 ---
 
 *Vaya a Configurar => Parámetros Superescalar*.
