@@ -5,17 +5,17 @@ import { Opcodes } from '../Common/Opcodes';
 export class VLIWOperation extends Instruction {
 
     private _functionalUnitType: FunctionalUnitType;
-    private _functionalUnitNumber: number;
+    private _functionalUnitIndex: number;
     private _predicate: number;
     private _predicateTrue: number;
     private _predicateFalse: number;
 
-    constructor(operation?: VLIWOperation, instruction? : Instruction , type?: FunctionalUnitType, n?: number ) {
+    constructor(operation?: VLIWOperation, instruction? : Instruction , type?: FunctionalUnitType, functionalUnitIndex?: number ) {
         super();
         if(operation) {
             this.buildFromVLIWOperation(operation);
         } else if(instruction) {
-            this.buildFromInstruction(instruction, type, n);
+            this.buildFromInstruction(instruction, type, functionalUnitIndex);
         } else {
             this._predicate = 0;
             this._predicateTrue = 0;
@@ -25,28 +25,28 @@ export class VLIWOperation extends Instruction {
 
     buildFromVLIWOperation(operation: VLIWOperation) {
         this._functionalUnitType = operation._functionalUnitType;
-        this._functionalUnitNumber = operation._functionalUnitNumber;
+        this._functionalUnitIndex = operation._functionalUnitIndex;
         this._predicate= operation._predicate
         this._predicateTrue = operation._predicateTrue;
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction(instruction: Instruction , t: FunctionalUnitType, n: number) {
+    buildFromInstruction(instruction: Instruction , functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
         this.copy(instruction);
-        this._functionalUnitType = t;
-        this._functionalUnitNumber = n;
+        this._functionalUnitType = functionalUnitType;
+        this._functionalUnitIndex = functionalUnitIndex;
         this._predicate= 0;
         this._predicateTrue = 0;
         this._predicateFalse = 0;
     }
 
     //Getters
-    public getTipoUF(): FunctionalUnitType {
+    public getFunctionalUnitType(): FunctionalUnitType {
         return this._functionalUnitType;
     }
 
-    public getNumUF(): number {
-        return this._functionalUnitNumber;
+    public getFunctionalUnitIndex(): number {
+        return this._functionalUnitIndex;
     }
 
     public getPred(): number {
@@ -62,12 +62,12 @@ export class VLIWOperation extends Instruction {
     }
 
     // Setters
-    public setTipoUF(t: FunctionalUnitType) {
+    public setFunctionalUnitType(t: FunctionalUnitType) {
         this._functionalUnitType = t;
     }
 
-    public setNumUF(n: number) {
-        this._functionalUnitNumber = n;
+    public setFunctionalUnitNumber(n: number) {
+        this._functionalUnitIndex = n;
     }
 
     public setPred(p: number) {

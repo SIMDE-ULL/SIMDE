@@ -6,7 +6,7 @@ import { VLIWParser } from './VLIWParser';
 
 export class VLIWCode {
     private _instructions: LargeInstruction[];
-    private _instructionNumber: number;
+    private _largeInstructionNumber: number;
 
     constructor(n?: number) {
         if(n) {
@@ -15,16 +15,16 @@ export class VLIWCode {
         } else {
             this._instructions = [];
         }
-        this._instructionNumber = 0;
+        this._largeInstructionNumber = 0;
     }
 
     //Getters
-    public getInstructionNumber(): number {
-        return this._instructionNumber;
+    public getLargeInstructionNumber(): number {
+        return this._largeInstructionNumber;
     }
 
     public getLargeInstruction(index: number): LargeInstruction {
-        if((index < 0) || (index >= this._instructionNumber)) {
+        if((index < 0) || (index >= this._largeInstructionNumber)) {
             return null;
         }
         return this._instructions[index];
@@ -37,7 +37,7 @@ export class VLIWCode {
     //Setters
     public setInstructionNumber(index: number) {
         this._instructions = new LargeInstruction[index];
-        this._instructionNumber = index;
+        this._largeInstructionNumber = index;
     }
 
     public setBreakPoint(ind: number, b: boolean) {
@@ -50,16 +50,16 @@ export class VLIWCode {
 
     public clear() {
         this._instructions = null;
-        this._instructionNumber = 0;
+        this._largeInstructionNumber = 0;
     }
 
     public save(): string {
 
-       return VLIWParser.ExportAsString(this._instructionNumber, this._instructions);
+       return VLIWParser.ExportAsString(this._largeInstructionNumber, this._instructions);
     }
 
     public load(input: string, code: Code): void {
         this._instructions = VLIWParser.Parse(input, code);
-        this._instructionNumber = this._instructions.length;
+        this._largeInstructionNumber = this._instructions.length;
     }
 }

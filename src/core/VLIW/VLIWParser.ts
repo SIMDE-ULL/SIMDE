@@ -9,7 +9,9 @@ export class VLIWParser {
         const splittedInputInRows: string[] = input.split('\n');
 
         let linesNumber: number, operationsAmount: number, index: number, predicate: number;
-        let functionalUnitType: number, functionalUnitAmount: number;
+
+        let functionalUnitType: number, functionalUnitIndex: number;
+
         let destination: number, predicateTrue: number, predicateFalse: number;
 
         // Let's extract the amount of lines
@@ -31,18 +33,23 @@ export class VLIWParser {
 
             let instructionsAmount = +splittedRow[0];
             if (instructionsAmount > 0) {
+                
                 index = +splittedRow[1];
                 functionalUnitType = +splittedRow[2];
-                functionalUnitAmount = +splittedRow[3];
+                functionalUnitIndex = +splittedRow[3];
                 predicate = +splittedRow[4];
+
                 if (code.getFunctionalUnitType(index) != functionalUnitType ) {
                     throw new Error(`Functional unit type at line ${i + 1} mismatch, expected ${code.getFunctionalUnitType(index)} got ${functionalUnitType}`)
                 }
             }
-            let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitAmount);
+
+            let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
             operation.setPred(predicate);
+
             // TODO y el bgt?
             if (operation.isJump()) {
+                
                 let destiny, predTrue, predFalse;
                 destiny = +splittedRow[5];
                 operation.setOperand(2, destiny, '');
@@ -53,23 +60,28 @@ export class VLIWParser {
             }
             instructions[i].addOperation(operation);
         }
+        console.log(instructions);
         return instructions;
     }
 
     public static ExportAsString(_instructionNumber: number, _instructions: LargeInstruction[]): string {       
+        
         let outputString: string;
         outputString += _instructionNumber;
+
         for (let i = 0; i < _instructionNumber; i++) {
             let operationAmount = _instructions[i].getNOper();
             outputString += operationAmount;
+        
             for (let j = 0; j < operationAmount; j++) {
+        
                 let operation = _instructions[i].getOperation(j);
                 outputString += '\t'; 
                 outputString += operation.id;
                 outputString += ' ';
-                outputString += operation.getTipoUF();
+                outputString += operation.getFunctionalUnitType();
                 outputString += ' ';
-                outputString += operation.getTipoUF();   
+                outputString += operation.getFunctionalUnitType();   
                 outputString += ' ';
                 outputString += operation.getPred();
 
