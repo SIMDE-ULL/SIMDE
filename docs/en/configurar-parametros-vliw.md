@@ -7,9 +7,8 @@ prev: en/configurar-parametros-superescalar.html
 next: en/configurar-parametros-vliw.html
 ---
 
-{bmc bm1.BMP} Vaya a Configurar=>Parámetros VLIW.
+Click on Configure=>VLIW Configuration.
 
-{bmc bm18.BMP}
 
-Los parámetros configurables son el Número de U.F. (excepto las U.F. de salto, limitadas a 1) y la Latencia de cada una.
-Además se puede definir la latencia cuando hay un Fallo de Caché.
+The configurable parameters are the U.F. (except the U.F. jump, limited to 1) and the Latency of each.
+In addition you can define the latency when there is a Cache Failure.

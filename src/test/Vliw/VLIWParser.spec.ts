@@ -52,9 +52,9 @@ LOOP:
     superescalarCode.load(inputSuperescalar);
     code.load(inputVLIW, superescalarCode);
     
-    const error = `Bad instruction number parsed, expected 15, got ${code.getInstructionNumber()}`;
+    const error = `Bad instruction number parsed, expected 15, got ${code.getLargeInstructionNumber()}`;
 
-    t.deepEqual(code.getInstructionNumber(), 15, error); 
+    t.deepEqual(code.getLargeInstructionNumber(), 15, error); 
 });
 
 test('Loop.pla with extra line throws error', t => {
