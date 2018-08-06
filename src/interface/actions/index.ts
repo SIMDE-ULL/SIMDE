@@ -11,4 +11,6 @@ export * from './reserve-station-actions';
 export * from './load';
 export * from './basic-blocks-actions';
 
+export * from './predicate-nat-actions';
+
 export * from './batch';

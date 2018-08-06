@@ -3,10 +3,10 @@ import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { bindActionCreators } from 'redux';
-import { toggleOptionsModal, toggleBatchModal } from '../../actions/modals';
+import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
-import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../core/Constants';
+import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../../core/Constants';
 
 class BatchModalComponent extends React.Component<any, any> {
     constructor(public props: any, public state: any) {

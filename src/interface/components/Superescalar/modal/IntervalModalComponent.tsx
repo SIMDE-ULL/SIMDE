@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 
-import { generateIntervalFromImput } from '../../utils/interval';
+import { generateIntervalFromImput } from '../../../utils/interval';
 
 
 class IntervalModalComponent extends React.Component<any, any> {

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { connect } from 'react-redux';
-import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal, toggleBatchModal } from '../../actions/modals';
+import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal, toggleBatchModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { viewBasicBlocks } from '../../actions';
+import { viewBasicBlocks } from '../../../actions';
 
 class FileBarComponent extends React.Component<any, any> {
     private color: boolean;

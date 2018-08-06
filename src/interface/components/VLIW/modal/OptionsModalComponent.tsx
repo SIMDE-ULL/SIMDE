@@ -3,9 +3,9 @@ import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { bindActionCreators } from 'redux';
-import { toggleOptionsModal } from '../../actions/modals';
+import { toggleOptionsModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
+import VLIWIntegration from '../../../../integration/superescalar-integration';
 
 class OptionsModalComponent extends React.Component<any, any> {
 

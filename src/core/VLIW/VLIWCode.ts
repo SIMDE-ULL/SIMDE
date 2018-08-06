@@ -7,6 +7,7 @@ import { VLIWParser } from './VLIWParser';
 export class VLIWCode {
     private _instructions: LargeInstruction[];
     private _largeInstructionNumber: number;
+    private _superescalarCode: Code;
 
     constructor(n?: number) {
         if(n) {
@@ -48,6 +49,14 @@ export class VLIWCode {
         this._instructions[ind].addOperation(oper);
     }
 
+    public get superescalarCode(): Code {
+        return this._superescalarCode;
+    }
+
+    public set superescalarCode(code: Code) {
+        this._superescalarCode = code;
+    }
+
     public clear() {
         this._instructions = null;
         this._largeInstructionNumber = 0;
@@ -61,5 +70,6 @@ export class VLIWCode {
     public load(input: string, code: Code): void {
         this._instructions = VLIWParser.Parse(input, code);
         this._largeInstructionNumber = this._instructions.length;
+        this._superescalarCode = code;
     }
 }

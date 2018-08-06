@@ -54,6 +54,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "font-awesome": "4.7.0",
+    "gitbook-cli": "^2.3.2",
     "i18next": "10.0.7",
     "i18next-browser-languagedetector": "2.1.0",
     "i18next-localstorage-cache": "1.1.1",

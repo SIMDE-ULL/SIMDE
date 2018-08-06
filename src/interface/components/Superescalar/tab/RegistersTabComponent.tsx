@@ -9,8 +9,8 @@ import {
     removeGeneralRegistersInterval,
     addMemoryInterval,
     removeMemoryInterval
-} from '../../actions/intervals-actions';
-import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../../../core/Constants';
+} from '../../../actions/intervals-actions';
+import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../../../../core/Constants';
 
 export class RegisterTabComponent extends React.Component<any, any> {
 

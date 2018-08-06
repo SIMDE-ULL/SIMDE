@@ -51,11 +51,21 @@ LOOP2:
     superescalarCode.load(inputSuperescalar);
     code.load(inputVLIW, superescalarCode);
     
+    // First Largue Instruction
     t.deepEqual(code.getLargeInstructionNumber(), 10, 'Instruction number was not parsed properly');
     t.deepEqual(code.getLargeInstruction(0).getOperation(0).getOperand(2),50);
     t.deepEqual(code.getLargeInstruction(0).getOperation(0).getFunctionalUnitType(), FunctionalUnitType.INTEGERSUM, 'Functional unit type bad parsed');
     t.deepEqual(code.getLargeInstruction(0).getOperation(0).getFunctionalUnitIndex(), 0, 'Functional unit type bad parsed');
     t.deepEqual(code.getLargeInstruction(0).getOperation(0).getPred(),0, 'Predicate not parsed properly');
 
-    
+    t.deepEqual(code.getLargeInstruction(0).getOperation(1).getOperand(2),40);
+    t.deepEqual(code.getLargeInstruction(0).getOperation(1).getFunctionalUnitType(), FunctionalUnitType.INTEGERSUM, 'Functional unit type bad parsed');
+    t.deepEqual(code.getLargeInstruction(0).getOperation(1).getFunctionalUnitIndex(), 1, 'Functional unit type bad parsed');
+    t.deepEqual(code.getLargeInstruction(0).getOperation(1).getPred(),0, 'Predicate not parsed properly');
+
+    // Second Largue Instruction
+    t.deepEqual(code.getLargeInstruction(2).getOperation(0).getOperand(2),70);
+    t.deepEqual(code.getLargeInstruction(2).getOperation(0).getFunctionalUnitType(), FunctionalUnitType.INTEGERSUM, 'Functional unit type bad parsed');
+    t.deepEqual(code.getLargeInstruction(2).getOperation(0).getFunctionalUnitIndex(), 0, 'Functional unit type bad parsed');
+    t.deepEqual(code.getLargeInstruction(2).getOperation(0).getPred(),0, 'Predicate not parsed properly');
 });

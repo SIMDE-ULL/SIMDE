@@ -2,9 +2,9 @@ import * as React from 'react';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import VliwIntegration from '../../../../integration/vliw-integration';
 
-class AccessBarComponent extends React.Component<any, any> {
+class VLIWAccessBarComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.stepForward = this.stepForward.bind(this);
@@ -19,23 +19,24 @@ class AccessBarComponent extends React.Component<any, any> {
     }
 
     stepForward() {
-        SuperescalarIntegration.stepForward();
+        console.log('hey!');
+        VliwIntegration.stepForward();
     }
 
     stepBack() {
-        SuperescalarIntegration.stepBack();
+        VliwIntegration.stepBack();
     }
 
     play() {
-        SuperescalarIntegration.play();
+        VliwIntegration.play();
     }
 
     pause() {
-        SuperescalarIntegration.pause();
+        VliwIntegration.pause();
     }
 
     stop() {
-        SuperescalarIntegration.stop();
+        VliwIntegration.stop();
     }
 
     render() {
@@ -85,5 +86,5 @@ const mapStateToProps = state => {
     };
 };
 export default translate('common', { wait: true })(
-    connect(mapStateToProps)(AccessBarComponent)
+    connect(mapStateToProps)(VLIWAccessBarComponent)
 );

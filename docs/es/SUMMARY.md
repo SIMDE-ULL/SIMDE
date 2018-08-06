@@ -25,6 +25,16 @@
 * [Ventana de instrucciones](ventana-de-instrucciones.md)
   
 * [Configurar párametros superescalar](configurar-parametros-superescalar.md)
+
+* [Configurar parámetros VLIW](configurar-parametros-vliw.md)
+
+* [Configurar instrucciones VLIW](configurar-instrucciones-vliw.md)
+
+* [Crear código VLIW](crear-codigo-vliw.md)
+
+* [Cargar código VLIW](cargar-codigo-vliw.md)
+
+* [Modificar codigo VLIW](modificar-codigo-vliw.md)
   
 * [Ventana registros memoria](ventana-registros-memoria.md)
   
@@ -69,6 +79,16 @@
 * [Estaciones de reserva](estaciones-de-reserva.md)
   
 * [Cálculo de direcciones ](calculo-de-direcciones.md)
+
+### Máquina VLIW
+
+* [Máquina VLIW](maquina-vliw.md)
+
+* [NaT(GPR y FPR)](nat-gpr-fpr.md)
+
+* [Registro de Predicado](registro-predicado.md)
+
+* [Predicado de operaciones](predicacion-operaciones.md)
 
 ### Acerca de 
   

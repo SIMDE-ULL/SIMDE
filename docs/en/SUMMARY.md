@@ -25,6 +25,16 @@
 * [Instruction Window](ventana-de-instrucciones.md)
   
 * [Superscalar Configuration](configurar-parametros-superescalar.md)
+
+* [VLIW Configuration](configurar-parametros-vliw.md)
+
+* [VLIW Configuration Instructions](configurar-instrucciones-vliw.md)
+
+* [VLIW Code Creation](crear-codigo-vliw.md)
+
+* [VLIW Code Loading](cargar-codigo-vliw.md)
+
+* [Modifying VLIW Code](modificar-codigo-vliw.md)
   
 * [Register and Memory Window](ventana-registros-memoria.md)
   
@@ -69,6 +79,16 @@
 * [Reserve Stations](estaciones-de-reserva.md)
   
 * [Memory Address ALU](calculo-de-direcciones.md)
+
+### VLIW Machine
+
+* [VLIW Machine](maquina-vliw.md)
+
+* [NaT(GPR and FPR)](nat-gpr-fpr.md)
+
+* [Predicate Registers](registro-predicado.md)
+
+* [Operation Predication](predicacion-operaciones.md)
 
 ### About 
   

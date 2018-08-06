@@ -17,6 +17,24 @@
         &_left {
             width: 40%;
             height: 100%;
+
+            &--expanded {
+                width: 100%;
+                height: 100%;
+
+                & .smd-general_tab-simulation_planificator {
+                    height: 70%;
+
+                    & .smd-table-header_title {
+                        width: 8.3%;
+
+                    }
+
+                    & .id_colum {
+                        width: 5%;
+                    }
+                }
+            }
         }
 
         &_center {
@@ -26,6 +44,18 @@
 
         &_right {
             width: 20%;
+        }
+
+        &_nat_predicate {
+            display: flex;
+            width: 100%;
+            height: 30%;
+            flex: 1 0 auto;
+
+            & .smd-register {
+                width: 100%;
+                height: 100%;
+            }
         }
         
         &_prefetch_decoder {

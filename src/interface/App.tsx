@@ -2,7 +2,6 @@ import * as React from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
-import { Superescalar } from "../core/Superescalar/Superescalar";
 import { t } from 'i18next';
 
 import FileBarComponent from './components/Superescalar/navbar/FileBarComponent';
@@ -22,6 +21,11 @@ import BatchResultsModalComponent from "./components/Superescalar/modal/BatchRes
 
 import landingpage from "./components/landingpage/LandingPageComponent";
 import projectpage from "./components/landingpage/ProjectPageComponent";
+import GeneralVLIWTabComponent from "./components/VLIW/tab/GeneralVLIWTabComponent";
+import  RegisterVLIWTabComponent  from "./components/VLIW/tab/RegistersVLIWTabComponent";
+import VLIWFileBarComponent from "./components/VLIW/navbar/VLIWFileBarComponent";
+import VLIWLoadModalComponent from "./components/VLIW/modal/VLIWLoadModalComponent";
+import VLIWAccessBarComponent from "./components/VLIW/navbar/VLIWAccessBarComponent";
 
 class App extends React.Component<any, any> {
    render() {
@@ -42,6 +46,7 @@ const Structure = () => (
     </div>
 );
 
+// Split these components in other files
 const Superescalares = () => (
   <div className='smd'>
       <div className='navigation-bars'>
@@ -68,18 +73,18 @@ const Superescalares = () => (
 const VeryLong = () => (
   <div className='smd'>
       <div className='navigation-bars'>
-          <FileBarComponent />
-          <AccessBarComponent />
+          <VLIWFileBarComponent />
+          <VLIWAccessBarComponent />
       </div>
       <Tabs defaultActiveKey={1} id='working-area-tabs'>
-          <Tab eventKey={1} title={t('accessBar.superescalar')}>
-              <GeneralTabComponent />
+          <Tab eventKey={1} title={t('accessBar.vliw')}>
+              <GeneralVLIWTabComponent />
           </Tab>
           <Tab eventKey={2} title={t('accessBar.memReg')}>
-              <RegisterTabComponent />
+              <RegisterVLIWTabComponent />
           </Tab>
       </Tabs>
-      <LoadModalComponent />
+      <VLIWLoadModalComponent />
       <SuperescalarConfigModalComponent />
       <OptionsModalComponent />
       <AutorModalComponent />

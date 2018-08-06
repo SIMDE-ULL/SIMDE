@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { translate } from 'react-i18next';
 import { t } from 'i18next';
-import { toggleSuperConfigModal } from '../../actions/modals';
+import { toggleSuperConfigModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
 
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
-import { SUPERESCALAR_CONFIG } from '../../../core/Constants';
+import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { SUPERESCALAR_CONFIG } from '../../../../core/Constants';
 
 import { connect } from 'react-redux';
 
