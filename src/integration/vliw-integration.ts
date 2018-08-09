@@ -1,4 +1,3 @@
-import { Superescalar } from '../core/Superescalar/Superescalar';
 import { ExecutionStatus } from '../main-consts';
 import { store } from '../store';
 import {
@@ -6,11 +5,8 @@ import {
     nextDecoderCycle,
     nextJumpTableCycle,
     nextFunctionalUnitCycle,
-    nextReserveStationCycle,
-    nextReorderBufferCycle,
     nextRegistersCycle,
     nextMemoryCycle,
-    nextReorderBufferMapperCycle,
     nextCycle,
     superescalarLoad,
     batchActions,
@@ -22,15 +18,14 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
-import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 import { displayBatchResults } from '../interface/actions/modals';
 
 import { MachineIntegration } from './machine-integration';
-import { VLIW } from '../core/VLIW/VLIW';
-import { VLIWCode } from '../core/VLIW/VLIWCode';
+import { VLIW, VLIWCode, VLIWError} from '../core/VLIW';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 
 export class VLIWIntegration extends MachineIntegration {
+
     static makeBatchExecution(): any {
         throw new Error("Method not implemented.");
     }
@@ -77,9 +72,11 @@ export class VLIWIntegration extends MachineIntegration {
     setBatchMode: (...config: any[]) => void;
 
     stepForward = () => {
+
         if (!this.vliw.code) {
             return;
         }
+
         if (this.backStep > 0) {
             this.backStep--;
             store.dispatch(takeHistory(this.backStep));
@@ -126,7 +123,7 @@ export class VLIWIntegration extends MachineIntegration {
         // }
 
         // if (this.superescalar.status.cycle === 0) {
-        //     let code = Object.assign(new Code(), this.vliwde);
+        //     let code = Object.assign(new Code(), this.superescalar.code);
         //     this.superExe();
         //     this.vliw.code = code;
         // }

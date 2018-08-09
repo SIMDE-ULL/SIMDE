@@ -35,7 +35,8 @@
         "cycle": "Ciclo",
         "speed": "Velocidad",
         "superescalar": "Superescalar",
-        "memReg": "Memoria - Registros"
+        "memReg": "Memoria - Registros",
+        "vliw": "VLIW"
     },
     "authorModal": {
         "title": "Acerca de...",
@@ -77,7 +78,8 @@
         "save": "Guardar",
         "accept": "Aceptar",
         "launch": "Lanzar",
-        "uploadFromFile": "Subir desde fichero"
+        "uploadFromFile": "Subir código superescalar",
+        "uploadVliwFromFile": "Subir código VLIW"
     },
     "Code": "Código",
     "Jump table": "Tabla de saltos",
@@ -127,5 +129,36 @@
         "standardDeviation": "Desviación éstandar",
         "worst": "Peor caso",
         "best": "Mejor caso"
+    },
+    "landingPage": {
+        "pagetitle": "SIMDEWeb",
+        "description": "Mucho más que un simulador...",
+        "read": "Leer más",
+        "home": "Home",
+        "project": "Proyecto",
+        "superescalar": "Superescalar",
+        "superescalar_description": "Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!",
+        "go": "Ir",
+        "vliw": "VLIW",
+        "vliw_description": "Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!",
+        "licency": "@liberado bajo licencia GPLv3"
+
+    },
+    "projectPage": {
+        "pagetitle": "SIMDEWeb",
+        "home": "Home",
+        "project": "Proyecto",
+        "watsimde": "¿Qué es SIMDEWeb?",
+        "simdedescription1": "SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).",
+        "simdedescription2": "Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.",
+        "simdedescription3": "Esto hace más fácil aprender conceptos tales como el algoritmo de Tomasulo y el propósito de estructuras tales como el buffer de reorden.",
+        "tecnology": "Tecnologías",
+        "tecnologydescription": "SIMDE esta desarrollado con TypeScript, React, Redux, Sass y Webpack.",
+        "howtouse": "¿Cómo se usa?",
+        "howtousedescription": "¡Prueba y aprende!",
+        "problems": "¿Problemas?",
+        "problemsdescription": "Puedes consultar nuestra documentación",
+        "licency": "@liberado bajo licencia GPLv3"
+       
     }
 }

@@ -127,5 +127,36 @@
         "standardDeviation": "Standard Deviation",
         "worst": "Worst case",
         "best": "Best case"
+    },
+    "landingPage": {
+        "pagetitle": "SIMDEWeb",
+        "description": "More than a simulator...",
+        "read": "Read more",
+        "home": "Home",
+        "project": "Project",
+        "superescalar": "Superescalar",
+        "superescalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
+        "go": "Go",
+        "vliw": "VLIW",
+        "vliw_description": "Simulate the operation of a VLIW machine by executing your code step by step!",
+        "licency": "@Released under GPLv3 licency"
+
+    },
+    "projectPage": {
+        "pagetitle": "SIMDEWeb",
+        "home": "Home",
+        "project": "Project",
+        "watsimde": "What is SIMDEWeb?",
+        "simdedescription1": "SIMDE is a simulator to support the teaching of ILP architectures (Instructional level parallelism).",
+        "simdedescription2": "This simulator is a visual representation of a Superecalar machine execution and students can see how the instructions move through the multiple stages of the pipeline.",
+        "simdedescription3": "This makes it easier to learn concepts such as the Tomasulo algorithm and the purpose of structures such as the reorder buffer.",
+        "tecnology": "Tecnology",
+        "tecnologydescription": "SIMDE is developed with TypeScript, React, Redux, Sass and Webpack.",
+        "howtouse": "How to use?",
+        "howtousedescription": "Test and learn!",
+        "problems": "Problems?",
+        "problemsdescription": "You can check our documentation",
+        "licency": "@Released under GPLv3 licency"
+       
     }
 }

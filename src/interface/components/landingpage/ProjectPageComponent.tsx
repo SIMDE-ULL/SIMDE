@@ -1,32 +1,34 @@
 import * as React from "react";
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { translate } from "react-i18next";
+import { t } from 'i18next';
 
 const projectpage = (props) => (
   <div className="page">
     <div className="topnav">
       <ul className="navul">
         <b className="navbaricon"><img alt="icon" src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"></img></b>
-        <li className="pagetitle"><p>SIMDEWeb</p></li>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/">Proyecto</Link></li>
+        <li className="pagetitle"><p>{t('landingPage.pagetitle')}</p></li>
+        <li><Link to="/">{t('landingPage.home')}</Link></li>
+        <li><Link to="/">{t('landingPage.project')}</Link></li>
       </ul>
      </div>
      <div className="pageproject">
-       <h1>SIMDEWeb</h1>
+       <h1>{t('projectPage.pagetitle')}</h1>
        <div className="simdegif"><img className="img-responsive" alt="simdegif" src="https://i.imgur.com/50m9kzv.gif"></img></div>
-       <h2>¿Qué es SIMDEWeb?</h2>
-       <p>SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).</p>
-       <p>Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.</p>
-       <p>Esto hace más fácil aprender conceptos tales como el algoritmo de Tomasulo y el propósito de estructuras tales como el buffer de reorden.</p>
-       <h2>Tecnologías</h2>
-       <p>SIMDE esta desarrollado con TypeScript, React, Redux, Sass y Webpack.</p>
-       <h2>¿Cómo se usa?</h2>
-       <Link to="/superescalares"><p>¡Prueba y aprende!</p></Link>
-       <h2>¿Problemas?</h2>
-       <a href="https://etsiiull.gitbooks.io/simde/"><p>Puedes consultar nuestra documentación</p></a>
+       <h2>{t('projectPage.watsimde')}</h2>
+       <p>{t('projectPage.simdedescription1')}</p>
+       <p>{t('projectPage.simdedescription2')}</p>
+       <p>{t('projectPage.simdedescription3')}</p>
+       <h2>{t('projectPage.tecnology')}</h2>
+       <p>{t('projectPage.tecnologydescription')}</p>
+       <h2>{t('projectPage.howtouse')}</h2>
+       <Link to="/superescalares"><p>{t('projectPage.howtousedescription')}</p></Link>
+       <h2>{t('projectPage.problems')}</h2>
+       <a href="https://etsiiull.gitbooks.io/simde/"><p>{t('projectPage.problemsdescription')}</p></a>
      </div>
      <nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
-       <div className="licence"><a>@liberado bajo licencia GPLv3</a></div>
+       <div className="licence"><a>{t('Page.licency')}</a></div>
      </nav>
   </div>
 );

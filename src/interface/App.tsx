@@ -19,8 +19,8 @@ import { translate } from "react-i18next";
 import BatchModalComponent from "./components/Superescalar/modal/BatchModalComponent";
 import BatchResultsModalComponent from "./components/Superescalar/modal/BatchResultsModalComponent";
 
-import landingpage from "./components/landingpage/LandingPageComponent";
-import projectpage from "./components/landingpage/ProjectPageComponent";
+import LandingPage from "./components/LandingPage/LandingPageComponent";
+import ProjectPage from "./components/landingpage/ProjectPageComponent";
 import GeneralVLIWTabComponent from "./components/VLIW/tab/GeneralVLIWTabComponent";
 import  RegisterVLIWTabComponent  from "./components/VLIW/tab/RegistersVLIWTabComponent";
 import VLIWFileBarComponent from "./components/VLIW/navbar/VLIWFileBarComponent";
@@ -39,10 +39,10 @@ class App extends React.Component<any, any> {
 
 const Structure = () => (
     <div className="pagebody">
-      <Route exact path="/" component={landingpage} />
+      <Route exact path="/" component={LandingPage} />
       <Route path="/Superescalares" component={Superescalares} />
       <Route path="/VLIW" component={VeryLong} />
-      <Route path="/Project" component={projectpage} />
+      <Route path="/Project" component={ProjectPage} />
     </div>
 );
 

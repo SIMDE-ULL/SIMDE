@@ -248,13 +248,15 @@ export class VLIW extends Machine {
 
     public checkError(row: number, id: number) {
         try {
-        this.checkDependencies(row, id);
+            this.checkDependencies(row, id);
         }
         catch(error) {
-        if (error != VLIWError.ERRNO) {
-            throw error;
+            // TODO: Y que se pasa si es errno?
+            if (error != VLIWError.ERRNO) {
+                throw error;
+            }
         }
-        }
+        // TODO: Que sentido tiene esto? Al menos un comentario? Como es posible que checkerror compruebe dependencias y predicado?
         this.checkPredicate(row, id);
     }
 
