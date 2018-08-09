@@ -17,7 +17,6 @@ export class VLIWParser {
         // Let's extract the amount of lines
         linesNumber = +splittedInputInRows[0];
         let instructions: LargeInstruction[] = new Array<LargeInstruction>(linesNumber);
-        instructions.fill(new LargeInstruction());
 
         splittedInputInRows.shift();
         
@@ -28,39 +27,44 @@ export class VLIWParser {
 
         for (let i = 0; i < splittedInputInRows.length; i++)
         {
+            instructions[i] = new LargeInstruction();
             // TODO replace this for the proper regexp
             const splittedRow: string[] = splittedInputInRows[i].trim().split(/[\t+|\s+]/);
 
             let instructionsAmount = +splittedRow[0];
             if (instructionsAmount > 0) {
-                
-                index = +splittedRow[1];
-                functionalUnitType = +splittedRow[2];
-                functionalUnitIndex = +splittedRow[3];
-                predicate = +splittedRow[4];
+                let acc = 0;
+                for (let j = 0; j < instructionsAmount; j++) {
 
-                if (code.getFunctionalUnitType(index) != functionalUnitType ) {
-                    throw new Error(`Functional unit type at line ${i + 1} mismatch, expected ${code.getFunctionalUnitType(index)} got ${functionalUnitType}`)
+                    index = +splittedRow[j*4+1+acc];
+                    functionalUnitType = +splittedRow[j*4+2+acc];
+                    functionalUnitIndex = +splittedRow[j*4+3+acc];
+                    predicate = +splittedRow[j*4+4];
+
+                    if (code.getFunctionalUnitType(index) != functionalUnitType ) {
+                        throw new Error(`Functional unit type at line ${i + 1} mismatch, expected ${code.getFunctionalUnitType(index)} got ${functionalUnitType}`)
+                    }
+                    let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
+                    operation.setPred(predicate);
+
+                    // TODO y el bgt?
+                    if (operation.isJump()) {
+                        let destiny, predTrue, predFalse;
+                        destiny = +splittedRow[j*4+5+acc];
+                        operation.setOperand(2, destiny, '');
+                        predTrue = +splittedRow[j*4+6+acc];
+                        predFalse = +splittedRow[j*4+7+acc];
+                        operation.setPredTrue(predTrue);
+                        operation.setPredFalse(predFalse);
+                        acc += 3;
+                    }
+
+                    instructions[i].addOperation(operation);
+
                 }
-            }
-
-            let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
-            operation.setPred(predicate);
-
-            // TODO y el bgt?
-            if (operation.isJump()) {
-                
-                let destiny, predTrue, predFalse;
-                destiny = +splittedRow[5];
-                operation.setOperand(2, destiny, '');
-                predTrue = +splittedRow[6];
-                predFalse = +splittedRow[7];
-                operation.setPredTrue(predTrue);
-                operation.setPredFalse(predFalse);
-            }
-            instructions[i].addOperation(operation);
+            }      
         }
-        console.log(instructions);
+
         return instructions;
     }
 
