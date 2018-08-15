@@ -45,6 +45,9 @@ class FileBarComponent extends React.Component<any, any> {
                         <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleSuperConfigModal(true)}}>
                             {t('fileBar.config.superescalar')}
                         </MenuItem>
+                        <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleLoadContentModal(true)}}>
+                            {t('fileBar.config.content')}
+                        </MenuItem>
                     </DropdownButton>
                     <DropdownButton
                         title={t('fileBar.experimentation.name')}
@@ -84,6 +87,7 @@ function mapDispatchToProps(dispatch) {
         toggleAuthorModal,
         toggleOptionsModal,
         toggleSuperConfigModal,
+        toggleLoadContentModal,
         toggleBatchModal,
         viewBasicBlocks
     }, dispatch) };

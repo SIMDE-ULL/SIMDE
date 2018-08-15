@@ -49,26 +49,27 @@ const Structure = () => (
 
 // Split these components in other files
 const Superescalares = () => (
-  <div className='smd'>
-      <div className='navigation-bars'>
-          <FileBarComponent />
-          <AccessBarComponent />
-      </div>
-      <Tabs defaultActiveKey={1} id='working-area-tabs'>
-          <Tab eventKey={1} title={t('accessBar.superescalar')}>
-              <GeneralTabComponent />
-          </Tab>
-          <Tab eventKey={2} title={t('accessBar.memReg')}>
-              <RegisterTabComponent />
-          </Tab>
-      </Tabs>
-      <LoadModalComponent />
-      <SuperescalarConfigModalComponent />
-      <OptionsModalComponent />
-      <AutorModalComponent />
-      <BatchModalComponent />
-      <BatchResultsModalComponent />
-  </div>
+    <div className='smd'>
+    <div className='navigation-bars'>
+        <FileBarComponent />
+        <AccessBarComponent />
+    </div>
+    <Tabs defaultActiveKey={1} id='working-area-tabs'>
+        <Tab eventKey={1} title={t('accessBar.superescalar')}>
+            <GeneralTabComponent />
+        </Tab>
+        <Tab eventKey={2} title={t('accessBar.memReg')}>
+            <RegisterTabComponent />
+        </Tab>
+    </Tabs>
+    <LoadModalComponent />
+    <LoadContentModalComponent />
+    <SuperescalarConfigModalComponent />
+    <OptionsModalComponent />
+    <AutorModalComponent />
+    <BatchModalComponent />
+    <BatchResultsModalComponent />
+    </div>
 );
 
 const VeryLong = () => (

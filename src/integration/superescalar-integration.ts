@@ -58,27 +58,22 @@ export class SuperescalarIntegration extends MachineIntegration {
                             data: this.superescalar.reserveStationEntry[0],
                             size: this.superescalar.getReserveStationSize(0)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[1],
                             size: this.superescalar.getReserveStationSize(1)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[2],
                             size: this.superescalar.getReserveStationSize(2)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[3],
                             size: this.superescalar.getReserveStationSize(3)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[4],
                             size: this.superescalar.getReserveStationSize(4)
                         },
-
                         {
                             data: this.superescalar.reserveStationEntry[5],
                             size: this.superescalar.getReserveStationSize(5)
@@ -94,8 +89,8 @@ export class SuperescalarIntegration extends MachineIntegration {
         );
     }
 
-    superExe = () => {
-        this.superescalar.init(true);
+    superExe = (reset: boolean = true) => {
+        this.superescalar.init(reset);
     }
 
     stepForward = () => {
@@ -110,12 +105,16 @@ export class SuperescalarIntegration extends MachineIntegration {
         } else {
             if (this.finishedExecution) {
                 this.finishedExecution = false;
-                this.resetMachine();
-            }
-            if (this.superescalar.status.cycle === 0) {
                 let code = Object.assign(new Code(), this.superescalar.code);
                 this.superExe();
                 this.superescalar.code = code;
+
+                // Load memory content
+                if (this.contentIntegration) {
+                    this.setFpr(this.contentIntegration.FPRContent);
+                    this.setGpr(this.contentIntegration.GPRContent);
+                    this.setMemory(this.contentIntegration.MEMContent);
+                }
             }
             let machineStatus = this.superescalar.tic();
             this.dispatchAllSuperescalarActions();
@@ -146,13 +145,16 @@ export class SuperescalarIntegration extends MachineIntegration {
         // Check if the execution has finished
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            this.resetMachine();
-        }
-
-        if (this.superescalar.status.cycle === 0) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
+
+            // Load memory content
+            if (this.contentIntegration) {
+                this.setFpr(this.contentIntegration.FPRContent);
+                this.setGpr(this.contentIntegration.GPRContent);
+                this.setMemory(this.contentIntegration.MEMContent);
+            }
         }
 
         if (speed) {
@@ -178,6 +180,13 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.superescalar.code = code;
             this.superescalar.memory.failProbability = this.cacheFailPercentage;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
+
+            // Load memory content
+            if (this.contentIntegration) {
+                this.setFpr(this.contentIntegration.FPRContent);
+                this.setGpr(this.contentIntegration.GPRContent);
+                this.setMemory(this.contentIntegration.MEMContent);
+            }
 
             // tslint:disable-next-line:no-empty
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
@@ -274,6 +283,33 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
     }
 
+    setMemory = (data: { [k: number]: number }) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.superescalar.memory.setDatum(+key, data[key]);
+        });
+    }
+
+    setFpr = (data: { [k: number]: number }) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.superescalar.fpr.setContent(+key, data[key], false);
+        });
+    }
+
+    setGpr = (data: { [k: number]: number }) => {
+        if (this.superescalar.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.superescalar.gpr.setContent(+key, data[key], false);
+        });
+    }
+
     executionLoop = (speed) => {
         if (!this.stopCondition) {
             setTimeout(() => {
@@ -317,8 +353,15 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private resetMachine() {
         let code = Object.assign(new Code(), this.superescalar.code);
-        this.superExe();
+        this.superExe(true);
         this.superescalar.code = code;
+        
+        // Reload memory content
+        if (this.contentIntegration) {
+            this.setFpr(this.contentIntegration.FPRContent);
+            this.setGpr(this.contentIntegration.GPRContent);
+            this.setMemory(this.contentIntegration.MEMContent);
+        }
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
     }

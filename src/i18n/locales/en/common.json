@@ -12,7 +12,8 @@
             "name": "Options",
             "superescalar": "Configure Superescalar Machine",
             "vliw": "Configure VLIW Machine",
-            "options": "Options"
+            "options": "Options",
+            "content": "Load content Memory - Registers"
         },
         "execute": {
             "name": "Execute",
@@ -45,6 +46,10 @@
     },
     "loadModal": {
         "title": "Load Code",
+        "load": "Load"
+    },
+    "loadContentModal": {
+        "title": "Load content Memory - Registers",
         "load": "Load"
     },
     "intervalModal": {
