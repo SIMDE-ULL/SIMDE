@@ -19,7 +19,6 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
     }
 
     stepForward() {
-        console.log('hey!');
         VliwIntegration.stepForward();
     }
 

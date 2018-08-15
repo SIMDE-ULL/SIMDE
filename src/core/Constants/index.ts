@@ -10,6 +10,15 @@ export const SUPERESCALAR_CONFIG = {
     ISSUE_GRADE_MAX: 16
 };
 
+export const VLIW_CONFIG = {
+    FUNCTIONAL_UNIT_MIN: 1,
+    FUNCTIONAL_UNIT_MAX: 10,
+    LATENCY_MIN: 0,
+    LATENCY_MAX: 100,
+    ISSUE_GRADE_MIN: 1,
+    ISSUE_GRADE_MAX: 16
+};
+
 export const BATCH_CONFIG = {
     LATENCY_MIN: 0,
     LATENCY_MAX: 100,

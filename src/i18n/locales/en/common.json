@@ -11,6 +11,7 @@
         "config": {
             "name": "Options",
             "superescalar": "Configure Superescalar Machine",
+            "vliw": "Configure VLIW Machine",
             "options": "Options"
         },
         "execute": {
@@ -55,7 +56,21 @@
         }
     },
     "superescalarModal": {
-        "name": "Superescalar Configuration",
+        "name": "Configuration",
+        "latency": "Latency",
+        "quantity": "Quantity",
+        "Integer+": "Integer Sum",
+        "Integerx": "Integer Mult",
+        "Floating+": "Floating Sum",
+        "Floatingx": "Floating Mult",
+        "Memory": "Memory",
+        "Jump": "Jump",
+        "cacheFail": "Cache Fail",
+        "issue": "Issue",
+        "default": "Default Values"
+    },
+    "vliwModal": {
+        "name": "VLIW Configuration",
         "latency": "Latency",
         "quantity": "Quantity",
         "Integer+": "Integer Sum",

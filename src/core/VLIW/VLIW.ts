@@ -12,7 +12,7 @@ export class VLIW extends Machine {
   private static NPR = 64;
   private _predR: boolean[] = new Array(VLIW.NPR); 
   private _NaTGP: boolean[] = new Array(Machine.NGP); 
-  private _NaTFP: boolean[] = new Array(Machine.NFP); 
+  private _NaTFP: boolean[] = new Array(Machine.NFP);
   private _code: VLIWCode;
 
   constructor() {
@@ -284,11 +284,6 @@ export class VLIW extends Machine {
         if (this.functionalUnit[FunctionalUnitType.JUMP][0].status.stall == 0) {
         
             let operation = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
-            
-            
-            if (this.status.cycle == 212) {
-                console.log('Operation from uf salto', operation);
-            }
 
             if (operation != null) {
 

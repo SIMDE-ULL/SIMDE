@@ -24,6 +24,7 @@ import { MachineIntegration } from './machine-integration';
 import { VLIW, VLIWCode, VLIWError} from '../core/VLIW';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 
+
 export class VLIWIntegration extends MachineIntegration {
 
     static makeBatchExecution(): any {
@@ -107,55 +108,55 @@ export class VLIWIntegration extends MachineIntegration {
 
     play = () => {
 
-        // if (!this.superescalar.code) {
-        //     return;
-        // }
+        if (!this.vliw.code) {
+            return;
+        }
 
-        // this.stopCondition = ExecutionStatus.EXECUTABLE;
-        // this.backStep = 0;
-        // this.executing = true;
-        // let speed = this.calculateSpeed();
+        this.stopCondition = ExecutionStatus.EXECUTABLE;
+        this.backStep = 0;
+        this.executing = true;
+        let speed = this.calculateSpeed();
 
-        // // Check if the execution has finished
-        // if (this.finishedExecution) {
-        //     this.finishedExecution = false;
-        //     this.resetMachine();
-        // }
+         // Check if the execution has finished
+        if (this.finishedExecution) {
+            this.finishedExecution = false;
+            this.resetMachine();
+        }
 
-        // if (this.superescalar.status.cycle === 0) {
-        //     let code = Object.assign(new Code(), this.superescalar.code);
-        //     this.superExe();
-        //     this.vliw.code = code;
-        // }
+        if (this.vliw.status.cycle === 0) {
+            let code = Object.assign(new Code(), this.vliw.code); // asignar tambien el codigo superescalar?
+            this.vliwExe();
+            this.vliw.code = code;
+        }
 
-        // if (speed) {
-        //     this.executionLoop(speed);
-        // } else {
-        //     // tslint:disable-next-line:no-empty
-        //     while (this.vliw.tic() !== VLIWStatus.SUPER_ENDEXE) { }
-        //     this.dispatchAllSuperescalarActions();
-        //     this.finishedExecution = true;
-        //     alert(t('execution.finished'));
-        // }
+        if (speed) {
+            this.executionLoop(speed);
+        } else {
+            
+            //tslint:disable-next-line:no-empty
+            while (this.vliw.tic() !== VLIWError.ENDEXE) { } 
+                this.dispatchAllVLIWActions(); 
+                this.finishedExecution = true;
+                alert(t('execution.finished'));
+         }
     }
 
     makeBatchExecution = () => {
-        // if (!this.vliw.code) {
-        //     return;
-        // }
+        if (!this.vliw.code) {
+            return;
+        }
 
-        // const results = [];
-        // for (let i = 0; i < this.replications; i++) {
-        //     let code = Object.assign(new Code(), this.superescalar.code);
-        //     this.superExe();
-        //     this.vliw.code = code;
-        //     this.vliw.memory.failProbability = this.cacheFailPercentage;
-        //     this.superescalar.memoryFailLatency = this.cacheFailLatency;
-
-        //     // tslint:disable-next-line:no-empty
-        //     while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
-        //     results.push(this.superescalar.status.cycle);
-        // }
+        const results = [];
+        for (let i = 0; i < this.replications; i++) {
+            let code = Object.assign(new Code(), this.vliw.code);
+            this.vliwExe();
+            this.vliw.code = code;
+            this.vliw.memory.failProbability = this.cacheFailPercentage;
+            this.vliw.memoryFailLatency = this.cacheFailLatency;
+             // tslint:disable-next-line:no-empty
+            while (this.vliw.tic() !== VLIWError.ENDEXE) { }
+                results.push(this.vliw.status.cycle);
+        }
 
         // const statistics = this.calculateBatchStatistics(results);
         // this.clearBatchStateEffects();
@@ -168,51 +169,63 @@ export class VLIWIntegration extends MachineIntegration {
     }
 
     stop = () => {
-        // if (!this.superescalar.code) {
-        //     return;
-        // }
-        // // In normal execution I have to avoid the asynchrnous way of
-        // // js entering in the interval, the only way I have is to using a semaphore
-        // this.stopCondition = ExecutionStatus.STOP;
+        if (!this.vliw.code) {
+            return;
+        }
+        // In normal execution I have to avoid the asynchrnous way of
+        // js entering in the interval, the only way I have is to using a semaphore
+        this.stopCondition = ExecutionStatus.STOP;
 
-        // if (!this.executing) {
-        //     this.executing = false;
-        //     this.resetMachine();
-        // }
+        if (!this.executing) {
+            this.executing = false;
+            this.resetMachine();
+        }
     }
 
-
     stepBack = () => {
-        // // There is no time travelling for batch mode and initial mode
-        // if (this.superescalar.status.cycle > 0 && this.backStep < MAX_HISTORY_SIZE &&
-        //     (this.superescalar.status.cycle - this.backStep > 0)) {
-        //     this.backStep++;
-        //     store.dispatch(takeHistory(this.backStep));
-        // }
+         // There is no time travelling for batch mode and initial mode
+        if (this.vliw.status.cycle > 0 && this.backStep < MAX_HISTORY_SIZE &&
+           (this.vliw.status.cycle - this.backStep > 0)) {
+            this.backStep++;
+            store.dispatch(takeHistory(this.backStep));
+        }
     }
 
     executionLoop = (speed) => {
-        // if (!this.stopCondition) {
-        //     setTimeout(() => {
-        //         let machineStatus = this.stepForward();
-        //         if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
-        //             this.executionLoop(speed);
-        //         } else {
-        //             if (machineStatus === SuperescalarStatus.SUPER_BREAKPOINT) {
-        //                 alert(t('execution.stopped'));
-        //             } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
-        //                 this.finishedExecution = true;
-        //                 alert(t('execution.finished'));
-        //             }
-        //         }
-        //     }, speed);
-        // } else if (this.stopCondition === ExecutionStatus.STOP) {
-        //     this.resetMachine();
-        // }
+        if (!this.stopCondition) {
+            setTimeout(() => {
+                let machineStatus = this.stepForward();
+                if (!(machineStatus === VLIWError.BREAKPOINT || machineStatus === VLIWError.ENDEXE)) { 
+                    this.executionLoop(speed);
+                } else {
+                    if (machineStatus === VLIWError.BREAKPOINT) {
+                        alert(t('execution.stopped'));
+                    } else if (machineStatus === VLIWError.ENDEXE) {
+                        this.finishedExecution = true;
+                        alert(t('execution.finished'));
+                    }
+                }
+            }, speed);
+        } else if (this.stopCondition === ExecutionStatus.STOP) {
+            this.resetMachine();
+        }
     }
 
+    saveVliwConfig = (vliwConfig) => {
+        const vliwConfigKeys = Object.keys(vliwConfig);
 
-    // setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
+        for (let i = 0; i < (vliwConfigKeys.length - 2); i++) {
+            if (i % 2 === 0) {
+                this.vliw.setFunctionalUnitNumber(i,
+                    +vliwConfig[vliwConfigKeys[i]]);
+            } else {
+                this.vliw.setFunctionalUnitLatency(i,
+                    +vliwConfig[vliwConfigKeys[i]]);
+            }
+        }
+    }
+
+    // setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => { 
     //     this.replications = replications;
     //     this.cacheFailLatency = cacheFailLatency;
     //     this.cacheFailPercentage = cacheFailPercentage;

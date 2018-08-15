@@ -12,6 +12,7 @@ import RegisterTabComponent from './components/Superescalar/tab/RegistersTabComp
 
 import LoadModalComponent from "./components/Superescalar/modal/LoadModalComponent";
 import SuperescalarConfigModalComponent from "./components/Superescalar/modal/SuperescalarConfigModalComponent";
+import VliwConfigModalComponent from "./components/Vliw/modal/VliwConfigModalComponent";
 import OptionsModalComponent from "./components/Superescalar/modal/OptionsModalComponent";
 import AutorModalComponent from "./components/Superescalar/modal/AutorModalComponent";
 
@@ -85,7 +86,7 @@ const VeryLong = () => (
           </Tab>
       </Tabs>
       <VLIWLoadModalComponent />
-      <SuperescalarConfigModalComponent />
+      <VliwConfigModalComponent />
       <OptionsModalComponent />
       <AutorModalComponent />
       <BatchModalComponent />
