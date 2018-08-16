@@ -31,15 +31,14 @@ export class VLIWParser {
             // TODO replace this for the proper regexp
             const splittedRow: string[] = splittedInputInRows[i].trim().split(/[\t+|\s+]/);
 
-            let instructionsAmount = +splittedRow[0];
+            let instructionsAmount = +splittedRow.shift();
             if (instructionsAmount > 0) {
-                let acc = 0;
                 for (let j = 0; j < instructionsAmount; j++) {
 
-                    index = +splittedRow[j*4+1+acc];
-                    functionalUnitType = +splittedRow[j*4+2+acc];
-                    functionalUnitIndex = +splittedRow[j*4+3+acc];
-                    predicate = +splittedRow[j*4+4];
+                    index = +splittedRow.shift();
+                    functionalUnitType = +splittedRow.shift();
+                    functionalUnitIndex = +splittedRow.shift();
+                    predicate = +splittedRow.shift(); // TODO: +acc?
 
                     if (code.getFunctionalUnitType(index) != functionalUnitType ) {
                         throw new Error(`Functional unit type at line ${i + 1} mismatch, expected ${code.getFunctionalUnitType(index)} got ${functionalUnitType}`)
@@ -50,17 +49,15 @@ export class VLIWParser {
                     // TODO y el bgt?
                     if (operation.isJump()) {
                         let destiny, predTrue, predFalse;
-                        destiny = +splittedRow[j*4+5+acc];
+                        destiny = +splittedRow.shift();
                         operation.setOperand(2, destiny, '');
-                        predTrue = +splittedRow[j*4+6+acc];
-                        predFalse = +splittedRow[j*4+7+acc];
+                        predTrue = +splittedRow.shift();
+                        predFalse = +splittedRow.shift();
                         operation.setPredTrue(predTrue);
                         operation.setPredFalse(predFalse);
-                        acc += 3;
                     }
 
                     instructions[i].addOperation(operation);
-
                 }
             }      
         }
