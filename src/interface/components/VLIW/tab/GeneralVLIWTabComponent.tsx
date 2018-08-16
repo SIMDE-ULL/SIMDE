@@ -44,7 +44,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                         <div className="smd-general_tab-simulation_nat_predicate">
                                 <RegisterComponent 
                                     title='Predicado'
-                                    data={this.props.predicate.content}
+                                    data={this.props.predicate.data}
                                     visibleRange={this.props.predicate.visibleRangeValues} 
                                     addInterval={this.props.actions.addPredicateInterval}
                                     removeInterval={this.props.actions.removePredicateInterval}
@@ -52,7 +52,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                 />
                                 <RegisterComponent 
                                     title='NaTGPR'
-                                    data={this.props.natGpr.content}
+                                    data={this.props.natGpr.data}
                                     visibleRange={this.props.natGpr.visibleRangeValues} 
                                     addInterval={this.props.actions.addNatGprInterval}
                                     removeInterval={this.props.actions.removeNatGprInterval}
@@ -60,7 +60,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                 />
                                 <RegisterComponent 
                                     title='NaTFPR'
-                                    data={this.props.natFpr.content}
+                                    data={this.props.natFpr.data}
                                     visibleRange={this.props.natFpr.visibleRangeValues} 
                                     addInterval={this.props.actions.addNatFprInterval}
                                     removeInterval={this.props.actions.removeNatFprInterval}

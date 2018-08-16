@@ -19,7 +19,8 @@ import {
     TOGGLE_OPTIONS_MODAL,
     TOGGLE_SUPER_CONFIG_MODAL,
     TOGGLE_VLIW_CONFIG_MODAL,
-    TOGGLE_LOAD_CONTENT_MODAL,
+    TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
+    TOGGLE_VLIW_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
     DISPLAY_BATCH_RESULTS,
     CLEAR_BATCH_RESULTS
@@ -109,7 +110,8 @@ export const initialState = {
     isOptionsModalOpen: false,
     isSuperConfigModalOpen: false,
     isVliwConfigModalOpen: false,
-    isLoadContentModalOpen: false,
+    isSuperescalarLoadContentModalOpen: false,
+    isVliwLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
     batchResults: {}
@@ -215,10 +217,15 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 isBatchModalOpen: action.value
             });
-        case TOGGLE_LOAD_CONTENT_MODAL:
+        case TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL:
             return (state = {
                 ...state,
-                isLoadContentModalOpen: action.value
+                isSuperescalarLoadContentModalOpen: action.value
+            });
+        case TOGGLE_VLIW_LOAD_CONTENT_MODAL:
+            return (state = {
+                ...state,
+                isVliwLoadContentModalOpen: action.value
             });
         case VIEW_BASIC_BLOCKS:
             return (state = {
@@ -307,12 +314,12 @@ export function SuperescalarReducers(state = initialState, action) {
                 batchResults: {},
                 isBatchResultsModalOpen: false
             });
-            case NEXT_NAT_FPR_CYCLE: 
+        case NEXT_NAT_FPR_CYCLE: 
             return {
                 ...state,
                 natFpr: {
                     ...state.natFpr,                    
-                    ...action.value
+                    data: [...action.value]
                 }
             };
         case NEXT_NAT_GPR_CYCLE:
@@ -320,7 +327,7 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 natGpr: {
                     ...state.natGpr,
-                    ...action.value
+                    data: [...action.value]
                 }
             }
         case NEXT_PREDICATE_CYCLE: 
@@ -328,7 +335,7 @@ export function SuperescalarReducers(state = initialState, action) {
                 ...state,
                 predicate: {
                     ...state.predicate,
-                    ...action.value                    
+                    data: [...action.value]
                 }
             }
         case ADD_NAT_FPR_INTERVAL:

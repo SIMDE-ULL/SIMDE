@@ -97,7 +97,8 @@
         "save": "Save",
         "accept": "Accept",
         "launch": "Launch",
-        "uploadFromFile": "Upload from file"
+        "uploadFromFile": "Upload Superescalar from file",
+        "uploadVliwFromFile": "Upload VLIW from file"
     },
     "Code": "Code",
     "Jump table": "Jump table",
