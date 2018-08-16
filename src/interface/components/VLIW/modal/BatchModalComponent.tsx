@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import { VLIWIntegration } from '../../../../integration/vliw-integration';
-import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../../core/Constants';
+import { VLIW_CONFIG, BATCH_CONFIG } from '../../../../core/Constants';
 
 class BatchModalComponent extends React.Component<any, any> {
     constructor(public props: any, public state: any) {

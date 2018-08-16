@@ -23,10 +23,13 @@ import BatchResultsModalComponent from "./components/Superescalar/modal/BatchRes
 import LandingPage from "./components/LandingPage/LandingPageComponent";
 import ProjectPage from "./components/landingpage/ProjectPageComponent";
 import GeneralVLIWTabComponent from "./components/VLIW/tab/GeneralVLIWTabComponent";
-import  RegisterVLIWTabComponent  from "./components/VLIW/tab/RegistersVLIWTabComponent";
+import RegisterVLIWTabComponent  from "./components/VLIW/tab/RegistersVLIWTabComponent";
 import VLIWFileBarComponent from "./components/VLIW/navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./components/VLIW/modal/VLIWLoadModalComponent";
 import VLIWAccessBarComponent from "./components/VLIW/navbar/VLIWAccessBarComponent";
+import SuperescalarLoadContentModalComponent from "./components/Superescalar/modal/SuperescalarLoadContentModalComponent";
+import VliwLoadContentModalComponent from "./components/VLIW/modal/VliwLoadContentModalComponent";
+
 
 class App extends React.Component<any, any> {
    render() {
@@ -63,7 +66,7 @@ const Superescalares = () => (
         </Tab>
     </Tabs>
     <LoadModalComponent />
-    <LoadContentModalComponent />
+    <SuperescalarLoadContentModalComponent />
     <SuperescalarConfigModalComponent />
     <OptionsModalComponent />
     <AutorModalComponent />
@@ -87,6 +90,7 @@ const VeryLong = () => (
           </Tab>
       </Tabs>
       <VLIWLoadModalComponent />
+      <VliwLoadContentModalComponent />
       <VliwConfigModalComponent />
       <OptionsModalComponent />
       <AutorModalComponent />

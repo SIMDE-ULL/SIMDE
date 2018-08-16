@@ -6,11 +6,11 @@ import { connect } from 'react-redux';
 import * as FileReaderInput from 'react-file-reader-input';
 
 import { bindActionCreators } from 'redux';
-import { toggleLoadContentModal } from '../../actions/modals';
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
-import { ContentIntegration} from '../../../integration/content-integration';
+import { toggleVliwLoadContentModal } from '../../../actions/modals';
+import VLIWIntegration from '../../../../integration/VLIW-integration';
+import { ContentIntegration} from '../../../../integration/content-integration';
 
-class LoadContentModalComponent extends React.Component<any, any> {
+class VLIWLoadContentModalComponent extends React.Component<any, any> {
 
       constructor(public props: any, public state: any) {
             super(props);
@@ -20,7 +20,7 @@ class LoadContentModalComponent extends React.Component<any, any> {
       }
 
       close() {
-            this.props.actions.toggleLoadContentModal(false);
+            this.props.actions.toggleVliwLoadContentModal(false);
       };
 
       handleInputFileChange = (e, results) => {
@@ -36,11 +36,11 @@ class LoadContentModalComponent extends React.Component<any, any> {
                 const content = (document.getElementById('contentInput') as HTMLInputElement).value;
                 this.setState({error: ''});
                 const contentIntegration = new ContentIntegration(content);
-                SuperescalarIntegration.contentIntegration = contentIntegration;
-                SuperescalarIntegration.setFpr(contentIntegration.FPRContent);
-                SuperescalarIntegration.setGpr(contentIntegration.GPRContent);
-                SuperescalarIntegration.setMemory(contentIntegration.MEMContent);
-                SuperescalarIntegration.dispatchAllSuperescalarActions();
+                VLIWIntegration.contentIntegration = contentIntegration;
+                VLIWIntegration.setFpr(contentIntegration.FPRContent);
+                VLIWIntegration.setGpr(contentIntegration.GPRContent);
+                VLIWIntegration.setMemory(contentIntegration.MEMContent);
+                VLIWIntegration.dispatchAllVLIWActions();
                 this.close();
             } catch (error) {
                 this.setState({error: error.message});
@@ -48,7 +48,7 @@ class LoadContentModalComponent extends React.Component<any, any> {
       }
 
       render() {
-            return (<Modal className="smd-load_content_modal" show={this.props.isLoadContentModalOpen} onHide={this.close}>
+            return (<Modal className="smd-load_content_modal" show={this.props.isVliwLoadContentModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{t('loadContentModal.title')}</Modal.Title>
             </Modal.Header>
@@ -63,7 +63,7 @@ class LoadContentModalComponent extends React.Component<any, any> {
             <Modal.Footer className="smd-load_modal-footer">
                 <div className="smd-load_modal-file_input">
                     <FileReaderInput as='text' onChange={this.handleInputFileChange} accept='.mem'>
-                        <Button className='btn btn-primary'>{t('commonButtons.uploadFromFile')}</Button>
+                        <Button className='btn btn-primary'>{t('commonButtons.uploadVliwFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-actions">
@@ -77,11 +77,11 @@ class LoadContentModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
       return {
-          isLoadContentModalOpen: state.isLoadContentModalOpen,
+          isVliwLoadContentModalOpen: state.isVliwLoadContentModalOpen,
       }
   }
   
 function mapDispatchToProps(dispatch) {
-      return { actions: bindActionCreators({toggleLoadContentModal}, dispatch)};
+      return { actions: bindActionCreators({toggleVliwLoadContentModal}, dispatch)};
 } 
-export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(LoadContentModalComponent));
+export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(VLIWLoadContentModalComponent));

@@ -65,7 +65,7 @@ class RegisterComponent extends React.Component<any, any> {
                                           renderCondition && this.props.visibleRange.map(index => 
                                           <div className='smd-table_row' key={`${this.props.title + index}`}>
                                                 <div className='smd-table_cell' key={`${this.props.title + index + 65}`}>{index}</div>
-                                                <div className='smd-table_cell' key={`${this.props.title + index + 131}`}>{this.props.data[index]}</div>
+                                                <div className='smd-table_cell' key={`${this.props.title + index + 131}`}>{'' + this.props.data[index]}</div>
                                           </div>)
                                     }
                                     </div>

@@ -5,7 +5,8 @@ export const TOGGLE_OPTIONS_MODAL = 'TOGGLE_OPTIONS_MODAL';
 export const TOGGLE_SUPER_CONFIG_MODAL = 'TOGGLE_SUPER_CONFIG_MODAL';
 export const TOGGLE_VLIW_CONFIG_MODAL = 'TOGGLE_VLIW_CONFIG_MODAL';
 export const TOGGLE_BATCH_MODAL = 'TOGGLE_BATCH_MODAL';
-export const TOGGLE_LOAD_CONTENT_MODAL = 'TOGGLE_LOAD_CONTENT_MODAL';
+export const TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL = 'TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL';
+export const TOGGLE_VLIW_LOAD_CONTENT_MODAL = 'TOGGLE_VLIW_LOAD_CONTENT_MODAL';
 export const DISPLAY_BATCH_RESULTS = 'DISPLAY_BATCH_RESULTS';
 export const CLEAR_BATCH_RESULTS = 'CLEAR_BATCH_RESULTS';
 
@@ -30,9 +31,16 @@ export function toggleIntervalModal(value) {
     };
 }
 
-export function toggleLoadContentModal(value) {
+export function toggleSuperescalarLoadContentModal(value) {
     return {
-        type: TOGGLE_LOAD_CONTENT_MODAL,
+        type: TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
+        value: value
+    };
+}
+
+export function toggleVliwLoadContentModal(value) {
+    return {
+        type: TOGGLE_VLIW_LOAD_CONTENT_MODAL,
         value: value
     };
 }
