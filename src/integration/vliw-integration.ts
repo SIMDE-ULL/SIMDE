@@ -5,12 +5,14 @@ import {
     nextDecoderCycle,
     nextJumpTableCycle,
     nextFunctionalUnitCycle,
+    nextVLIWHeaderTableCycle,
+    nextVLIWExecutionTableCycle,
     nextRegistersCycle,
     nextMemoryCycle,
     nextCycle,
     superescalarLoad,
     batchActions,
-    colorCell
+    colorCell,
 } from '../interface/actions';
 
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
@@ -26,6 +28,33 @@ import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interfa
 
 
 export class VLIWIntegration extends MachineIntegration {
+
+    setMemory = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.memory.setDatum(+key, data[key]);
+        });
+    }
+
+    setFpr = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.fpr.setContent(+key, data[key], false);
+        });
+    }
+
+    setGpr = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.gpr.setContent(+key, data[key], false);
+        });
+    }
 
     static makeBatchExecution(): any {
         throw new Error("Method not implemented.");
@@ -56,12 +85,14 @@ export class VLIWIntegration extends MachineIntegration {
         store.dispatch(
             batchActions(
                 nextFunctionalUnitCycle([...this.vliw.functionalUnit]),
+                nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers),
+                nextVLIWExecutionTableCycle(this.vliw.code._instructions, this.vliw._functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
                 nextMemoryCycle(this.vliw.memory.data),
                 nextCycle(this.vliw.status.cycle),
-                nextNatFprCycle({content: this.vliw.getNaTFP() }),
-                nextNatGprCycle({content: this.vliw.getNaTGP() }),
-                nextPredicateCycle({content: this.vliw.getPredReg() })
+                nextNatFprCycle(this.vliw.getNaTFP()),
+                nextNatGprCycle(this.vliw.getNaTGP()),
+                nextPredicateCycle(this.vliw.getPredReg())
             )
         );
     }
@@ -103,6 +134,8 @@ export class VLIWIntegration extends MachineIntegration {
         this.resetMachine();
         // There is no need to update the code with the rest,
         // it should remain the same during all the program execution
+        store.dispatch(nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers));
+        store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code._instructions, this.vliw._functionalUnitNumbers));
         store.dispatch(superescalarLoad(vliwCode.superescalarCode.instructions));
     }
 
@@ -124,7 +157,7 @@ export class VLIWIntegration extends MachineIntegration {
         }
 
         if (this.vliw.status.cycle === 0) {
-            let code = Object.assign(new Code(), this.vliw.code); // asignar tambien el codigo superescalar?
+            let code = Object.assign(new VLIWCode(), this.vliw.code); // asignar tambien el codigo superescalar?
             this.vliwExe();
             this.vliw.code = code;
         }
@@ -148,7 +181,7 @@ export class VLIWIntegration extends MachineIntegration {
 
         const results = [];
         for (let i = 0; i < this.replications; i++) {
-            let code = Object.assign(new Code(), this.vliw.code);
+            let code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
             this.vliw.memory.failProbability = this.cacheFailPercentage;

@@ -5,7 +5,7 @@ import { Code } from '../Common/Code';
 import { VLIWParser } from './VLIWParser';
 
 export class VLIWCode {
-    private _instructions: LargeInstruction[];
+    public _instructions: LargeInstruction[];
     private _largeInstructionNumber: number;
     private _superescalarCode: Code;
 

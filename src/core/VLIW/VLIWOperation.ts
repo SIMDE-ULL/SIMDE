@@ -24,6 +24,7 @@ export class VLIWOperation extends Instruction {
     }
 
     buildFromVLIWOperation(operation: VLIWOperation) {
+        this.copy(operation);
         this._functionalUnitType = operation._functionalUnitType;
         this._functionalUnitIndex = operation._functionalUnitIndex;
         this._predicate= operation._predicate

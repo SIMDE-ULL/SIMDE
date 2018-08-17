@@ -10,15 +10,17 @@ export function FunctionalUnitComponent(props) {
                 <div className="smd-table">
                     {
                         <div className="smd-table-header">
-                            {props.header &&
-                                props.header.map((element, i) => (
-                                    <div
-                                        className="smd-table-header_title"
-                                        key={props.title + 'FUTitle' + i}
-                                    >
-                                        {element}
-                                    </div>
-                                ))}
+                            <div className="smd-table_row">
+                                {props.header &&
+                                    props.header.map((element, i) => (
+                                        <div
+                                            className="smd-table-header_title"
+                                            key={props.title + 'FUTitle' + i}
+                                        >
+                                            {element}
+                                        </div>
+                                    ))}
+                            </div>
                         </div>
                     }
                     <div className="smd-table-body">

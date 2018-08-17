@@ -22,7 +22,7 @@ export class Machine {
     protected static NGP: number = MACHINE_REGISTER_SIZE;
     protected static NFP: number = MACHINE_REGISTER_SIZE;
 
-    protected _functionalUnitNumbers: number[];
+    public _functionalUnitNumbers: number[];
     protected _functionalUnitLatencies: number[];
     protected _memoryFailLatency: number;
 

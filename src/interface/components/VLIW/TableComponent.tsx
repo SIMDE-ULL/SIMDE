@@ -10,7 +10,7 @@ export function TableComponent(props) {
             <div className="panel-heading">{t(props.title)}</div>
             <div className="smd-table_component-body panel-body">
                 <div className="smd-table">
-                    <div className="smd-table-header">
+                    {/* <div className="smd-table-header">
                         <div className="smd-table-header_title id-colum">#</div>
                         <div className="smd-table-header_title">Entera0</div>
                         <div className="smd-table-header_title">Entera1</div>
@@ -23,54 +23,19 @@ export function TableComponent(props) {
                         <div className="smd-table-header_title">Mem0</div>
                         <div className="smd-table-header_title">Mem1</div>
                         <div className="smd-table-header_title">Salto0</div>
-                    </div>
+                    </div> */}
                     <div className="smd-table-body">
                         {props.data &&
                             props.data.map((row, i) => (
                                 <div
                                     className="smd-table_row"
-                                    title={row.instruction.value}
                                     key={`${props.title + i}`}
-                                    style={{
-                                        background: row.instruction.color
-                                    }}
                                 >
+                                {row.map( (col, j) => (
                                     <div className="smd-table_cell">
-                                        {row.instruction.id} 
+                                        { col } 
                                     </div>
-                                    <div className="smd-table_cell">
-                                        {row.Entera0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Entera1}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.xEntera0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.xEntera0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Flotante0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Flotante1}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.xFlotante0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.xFlotante1}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Mem0}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Mem1}
-                                    </div>
-                                    <div className="smd-table_cell">
-                                        {row.Salto0}
-                                    </div>
+                                ))}
                                 </div>
                             ))}
                     </div>

@@ -39,6 +39,8 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                         <div className="smd-general_tab-simulation_planificator">
                             <TableComponent
                                 title="Instrucciones VLIW"
+                                header={this.props.vliwExecutionHeaderTable}
+                                data={this.props.vliwExecutionTable}
                             />
                         </div>  
                         <div className="smd-general_tab-simulation_nat_predicate">
@@ -148,7 +150,9 @@ const mapStateToProps = state => {
         natGpr: state.natGpr, 
         predicate: state.predicate,
         code: state.code,
-        colorBasicBlocks: state.colorBasicBlocks
+        colorBasicBlocks: state.colorBasicBlocks,
+        vliwExecutionTable: state.vliwExecutionTable,
+        vliwExecutionHeaderTable: state.vliwExecutionHeaderTable
     };
 };
 

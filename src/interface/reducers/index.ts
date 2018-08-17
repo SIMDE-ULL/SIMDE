@@ -3,6 +3,8 @@ import {
     NEXT_DECODER_CYCLE,
     NEXT_JUMP_TABLE_CYCLE,
     FUNCTIONAL_UNIT_CYCLE,
+    HEADER_TABLE_CYCLE,
+    TABLE_CYCLE,
     NEXT_RESERVE_STATION_CYCLE,
     NEXT_REORDER_BUFFER_MAPPER_CYCLE,
     NEXT_REORDER_BUFFER_CYCLE,
@@ -104,6 +106,8 @@ export const initialState = {
     cycle: 0,
     code: [],
     vliwCode: [],
+    vliwExecutionHeaderTable: [],
+    vliwExecutionTable: [],
     colorBasicBlocks: false,
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
@@ -135,6 +139,16 @@ export function SuperescalarReducers(state = initialState, action) {
                 functionalUnitMemory: action.value[4],
                 functionalUnitJump: action.value[5],
                 functionalUnitAluMem: action.value[6]
+            });
+        case HEADER_TABLE_CYCLE:
+            return (state = {
+                ...state,
+                vliwExecutionHeaderTable: action.value
+            });
+        case TABLE_CYCLE:
+            return (state = {
+                ...state,
+                vliwExecutionTable: action.value
             });
         case NEXT_RESERVE_STATION_CYCLE:
             return (state = {

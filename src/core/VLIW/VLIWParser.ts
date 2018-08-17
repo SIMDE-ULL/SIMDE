@@ -38,7 +38,7 @@ export class VLIWParser {
                     index = +splittedRow.shift();
                     functionalUnitType = +splittedRow.shift();
                     functionalUnitIndex = +splittedRow.shift();
-                    predicate = +splittedRow.shift(); // TODO: +acc?
+                    predicate = +splittedRow.shift();
 
                     if (code.getFunctionalUnitType(index) != functionalUnitType ) {
                         throw new Error(`Functional unit type at line ${i + 1} mismatch, expected ${code.getFunctionalUnitType(index)} got ${functionalUnitType}`)
