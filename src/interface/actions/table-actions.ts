@@ -18,47 +18,22 @@ export function nextVLIWExecutionTableCycle(data, functionalUnitNumbers: number[
 
 function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
     const functionalUnitAmount = functionalUnitNumbers.reduce( (accumulator, current) => accumulator + current);
-    let headers = new Array(functionalUnitAmount);
-    headers.push("#");
+    console.log(functionalUnitAmount);
+    let headers = new Array();
+    
+    headers.push({
+        extraValue: "#"
+    });
 
-    for(let i = 1; i < functionalUnitNumbers.length; i++) {
-        switch (i) {
-            case 1: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("+Entera" + j);
-                }
-                break;
-            }
-            case 2: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("xEntera" + j);
-                }
-                break;
-            }
-            case 3: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("+Flotante" + j);
-                }
-                break;
-            }
-            case 4: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("xFlotante" + j);
-                }
-                break;
-            }
-            case 5: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("Memoria" + j);
-                }
-            }
-            case 6: {
-                for(let j = 0; j < functionalUnitNumbers[i]; j++) {
-                    headers.push("Salto" + j);
-                }
-            }
+    for(let i = 0; i < functionalUnitNumbers.length; i++) {
+        for(let j = 0; j < functionalUnitNumbers[i]; j++) {
+            headers.push({
+                translateKey: functionalUnitTranslateKeys[i],
+                extraValue: j
+            });
         }
     }
+    return headers;
 }
 
 function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
@@ -111,4 +86,14 @@ function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
     //data.getOperation(0).id; //numero de la operación superescalar
     //data.getOperation(0).getFunctionalUnitType; // tipo de operacion ADDI...
     //data.getOperation(0).getFunctionalUnitIndex; // numero de unidad funcional a la que se asignara
+}
+
+
+const functionalUnitTranslateKeys = {
+    0: 'planificator.IntegerAdd',
+    1: 'planificator.IntegerMult',
+    2: 'planificator.FloatAdd',
+    3: 'planificator.FloatMult',
+    4: 'planificator.Memory',
+    5: 'planificator.Jump'
 }

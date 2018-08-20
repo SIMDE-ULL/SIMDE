@@ -36,12 +36,14 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                 floatingMultLatency: 6,
                 memoryQuantity: 2,
                 memoryLatency: 4,
+                jumpQuantity: 1,
                 jumpLatency: 2,
             }
         });
     }
 
     saveVliwConfig() {
+        console.log(this.state.vliwConfig);
         VLIWIntegration.saveVliwConfig(this.state.vliwConfig); 
         this.close();
     }
@@ -70,6 +72,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                 floatingMultLatency: 6,
                 memoryQuantity: 2,
                 memoryLatency: 4,
+                jumpQuantity: 1,
                 jumpLatency: 2,
             }
         });

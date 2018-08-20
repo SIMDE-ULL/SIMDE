@@ -168,7 +168,7 @@
         "pagetitle": "SIMDEWeb",
         "home": "Home",
         "project": "Proyecto",
-        "watsimde": "¿Qué es SIMDEWeb?",
+        "whatsimde": "¿Qué es SIMDEWeb?",
         "simdedescription1": "SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).",
         "simdedescription2": "Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.",
         "simdedescription3": "Esto hace más fácil aprender conceptos tales como el algoritmo de Tomasulo y el propósito de estructuras tales como el buffer de reorden.",
@@ -180,5 +180,13 @@
         "problemsdescription": "Puedes consultar nuestra documentación",
         "licency": "@liberado bajo licencia GPLv3"
        
+    },
+    "planificator": {
+        "IntegerAdd": "+Entera",
+        "IntegerMult": "xEntera",
+        "FloatAdd": "+Flotante",
+        "FloatMult": "xFlotante",
+        "Memory": "Memoria",
+        "Jump": "Salto"
     }
 }

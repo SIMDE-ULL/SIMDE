@@ -247,12 +247,12 @@ export class VLIWIntegration extends MachineIntegration {
     saveVliwConfig = (vliwConfig) => {
         const vliwConfigKeys = Object.keys(vliwConfig);
 
-        for (let i = 0; i < (vliwConfigKeys.length - 2); i++) {
+        for (let i = 0; i < vliwConfigKeys.length; i++) {
             if (i % 2 === 0) {
-                this.vliw.setFunctionalUnitNumber(i,
+                this.vliw.setFunctionalUnitNumber(i/2,
                     +vliwConfig[vliwConfigKeys[i]]);
             } else {
-                this.vliw.setFunctionalUnitLatency(i,
+                this.vliw.setFunctionalUnitLatency(i/2,
                     +vliwConfig[vliwConfigKeys[i]]);
             }
         }

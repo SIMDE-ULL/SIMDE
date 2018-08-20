@@ -335,10 +335,10 @@ export class SuperescalarIntegration extends MachineIntegration {
 
         for (let i = 0; i < (superConfigKeys.length - 2); i++) {
             if (i % 2 === 0) {
-                this.superescalar.setFunctionalUnitNumber(i,
+                this.superescalar.setFunctionalUnitNumber(i/2,
                     +superConfig[superConfigKeys[i]]);
             } else {
-                this.superescalar.setFunctionalUnitLatency(i,
+                this.superescalar.setFunctionalUnitLatency(i/2,
                     +superConfig[superConfigKeys[i]]);
             }
         }
