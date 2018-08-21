@@ -66,7 +66,6 @@ export function toggleVliwConfigModal(value) {
     };
 }
 
-
 export function toggleBatchModal(value) {
     return {
         type: TOGGLE_BATCH_MODAL,

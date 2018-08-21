@@ -1,9 +1,6 @@
 import { ExecutionStatus } from '../main-consts';
 import { store } from '../store';
 import {
-    nextPrefetchCycle,
-    nextDecoderCycle,
-    nextJumpTableCycle,
     nextFunctionalUnitCycle,
     nextVLIWHeaderTableCycle,
     nextVLIWExecutionTableCycle,
@@ -11,58 +8,19 @@ import {
     nextMemoryCycle,
     nextCycle,
     superescalarLoad,
-    batchActions,
-    colorCell,
+    batchActions
 } from '../interface/actions';
 
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
 import { MAX_HISTORY_SIZE } from '../interface/reducers';
 
 import { t } from 'i18next';
-import { Code } from '../core/Common/Code';
-import { displayBatchResults } from '../interface/actions/modals';
 
 import { MachineIntegration } from './machine-integration';
-import { VLIW, VLIWCode, VLIWError} from '../core/VLIW';
+import { VLIW, VLIWCode, VLIWError } from '../core/VLIW';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 
-
 export class VLIWIntegration extends MachineIntegration {
-
-    setMemory = (data: { [k: number]: number }) => {
-        if (this.vliw.status.cycle > 0) {
-            return;
-        }
-        Object.keys(data).forEach(key => {
-            this.vliw.memory.setDatum(+key, data[key]);
-        });
-    }
-
-    setFpr = (data: { [k: number]: number }) => {
-        if (this.vliw.status.cycle > 0) {
-            return;
-        }
-        Object.keys(data).forEach(key => {
-            this.vliw.fpr.setContent(+key, data[key], false);
-        });
-    }
-
-    setGpr = (data: { [k: number]: number }) => {
-        if (this.vliw.status.cycle > 0) {
-            return;
-        }
-        Object.keys(data).forEach(key => {
-            this.vliw.gpr.setContent(+key, data[key], false);
-        });
-    }
-
-    static makeBatchExecution(): any {
-        throw new Error("Method not implemented.");
-    }
-    static setBatchMode(arg0: any, arg1: any, arg2: any): any {
-        throw new Error("Method not implemented.");
-    }
-
     // Global objects for binding React to the View
     vliw = new VLIW();
     codeLoaded = false;
@@ -74,19 +32,27 @@ export class VLIWIntegration extends MachineIntegration {
     replications = 0;
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
-    
+
     /*
     * This call all the components to update the state
     * if there is a step param, the components will use
     * their history to set the appropiate content
     */
+
+    static makeBatchExecution(): any {
+        throw new Error('Method not implemented.');
+    }
+    static setBatchMode(arg0: any, arg1: any, arg2: any): any {
+        throw new Error('Method not implemented.');
+    }
+
     dispatchAllVLIWActions = (step?: number) => {
         // Code should only be setted on the first iteration
         store.dispatch(
             batchActions(
                 nextFunctionalUnitCycle([...this.vliw.functionalUnit]),
                 nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers),
-                nextVLIWExecutionTableCycle(this.vliw.code._instructions, this.vliw._functionalUnitNumbers),
+                nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw._functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
                 nextMemoryCycle(this.vliw.memory.data),
                 nextCycle(this.vliw.status.cycle),
@@ -96,12 +62,14 @@ export class VLIWIntegration extends MachineIntegration {
             )
         );
     }
-    
+
     vliwExe = () => {
         this.vliw.init(true);
     }
-    
-    setBatchMode: (...config: any[]) => void;
+
+    setBatchMode = (...config: any[]) => {
+        console.log('Cual es? Esta o el estático? Los dos?');
+    }
 
     stepForward = () => {
 
@@ -135,7 +103,7 @@ export class VLIWIntegration extends MachineIntegration {
         // There is no need to update the code with the rest,
         // it should remain the same during all the program execution
         store.dispatch(nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers));
-        store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code._instructions, this.vliw._functionalUnitNumbers));
+        store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw._functionalUnitNumbers));
         store.dispatch(superescalarLoad(vliwCode.superescalarCode.instructions));
     }
 
@@ -165,13 +133,40 @@ export class VLIWIntegration extends MachineIntegration {
         if (speed) {
             this.executionLoop(speed);
         } else {
-            
-            //tslint:disable-next-line:no-empty
-            while (this.vliw.tic() !== VLIWError.ENDEXE) { } 
-                this.dispatchAllVLIWActions(); 
-                this.finishedExecution = true;
-                alert(t('execution.finished'));
-         }
+            // tslint:disable-next-line:no-empty
+            while (this.vliw.tic() !== VLIWError.ENDEXE) { }
+
+            this.dispatchAllVLIWActions();
+            this.finishedExecution = true;
+            alert(t('execution.finished'));
+        }
+    }
+
+    setMemory = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.memory.setDatum(+key, data[key]);
+        });
+    }
+
+    setFpr = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.fpr.setContent(+key, data[key], false);
+        });
+    }
+
+    setGpr = (data: { [k: number]: number }) => {
+        if (this.vliw.status.cycle > 0) {
+            return;
+        }
+        Object.keys(data).forEach(key => {
+            this.vliw.gpr.setContent(+key, data[key], false);
+        });
     }
 
     makeBatchExecution = () => {
@@ -188,7 +183,7 @@ export class VLIWIntegration extends MachineIntegration {
             this.vliw.memoryFailLatency = this.cacheFailLatency;
              // tslint:disable-next-line:no-empty
             while (this.vliw.tic() !== VLIWError.ENDEXE) { }
-                results.push(this.vliw.status.cycle);
+            results.push(this.vliw.status.cycle);
         }
 
         // const statistics = this.calculateBatchStatistics(results);
@@ -228,7 +223,7 @@ export class VLIWIntegration extends MachineIntegration {
         if (!this.stopCondition) {
             setTimeout(() => {
                 let machineStatus = this.stepForward();
-                if (!(machineStatus === VLIWError.BREAKPOINT || machineStatus === VLIWError.ENDEXE)) { 
+                if (!(machineStatus === VLIWError.BREAKPOINT || machineStatus === VLIWError.ENDEXE)) {
                     this.executionLoop(speed);
                 } else {
                     if (machineStatus === VLIWError.BREAKPOINT) {
@@ -249,16 +244,14 @@ export class VLIWIntegration extends MachineIntegration {
 
         for (let i = 0; i < vliwConfigKeys.length; i++) {
             if (i % 2 === 0) {
-                this.vliw.setFunctionalUnitNumber(i/2,
-                    +vliwConfig[vliwConfigKeys[i]]);
+                this.vliw.setFunctionalUnitNumber(i / 2, +vliwConfig[vliwConfigKeys[i]]);
             } else {
-                this.vliw.setFunctionalUnitLatency(i/2,
-                    +vliwConfig[vliwConfigKeys[i]]);
+                this.vliw.setFunctionalUnitLatency(i / 2, +vliwConfig[vliwConfigKeys[i]]);
             }
         }
     }
 
-    // setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => { 
+    // setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
     //     this.replications = replications;
     //     this.cacheFailLatency = cacheFailLatency;
     //     this.cacheFailPercentage = cacheFailPercentage;

@@ -17,16 +17,16 @@ export function nextVLIWExecutionTableCycle(data, functionalUnitNumbers: number[
 }
 
 function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
-    const functionalUnitAmount = functionalUnitNumbers.reduce( (accumulator, current) => accumulator + current);
+    const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
     console.log(functionalUnitAmount);
     let headers = new Array();
-    
+
     headers.push({
-        extraValue: "#"
+        extraValue: '#'
     });
 
-    for(let i = 0; i < functionalUnitNumbers.length; i++) {
-        for(let j = 0; j < functionalUnitNumbers[i]; j++) {
+    for (let i = 0; i < functionalUnitNumbers.length; i++) {
+        for (let j = 0; j < functionalUnitNumbers[i]; j++) {
             headers.push({
                 translateKey: functionalUnitTranslateKeys[i],
                 extraValue: j
@@ -38,56 +38,54 @@ function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
 
 function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
 
-    // Cantidad de unidades funcionalesl
-    const functionalUnitAmount = functionalUnitNumbers.reduce( (accumulator, current) => accumulator + current);
-                                                                                                                                 
+    const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
+
     let cols = new Array(functionalUnitAmount);
-    cols.fill(null);                                                                               
+    cols.fill(null);
 
-    for(let i = 0; i < data.getNOper(); i++) { // numero de instrucciones cortas en la instrucción larga
-        for(let j = 0; j < cols.length; j++) { 
-            if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.INTEGERSUM) 
-                && (data.getOperation(i).getFunctionalUnitIndex() == j)) {
-                
-                cols[j] = data.getOperation(i).id;
-
-            } else if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.INTEGERMULTIPLY) 
-                && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0]) == j)) {
+    for (let i = 0; i < data.getVLIWOperationsNumber(); i++) { // numero de instrucciones cortas en la instrucción larga
+        for (let j = 0; j < cols.length; j++) {
+            if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.INTEGERSUM)
+                && (data.getOperation(i).getFunctionalUnitIndex() === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.FLOATINGSUM) 
-            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1]) == j)) {
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.INTEGERMULTIPLY)
+                && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.FLOATINGMULTIPLY) 
-            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1] + functionalUnitNumbers[2]) == j)) {
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.FLOATINGSUM)
+            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.MEMORY) 
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.FLOATINGMULTIPLY)
+            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1] + functionalUnitNumbers[2]) === j)) {
+
+                cols[j] = data.getOperation(i).id;
+
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.MEMORY)
             && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] +
-             functionalUnitNumbers[1] + functionalUnitNumbers[2] + functionalUnitNumbers[3]) == j)) {
+             functionalUnitNumbers[1] + functionalUnitNumbers[2] + functionalUnitNumbers[3]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() == FunctionalUnitType.JUMP) 
-            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1] 
-            + functionalUnitNumbers[2] + functionalUnitNumbers[3] + functionalUnitNumbers[4]) == j)) {
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.JUMP)
+            && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1]
+            + functionalUnitNumbers[2] + functionalUnitNumbers[3] + functionalUnitNumbers[4]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
             }
         }
     }
-    return cols.map( c => c != null ? c : ' ');
-    
-    //data.getNOper(); numero de operaciones de la instucción larga
-    //data.getOperation(0).id; //numero de la operación superescalar
-    //data.getOperation(0).getFunctionalUnitType; // tipo de operacion ADDI...
-    //data.getOperation(0).getFunctionalUnitIndex; // numero de unidad funcional a la que se asignara
-}
+    return cols.map(c => c != null ? c : ' ');
 
+    // data.getVLIWOperationsNumber(); numero de operaciones de la instucción larga
+    // data.getOperation(0).id; //numero de la operación superescalar
+    // data.getOperation(0).getFunctionalUnitType; // tipo de operacion ADDI...
+    // data.getOperation(0).getFunctionalUnitIndex; // numero de unidad funcional a la que se asignara
+}
 
 const functionalUnitTranslateKeys = {
     0: 'planificator.IntegerAdd',
@@ -96,4 +94,4 @@ const functionalUnitTranslateKeys = {
     3: 'planificator.FloatMult',
     4: 'planificator.Memory',
     5: 'planificator.Jump'
-}
+};

@@ -272,32 +272,32 @@ export class Code {
         this._basicBlocks = value;
     }
 
-    private isJump(opcode: number) {
-        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
-    }
-
     public getFunctionalUnitType(index: number) {
         // TODO bgt not implemented
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
-            case Opcodes.ADDI: 
+            case Opcodes.ADDI:
                 return FunctionalUnitType.INTEGERSUM;
-            case Opcodes.ADDF: 
+            case Opcodes.ADDF:
                 return FunctionalUnitType.FLOATINGSUM;
-            case Opcodes.MULT: 
+            case Opcodes.MULT:
                 return FunctionalUnitType.INTEGERMULTIPLY;
-            case Opcodes.MULTF: 
+            case Opcodes.MULTF:
                 return FunctionalUnitType.FLOATINGMULTIPLY;
             case Opcodes.SW:
             case Opcodes.SF:
             case Opcodes.LW:
-            case Opcodes.LF: 
+            case Opcodes.LF:
                 return FunctionalUnitType.MEMORY;
             case Opcodes.BNE:
-            case Opcodes.BEQ: 
+            case Opcodes.BEQ:
                 return FunctionalUnitType.JUMP;
-            default: 
+            default:
                 return FunctionalUnitType.INTEGERSUM;
         }
+    }
+
+    private isJump(opcode: number) {
+        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
     }
 }

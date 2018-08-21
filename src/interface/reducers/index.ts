@@ -45,9 +45,17 @@ import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
 import { MACHINE_REGISTER_SIZE, MEMORY_SIZE } from '../../core/Constants';
 import { colorHistoryInstruction } from './color';
 import { removeInterval, addInterval } from './interval';
-import { NEXT_NAT_FPR_CYCLE, ADD_NAT_FPR_INTERVAL, ADD_NAT_GPR_INTERVAL, ADD_PREDICATE_INTERVAL, REMOVE_NAT_GPR_INTERVAL, REMOVE_PREDICATE_INTERVAL, REMOVE_NAT_FPR_INTERVAL } from '../actions/predicate-nat-actions';
-import { NEXT_NAT_GPR_CYCLE } from '../actions/predicate-nat-actions';
-import { NEXT_PREDICATE_CYCLE } from '../actions/predicate-nat-actions';
+import {
+    NEXT_NAT_FPR_CYCLE,
+    ADD_NAT_FPR_INTERVAL,
+    ADD_NAT_GPR_INTERVAL,
+    ADD_PREDICATE_INTERVAL,
+    REMOVE_NAT_GPR_INTERVAL,
+    REMOVE_PREDICATE_INTERVAL,
+    REMOVE_NAT_FPR_INTERVAL,
+    NEXT_NAT_GPR_CYCLE,
+    NEXT_PREDICATE_CYCLE
+ } from '../actions/predicate-nat-actions';
 
 export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
@@ -328,11 +336,11 @@ export function SuperescalarReducers(state = initialState, action) {
                 batchResults: {},
                 isBatchResultsModalOpen: false
             });
-        case NEXT_NAT_FPR_CYCLE: 
+        case NEXT_NAT_FPR_CYCLE:
             return {
                 ...state,
                 natFpr: {
-                    ...state.natFpr,                    
+                    ...state.natFpr,
                     data: [...action.value]
                 }
             };
@@ -343,15 +351,15 @@ export function SuperescalarReducers(state = initialState, action) {
                     ...state.natGpr,
                     data: [...action.value]
                 }
-            }
-        case NEXT_PREDICATE_CYCLE: 
+            };
+        case NEXT_PREDICATE_CYCLE:
             return {
                 ...state,
                 predicate: {
                     ...state.predicate,
                     data: [...action.value]
                 }
-            }
+            };
         case ADD_NAT_FPR_INTERVAL:
             return addInterval(state, 'NatFpr', action.value);
         case ADD_NAT_GPR_INTERVAL:
