@@ -37,7 +37,7 @@ export class VLIWCode {
 
     //Setters
     public setInstructionNumber(index: number) {
-        this._instructions = new LargeInstruction[index];
+        this._instructions = new Array<LargeInstruction>(index);
         this._largeInstructionNumber = index;
     }
 
