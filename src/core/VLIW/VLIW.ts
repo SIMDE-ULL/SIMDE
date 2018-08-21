@@ -26,8 +26,7 @@ export class VLIW extends Machine {
         this._NaTFP = new Array(Machine.NFP);
         this._NaTFP.fill(false);
     }
-
-    // Getters
+  
     public getPredReg(index?: number): boolean[] | boolean {
         return index ? this._predR[index] : this._predR;
     }
@@ -105,12 +104,10 @@ export class VLIW extends Machine {
 
             let operation = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
             if (operation != null) {
-
-                const vliwOperation = new VLIWOperation(null,
+                let vliwOperation = new VLIWOperation(null,
                     operation,
                     FunctionalUnitType.JUMP,
                     0); //  TODO: revisar si esto aqui es un 0 o hay que poner this._functionalUnitNumbers[FunctionalUnitType.JUMP]
-
                 if (this._predR[vliwOperation.getPred()]) {
                     this.pc = this.runJump(vliwOperation);
                 }
@@ -141,7 +138,7 @@ export class VLIW extends Machine {
                         }
                     }
                 }
-
+                
                 this.functionalUnit[i][j].tic();
             }
         }
