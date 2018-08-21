@@ -10,11 +10,11 @@ export class VLIWOperation extends Instruction {
     private _predicateTrue: number;
     private _predicateFalse: number;
 
-    constructor(operation?: VLIWOperation, instruction? : Instruction , type?: FunctionalUnitType, functionalUnitIndex?: number ) {
+    constructor(operation?: VLIWOperation, instruction?: Instruction, type?: FunctionalUnitType, functionalUnitIndex?: number) {
         super();
-        if(operation) {
+        if (operation) {
             this.buildFromVLIWOperation(operation);
-        } else if(instruction) {
+        } else if (instruction) {
             this.buildFromInstruction(instruction, type, functionalUnitIndex);
         } else {
             this._predicate = 0;
@@ -23,25 +23,25 @@ export class VLIWOperation extends Instruction {
         }
     }
 
-    buildFromVLIWOperation(operation: VLIWOperation) {
+    buildFromVLIWOperation (operation: VLIWOperation) {
         this.copy(operation);
         this._functionalUnitType = operation._functionalUnitType;
         this._functionalUnitIndex = operation._functionalUnitIndex;
-        this._predicate= operation._predicate
+        this._predicate = operation._predicate;
         this._predicateTrue = operation._predicateTrue;
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction(instruction: Instruction , functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
+    buildFromInstruction (instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
         this.copy(instruction);
         this._functionalUnitType = functionalUnitType;
         this._functionalUnitIndex = functionalUnitIndex;
-        this._predicate= 0;
+        this._predicate = 0;
         this._predicateTrue = 0;
         this._predicateFalse = 0;
     }
 
-    //Getters
+    // Getters
     public getFunctionalUnitType(): FunctionalUnitType {
         return this._functionalUnitType;
     }
@@ -51,7 +51,7 @@ export class VLIWOperation extends Instruction {
     }
 
     public getPred(): number {
-        return this._predicate
+        return this._predicate;
     }
 
     public getPredTrue(): number {
@@ -72,7 +72,7 @@ export class VLIWOperation extends Instruction {
     }
 
     public setPred(p: number) {
-        this._predicate= p;
+        this._predicate = p;
     }
 
     public setPredTrue(p: number) {

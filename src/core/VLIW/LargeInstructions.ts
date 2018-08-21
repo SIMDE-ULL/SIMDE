@@ -11,13 +11,13 @@ export class LargeInstruction {
     }
 
     public getOperation(index: number): VLIWOperation {
-        if(index > this._operations.length) {
-            throw new Error("Index out of bounds at operations");
+        if (index > this._operations.length) {
+            throw new Error('Index out of bounds at operations');
         }
         return this._operations[index];
     }
 
-    public getNOper(): number {
+    public getVLIWOperationsNumber(): number {
         return this._operations.length;
     }
 

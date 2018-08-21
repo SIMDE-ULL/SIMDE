@@ -7,7 +7,7 @@ import * as FileReaderInput from 'react-file-reader-input';
 
 import { bindActionCreators } from 'redux';
 import { toggleVliwLoadContentModal } from '../../../actions/modals';
-import VLIWIntegration from '../../../../integration/VLIW-integration';
+import VLIWIntegration from '../../../../integration/vliw-integration';
 import { ContentIntegration} from '../../../../integration/content-integration';
 
 class VLIWLoadContentModalComponent extends React.Component<any, any> {

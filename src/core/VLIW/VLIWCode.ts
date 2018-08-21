@@ -1,52 +1,52 @@
 import { LargeInstruction } from './LargeInstructions';
-import { VLIWOperation } from './VLIWOperation'
-import { Opcodes } from '../Common/Opcodes';
+import { VLIWOperation } from './VLIWOperation';
 import { Code } from '../Common/Code';
 import { VLIWParser } from './VLIWParser';
 
 export class VLIWCode {
-    public _instructions: LargeInstruction[];
+    public instructions: LargeInstruction[];
+
     private _largeInstructionNumber: number;
     private _superescalarCode: Code;
 
     constructor(n?: number) {
-        if(n) {
-            this._instructions = new Array(n);
-            this._instructions.fill(new LargeInstruction());
+        if (n) {
+            this.instructions = new Array(n);
+            this.instructions.fill(new LargeInstruction());
         } else {
-            this._instructions = [];
+            this.instructions = [];
         }
         this._largeInstructionNumber = 0;
     }
 
-    //Getters
+    // Getters
     public getLargeInstructionNumber(): number {
         return this._largeInstructionNumber;
     }
 
     public getLargeInstruction(index: number): LargeInstruction {
-        if((index < 0) || (index >= this._largeInstructionNumber)) {
+        if ((index < 0) || (index >= this._largeInstructionNumber)) {
             return null;
         }
-        return this._instructions[index];
+        return this.instructions[index];
     }
 
     public getBreakPoint(index: number): boolean {
-        return this._instructions[index].getBreakPoint();
+        return this.instructions[index].getBreakPoint();
     }
 
-    //Setters
+    // Setters
     public setInstructionNumber(index: number) {
-        this._instructions = new LargeInstruction[index];
+        this.instructions = new Array<LargeInstruction>(index);
         this._largeInstructionNumber = index;
     }
 
-    public setBreakPoint(ind: number, b: boolean) {
-        this._instructions[ind].setBreakPoint(b);
+    public setBreakPoint(index: number, b: boolean) {
+        this.instructions[index].setBreakPoint(b);
     }
 
-    public addOperacion(ind: number, oper: VLIWOperation) {
-        this._instructions[ind].addOperation(oper);
+    public addOperacion(index: number, oper: VLIWOperation) {
+        this.instructions[index].addOperation(oper);
     }
 
     public get superescalarCode(): Code {
@@ -58,18 +58,17 @@ export class VLIWCode {
     }
 
     public clear() {
-        this._instructions = null;
+        this.instructions = null;
         this._largeInstructionNumber = 0;
     }
 
     public save(): string {
-
-       return VLIWParser.ExportAsString(this._largeInstructionNumber, this._instructions);
+        return VLIWParser.ExportAsString(this._largeInstructionNumber, this.instructions);
     }
 
     public load(input: string, code: Code): void {
-        this._instructions = VLIWParser.Parse(input, code);
-        this._largeInstructionNumber = this._instructions.length;
+        this.instructions = VLIWParser.Parse(input, code);
+        this._largeInstructionNumber = this.instructions.length;
         this._superescalarCode = code;
     }
 }

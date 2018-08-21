@@ -11,7 +11,8 @@ const ENV = 'dev';
 
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
       devServer: {
-            contentBase: './target/www'
+            contentBase: './target/www',
+            historyApiFallback: true
       },
       devtool: "source-map",
       output: {
@@ -31,7 +32,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                   }),
             new StyleLintPlugin(),
             new HtmlWebpackPlugin({
-                  title: 'Sinde DEMO',
+                  title: 'Simde DEMO',
                   template: 'src/index.html'
             }),
             new CopyWebpackPlugin([

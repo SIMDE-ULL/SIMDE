@@ -5,7 +5,6 @@ import { t } from 'i18next';
 import { bindActionCreators } from 'redux';
 import { toggleOptionsModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
-import VLIWIntegration from '../../../../integration/vliw-integration';
 
 class OptionsModalComponent extends React.Component<any, any> {
 

@@ -9,7 +9,6 @@ export const REMOVE_NAT_GPR_INTERVAL = 'REMOVE_NAT_GPR_INTERVAL';
 export const ADD_PREDICATE_INTERVAL = 'ADD_PREDICATE_INTERVAL';
 export const REMOVE_PREDICATE_INTERVAL = 'REMOVE_PREDICATE_INTERVAL';
 
-
 export function addNatFprInterval(data) {
     return {
         type: ADD_NAT_FPR_INTERVAL,
