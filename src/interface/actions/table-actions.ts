@@ -18,7 +18,6 @@ export function nextVLIWExecutionTableCycle(data, functionalUnitNumbers: number[
 
 function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
     const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
-    console.log(functionalUnitAmount);
     let headers = new Array();
 
     headers.push({

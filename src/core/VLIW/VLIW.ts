@@ -26,7 +26,7 @@ export class VLIW extends Machine {
         this._NaTFP = new Array(Machine.NFP);
         this._NaTFP.fill(false);
     }
-  
+
     public getPredReg(index?: number): boolean[] | boolean {
         return index ? this._predR[index] : this._predR;
     }
@@ -223,7 +223,7 @@ export class VLIW extends Machine {
                 this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) * this._gpr.getContent(operation.getOperand(2)), true);
                 break;
             case Opcodes.ADDI:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + this._gpr.getContent(operation.getOperand(2)), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + operation.getOperand(2), true);
                 break;
             case Opcodes.ADDF:
                 this._fpr.setContent(operation.getOperand(0), this._fpr.getContent(operation.getOperand(1)) + this._fpr.getContent(operation.getOperand(2)), true);
@@ -263,9 +263,6 @@ export class VLIW extends Machine {
     }
 
     private runJump(operation: VLIWOperation): number {
-        if (this.status.cycle === 212) {
-            console.log('Voy a saltar a ', this.pc, operation.opcode);
-        }
 
         let newPC = this.pc;
         if (operation.opcode === Opcodes.BEQ) {
