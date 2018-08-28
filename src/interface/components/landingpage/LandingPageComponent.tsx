@@ -30,7 +30,7 @@ const LandingPageComponent = (props) => (
               <h3>{t('landingPage.superescalar')}</h3>
               <p>{t('landingPage.superescalar_description')}</p>
               <div className="pagebtngroup">
-                <Link className="btn btn-primary" to="/superescalares">{t('landingPage.go')}</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">{t('landingPage.read')}</a>
+                <Link className="btn btn-primary" to="/superescalar">{t('landingPage.go')}</Link><a className="pagebtn btn btn-default" href="https://etsiiull.gitbooks.io/simde/">{t('landingPage.read')}</a>
               </div>
             </div>
           </div>

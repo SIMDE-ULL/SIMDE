@@ -138,7 +138,6 @@ export class VLIW extends Machine {
                         }
                     }
                 }
-                
                 this.functionalUnit[i][j].tic();
             }
         }
@@ -286,7 +285,7 @@ export class VLIW extends Machine {
         }
         return newPC;
     }
-    /**********************************************************/
+
     private checkDependencies(row: number, id: number) {
         let checkGPR: Check[] = new Array(Machine.NGP);
         let checkFPR: Check[] = new Array(Machine.NFP);
