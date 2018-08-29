@@ -74,42 +74,39 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
                 <Modal.Title>{t('loadModal.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <textarea id='superescalarCodeInput' defaultValue={`18
+                <textarea id='superescalarCodeInput' defaultValue={`11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
 	LF	F0 (R4)
-	ADDI	R5 R2 #5
+	ADDI	R5 R2 #16
 LOOP:
 	LF 	F1 (R2)
-	ADDF	F1 F1 F0
-	SF		F1 (R3)
+	ADDI	R5 R2 #1
+	SF	F1 (R3)
 	ADDI 	R2 R2 #1
 	ADDI	R3 R3 #1
-	BNE	R2 R5 LOOP
-	ADDI	R3 R0 #70
-	ADDI	R5 R3 #5
-LOOP2:
-	LF		F1 (R3)
-	MULTF	F1 F1 F0
-	SF		F1 (R3)
-	ADDI	R3 R3 #1
-	BNE	R3 R5 LOOP2`}>
+	BNE	R2 R5 LOOP`}>
                 </textarea>
                 <div className="smd-load_modal-errors">
                     {this.state.superescalarCodeError && <div className="smd-forms_error">{this.state.superescalarCodeError}</div>}
                 </div>
-                <textarea id='vliwCodeInput' defaultValue={`10
+                <textarea id='vliwCodeInput' defaultValue={`15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
     1	5 4 0 0
     0
+    0
+    0
+    1	6 0 0 0
     1	8 0 0 0
-    1	6 2 0 0
     0
     0
+    1	7 4 1 0
     0
-    3	9 0 0 0	7 4 0 0	10 5 0 0 2 1 2`}>
+    0
+    1	10 5 0 0 2 1 2
+    1	9 0 1 0`}>
                 </textarea>
                 <div className="smd-load_modal-errors">
                     {this.state.vliwCodeError && <div className="smd-forms_error">{this.state.vliwCodeError}</div>}

@@ -25,7 +25,7 @@ export function TableComponent(props) {
                             props.data.map((row, i) => (
                                 <div
                                     className="smd-table_row"
-                                    key={`${props.title + i}`} 
+                                    key={`${props.title + i}`}
                                 >
                                     <div className="smd-table_cell"> 
                                             { i } 
