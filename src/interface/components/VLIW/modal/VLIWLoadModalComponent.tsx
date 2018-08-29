@@ -82,7 +82,7 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
 	ADDI	R5 R2 #16
 LOOP:
 	LF 	F1 (R2)
-	ADDI	R5 R2 #1
+	ADDF	F1 F1 F0
 	SF	F1 (R3)
 	ADDI 	R2 R2 #1
 	ADDI	R3 R3 #1
@@ -98,7 +98,7 @@ LOOP:
     0
     0
     0
-    1	6 0 0 0
+    1	6 2 0 0
     1	8 0 0 0
     0
     0
