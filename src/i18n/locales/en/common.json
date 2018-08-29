@@ -179,5 +179,14 @@
         "problemsdescription": "You can check our documentation",
         "licency": "@Released under GPLv3 licency"
        
+    },
+
+    "planificator": {
+        "IntegerAdd": "+Integer",
+        "IntegerMult": "xInteger",
+        "FloatAdd": "+Float",
+        "FloatMult": "xFloat",
+        "Memory": "Memory",
+        "Jump": "Jump"
     }
 }
