@@ -84,7 +84,7 @@ export class VLIW extends Machine {
                 throw error;
             }
         }
-        //  TODO: Esto es un insulto a las buenas prácticas programación, Que sentido tiene esto? Al menos un comentario? 
+        //  TODO: Que sentido tiene esto? Al menos un comentario?
         //  Como es posible que checkerror compruebe dependencias y predicado?
         this.checkPredicate(row, id);
     }

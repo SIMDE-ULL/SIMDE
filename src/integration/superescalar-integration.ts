@@ -142,7 +142,6 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.executing = true;
         let speed = this.calculateSpeed();
 
-        // Check if the execution has finished
         if (this.finishedExecution) {
             this.finishedExecution = false;
             let code = Object.assign(new Code(), this.superescalar.code);
