@@ -84,11 +84,16 @@ export class VLIWIntegration extends MachineIntegration {
             if (this.finishedExecution) {
                 this.finishedExecution = false;
                 this.resetMachine();
-            }
-            if (this.vliw.status.cycle === 0) {
                 let code = Object.assign(new VLIWCode(), this.vliw.code);
                 this.vliwExe();
                 this.vliw.code = code;
+
+                // Load memory content
+                if (this.contentIntegration) {
+                    this.setFpr(this.contentIntegration.FPRContent);
+                    this.setGpr(this.contentIntegration.GPRContent);
+                    this.setMemory(this.contentIntegration.MEMContent);
+                }
             }
             let machineStatus = this.vliw.tic();
             this.dispatchAllVLIWActions();
@@ -118,17 +123,20 @@ export class VLIWIntegration extends MachineIntegration {
         this.executing = true;
         let speed = this.calculateSpeed();
 
-         // Check if the execution has finished
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            this.resetMachine();
-        }
-
-        if (this.vliw.status.cycle === 0) {
             let code = Object.assign(new VLIWCode(), this.vliw.code); // asignar tambien el codigo superescalar?
             this.vliwExe();
             this.vliw.code = code;
+
+            // Load memory content
+            if (this.contentIntegration) {
+                this.setFpr(this.contentIntegration.FPRContent);
+                this.setGpr(this.contentIntegration.GPRContent);
+                this.setMemory(this.contentIntegration.MEMContent);
+            }
         }
+
 
         if (speed) {
             this.executionLoop(speed);
@@ -261,6 +269,13 @@ export class VLIWIntegration extends MachineIntegration {
         let code = Object.assign(new VLIWCode(), this.vliw.code);
         this.vliwExe();
         this.vliw.code = code;
+
+        // Reload memory content
+        if (this.contentIntegration) {
+            this.setFpr(this.contentIntegration.FPRContent);
+            this.setGpr(this.contentIntegration.GPRContent);
+            this.setMemory(this.contentIntegration.MEMContent);
+        }
         this.dispatchAllVLIWActions();
     }
 }
