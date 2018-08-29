@@ -84,7 +84,8 @@ export class VLIW extends Machine {
                 throw error;
             }
         }
-        //  TODO: Que sentido tiene esto? Al menos un comentario? Como es posible que checkerror compruebe dependencias y predicado?
+        //  TODO: Esto es un insulto a las buenas prácticas programación, Que sentido tiene esto? Al menos un comentario? 
+        //  Como es posible que checkerror compruebe dependencias y predicado?
         this.checkPredicate(row, id);
     }
 
@@ -102,14 +103,10 @@ export class VLIW extends Machine {
 
         if (this.functionalUnit[FunctionalUnitType.JUMP][0].status.stall === 0) {
 
-            let operation = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
+            let operation: any = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
             if (operation != null) {
-                let vliwOperation = new VLIWOperation(null,
-                    operation,
-                    FunctionalUnitType.JUMP,
-                    0); //  TODO: revisar si esto aqui es un 0 o hay que poner this._functionalUnitNumbers[FunctionalUnitType.JUMP]
-                if (this._predR[vliwOperation.getPred()]) {
-                    this.pc = this.runJump(vliwOperation);
+                if (this._predR[operation.getPred()]) {
+                    this.pc = this.runJump(operation);
                 }
             }
         }
@@ -124,17 +121,11 @@ export class VLIW extends Machine {
                 }
                 if (this._functionalUnit[i][j].status.stall === 0) {
 
-                    let operation = this.functionalUnit[i][j].getTopInstruction();
+                    let operation: any = this.functionalUnit[i][j].getTopInstruction();
 
                     if (operation != null) {
-                        const vliwOperation = new VLIWOperation(null,
-                            operation,
-                            this._functionalUnit[i][j].type,
-                            j
-                        ); //  TODO: me da que es esto (?)
-
-                        if (this._predR[vliwOperation.getPred()]) {
-                            this.runOperation(vliwOperation, this.functionalUnit[i][j]);
+                        if (this._predR[operation.getPred()]) {
+                            this.runOperation(operation, this.functionalUnit[i][j]);
                         }
                     }
                 }
