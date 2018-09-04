@@ -4,7 +4,7 @@ import { t } from 'i18next';
 import { Tabs, Tab } from "react-bootstrap";
 import VliwConfigModalComponent from "./modal/VliwConfigModalComponent";
 import OptionsModalComponent from "../Superescalar/modal/OptionsModalComponent";
-import AutorModalComponent from "../Common/Modal/AutorModalComponent";
+import AutorModalComponent from "./modal/AutorModalComponent";
 
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";

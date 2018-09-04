@@ -13,7 +13,7 @@ import SuperescalarConfigModalComponent from "./modal/SuperescalarConfigModalCom
 import SuperescalarLoadContentModalComponent from "./modal/SuperescalarLoadContentModalComponent";
 
 import OptionsModalComponent from "./modal/OptionsModalComponent";
-import AutorModalComponent from "../Common/Modal/AutorModalComponent";
+import AutorModalComponent from "./modal/AutorModalComponent";
 
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";

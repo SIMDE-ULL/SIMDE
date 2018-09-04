@@ -28,7 +28,7 @@ const projectpage = (props) => (
        <a href="https://etsiiull.gitbooks.io/simde/"><p>{t('projectPage.problemsdescription')}</p></a>
      </div>
      <nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
-       <div className="licence"><a>{t('Page.licency')}</a></div>
+       <div className="licence"><a>{t('projectPage.licency')}</a></div>
      </nav>
   </div>
 );
