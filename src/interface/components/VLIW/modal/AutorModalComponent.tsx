@@ -33,7 +33,10 @@ class AutorModalComponent extends React.Component<any, any> {
                               </div>
                               <div className='row'>
                                     <div className='col-sm-12'>
-                                          <label>{t('authorModal.newAuthor')}</label>: Melissa Díaz Arteaga
+                                          <label>{t('authorModal.newAuthor')}</label>: Melissa Díaz Arteaga 
+                                    </div>
+                                    <div className='col-sm-12'>
+                                          <label>{t('authorModal.coAuthor')}</label> Adrian Abreu González
                                     </div>
                               </div>
                         </div>

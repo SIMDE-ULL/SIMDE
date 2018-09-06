@@ -43,7 +43,8 @@
     "authorModal": {
         "title": "Acerca de...",
         "originalAuthor": "Autor original",
-        "newAuthor": "Versión adapta por"
+        "newAuthor": "Versión adapta por",
+        "coAuthor": "En colaboración con"
     },
     "loadModal": {
         "title": "Carga de código",

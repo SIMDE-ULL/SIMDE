@@ -42,7 +42,8 @@
     "authorModal": {
         "title": "About",
         "originalAuthor": "Original author",
-        "newAuthor": "Adapted by"
+        "newAuthor": "Adapted by",
+        "coAuthor": "Collaborators"
     },
     "loadModal": {
         "title": "Load Code",
