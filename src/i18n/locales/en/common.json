@@ -60,6 +60,7 @@
         }
     },
     "superescalarModal": {
+        "warning": "Al cambiar la configuración se reiniciará ejecución",
         "name": "Superescalar Configuration",
         "latency": "Latency",
         "quantity": "Quantity",

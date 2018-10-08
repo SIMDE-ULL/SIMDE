@@ -89,6 +89,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 <Modal.Title>{t('superescalarModal.name')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <p>{t('superescalarModal.warning')}</p>
                 <form className='form form-horizontal'>
                     <div className='form-group'>
                         <div className='col-sm-4 col-sm-offset-4'>
