@@ -75,18 +75,28 @@ export class VLIW extends Machine {
         throw VLIWError.ERRNO; // VLIW_ERRNO;
     }
 
-    public checkError(row: number, id: number) {
+    public checkDependenciesError(row: number, id: number) {
         try {
             this.checkDependencies(row, id);
         } catch (error) {
-            //  TODO: Y que se pasa si es errno?
             if (error !== VLIWError.ERRNO) {
-                throw error;
+                throw new Error('Dependencies Error: ' + error);
+            } else {
+                return VLIWError.ERRNO;
             }
         }
-        //  TODO: Que sentido tiene esto? Al menos un comentario?
-        //  Como es posible que checkerror compruebe dependencias y predicado?
-        this.checkPredicate(row, id);
+    }
+
+    public checkPredicateError(row: number, id: number) {
+        try {
+            this.checkPredicate(row, id);
+        } catch (error) {
+            if (error !== VLIWError.ERRNO) {
+                throw new Error('Predicate Error: ' + error);;
+            } else {
+                return VLIWError.ERRNO;
+            }
+        }     
     }
 
     public tic() {
@@ -341,7 +351,6 @@ export class VLIW extends Machine {
             }
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (instruction.getOperation(j).getPred() !== 0) {
-                    //  TODO quizas index no es 0?
                     for (index = 0; index < controlCheckList.length; index++) {
                         if (instruction.getOperation(j).getPred() === controlCheckList[index].register) {
                             break;
