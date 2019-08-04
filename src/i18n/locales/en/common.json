@@ -63,6 +63,7 @@
     },
     "superescalarModal": {
         "name": "Configuration",
+        "warning": "Al cambiar la configuración se reiniciará ejecución",
         "latency": "Latency",
         "quantity": "Quantity",
         "Integer+": "Integer Sum",
@@ -77,6 +78,7 @@
     },
     "vliwModal": {
         "name": "VLIW Configuration",
+        "warning": "Al cambiar la configuración se reiniciará ejecución",
         "latency": "Latency",
         "quantity": "Quantity",
         "Integer+": "Integer Sum",

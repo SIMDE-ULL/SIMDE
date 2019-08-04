@@ -342,6 +342,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             }
         }
         this.superescalar.issue = +superConfig.issueGrade;
+        this.resetMachine();
     }
 
     setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
