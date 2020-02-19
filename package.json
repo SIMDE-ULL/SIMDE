@@ -80,7 +80,7 @@
   "devDependencies": {
     "@types/node": "8.0.51",
     "ava": "0.23.0",
-    "codecov": "3.0.0",
+    "codecov": "3.6.5",
     "coveralls": "3.0.0",
     "html-webpack-plugin": "2.30.1",
     "multiview": "2.5.3",
