@@ -17,6 +17,8 @@ import {
     colorCell
 } from '../interface/actions';
 
+import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
+
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
 import { MAX_HISTORY_SIZE } from '../interface/reducers';
 
@@ -331,17 +333,29 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     saveSuperConfig = (superConfig) => {
-        const superConfigKeys = Object.keys(superConfig);
+        // TODO: enforce this through a unique map so that we can overwrite the config directly
 
-        for (let i = 0; i < (superConfigKeys.length - 2); i++) {
-            if (i % 2 === 0) {
-                this.superescalar.setFunctionalUnitNumber(i,
-                    +superConfig[superConfigKeys[i]]);
-            } else {
-                this.superescalar.setFunctionalUnitLatency(i,
-                    +superConfig[superConfigKeys[i]]);
-            }
-        }
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumLatency"]);
+
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultLatency"]);
+
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultLatency"]);
+        
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.JUMP,+superConfig["jumpQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.JUMP,+superConfig["jumpLatency"]);
+        
+        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.MEMORY,+superConfig["memoryQuantity"]);
+        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.MEMORY,+superConfig["memoryLatency"]);
+        
         this.superescalar.issue = +superConfig.issueGrade;
         this.resetMachine();
     }
