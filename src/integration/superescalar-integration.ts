@@ -332,19 +332,6 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     saveSuperConfig = (superConfig) => {
-<<<<<<< HEAD
-        const superConfigKeys = Object.keys(superConfig);
-
-        for (let i = 0; i < (superConfigKeys.length - 2); i++) {
-            if (i % 2 === 0) {
-                this.superescalar.setFunctionalUnitNumber(i / 2,
-                    +superConfig[superConfigKeys[i]]);
-            } else {
-                this.superescalar.setFunctionalUnitLatency(i / 2,
-                    +superConfig[superConfigKeys[i]]);
-            }
-        }
-=======
         // TODO: enforce this through a unique map so that we can overwrite the config directly
 
         this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumQuantity"]);
@@ -368,7 +355,6 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.MEMORY,+superConfig["memoryQuantity"]);
         this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.MEMORY,+superConfig["memoryLatency"]);
         
->>>>>>> master
         this.superescalar.issue = +superConfig.issueGrade;
         this.resetMachine();
     }

@@ -37,7 +37,8 @@
         "cycle": "Cycle",
         "speed": "Speed",
         "superescalar": "Superescalar",
-        "memReg": "Memory - Registers"
+        "memReg": "Memory - Registers",
+        "vliw": "VLIW"
     },
     "authorModal": {
         "title": "About",

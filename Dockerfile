@@ -11,7 +11,6 @@ WORKDIR /usr/src/app
 # This assumes a typical setup in which the Dockerfile
 # is in the root of your project
 COPY package.json .
-COPY package-lock.json .
 
 # Install dependencies
 RUN npm install
