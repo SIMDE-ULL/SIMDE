@@ -6,6 +6,7 @@
         display: flex;
         flex-flow: column;
         margin-bottom: 0;
+        overflow-y: auto;
 
         >.panel-heading {
             background-color: $color-brand;
