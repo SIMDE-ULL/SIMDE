@@ -8,7 +8,7 @@ export function nextJumpTableCycle(data) {
 }
 
 export function mapJumpTableData(data) {
-    return data.map(datum => changeValue(data));
+    return data.map(datum => changeValue(datum));
 }
 
 function changeValue(value): string {
