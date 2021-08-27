@@ -3,7 +3,7 @@ name: Build & deploy
 on:
   push:
     branches:
-      - feature/30-github-actions
+      - master
 jobs:
   build:
     name: Build
