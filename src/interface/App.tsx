@@ -23,7 +23,7 @@ class App extends React.Component<any, any> {
 
 const Structure = () => (
     <div className="pagebody">
-      <Route exact path="/" component={LandingPageComponent} />
+      <Route path="/" component={LandingPageComponent} />
       <Route path="/Superescalar" component={SuperescalarComponent} />
       <Route path="/VLIW" component={VLIWComponent} />
       <Route path="/Project" component={projectpage} />
