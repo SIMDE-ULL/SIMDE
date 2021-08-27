@@ -27,11 +27,14 @@ jobs:
     - name: Run tests
       run: npm run test
 
+    - name: Dist project
+      run: npm run dist
+
     - name: Upload production-ready build files
       uses: actions/upload-artifact@v2
       with:
         name: production-files
-        path: ./build
+        path: ./dist
   
   deploy:
     name: Deploy
@@ -44,10 +47,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: production-files
-        path: ./build
+        path: ./dist
 
     - name: Deploy to gh-pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        publish_dir: ./build
+        publish_dir: ./dist
