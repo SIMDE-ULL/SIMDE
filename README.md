@@ -43,5 +43,5 @@ The project has been released under GPLv3 License.
 ---
 
 > [@adrianabreu](https://github.com/adrianabreu) 
->  Melissa Díaz Arteaga
+> [@Melissa Díaz Arteaga](https://github.com/alu0100884012)
 > [@icasrod](https://twitter.com/icasrod)
