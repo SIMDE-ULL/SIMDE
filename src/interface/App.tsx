@@ -1,5 +1,6 @@
 import * as React from "react";
 import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { createBrowserHistory } from "history";
 
 import { translate } from "react-i18next";
 import LandingPageComponent from "./components/LandingPage/LandingPageComponent";
@@ -11,8 +12,9 @@ import { VLIWComponent } from "./components/VLIW/VLIWComponent";
 
 class App extends React.Component<any, any> {
    render() {
+      const history = createBrowserHistory({ basename: '/SIMDE' });
       return (
-          <Router>
+          <Router history={history} >
               <Structure />
           </Router>
      );
