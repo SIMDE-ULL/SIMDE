@@ -8,5 +8,4 @@ legacy/
 coverage/
 target/www/
 /_book
-package-lock.json
 .vscode
