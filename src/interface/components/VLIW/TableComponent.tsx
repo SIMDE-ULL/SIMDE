@@ -14,7 +14,7 @@ export function TableComponent(props) {
                         <div className="smd-table_row">
                         {props.header &&
                             props.header.map((header, i) => (
-                                <div className="smd-table_cell smd-table_cell--title"> 
+                                <div className="smd-table_cell smd-table_cell--title" key={`'VLIWHeader'${i}`}> 
                                         { t(header.translateKey) + header.extraValue } 
                                 </div>
                             ))}
@@ -23,15 +23,12 @@ export function TableComponent(props) {
                     <div className="smd-table-body">
                         {props.data &&
                             props.data.map((row, i) => (
-                                <div
-                                    className="smd-table_row"
-                                    key={`${props.title + i}`}
-                                >
+                                <div className="smd-table_row" key={`${'VliwCode' + i}`} >
                                     <div className="smd-table_cell"> 
                                             { i } 
                                     </div>
-                                    {row.map( (col) => (
-                                        <div className="smd-table_cell"> 
+                                    {row.map( (col, j) => (
+                                        <div className="smd-table_cell" key={`${'VliwCode' + i + '' + j}`}> 
                                             { col } 
                                         </div>
                                     ))}
@@ -45,9 +42,3 @@ export function TableComponent(props) {
 }
 
 export default TableComponent;
-
-
-/* 
-                        <div className="smd-table-header_title id-colum">#</div>
-                        <div className="smd-table-header_title">Entera0</div>
-                        <div className="smd-table-header_title">Entera1</div>  */

@@ -88,8 +88,8 @@ class BatchResultsModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isBatchResultsModalOpen: state.isBatchResultsModalOpen,
-        results: state.batchResults
+        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
+        results: state.Ui.batchResults
     };
 };
 

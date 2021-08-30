@@ -77,7 +77,7 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
       return {
-          isVliwLoadContentModalOpen: state.isVliwLoadContentModalOpen,
+          isVliwLoadContentModalOpen: state.Ui.isVliwLoadContentModalOpen,
       }
   }
   

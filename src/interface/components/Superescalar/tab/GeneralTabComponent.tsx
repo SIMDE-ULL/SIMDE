@@ -208,27 +208,27 @@ class GeneralTabComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        prefetchUnit: state.prefetchUnit,
-        decoder: state.decoder,
-        jumpPrediction: state.jumpPrediction,
-        functionalUnitIntAdd: state.functionalUnitIntAdd,
-        functionalUnitIntSub: state.functionalUnitIntSub,
-        functionalUnitFloAdd: state.functionalUnitFloAdd,
-        functionalUnitFloSub: state.functionalUnitFloSub,
-        functionalUnitMemory: state.functionalUnitMemory,
-        functionalUnitJump: state.functionalUnitJump,
-        functionalUnitAluMem: state.functionalUnitAluMem,
-        reserveStationIntAdd: state.reserveStationIntAdd,
-        reserveStationIntSub: state.reserveStationIntSub,
-        reserveStationFloAdd: state.reserveStationFloAdd,
-        reserveStationFloSub: state.reserveStationFloSub,
-        reserveStationMemory: state.reserveStationMemory,
-        reserveStationJump: state.reserveStationJump,
-        ROBGpr: state.ROBGpr,
-        ROBFpr: state.ROBFpr,
-        reorderBuffer: state.reorderBuffer,
-        code: state.code,
-        colorBasicBlocks: state.colorBasicBlocks
+        prefetchUnit: state.Machine.prefetchUnit,
+        decoder: state.Machine.decoder,
+        jumpPrediction: state.Machine.jumpPrediction,
+        functionalUnitIntAdd: state.Machine.functionalUnitIntAdd,
+        functionalUnitIntSub: state.Machine.functionalUnitIntSub,
+        functionalUnitFloAdd: state.Machine.functionalUnitFloAdd,
+        functionalUnitFloSub: state.Machine.functionalUnitFloSub,
+        functionalUnitMemory: state.Machine.functionalUnitMemory,
+        functionalUnitJump: state.Machine.functionalUnitJump,
+        functionalUnitAluMem: state.Machine.functionalUnitAluMem,
+        reserveStationIntAdd: state.Machine.reserveStationIntAdd,
+        reserveStationIntSub: state.Machine.reserveStationIntSub,
+        reserveStationFloAdd: state.Machine.reserveStationFloAdd,
+        reserveStationFloSub: state.Machine.reserveStationFloSub,
+        reserveStationMemory: state.Machine.reserveStationMemory,
+        reserveStationJump: state.Machine.reserveStationJump,
+        ROBGpr: state.Machine.ROBGpr,
+        ROBFpr: state.Machine.ROBFpr,
+        reorderBuffer: state.Machine.reorderBuffer,
+        code: state.Machine.code,
+        colorBasicBlocks: state.Machine.colorBasicBlocks
     };
 };
 

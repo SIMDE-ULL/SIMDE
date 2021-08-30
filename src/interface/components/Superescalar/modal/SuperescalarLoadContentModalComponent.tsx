@@ -77,7 +77,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
       return {
-          isSuperescalarLoadContentModalOpen: state.isSuperescalarLoadContentModalOpen,
+          isSuperescalarLoadContentModalOpen: state.Ui.isSuperescalarLoadContentModalOpen,
       }
   }
   

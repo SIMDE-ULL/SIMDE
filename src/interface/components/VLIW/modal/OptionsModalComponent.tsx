@@ -69,7 +69,7 @@ class OptionsModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isOptionsModalOpen: state.isOptionsModalOpen,
+        isOptionsModalOpen: state.Ui.isOptionsModalOpen,
     }
 }
 

@@ -273,7 +273,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isVliwConfigModalOpen: state.isVliwConfigModalOpen,
+        isVliwConfigModalOpen: state.Ui.isVliwConfigModalOpen,
     }
 }
 

@@ -58,9 +58,9 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        memory: state.memory,
-        generalRegisters: state.generalRegisters,
-        floatingRegisters: state.floatingRegisters
+        memory: state.Machine.memory,
+        generalRegisters: state.Machine.generalRegisters,
+        floatingRegisters: state.Machine.floatingRegisters
     }
 }
 
