@@ -146,7 +146,7 @@ class BatchModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isBatchModalOpen: state.isBatchModalOpen
+        isBatchModalOpen: state.Ui.isBatchModalOpen
     };
 };
 

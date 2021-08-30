@@ -50,7 +50,7 @@ class AutorModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
       return {
-          isAuthorModalOpen: state.isAuthorModalOpen,
+          isAuthorModalOpen: state.Ui.isAuthorModalOpen,
       }
   }
   

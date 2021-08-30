@@ -306,7 +306,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isSuperConfigModalOpen: state.isSuperConfigModalOpen,
+        isSuperConfigModalOpen: state.Ui.isSuperConfigModalOpen,
     }
 }
 

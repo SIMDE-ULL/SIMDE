@@ -135,7 +135,7 @@ LOOP:
 
 const mapStateToProps = state => {
     return {
-        isLoadModalOpen: state.isLoadModalOpen,
+        isLoadModalOpen: state.Ui.isLoadModalOpen,
     }
 }
 

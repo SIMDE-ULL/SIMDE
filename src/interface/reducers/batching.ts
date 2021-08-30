@@ -1,4 +1,5 @@
 export function enableBatching(reducer) {
+    console.log(reducer)
     return function batchingReducer(state, action) {
         switch (action.type) {
             case 'BATCH_ACTIONS':

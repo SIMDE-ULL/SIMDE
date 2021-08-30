@@ -17,7 +17,7 @@ import {
 } from '../../../actions/intervals-actions';
 import { TableComponent } from '../TableComponent';
 import RegisterComponent from '../../Superescalar/RegisterComponent';
-import { PREDICATE_SIZE } from '../../../reducers';
+import {PREDICATE_SIZE} from '../../../reducers/machine';
 
 class GeneralVLIWTabComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -139,20 +139,20 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        prefetchUnit: state.prefetchUnit,
-        functionalUnitIntAdd: state.functionalUnitIntAdd,
-        functionalUnitIntSub: state.functionalUnitIntSub,
-        functionalUnitFloAdd: state.functionalUnitFloAdd,
-        functionalUnitFloSub: state.functionalUnitFloSub,
-        functionalUnitMemory: state.functionalUnitMemory,
-        functionalUnitJump: state.functionalUnitJump,
-        natFpr: state.natFpr,
-        natGpr: state.natGpr, 
-        predicate: state.predicate,
-        code: state.code,
-        colorBasicBlocks: state.colorBasicBlocks,
-        vliwExecutionTable: state.vliwExecutionTable,
-        vliwExecutionHeaderTable: state.vliwExecutionHeaderTable
+        prefetchUnit: state.Machine.prefetchUnit,
+        functionalUnitIntAdd: state.Machine.functionalUnitIntAdd,
+        functionalUnitIntSub: state.Machine.functionalUnitIntSub,
+        functionalUnitFloAdd: state.Machine.functionalUnitFloAdd,
+        functionalUnitFloSub: state.Machine.functionalUnitFloSub,
+        functionalUnitMemory: state.Machine.functionalUnitMemory,
+        functionalUnitJump: state.Machine.functionalUnitJump,
+        natFpr: state.Machine.natFpr,
+        natGpr: state.Machine.natGpr, 
+        predicate: state.Machine.predicate,
+        code: state.Machine.code,
+        colorBasicBlocks: state.Machine.colorBasicBlocks,
+        vliwExecutionTable: state.Machine.vliwExecutionTable,
+        vliwExecutionHeaderTable: state.Machine.vliwExecutionHeaderTable
     };
 };
 

@@ -1,9 +1,9 @@
 import { enableBatching } from './interface/reducers/batching';
 import { createStore, Store } from 'redux';
-import { SuperescalarReducers } from './interface/reducers';
+import reducers from './interface/reducers';
 
 declare var window;
 export let store: Store<any> = createStore(
-      enableBatching(SuperescalarReducers),
+      enableBatching(reducers),
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
