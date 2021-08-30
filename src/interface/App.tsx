@@ -11,7 +11,7 @@ import { VLIWComponent } from "./components/VLIW/VLIWComponent";
 class App extends React.Component<any, any> {
    render() {
       return (
-          <Router basename={"/"} >
+          <Router basename={"/SIMDE"} >
               <Structure />
           </Router>
      );
