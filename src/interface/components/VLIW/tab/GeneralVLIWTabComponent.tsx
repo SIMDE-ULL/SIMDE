@@ -9,12 +9,7 @@ import { t } from 'i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { superescalarLoad } from '../../../actions';
-import {
-    addRobFprInterval,
-    removeRobFprInterval,
-    addRobGprInterval,
-    removeRobGprInterval
-} from '../../../actions/intervals-actions';
+
 import { TableComponent } from '../TableComponent';
 import RegisterComponent from '../../Superescalar/RegisterComponent';
 import {PREDICATE_SIZE} from '../../../reducers/machine';

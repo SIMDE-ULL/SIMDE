@@ -2,7 +2,7 @@
 import * as React from "react";
 import { t } from 'i18next';
 import { Tabs, Tab } from "react-bootstrap";
-import VliwConfigModalComponent from "./modal/VliwConfigModalComponent";
+import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
 import OptionsModalComponent from "../Superescalar/modal/OptionsModalComponent";
 import AutorModalComponent from "./modal/AutorModalComponent";
 
@@ -16,7 +16,7 @@ import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
 import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
 
-import VliwLoadContentModalComponent from "./modal/VliwLoadContentModalComponent";
+import VliwLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 
 
 export const VLIWComponent = () => (

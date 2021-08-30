@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import { translate } from "react-i18next";
 import { t } from 'i18next';
 
-const projectpage = (props) => (
+const ProjectPage = (props) => (
   <div className="page">
     <div className="topnav">
       <ul className="navul">
@@ -33,4 +33,4 @@ const projectpage = (props) => (
   </div>
 );
 
-export default projectpage;
+export default ProjectPage;
