@@ -23,8 +23,8 @@
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
     "release": "standard-version",
-    "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --port=9060",
-    "webpack:prod": "webpack --config webpack/webpack.prod.js",
+    "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --define process.env.PUBLIC_URL='\"/\"' --port=9060",
+    "webpack:prod": "webpack --config webpack/webpack.prod.js --define process.env.PUBLIC_URL='\"/SIMDE\"'",
     "postinstall": "npm rebuild node-sass"
   },
   "repository": {
