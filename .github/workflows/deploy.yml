@@ -16,10 +16,13 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 13.x
+        node-version: 18.x
+        
+    - name: Upgrade NPM
+      run: npm install -g npm
     
     - name: Install NPM packages
-      run: npm ci
+      run: npm ci --force
     
     - name: Build project
       run: npm run build
