@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { toggleSuperConfigModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
 
@@ -9,7 +8,6 @@ import SuperescalarIntegration from '../../../../integration/superescalar-integr
 import { SUPERESCALAR_CONFIG } from '../../../../core/Constants';
 
 import { connect } from 'react-redux';
-
 
 class SuperescalarConfigModalComponent extends React.Component<any, any> {
 
@@ -21,10 +19,8 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
         this.handleChange = this.handleChange.bind(this);
         this.setDefault = this.setDefault.bind(this);
         this.saveSuperConfig = this.saveSuperConfig.bind(this);
-    }
 
-    componentWillMount() {
-        this.setState({
+        this.state = {
             superConfig: {
                 integerSumQuantity: 2,
                 integerSumLatency: 1,
@@ -40,7 +36,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 jumpLatency: 2,
                 issueGrade: 4
             }
-        });
+        };
     }
 
     saveSuperConfig() {
@@ -86,23 +82,23 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
     render() {
         return (<Modal show={this.props.isSuperConfigModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
-                <Modal.Title>{t('superescalarModal.name')}</Modal.Title>
+                <Modal.Title>{this.props.t('superescalarModal.name')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>{t('superescalarModal.warning')}</p>
+                <p>{this.props.t('superescalarModal.warning')}</p>
                 <form className='form form-horizontal'>
                     <div className='form-group'>
                         <div className='col-sm-4 col-sm-offset-4'>
-                            <label>{t('superescalarModal.quantity')}</label>
+                            <label>{this.props.t('superescalarModal.quantity')}</label>
                         </div>
                         <div className='col-sm-4'>
-                            <label>{t('superescalarModal.latency')}</label>
+                            <label>{this.props.t('superescalarModal.latency')}</label>
                         </div>
                     </div>
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Integer+')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Integer+')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -131,7 +127,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Integerx')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Integerx')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -160,7 +156,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Floating+')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Floating+')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -189,7 +185,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Floatingx')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Floatingx')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -218,7 +214,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Memory')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Memory')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -247,7 +243,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{t('superescalarModal.Jump')}</legend>
+                                <legend className='control-label'>{this.props.t('superescalarModal.Jump')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -277,7 +273,7 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                     <div className='extraParams'>
                         <div className='form-group'>
                             <div className='col-sm-4'>
-                                <label htmlFor='issueGrade' className='control-label'>{t('superescalarModal.issue')}
+                                <label htmlFor='issueGrade' className='control-label'>{this.props.t('superescalarModal.issue')}
                                 </label>
                             </div>
                             <div className='col-sm-8'>
@@ -296,9 +292,9 @@ class SuperescalarConfigModalComponent extends React.Component<any, any> {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button className='btn btn-primary' onClick={this.setDefault}>{t('superescalarModal.default')}</Button>
-                <Button onClick={this.cancel}>{t('commonButtons.close')}</Button>
-                <Button className='btn btn-primary' onClick={this.saveSuperConfig}>{t('commonButtons.save')}</Button>
+                <Button className='btn btn-primary' onClick={this.setDefault}>{this.props.t('superescalarModal.default')}</Button>
+                <Button onClick={this.cancel}>{this.props.t('commonButtons.close')}</Button>
+                <Button className='btn btn-primary' onClick={this.saveSuperConfig}>{this.props.t('commonButtons.save')}</Button>
             </Modal.Footer>
         </Modal>);
     }
@@ -313,4 +309,4 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators({toggleSuperConfigModal}, dispatch)};
 }
-export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(SuperescalarConfigModalComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(SuperescalarConfigModalComponent));

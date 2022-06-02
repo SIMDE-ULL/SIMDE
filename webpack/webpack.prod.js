@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ENV = 'production';
 
 module.exports = webpackMerge(commonConfig({ env: ENV }), {
-
+      mode: 'development',
    output: {
       path: path.resolve("./dist"),
       filename: "bundle.js"

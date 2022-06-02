@@ -7,7 +7,8 @@ body {
 }
 
 .licence {
-    margin-top: 1em;
+    margin: 0 auto;
+
     & > a {
         color: white;
         text-decoration: none;
@@ -15,6 +16,7 @@ body {
 }
 
 .topnav {
+    height: 6vh;
     background-color: #7A3B7A;
     overflow: hidden;
     & > ul {
@@ -23,10 +25,10 @@ body {
 }
 
 .topnav a {
+    height: 6vh;
     float: left;
     color: #f2f2f2;
-    text-align: center;
-    padding: 1em 1em;
+    padding: 1.0em 1em;
     text-decoration: none;
     font-size: 17px;
 }
@@ -38,8 +40,8 @@ body {
 
 .navbaricon {
     float:left;
+    padding-top: 0.5em;
     padding-right: 0.5em;
-    padding-top: 0.3em;
     & > img {
         height: 50px;
         width: 50px;
@@ -47,6 +49,7 @@ body {
 }
 
 .footer {
+    height: 4vh;
     background-color: #2a2926;
     text-align: center;
     box-shadow: 0px 2px 84px -1px rgba(125,124,125,0.76);
@@ -62,7 +65,7 @@ body {
 }
 
 .pagecontent {
-    height: calc(100% - 58px - 22px);
+    height: 90vh;
     width: 100%;
     background-image: url(http://www.pngmart.com/files/4/Bender-PNG-File.png);
     background-repeat: no-repeat;
@@ -70,7 +73,9 @@ body {
 }
 
 .jumbotron {
-    margin-bottom: 0px !important;
+    padding: 3rem 1rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
 }
 
 .container {
@@ -80,7 +85,7 @@ body {
 .pagetitle p {
     float: left;
     color: #f2f2f2;
-    padding-top: 0.8em;
+    padding-top: 0.7em;
     padding-right: 1.7em;
     text-decoration: none;
     font-size: 20px;
@@ -102,6 +107,8 @@ body {
 }
 
 .caption {
+    padding: 10px;
+
     & > h3 {
         text-align: center;
         margin-bottom: 1em;

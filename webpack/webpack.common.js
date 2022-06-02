@@ -1,44 +1,46 @@
-const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = function (options) {
-   return {
-      name: 'app',
-      target: 'web',
-      entry: './src/main.tsx',
-      resolve: {
-         extensions: ['.js', '.ts', '.jsx', '.tsx'],
-      },
-      module: {
-         loaders: [
-            {
-                  test: /\.ts$/,
-                  enforce: 'pre',
-                  loader: 'tslint-loader',
-                  // options: { 
-                  //       typeCheck: true
-                  // }
-            },
-            { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-            { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
-            {
-               test: /\.scss$/,
-               loader: ExtractTextPlugin.extract('css-loader!sass-loader')
-            },
-            {
-               test: /\.(eot|svg|ttf|woff|woff2)$/,
-               loader: 'file-loader?name=public/fonts/[name].[ext]'
-            }
-         ],
-      },
-      plugins: [
-         new ExtractTextPlugin({
-            filename: '[name].[hash:8].css',
-            allChunks: true
-         }),
-         new CheckerPlugin()]
-   }
+module.exports = {
+    entry: {
+        app: './src/main.tsx',
+    },
+    optimization: {
+        usedExports: true
+    },
+    output: {
+          filename: '[name].[contenthash].js',
+          path: path.resolve('target/www')
+    },
+    resolve: {
+        extensions: ['.js', '.ts', '.jsx', '.tsx'],
+    },
+    module: {
+       rules: [
+          { test: /\.tsx?$/, loader: "ts-loader" },
+          { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
+          {
+            test: /\.(sa|sc|c)ss$/,
+            use: [
+              MiniCssExtractPlugin.loader,
+              "css-loader",
+              "sass-loader",
+            ],
+          },
+          // {
+          //   test: /\.(eot|svg|ttf|woff|woff2)$/,
+          //   loader: 'file-loader',
+
+          //   options: {
+          //       name: "public/fonts/[name].[ext]",
+          //   },
+          // },
+       ],
+    },
+    plugins: [
+       new MiniCssExtractPlugin({
+          filename: '[name].[contenthash].css',
+       })
+    ]
 };

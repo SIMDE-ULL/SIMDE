@@ -99,7 +99,8 @@
         "save": "Guardar",
         "accept": "Aceptar",
         "launch": "Lanzar",
-        "uploadFromFile": "Subir código superescalar",
+        "uploadSuperscalarFromFile": "Seleccionar fichero",
+        "uploadMemoryFromFile": "Subir contenido memoria-registros",
         "uploadVliwFromFile": "Subir código VLIW"
     },
     "Code": "Código",

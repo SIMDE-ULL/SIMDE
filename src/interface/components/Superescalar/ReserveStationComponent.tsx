@@ -1,9 +1,10 @@
 import * as React from 'react';
 
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export function ReserveStationComponent(props) {
+    const [t, i18n] = useTranslation();
+
     return (
         <div className="smd-reserve_station panel panel-default">
             <div className="panel-heading">{t(props.title)}</div>
@@ -59,4 +60,4 @@ export function ReserveStationComponent(props) {
     );
 }
 
-export default translate('common', { wait: true })(ReserveStationComponent);
+export default ReserveStationComponent;

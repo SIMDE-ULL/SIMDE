@@ -1,4 +1,4 @@
-import { test } from 'ava';
+import test from 'ava';
 import { Queue } from '../core/Collections/Queue';
 
 test('Queue size behaces as expected', (t) => {

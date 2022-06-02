@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { t } from 'i18next';
 import { Tabs, Tab } from "react-bootstrap";
@@ -9,14 +8,13 @@ import AutorModalComponent from "./modal/AutorModalComponent";
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
-
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";
 import RegisterVLIWTabComponent  from "./tab/RegistersVLIWTabComponent";
 import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
 import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
 
-import VliwLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
+import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 
 
 export const VLIWComponent = () => (
@@ -34,7 +32,7 @@ export const VLIWComponent = () => (
             </Tab>
         </Tabs>
         <VLIWLoadModalComponent />
-        <VliwLoadContentModalComponent />
+        <VLIWLoadContentModalComponent />
         <VliwConfigModalComponent />
         <OptionsModalComponent />
         <AutorModalComponent />
