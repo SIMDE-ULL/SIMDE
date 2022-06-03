@@ -1,10 +1,16 @@
 @import '../base/variables';
 
-.smd-load_content_modal {
+.modal-content {
+
+    .modal-body {
+        display: flex;
+    }
 
     textarea {
         width: 100%;
-        height: 25rem;
+        height: 70vh;
+        margin: auto 10px;
+
         font-size: 1rem;
         font-family: Arial;
     }
@@ -29,13 +35,6 @@
     &-errors {
         .smd-forms_error {
             padding: 0;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .modal-dialog {
-            width: 50%;
-            margin: 30px auto;
         }
     }
 }

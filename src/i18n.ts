@@ -1,17 +1,21 @@
-import * as _i18n from 'i18next';
-import XHR from 'i18next-xhr-backend/dist/es/index.js';
-import LngDetector from 'i18next-browser-languagedetector/dist/es/index.js';
+import i18n from 'i18next';
+import { initReactI18next } from "react-i18next";
 
-let i18n = _i18n
-.use(XHR)
-.use(LngDetector)
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+
+
+i18n
+.use(Backend)
+.use(LanguageDetector)
+.use(initReactI18next)
 .init({
     fallbackLng: 'en',
-    react: {
-        wait: true
-    },
     backend: {
         loadPath: 'locales/{{lng}}/{{ns}}.json'
+    },
+    react: { 
+      useSuspense: true
     },
     // have a common namespace used around the full app
     ns: ['common'],

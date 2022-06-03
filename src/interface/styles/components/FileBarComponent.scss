@@ -1,10 +1,22 @@
 @import '../base/variables';
 
-.smd-filebar {
-    .dropdown.btn-group {
-        .dropdown-toggle {
+.navigation-bars {
+    height: 9vh;
+
+    .smd-filebar {
+        display: flex;
+
+        button {
+            background-color: transparent;
             border: none;
-            border-radius: initial;
+            border-radius: 0px;
+            color: black;
+
+            &:focus, &:active {
+                background-color: $color-brand;
+                border-color: transparent;
+                color: white;
+            }
         }
     }
 }

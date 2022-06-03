@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export function TableComponent(props) {
+    const [t, i18n] = useTranslation();
 
     return(
         <div className="smd-table_component panel panel-default">

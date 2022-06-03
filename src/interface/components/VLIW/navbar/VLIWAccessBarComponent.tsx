@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import VliwIntegration from '../../../../integration/vliw-integration';
 
@@ -58,13 +57,13 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
                 </a>
                 <div className="smd-cycle">
                     <label htmlFor="cycle" className="smd-cycle_label">
-                        {t('accessBar.cycle')}
+                        {this.props.t('accessBar.cycle')}
                     </label>
                     <span className="smd-cycle_value">{this.props.cycle}</span>
                 </div>
                 <span className="smd-speed">
                     <label className="smd-speed_label" htmlFor="velocidad">
-                        {t('accessBar.speed')}
+                        {this.props.t('accessBar.speed')}
                     </label>
                     <input
                         type="number"
@@ -81,9 +80,7 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
 }
 const mapStateToProps = state => {
     return {
-        cycle: state.cycle
+        cycle: state.Machine.cycle
     };
 };
-export default translate('common', { wait: true })(
-    connect(mapStateToProps)(VLIWAccessBarComponent)
-);
+export default connect(mapStateToProps)(withTranslation()(VLIWAccessBarComponent));

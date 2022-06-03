@@ -47,7 +47,6 @@ export class Machine {
         this._fpr = new Register();
         this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY);
         this.functionalUnit.fill(null);
-        // this.init(true);
     }
 
     init(reset: boolean) {

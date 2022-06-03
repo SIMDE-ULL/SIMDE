@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import {
     toggleOptionsModal,
@@ -12,7 +11,7 @@ import { connect } from 'react-redux';
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
 
 class BatchResultsModalComponent extends React.Component<any, any> {
-    constructor(props: any, state: any) {
+    constructor(props: any) {
         super(props);
 
         this.close = this.close.bind(this);
@@ -29,13 +28,13 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                 onHide={this.close}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>{t('batchResults.title')}</Modal.Title>
+                    <Modal.Title>{this.props.t('batchResults.title')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="smd-batch_results">
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                                {t('batchResults.replications')}:
+                                {this.props.t('batchResults.replications')}:
                             </div>
                             <div className="smd-batch_results-entry_value">
                                 {this.props.results.replications}
@@ -43,7 +42,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                            {t('batchResults.average')}
+                            {this.props.t('batchResults.average')}
                             </div>
                             <div className="smd-batch_results-entry_value">
                                 {this.props.results.average}
@@ -51,7 +50,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                            {t('batchResults.standardDeviation')}
+                            {this.props.t('batchResults.standardDeviation')}
                             </div>
                             <div className="smd-batch_results-entry_value">
                                 {this.props.results.standardDeviation}
@@ -60,7 +59,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                            {t('batchResults.worst')}:
+                            {this.props.t('batchResults.worst')}:
                             </div>
                             <div className="smd-batch_results-entry_value">
                                 {this.props.results.worst}
@@ -68,7 +67,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                         </div>
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                            {t('batchResults.best')}:
+                            {this.props.t('batchResults.best')}:
                             </div>
                             <div className="smd-batch_results-entry_value">
                                 {this.props.results.best}
@@ -78,7 +77,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.close}>
-                        {t('commonButtons.close')}
+                        {this.props.t('commonButtons.close')}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -97,6 +96,4 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators({ clearBatchResults }, dispatch) };
 }
 
-export default translate('common', { wait: true })(
-    connect(mapStateToProps, mapDispatchToProps)(BatchResultsModalComponent)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchResultsModalComponent));
