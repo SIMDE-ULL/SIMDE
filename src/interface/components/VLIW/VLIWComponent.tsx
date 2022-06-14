@@ -1,6 +1,10 @@
 import * as React from "react";
 import { t } from 'i18next';
 import { Tabs, Tab } from "react-bootstrap";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
 import OptionsModalComponent from "../Superescalar/modal/OptionsModalComponent";
 import AutorModalComponent from "./modal/AutorModalComponent";
@@ -25,7 +29,9 @@ export const VLIWComponent = () => (
         </div>
         <Tabs defaultActiveKey={1} id='working-area-tabs'>
             <Tab eventKey={1} title={t('accessBar.vliw')}>
-                <GeneralVLIWTabComponent />
+                <DndProvider backend={HTML5Backend}>
+                    <GeneralVLIWTabComponent />
+                </DndProvider>
             </Tab>
             <Tab eventKey={2} title={t('accessBar.memReg')}>
                 <RegisterVLIWTabComponent />
