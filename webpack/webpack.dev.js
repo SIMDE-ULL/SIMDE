@@ -14,6 +14,7 @@ module.exports = merge(common, {
         static: {
             directory: path.join(__dirname, './../target/www'),
         },
+        historyApiFallback: true,
         compress: true,
         port:9060,
     },
