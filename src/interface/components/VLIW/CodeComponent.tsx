@@ -18,13 +18,6 @@ class CodeComponent extends React.Component<any, any> {
                 'pink'
             ]
         };
-        this.setBreakpoint = this.setBreakpoint.bind(this);
-    }
-
-    // TODO: fixme !!
-    setBreakpoint(instruction: Instruction) {
-        instruction.breakPoint = !instruction.breakPoint;
-        // this.props.toggleBreakPoint(SuperescalarIntegration.superescalar.code.instructions);
     }
 
     setColor(row) {
@@ -51,7 +44,6 @@ class CodeComponent extends React.Component<any, any> {
                                 this.props.code && this.props.code.map((row: Instruction, i) =>
                                     <InstructionComponent instruction={row} key={i} loc={i}
                                         color={this.setColor(row)}
-                                        onClick={this.setBreakpoint}
                                     />
                                 )
                             }

@@ -2,10 +2,13 @@ import * as React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import VLIWOperationComponent from './VLIWOperationComponent';
+
+
 export function TableComponent(props) {
     const [t, i18n] = useTranslation();
 
-    return(
+    return (
         <div className="smd-table_component panel panel-default">
             <div className="panel-heading">{t(props.title)}</div>
             <div className="smd-table_component-body panel-body">
@@ -27,10 +30,10 @@ export function TableComponent(props) {
                                     <div className="smd-table_cell"> 
                                             { i } 
                                     </div>
-                                    {row.map( (col, j) => (
-                                        <div className="smd-table_cell" key={`${'VliwCode' + i + '' + j}`}> 
-                                            { col } 
-                                        </div>
+                                    {row.map((col, j) => (
+                                        <VLIWOperationComponent op={col}
+                                            pos={[i, j]} key={`${'VliwCode' + i + '-' + j}`}
+                                            onDropInstruction={props.onDropInstruction} />
                                     ))}
                                 </div>
                             ))}

@@ -13,6 +13,7 @@
             &:hover {
                 background-color: $color-brand;
                 color: $color-text-primary;
+                cursor: grab;
             }
         }
     }
