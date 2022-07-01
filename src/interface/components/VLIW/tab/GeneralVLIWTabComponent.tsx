@@ -13,8 +13,11 @@ import { TableComponent } from '../TableComponent';
 import RegisterComponent from '../../Superescalar/RegisterComponent';
 import {PREDICATE_SIZE} from '../../../reducers/machine';
 
+import VLIWIntegration from '../../../../integration/vliw-integration';
+
+
 class GeneralVLIWTabComponent extends React.Component<any, any> {
-    constructor(props: any) {
+    constructor(props: any, state: any) {
         super(props);
     }
 
@@ -35,9 +38,11 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                 title="Instrucciones VLIW"
                                 header={this.props.vliwExecutionHeaderTable}
                                 data={this.props.vliwExecutionTable}
+                                onDropInstruction={VLIWIntegration.setOperation}
                             />
                         </div>  
                         <div className="smd-general_tab-simulation_nat_predicate">
+                                {/* TODO: i18n this */}
                                 <RegisterComponent 
                                     title='Predicado'
                                     data={this.props.predicate.data}

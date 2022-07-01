@@ -249,6 +249,7 @@ export function MachineReducers(state = initialState, action) {
                 ].slice(-MAX_HISTORY_SIZE)
             });
         case COLOR_CELL:
+        {
             let newState = { ...state };
             newState.history = colorHistoryInstruction(
                 newState.history,
@@ -256,6 +257,7 @@ export function MachineReducers(state = initialState, action) {
                 action.value[1]
             );
             return newState;
+        }
         case TAKE_HISTORY:
             return (state = {
                 ...state,

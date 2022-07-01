@@ -10,6 +10,10 @@ export class LargeInstruction {
         this._breakPoint = false;
     }
 
+    get operations(): VLIWOperation[] {
+        return this._operations;
+    }
+
     public getOperation(index: number): VLIWOperation {
         if (index > this._operations.length) {
             throw new Error('Index out of bounds at operations');

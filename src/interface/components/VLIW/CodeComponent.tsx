@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { OpcodesNames } from '../../../core/Common/Opcodes';
 
 import { Instruction } from '../../../core/Common/Instruction';
+import InstructionComponent from './InstructionComponent';
 
 import SuperescalarIntegration from '../../../integration/superescalar-integration';
 
@@ -18,13 +18,10 @@ class CodeComponent extends React.Component<any, any> {
                 'pink'
             ]
         };
-        this.setBreakpoint = this.setBreakpoint.bind(this);
     }
 
-    setBreakpoint(index) {
-        SuperescalarIntegration.superescalar.code.instructions[index].breakPoint = !SuperescalarIntegration.superescalar.code.instructions[index].breakPoint;
-        SuperescalarIntegration.superescalar.code.instructions = [...SuperescalarIntegration.superescalar.code.instructions];
-        this.props.toggleBreakPoint(SuperescalarIntegration.superescalar.code.instructions);
+    setColor(row) {
+        return this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''
     }
 
    render() {
@@ -45,13 +42,10 @@ class CodeComponent extends React.Component<any, any> {
                         <div className='smd-table-body'>
                             {
                                 this.props.code && this.props.code.map((row: Instruction, i) =>
-                                    <div className='smd-table_row' key={`${'Code' + i}`} onClick={(e) => { this.setBreakpoint(i); }}>
-                                        <div className={`smd-table_cell ${row.breakPoint ? 'smd-breakpoint' : ''}`}>{row.label} {i}</div>
-                                        <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{OpcodesNames[row.opcode]}</div>
-                                        <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[0]}</div>
-                                        <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[1]}</div>
-                                        <div className={`smd-table_cell ${this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''}`}>{row.operandsString[2]}</div>
-                                    </div>)
+                                    <InstructionComponent instruction={row} key={i} loc={i}
+                                        color={this.setColor(row)}
+                                    />
+                                )
                             }
                         </div>
                     </div>
