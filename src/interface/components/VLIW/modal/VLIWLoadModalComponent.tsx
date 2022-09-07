@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FileReaderInput from 'react-file-reader-input';
+import FileReaderInput from '../../Common/FileReaderInput';
 import { Modal, Button } from 'react-bootstrap';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';

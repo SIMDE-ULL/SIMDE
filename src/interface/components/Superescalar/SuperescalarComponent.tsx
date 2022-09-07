@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as FileInput from 'react-file-reader-input';
+import FileReaderInput from '../Common/FileReaderInput';
 import { t } from 'i18next';
 import { Tabs, Tab } from "react-bootstrap";
 
