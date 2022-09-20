@@ -22,7 +22,7 @@ jobs:
       run: npm install -g npm
     
     - name: Install NPM packages
-      run: npm ci --force
+      run: npm ci
     
     - name: Build project
       run: npm run build
