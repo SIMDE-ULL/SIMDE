@@ -1,0 +1,34 @@
+name: Build and Test
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Install Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 18.x
+        
+    - name: Upgrade NPM
+      run: npm install -g npm
+    
+    - name: Install NPM packages
+      run: npm ci
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Run tests
+      run: npm run test
+
+    - name: Dist project
+      run: npm run dist
