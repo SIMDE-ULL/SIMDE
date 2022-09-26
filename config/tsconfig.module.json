@@ -2,12 +2,11 @@
   "extends": "../tsconfig",
   "compilerOptions": {
     "outDir": "../build/module",
-    "module": "es6",
+    "module": "commonjs",
     "declaration": false,
     "strictNullChecks": false
   },
   "exclude": [
-    "../node_modules/**",
-    "../src/**/*.spec.ts"
+    "../node_modules/**"
   ]
 }

@@ -1,5 +1,4 @@
 {
-   "extends": "./config/tsconfig.flexible",
    "compilerOptions": {
       "target": "es5",
       "outDir": "build/main",

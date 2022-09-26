@@ -111,10 +111,7 @@
   },
   "ava": {
     "files": [
-      "build/main/**/*.spec.js"
-    ],
-    "source": [
-      "build/main/**/*"
+      "build/module/test/*.spec.js"
     ]
   }
 }
