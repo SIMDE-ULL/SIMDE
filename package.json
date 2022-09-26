@@ -24,7 +24,7 @@
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
     "release": "standard-version",
     "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --port=9060",
-    "webpack:prod": "webpack --config webpack/webpack.prod.js --define process.env.PUBLIC_URL='\"/SIMDE\"'"
+    "webpack:prod": "webpack --config webpack/webpack.prod.js"
   },
   "repository": {
     "type": "git",
