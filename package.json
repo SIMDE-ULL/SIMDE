@@ -84,7 +84,7 @@
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.5.0",
     "mini-css-extract-plugin": "2.6.0",
-    "multiview": "2.5.3",
+    "multiview": "3.0.1",
     "npm-scripts-info": "0.1.0",
     "nyc": "15.1.0",
     "sass": "1.50.0",
