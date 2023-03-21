@@ -88,7 +88,7 @@
     "npm-scripts-info": "0.1.0",
     "nyc": "15.1.0",
     "sass": "1.50.0",
-    "sass-loader": "10.2.1",
+    "sass-loader": "13.2.0",
     "source-map-loader": "0.2.3",
     "standard-version": "9.3.2",
     "style-loader": "0.10.0",
