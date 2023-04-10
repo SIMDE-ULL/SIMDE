@@ -55,7 +55,7 @@
     "i18next-http-backend": "1.4.0",
     "i18next-localstorage-cache": "1.1.1",
     "lex": "1.7.9",
-    "npm": "^8.10.0",
+    "npm": "^9.0.0",
     "react": "17.0.2",
     "react-bootstrap": "^2.4.0",
     "react-color": "^2.14.0",
