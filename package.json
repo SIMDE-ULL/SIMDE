@@ -51,7 +51,7 @@
     "copy-webpack-plugin": "11.0.0",
     "font-awesome": "4.7.0",
     "i18next": "21.6.16",
-    "i18next-browser-languagedetector": "6.1.4",
+    "i18next-browser-languagedetector": "7.0.1",
     "i18next-http-backend": "2.2.0",
     "i18next-localstorage-cache": "1.1.1",
     "lex": "1.7.9",
