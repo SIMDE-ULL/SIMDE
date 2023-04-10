@@ -75,7 +75,7 @@
     "node": ">=4"
   },
   "devDependencies": {
-    "@types/node": "^17.0.38",
+    "@types/node": "^18.0.0",
     "ava": "^4.2.0",
     "codecov": "^3.6.5",
     "coveralls": "3.0.0",
