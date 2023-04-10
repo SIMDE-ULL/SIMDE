@@ -52,7 +52,7 @@
     "font-awesome": "4.7.0",
     "i18next": "21.6.16",
     "i18next-browser-languagedetector": "6.1.4",
-    "i18next-http-backend": "1.4.0",
+    "i18next-http-backend": "2.2.0",
     "i18next-localstorage-cache": "1.1.1",
     "lex": "1.7.9",
     "npm": "^9.0.0",
