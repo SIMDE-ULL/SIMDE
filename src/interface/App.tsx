@@ -19,10 +19,10 @@ class App extends React.Component<any, any> {
 const Structure = () => (
     <div className="pagebody">
     <React.Suspense fallback={<div>Loading... </div>}>
-      <Route exact path="/" component={LandingPageComponent} />
-      <Route path="/superescalar" component={SuperescalarComponent} />
-      <Route path="/vliw" component={VLIWComponent} />
-      <Route path="/project" component={ProjectPage} />
+      <Route path="/" element={LandingPageComponent} />
+      <Route path="/superescalar" element={SuperescalarComponent} />
+      <Route path="/vliw" element={VLIWComponent} />
+      <Route path="/project" element={ProjectPage} />
     </React.Suspense>
     </div>
 );
