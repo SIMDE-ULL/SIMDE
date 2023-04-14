@@ -22,7 +22,6 @@
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "release": "release-please",
     "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --port=9060",
     "webpack:prod": "webpack --config webpack/webpack.prod.js"
   },
@@ -85,7 +84,6 @@
     "multiview": "3.0.1",
     "npm-scripts-info": "0.1.0",
     "nyc": "15.1.0",
-    "release-please": "^15.10.3",
     "sass": "1.50.0",
     "sass-loader": "13.2.0",
     "source-map-loader": "4.0.1",

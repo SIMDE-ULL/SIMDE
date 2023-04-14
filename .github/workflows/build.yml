@@ -1,34 +1,29 @@
-name: Build and Test
-
+# .github/workflows/build.yml
+# This workflow constitutes the CI pipeline of building and
+# testing the project codebase.
+name: build
 on:
   pull_request:
-    branches: [main, develop]
-
+    branches: ['**']
+  push:
+    branches: [main]
+  workflow_call:
 jobs:
   build:
-    name: Build
+    name: build
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
+    - name: Check out code
       uses: actions/checkout@v3
-    
-    - name: Install Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: 18.x
-        
-    - name: Upgrade NPM
+    - name: Upgrade npm
       run: npm install -g npm
-    
-    - name: Install NPM packages
+    - name: Install npm packages
       run: npm ci
-    
-    - name: Build project
-      run: npm run build
-    
     - name: Run tests
       run: npm run test
-
-    - name: Dist project
+    - name: Generate production build
       run: npm run dist
