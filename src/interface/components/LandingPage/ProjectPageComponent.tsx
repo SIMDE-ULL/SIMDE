@@ -1,9 +1,10 @@
 import * as React from "react";
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
-const ProjectPage = (props) => {
-    const [t, i18n] = useTranslation();
+
+const ProjectPage = () => {
+    const [t, _] = useTranslation();
 
     return (
       <div className="page">

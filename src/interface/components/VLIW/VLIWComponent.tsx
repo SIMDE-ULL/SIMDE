@@ -21,28 +21,32 @@ import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
 import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 
 
-export const VLIWComponent = () => (
-    <div className='smd'>
-        <div className='navigation-bars'>
-            <VLIWFileBarComponent />
-            <VLIWAccessBarComponent />
+const VLIWComponent = () => {
+    return (
+        <div className='smd'>
+            <div className='navigation-bars'>
+                <VLIWFileBarComponent />
+                <VLIWAccessBarComponent />
+            </div>
+            <Tabs defaultActiveKey={1} id='working-area-tabs'>
+                <Tab eventKey={1} title={t('accessBar.vliw')}>
+                    <DndProvider backend={HTML5Backend}>
+                        <GeneralVLIWTabComponent />
+                    </DndProvider>
+                </Tab>
+                <Tab eventKey={2} title={t('accessBar.memReg')}>
+                    <RegisterVLIWTabComponent />
+                </Tab>
+            </Tabs>
+            <VLIWLoadModalComponent />
+            <VLIWLoadContentModalComponent />
+            <VliwConfigModalComponent />
+            <OptionsModalComponent />
+            <AutorModalComponent />
+            <BatchModalComponent />
+            <BatchResultsModalComponent />
         </div>
-        <Tabs defaultActiveKey={1} id='working-area-tabs'>
-            <Tab eventKey={1} title={t('accessBar.vliw')}>
-                <DndProvider backend={HTML5Backend}>
-                    <GeneralVLIWTabComponent />
-                </DndProvider>
-            </Tab>
-            <Tab eventKey={2} title={t('accessBar.memReg')}>
-                <RegisterVLIWTabComponent />
-            </Tab>
-        </Tabs>
-        <VLIWLoadModalComponent />
-        <VLIWLoadContentModalComponent />
-        <VliwConfigModalComponent />
-        <OptionsModalComponent />
-        <AutorModalComponent />
-        <BatchModalComponent />
-        <BatchResultsModalComponent />
-    </div>
-);
+    )
+};
+
+export default VLIWComponent;
