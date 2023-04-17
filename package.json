@@ -7,10 +7,10 @@
   "module": "build/module/index.js",
   "scripts": {
     "info": "npm-scripts-info",
+    "dev": "npm run webpack:dev",
     "build": "trash build && tsc -p tsconfig.json && tsc -p config/tsconfig.module.json",
     "dist": "npm run webpack:prod",
     "lint": "tslint src/**/*.ts",
-    "start": "npm run webpack:dev",
     "unit": "npm run build && nyc ava",
     "check-coverage": "nyc check-coverage --lines 70 --functions 70 --branches 70",
     "test": " npm run unit",
