@@ -34,7 +34,7 @@ module.exports = merge(common, {
        new webpack.DefinePlugin({
           'process.env': {
              'NODE_ENV': JSON.stringify('production'),
-             'PUBLIC_URL': '\"/SIMDE\"'
+             'PUBLIC_URL': '\"/\"'
           }
        }),
        new CopyPlugin({
