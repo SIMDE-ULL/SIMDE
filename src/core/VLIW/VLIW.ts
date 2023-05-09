@@ -62,6 +62,7 @@ export class VLIW extends Machine {
         this._functionalUnitNumbers[index] = (index === FunctionalUnitType.JUMP) ? 1 : n;
     }
 
+    //TODO: These checks functions are never used
     public checkCode() {
         for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
             let instruction = this._code.getLargeInstruction(i);
@@ -166,8 +167,8 @@ export class VLIW extends Machine {
 
                 if (!this.functionalUnit[type][index].isFree() ||
                     DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
-                    stopFlow = true;
-                    break;
+                    //TODO: This really fails when there is a RAW dependency?
+                    return VLIWError.ERRRAW; // VLIW_ERRRA;
                 }
             }
 
@@ -283,6 +284,17 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredTrue()] = false;
                 this._predR[operation.getPredFalse()] = true;
             }
+        } else if (operation.opcode === Opcodes.BGT) {
+            if (this._gpr.getContent(operation.getOperand(0)) > this._gpr.getContent(operation.getOperand(1))) {
+                newPC = operation.getOperand(2);
+                this._predR[operation.getPredTrue()] = true;
+                this._predR[operation.getPredFalse()] = false;
+            } else {
+                this._predR[operation.getPredTrue()] = false;
+                this._predR[operation.getPredFalse()] = true;
+            }
+        } else {
+            throw new Error("Invalid jump operation: " + operation.opcode);
         }
         return newPC;
     }

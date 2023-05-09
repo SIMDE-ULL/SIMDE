@@ -9,7 +9,7 @@ import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
 import OptionsModalComponent from "../Superescalar/modal/OptionsModalComponent";
 import AutorModalComponent from "./modal/AutorModalComponent";
 
-import BatchModalComponent from "../Common/Modal/BatchModalComponent";
+import BatchModalComponent from "../VLIW/modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";

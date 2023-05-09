@@ -137,7 +137,8 @@
     "Registros de punto flotante": "Floating point Registers",
     "execution": {
         "stopped": "Execution stopped at breakpoint",
-        "finished": "Execution finished"
+        "finished": "Execution finished",
+        "error": "There was an unexpected error during execution"
     },
     "batchModal": {
         "title": "Batch Execution",

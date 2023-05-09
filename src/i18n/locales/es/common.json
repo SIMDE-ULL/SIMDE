@@ -136,7 +136,8 @@
     "Registros de punto flotante": "Registros de punto flotante",
     "execution": {
         "stopped": "Ejecución detenida en breakpoint",
-        "finished": "Ejecución finalizada"
+        "finished": "Ejecución finalizada",
+        "error": "Ha habido un error inesperado durante la ejecución"
     },
     "batchModal": {
         "title": "Ejecución por lotes",

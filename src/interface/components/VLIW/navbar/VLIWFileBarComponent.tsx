@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import { DropdownButton } from 'react-bootstrap';
 import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
+import { downloadJsonFile } from '../../../utils/Downloader';
 
 class VLIWFileBarComponent extends React.Component<any, any> {
     private color: boolean;
@@ -23,6 +24,7 @@ class VLIWFileBarComponent extends React.Component<any, any> {
                         id={'dropdown-load'}
                     >
                         <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{this.props.t('fileBar.file.load')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.download_memory')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}
@@ -73,6 +75,7 @@ class VLIWFileBarComponent extends React.Component<any, any> {
 const mapStateToProps = state => {
     return {
         isLoadModalOpen: state.isLoadModalOpen,
+        memory: state.Machine.memory
     }
 }
 
