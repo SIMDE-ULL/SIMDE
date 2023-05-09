@@ -1,6 +1,5 @@
 # SIMDE
 [![Build Status](https://travis-ci.org/etsiiull/SIMDE.svg?branch=master)](https://travis-ci.org/etsiiull/SIMDE)
-[![Coverage Status](https://coveralls.io/repos/github/etsiiull/SIMDE/badge.svg?branch=master)](https://coveralls.io/github/etsiiull/SIMDE?branch=master)
 
 
 ![Live exec](/assets/exec.gif)

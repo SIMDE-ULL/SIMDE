@@ -6,7 +6,6 @@
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
   "scripts": {
-    "info": "npm-scripts-info",
     "dev": "npm run webpack:dev",
     "build": "trash build && tsc -p tsconfig.json && tsc -p config/tsconfig.module.json",
     "dist": "npm run webpack:prod",
@@ -75,7 +74,6 @@
     "@types/node": "^18.0.0",
     "ava": "^5.0.0",
     "codecov": "^3.6.5",
-    "coveralls": "^3.1.1",
     "css-loader": "6.7.3",
     "css-minimizer-webpack-plugin": "^5.0.0",
     "eslint": "8.40.0",
@@ -83,7 +81,6 @@
     "html-webpack-plugin": "5.5.1",
     "mini-css-extract-plugin": "2.7.5",
     "multiview": "3.0.1",
-    "npm-scripts-info": "0.3.9",
     "nyc": "15.1.0",
     "sass": "1.62.1",
     "sass-loader": "13.2.2",
