@@ -1,6 +1,6 @@
 {
   "name": "simde",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Educational superescalar and VLIW simulator",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
