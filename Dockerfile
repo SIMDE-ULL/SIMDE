@@ -48,7 +48,7 @@ USER node
 ###################
 # PRODUCTION
 ###################
-FROM nginx:1.24.0-alpine As production
+FROM nginx:1.25.0-alpine As production
 
 # Copy the bundled code from the build stage to the production server image
 # COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
