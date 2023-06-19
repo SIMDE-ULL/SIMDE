@@ -3,11 +3,9 @@
 # testing the project codebase.
 name: build
 on:
+  workflow_call:  # Allow reusing this workflow in others
   pull_request:
     branches: ['**']
-  push:
-    branches: [main]
-  workflow_call:
 jobs:
   build:
     name: build
