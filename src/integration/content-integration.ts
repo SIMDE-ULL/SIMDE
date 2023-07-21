@@ -16,11 +16,11 @@ export class ContentIntegration {
         this.proccessContent(input.split('\n'));
     }
 
-    normalizeBreakLines(input: string): string {
+    private normalizeBreakLines(input: string): string {
         return input.replace(/(?:\r\n|\r)/g, '\n');
     }
 
-    proccessContent(lines: string[]) {
+    private proccessContent(lines: string[]) {
         this.currentContent = '';
 
         for (let i = 0; i < lines.length; i++) {
@@ -32,7 +32,7 @@ export class ContentIntegration {
         }
     }
 
-    parseContent(value: string) {
+    private parseContent(value: string) {
         switch (value) {
             case '#GPR':
                 this.currentContent = 'GPRContent';
@@ -48,7 +48,7 @@ export class ContentIntegration {
         }
     }
 
-    parseLine(line: string) {
+    private parseLine(line: string) {
         if (this.currentContent === '') {
             throw new Error('The data has no content (MEM, REG) associated');
         }

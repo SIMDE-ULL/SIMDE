@@ -26,7 +26,7 @@ export class Code {
         this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
     }
 
-    checkLabel(str: string, actual: BasicBlock): number {
+    private checkLabel(str: string, actual: BasicBlock): number {
         let index: number = -1;
         let basicBlock: BasicBlock;
         let nextSucessor: SuccessorBlock = new SuccessorBlock();
@@ -57,7 +57,7 @@ export class Code {
         return index;
     }
 
-    addLabel(str: string, lineNumber: number, actual: BasicBlock): BasicBlock {
+    private addLabel(str: string, lineNumber: number, actual: BasicBlock): BasicBlock {
         let index: number = -1;
         let basicBlock: BasicBlock;
         for (let i = 0; i < this._labels.length; i++) {
@@ -103,7 +103,7 @@ export class Code {
         return basicBlock;
     }
 
-    replaceLabels() {
+    private replaceLabels() {
         for (let i = 0; i < this._lines; i++) {
             if (this.isJump(this._instructions[i].opcode)) {
                 let basicBlock: BasicBlock = this._labels[this._instructions[i].getOperand(2)].blocks;
@@ -115,7 +115,83 @@ export class Code {
         }
     }
 
-    load(input: string) {
+    private isJump(opcode: number) {
+        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
+    }
+
+    /*
+    * PUBLIC METHODS
+    */
+
+    /*
+    * SETTERS Y GETTERS
+    */
+    public get instructions(): Instruction[] {
+        return this._instructions;
+    }
+
+    public set instructions(value: Instruction[]) {
+        this._instructions = value;
+    }
+
+    public get lines(): number {
+        return this._lines;
+    }
+
+    public set lines(value: number) {
+        this._lines = value;
+    }
+
+    public get labels(): Label[] {
+        return this._labels;
+    }
+
+    public set labels(value: Label[]) {
+        this._labels = value;
+    }
+
+    public get numberOfBlocks(): number {
+        return this._numberOfBlocks;
+    }
+
+    public set numberOfBlocks(value: number) {
+        this._numberOfBlocks = value;
+    }
+
+    public get basicBlocks(): BasicBlock {
+        return this._basicBlocks;
+    }
+
+    public set basicBlocks(value: BasicBlock) {
+        this._basicBlocks = value;
+    }
+
+    public getFunctionalUnitType(index: number) {
+        switch (this._instructions[index].opcode) {
+            case Opcodes.ADD:
+            case Opcodes.ADDI:
+                return FunctionalUnitType.INTEGERSUM;
+            case Opcodes.ADDF:
+                return FunctionalUnitType.FLOATINGSUM;
+            case Opcodes.MULT:
+                return FunctionalUnitType.INTEGERMULTIPLY;
+            case Opcodes.MULTF:
+                return FunctionalUnitType.FLOATINGMULTIPLY;
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.LW:
+            case Opcodes.LF:
+                return FunctionalUnitType.MEMORY;
+            case Opcodes.BGT:
+            case Opcodes.BNE:
+            case Opcodes.BEQ:
+                return FunctionalUnitType.JUMP;
+            default:
+                throw new Error("Error at getFunctionalUnitType, unknown opcode : " + Opcodes[this._instructions[index].opcode]);
+        }
+    }
+
+    public load(input: string) {
         this._lexer.setInput(input);
         let lexema: Lexema;
         let actual: BasicBlock;
@@ -228,76 +304,5 @@ export class Code {
         }
         return actual.lineNumber;
     }
-
-    /*
-    * SETTERS Y GETTERS
-    */
-    public get instructions(): Instruction[] {
-        return this._instructions;
-    }
-
-    public set instructions(value: Instruction[]) {
-        this._instructions = value;
-    }
-
-    public get lines(): number {
-        return this._lines;
-    }
-
-    public set lines(value: number) {
-        this._lines = value;
-    }
-
-    public get labels(): Label[] {
-        return this._labels;
-    }
-
-    public set labels(value: Label[]) {
-        this._labels = value;
-    }
-
-    public get numberOfBlocks(): number {
-        return this._numberOfBlocks;
-    }
-
-    public set numberOfBlocks(value: number) {
-        this._numberOfBlocks = value;
-    }
-
-    public get basicBlocks(): BasicBlock {
-        return this._basicBlocks;
-    }
-
-    public set basicBlocks(value: BasicBlock) {
-        this._basicBlocks = value;
-    }
-
-    public getFunctionalUnitType(index: number) {
-        switch (this._instructions[index].opcode) {
-            case Opcodes.ADD:
-            case Opcodes.ADDI:
-                return FunctionalUnitType.INTEGERSUM;
-            case Opcodes.ADDF:
-                return FunctionalUnitType.FLOATINGSUM;
-            case Opcodes.MULT:
-                return FunctionalUnitType.INTEGERMULTIPLY;
-            case Opcodes.MULTF:
-                return FunctionalUnitType.FLOATINGMULTIPLY;
-            case Opcodes.SW:
-            case Opcodes.SF:
-            case Opcodes.LW:
-            case Opcodes.LF:
-                return FunctionalUnitType.MEMORY;
-            case Opcodes.BGT:
-            case Opcodes.BNE:
-            case Opcodes.BEQ:
-                return FunctionalUnitType.JUMP;
-            default:
-                throw new Error("Error at getFunctionalUnitType, unknown opcode : " + Opcodes[this._instructions[index].opcode]);
-        }
-    }
-
-    private isJump(opcode: number) {
-        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
-    }
+ 
 }
