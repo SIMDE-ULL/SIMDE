@@ -42,6 +42,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
                 SuperescalarIntegration.dispatchAllSuperescalarActions();
                 this.close();
             } catch (error) {
+                //TODO: shows errors more readable
                 this.setState({error: error.message});
             }
       }

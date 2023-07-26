@@ -1,5 +1,5 @@
 import { start } from 'repl';
-import { apply, buildLexer, expectEOF, expectSingleResult, list_sc, rep_sc, seq, str, tok, opt_sc, Token } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token } from 'typescript-parsec';
 import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
 
 enum Tokens {
@@ -46,12 +46,13 @@ const contentParser = apply(
             var j = 0;
             content[i][1].forEach(num => {
                 result[+content[i][0].text.slice(1, -1) + j] = num;
-                j++;                
+                j++;
             });
         }
         return result;
     });
 
+//TODO: use err() for better error messages?
 const fileParser = rep_sc(seq(tok(Tokens.Header), opt_sc(contentParser)));
 
 export class ContentIntegration {
