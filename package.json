@@ -50,7 +50,6 @@
     "i18next-browser-languagedetector": "7.1.0",
     "i18next-http-backend": "^2.2.0",
     "i18next-localstorage-cache": "1.1.1",
-    "lex": "1.7.9",
     "npm": "^10.0.0",
     "react": "17.0.2",
     "react-bootstrap": "^2.4.0",

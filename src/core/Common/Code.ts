@@ -1,10 +1,8 @@
 import { Instruction } from './Instruction';
 import { BasicBlock, SuccessorBlock } from './Blocks';
-import { LEX, Lexema, Lexer } from './Lexer';
 import { Label } from './Label';
 
 import { Opcodes } from './Opcodes';
-import { Parser } from './Parser';
 import { CodeParser } from './CodeParser';
 import { FunctionalUnitType } from './FunctionalUnit';
 

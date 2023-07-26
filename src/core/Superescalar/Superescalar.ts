@@ -1,7 +1,6 @@
 import { Machine } from '../Common/Machine';
 import { Opcodes } from '../Common/Opcodes';
 import { Code } from '../Common/Code';
-import { Parser } from '../Common/Parser';
 
 import { ReorderBufferEntry } from './ReorderBufferEntry';
 import { PrefetchEntry } from './PrefetchEntry';
@@ -255,7 +254,7 @@ export class Superescalar extends Machine {
             if (this.reorderBuffer.isFull()) {
                 break;
             }
-            let fuType: FunctionalUnitType = Parser.opcodeToFunctionalUnitType(instruction.opcode);
+            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(instruction.opcode);
             if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
                 break;
             }
