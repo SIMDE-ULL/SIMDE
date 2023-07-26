@@ -5,6 +5,7 @@ import { Label } from './Label';
 
 import { Opcodes } from './Opcodes';
 import { Parser } from './Parser';
+import { CodeParser } from './CodeParser';
 import { FunctionalUnitType } from './FunctionalUnit';
 
 export class Code {
@@ -14,16 +15,16 @@ export class Code {
     private _labels: Label[];
     private _basicBlocks: BasicBlock;
     private _numberOfBlocks: number;
-    private _lexer: Lexer;
-    private _parser: Parser;
+    //private _lexer: Lexer;
+    //private _parser: Parser;
 
     constructor() {
         this._labels = new Array();
         this._numberOfBlocks = 0;
         this._basicBlocks = null;
         this._instructions = new Array();
-        this._lexer = new Lexer();
-        this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
+        //this._lexer = new Lexer();
+        //this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
     }
 
     private checkLabel(str: string, actual: BasicBlock): number {
@@ -192,33 +193,25 @@ export class Code {
     }
 
     public load(input: string) {
-        this._lexer.setInput(input);
-        let lexema: Lexema;
+        let codeParsed = new CodeParser(input);
         let actual: BasicBlock;
         let newBlock: boolean = true;
+
         // First we need the number of code lines
-        lexema = this._lexer.lex();
+        this._lines = codeParsed.lines;
+        this.instructions.length = codeParsed.instructions.length;
 
-        if (lexema.value !== LEX.LINESNUMBER) {
-            throw new Error('Error parsing lines number');
-        }
-        this._lines = +lexema.yytext;
-
-        this.instructions.length = this._lines;
-
-        for (let i = 0; i < this._lines; i++) {
-            this.instructions[i] = new Instruction();
+        for (let i = 0; i < codeParsed.instructions.length; i++) {
+            this.instructions[i] = codeParsed.instructions[i];
             this.instructions[i].id = i;
-            lexema = this._lexer.lex();
 
-            if (lexema.value === LEX.LABEL) {
+            if (i in codeParsed.labels) {
                 this._numberOfBlocks++;
-                this.instructions[i].label = lexema.yytext;
-                actual = this.addLabel(lexema.yytext, i, actual);
+                this.instructions[i].label = codeParsed.labels[i];
+                actual = this.addLabel(codeParsed.labels[i], i, actual);
                 if (actual == null) {
-                    throw new Error(`Error at line ${i + this.numberOfBlocks}, label ${lexema.yytext} already exists`);
+                    throw new Error(`Error at instruction ${i + this.numberOfBlocks}, label ${codeParsed.labels[i]} already exists`);
                 }
-                lexema = this._lexer.lex();
             } else {
                 this.instructions[i].label = '';
                 if (newBlock) {
@@ -238,60 +231,10 @@ export class Code {
                 }
             }
             newBlock = false;
-            this.checkLexema(lexema, LEX.ID, i);
-            let opcode = this._parser.stringToOpcode(lexema.yytext);
-            this._instructions[i].opcode = opcode;
             this._instructions[i].basicBlock = this._numberOfBlocks - 1;
-            switch (opcode) {
-                case Opcodes.NOP:
-                    this._parser.parseNooP(this._instructions[i]);
-                    break;
-                case Opcodes.ADD:
-                case Opcodes.SUB:
-                case Opcodes.MULT:
-                case Opcodes.OR:
-                case Opcodes.AND:
-                case Opcodes.XOR:
-                case Opcodes.NOR:
-                case Opcodes.SLLV:
-                case Opcodes.SRLV:
-                    this._parser.parseOperationWithTwoGeneralRegisters(i, this._instructions[i]);
-                    break;
-                case Opcodes.ADDF:
-                case Opcodes.SUBF:
-                case Opcodes.MULTF:
-                    this._parser.parseOperationWithTwoFloatingRegisters(i, this._instructions[i]);
-                    break;
-                case Opcodes.ADDI:
-                    this._parser.parseOperationWithGeneralRegisterAndInmediate(i, this._instructions[i]);
-                    break;
-                case Opcodes.SW:
-                case Opcodes.LW:
-                    this._parser.parseGeneralLoadStoreOperation(i, this._instructions[i]);
-                    break;
-                case Opcodes.SF:
-                case Opcodes.LF:
-                    this._parser.parseFloatingLoadStoreOperation(i, this._instructions[i]);
-                    break;
-                case Opcodes.BNE:
-                case Opcodes.BEQ:
-                case Opcodes.BGT:
-                    this._parser.parseJumpOperation(i, this._instructions[i], actual, this.checkLabel.bind(this));
-                    newBlock = true;
-                    break;
-                case Opcodes.OPERROR:
-                    throw new Error(`Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`);
-                default:
-                    throw new Error(`Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`);
-            }
+            //TODO: fix jump instructions addresses
         }
         this.replaceLabels();
-    }
-
-    public checkLexema(lexema: Lexema, expectedLexema: number, i: number) {
-        if (lexema.value !== expectedLexema) {
-            throw new Error(`Error at line ${i + this.numberOfBlocks + 1}, expected: ${LEX[expectedLexema]} got: ${lexema.yytext}`);
-        }
     }
 
     public getBasicBlockInstruction(basicBlockIndex: number) {
@@ -304,5 +247,5 @@ export class Code {
         }
         return actual.lineNumber;
     }
- 
+
 }
