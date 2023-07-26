@@ -1,8 +1,9 @@
 
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, fail, Token, alt_sc, list_sc } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError, alt_sc, list_sc, TokenPosition } from 'typescript-parsec';
 import { Opcodes, OpcodesNames } from './Opcodes';
-import { Formats, opcodeToFormat } from './InstructionFormats'
+import { Formats, FormatsNames, opcodeToFormat } from './InstructionFormats'
 import { Instruction } from './Instruction';
+import { throws } from 'assert';
 
 enum Tokens {
     Inmediate,
@@ -25,6 +26,7 @@ enum RegType {
 
 interface Reg {
     type: RegType;
+    pos: TokenPosition;
     num: number;
     text: string;
 }
@@ -52,7 +54,7 @@ const inmParser = apply(
     tok(Tokens.Inmediate),
     (num: Token<Tokens.Inmediate>) => {
         //TODO: allow hex numbers
-        return +num.text;
+        return +num.text.slice(1);
     }
 );
 
@@ -63,17 +65,17 @@ const regParser = apply(
         if (reg.kind == Tokens.RegFP) {
             type = RegType.FP;
         }
-        return { type: type, num: +reg.text.slice(1), text: reg.text };
+        return { type: type, pos: reg.pos, num: +reg.text.slice(1), text: reg.text };
     }
 );
 
 const addressParser = apply(
-    seq(tok(Tokens.Number), tok(Tokens.BraketOpen), regParser, tok(Tokens.BraketClose)),
+    seq(opt_sc(tok(Tokens.Number)), tok(Tokens.BraketOpen), regParser, tok(Tokens.BraketClose)),
     (address: [Token<Tokens.Number>, Token<Tokens.BraketOpen>, Reg, Token<Tokens.BraketClose>]) => {
         if (address[2].type == RegType.FP) {
-            return fail("Address register cannot be FP register");
+            throw new TokenError(address[2].pos, "Address register cannot be FP register");
         }
-        return { address: +address[0].text, reg: address[2] };
+        return { address: (address[0])? +address[0].text : 0, reg: address[2] };
     }
 );
 
@@ -84,27 +86,30 @@ const opcodeParser = apply(
         if (opcode !== -1) {
             return opcode;
         } else {
-            return fail(`Unknown opcode ${opcodeTok.text}`);
+            throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
         }
     }
 );
 
 const operationParser = apply(
     alt_sc(
-        opcodeParser,
         seq(opcodeParser, regParser, regParser, regParser),
         seq(opcodeParser, regParser, regParser, inmParser),
+        seq(opcodeParser, regParser, regParser, tok(Tokens.Id)),
         seq(opcodeParser, regParser, addressParser),
-        seq(opcodeParser, regParser, regParser, tok(Tokens.Id))),
+        opcodeParser
+        ), // The order is important, the first succesfull match is the one that is returned
     (operation: number | [number, Reg, Reg, Reg] | [number, Reg, Reg, number] | [number, Reg, Address] | [number, Reg, Reg, Token<Tokens.Id>]) => {
         var type: Formats;
         var instruction: Instruction = new Instruction();
+
         instruction.opcode = (typeof operation == "number") ? operation : operation[0];
+
         if (typeof operation == "number") {
             type = Formats.NooP;
         } else if ('num' in operation[2] && operation.length == 4) {
             if (operation[2].type !== operation[1].type) {
-                return fail(`Second operand register type(${operation[2].type}) mistmatch. Expected ${operation[1].type}`);
+                throw new TokenError(operation[2].pos, `Third operand register type(${operation[2].type}) mistmatch. Expected ${operation[1].type}`);
             }
 
             if (typeof operation[3] == "number") {
@@ -113,12 +118,12 @@ const operationParser = apply(
                 instruction.setOperand(1, operation[2].num, operation[2].text);
                 instruction.setOperand(2, operation[3], operation[3].toString());
                 if (operation[1].type == RegType.FP) {
-                    return fail(`Inmediate operand not allowed for floating point registers`);
+                    throw new TokenError(operation[1].pos, `Inmediate operand not allowed for floating point registers`);
                 }
 
             } else if ('num' in operation[3]) {
                 if (operation[3].type !== operation[1].type) {
-                    return fail(`Third operand register type(${operation[3].type}) mistmatch. Expected ${operation[1].type}`);
+                    throw new TokenError(operation[3].pos, `Third operand register type(${operation[3].type}) mistmatch. Expected ${operation[1].type}`);
                 }
 
                 if (operation[1].type == RegType.FP) {
@@ -151,7 +156,7 @@ const operationParser = apply(
 
         let expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
-            return fail(`Invalid instruction format. Expected ${expectedType}, got ${type}`);
+            throw new TokenError(undefined, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]}, got ${FormatsNames[type]}`); //TODO: add position
         }
 
         return instruction;
@@ -166,15 +171,15 @@ export class CodeParser {
     public lines: number = 0;
 
     constructor(code: string) {
-        console.log(tokenizer.parse(code));
         this.parse(code);
     }
 
     private parse(code: string) {
         let result = expectSingleResult(expectEOF(codeParser.parse(tokenizer.parse(code))));
+        
         let pos = 0;
         this.lines = +result[0].text;
-        for (let i = 0; i < result.length; i++) {
+        for (let i = 0; i < result[1].length; i++) {
             let line = result[1][i];
             if ('kind' in line && line.kind == Tokens.Label) {
                 this.labels[pos] = line.text.slice(0, -1);
@@ -182,7 +187,7 @@ export class CodeParser {
                 this.instructions.push(line);
                 pos++;
             } else {
-                throw new Error(`Unexpected Falied Parse: ${line}`);
+                throw new Error(`Unexpected code par fail: ${JSON.stringify(line)}`);
             }
         }
     }

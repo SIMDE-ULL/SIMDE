@@ -11,6 +11,8 @@ export enum Formats {
     NooP
 }
 
+export let FormatsNames: string[] = ["TwoGeneralRegisters", "TwoFloatingRegisters", "GeneralRegisterAndInmediate", "GeneralLoadStore", "FloatingLoadStore", "Jump", "NooP"];
+
 export function opcodeToFormat(opcode: Opcodes): Formats {
     switch (opcode) {
         case Opcodes.NOP:
@@ -33,9 +35,10 @@ export function opcodeToFormat(opcode: Opcodes): Formats {
             return Formats.GeneralRegisterAndInmediate;
         case Opcodes.SW:
         case Opcodes.LW:
+            return Formats.GeneralLoadStore;
         case Opcodes.SF:
         case Opcodes.LF:
-            return Formats.TwoFloatingRegisters;
+            return Formats.FloatingLoadStore;
         case Opcodes.BNE:
         case Opcodes.BEQ:
         case Opcodes.BGT:

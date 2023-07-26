@@ -234,7 +234,7 @@ export class Code {
             this._instructions[i].basicBlock = this._numberOfBlocks - 1;
             //TODO: fix jump instructions addresses
         }
-        this.replaceLabels();
+        //this.replaceLabels();
     }
 
     public getBasicBlockInstruction(basicBlockIndex: number) {
