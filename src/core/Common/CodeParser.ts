@@ -14,6 +14,7 @@ enum Tokens {
     BraketOpen,
     BraketClose,
     Number,
+    Comma,
     Space,
     NewLine,
     Comment
@@ -23,6 +24,7 @@ enum RegType {
     FP,
     GP
 }
+let RegTypeNames: string[] = ["FP", "GP"];
 
 interface Reg {
     type: RegType;
@@ -40,11 +42,12 @@ const tokenizer = buildLexer([
     [true, /^#[+-]?[0-9]+/g, Tokens.Inmediate],
     [true, /^[Ff][0-9]+/g, Tokens.RegFP],
     [true, /^[Rr][0-9]+/g, Tokens.RegGP],
-    [true, /^[A-Za-z][A-Za-z0-9]+\:/g, Tokens.Label],
-    [true, /^[A-Za-z][A-Za-z0-9]+/g, Tokens.Id],
+    [true, /^[A-Za-z][A-Za-z0-9]*\:/g, Tokens.Label],
+    [true, /^[A-Za-z][A-Za-z0-9]*/g, Tokens.Id],
     [true, /^\(/g, Tokens.BraketOpen],
     [true, /^\)/g, Tokens.BraketClose],
     [true, /^[+-]?[0-9]+/g, Tokens.Number],
+    [false, /^\,/g, Tokens.Comma],
     [false, /^[ \t\v\f]+/g, Tokens.Space],
     [false, /^\n/g, Tokens.NewLine],
     [false, /^\/\/.*\n/g, Tokens.Comment]
@@ -75,7 +78,7 @@ const addressParser = apply(
         if (address[2].type == RegType.FP) {
             throw new TokenError(address[2].pos, "Address register cannot be FP register");
         }
-        return { address: (address[0])? +address[0].text : 0, reg: address[2] };
+        return { address: (address[0]) ? +address[0].text : 0, reg: address[2] };
     }
 );
 
@@ -98,7 +101,7 @@ const operationParser = apply(
         seq(opcodeParser, regParser, regParser, tok(Tokens.Id)),
         seq(opcodeParser, regParser, addressParser),
         opcodeParser
-        ), // The order is important, the first succesfull match is the one that is returned
+    ), // The order is important, the first succesfull match is the one that is returned
     (operation: number | [number, Reg, Reg, Reg] | [number, Reg, Reg, number] | [number, Reg, Address] | [number, Reg, Reg, Token<Tokens.Id>]) => {
         var type: Formats;
         var instruction: Instruction = new Instruction();
@@ -109,7 +112,7 @@ const operationParser = apply(
             type = Formats.NooP;
         } else if ('num' in operation[2] && operation.length == 4) {
             if (operation[2].type !== operation[1].type) {
-                throw new TokenError(operation[2].pos, `Third operand register type(${operation[2].type}) mistmatch. Expected ${operation[1].type}`);
+                throw new TokenError(operation[2].pos, `Second operand register type(${RegTypeNames[operation[2].type]}) mistmatch. Expected ${RegTypeNames[operation[1].type]}`);
             }
 
             if (typeof operation[3] == "number") {
@@ -123,7 +126,7 @@ const operationParser = apply(
 
             } else if ('num' in operation[3]) {
                 if (operation[3].type !== operation[1].type) {
-                    throw new TokenError(operation[3].pos, `Third operand register type(${operation[3].type}) mistmatch. Expected ${operation[1].type}`);
+                    throw new TokenError(operation[3].pos, `Third operand register type(${RegTypeNames[operation[3].type]}) mistmatch. Expected ${RegTypeNames[operation[1].type]}`);
                 }
 
                 if (operation[1].type == RegType.FP) {
@@ -138,6 +141,7 @@ const operationParser = apply(
                 type = Formats.Jump;
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
+                instruction.setOperand(2, undefined, operation[3].text);
                 //TODO: pass label to instruction
             }
         } else if (operation.length == 3) {
@@ -154,9 +158,11 @@ const operationParser = apply(
 
         //TODO: check if registers are in range?
 
+        //TODO: if we check the expected type before, we can throw a more specific error
         let expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
-            throw new TokenError(undefined, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]}, got ${FormatsNames[type]}`); //TODO: add position
+            //TODO: add position
+            throw new TokenError(undefined, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
         }
 
         return instruction;
@@ -177,8 +183,9 @@ export class CodeParser {
     private parse(code: string) {
         let result = expectSingleResult(expectEOF(codeParser.parse(tokenizer.parse(code))));
         
+        // Create labels and instructions
         let pos = 0;
-        this.lines = +result[0].text;
+
         for (let i = 0; i < result[1].length; i++) {
             let line = result[1][i];
             if ('kind' in line && line.kind == Tokens.Label) {
@@ -189,6 +196,28 @@ export class CodeParser {
             } else {
                 throw new Error(`Unexpected code par fail: ${JSON.stringify(line)}`);
             }
+        }
+
+        this.lines = pos; // +result[0].text; We totally ignore the line counter, it's just a retrocompatibility thing
+
+        // Resolve labels
+        for (let i = 0; i < this.instructions.length; i++) {
+            if (opcodeToFormat(this.instructions[i].opcode) == Formats.Jump) {
+                let index: number = -1;
+                //Iterate over this.labels to find the label
+                for (let key in this.labels) {
+                    if (this.labels[key] == this.instructions[i].operandsString[2]) {
+                        index = +key;
+                        break;
+                    }
+                }
+                if (index !== -1) {
+                    this.instructions[i].setOperand(2, index, this.instructions[i].operandsString[2]);
+                } else {
+                    throw new Error(`Can not find Jump destination(labeled ${this.instructions[i].operandsString[2]}) on instruction ${this.instructions[i].id} at line ${i}`);
+                }
+            }
+                
         }
     }
 }

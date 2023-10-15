@@ -103,7 +103,9 @@ export class Superescalar extends Machine {
             || aux.instruction.opcode === Opcodes.BNE
             || aux.instruction.opcode === Opcodes.BGT)
             && this.prediction(this.pc))) {
-                this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
+                //this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
+                // The new parser just put the line number instead of the basic block, it is more simple
+                this.pc = aux.instruction.getOperand(2);
             } else {
                 this.pc++;
             }
@@ -254,7 +256,7 @@ export class Superescalar extends Machine {
             if (this.reorderBuffer.isFull()) {
                 break;
             }
-            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(instruction.opcode);
+            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(instruction.id);
             if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
                 break;
             }
@@ -516,7 +518,9 @@ export class Superescalar extends Machine {
             this.changePrediction(rob.instruction.id, !!rob.value);
             // Change pc
             if (rob.value) {
-                this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+                //this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+                // The new parser just put the line number instead of the basic block, it is more simple
+                this.pc = rob.instruction.getOperand(2);
             } else {
                 this.pc = rob.instruction.id + 1;
             }

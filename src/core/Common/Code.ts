@@ -237,9 +237,12 @@ export class Code {
 
     public getBasicBlockInstruction(basicBlockIndex: number) {
         if (basicBlockIndex > this._numberOfBlocks) {
+            //TODO: throw exception
             return -1;
         }
         let actual: BasicBlock = this._basicBlocks;
+        // WHaat why we are reinventing the wheel using a linked list?
+        // TODO: just use an array
         for (let i = 0; i < basicBlockIndex; i++) {
             actual = actual.next;
         }
