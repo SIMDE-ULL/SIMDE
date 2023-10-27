@@ -7,7 +7,14 @@
     .smd-table_row {
         position: relative;
         .smd-table_cell:first-child {
+            box-shadow: inset -4px -4px 0px 0px $color-brand;
             padding-left:1rem;
+
+            &:hover {
+                background-color: $color-brand;
+                color: $color-text-primary;
+                cursor: grab;
+            }
         }
     }
 }

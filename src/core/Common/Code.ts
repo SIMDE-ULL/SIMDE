@@ -273,7 +273,6 @@ export class Code {
     }
 
     public getFunctionalUnitType(index: number) {
-        // TODO bgt not implemented
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI:
@@ -289,11 +288,12 @@ export class Code {
             case Opcodes.LW:
             case Opcodes.LF:
                 return FunctionalUnitType.MEMORY;
+            case Opcodes.BGT:
             case Opcodes.BNE:
             case Opcodes.BEQ:
                 return FunctionalUnitType.JUMP;
             default:
-                return FunctionalUnitType.INTEGERSUM;
+                throw new Error("Error at getFunctionalUnitType, unknown opcode : " + Opcodes[this._instructions[index].opcode]);
         }
     }
 

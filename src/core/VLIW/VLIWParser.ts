@@ -44,7 +44,6 @@ export class VLIWParser {
                     let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
                     operation.setPred(predicate);
 
-                    // TODO y el bgt?
                     if (operation.isJump()) {
                         let destiny;
                         let predTrue;

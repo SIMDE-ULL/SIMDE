@@ -3,8 +3,7 @@ import * as React from 'react';
 import FunctionalUnitComponent from '../FunctionalUnitComponent';
 import CodeComponent from '../CodeComponent';
 
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,8 +13,11 @@ import { TableComponent } from '../TableComponent';
 import RegisterComponent from '../../Superescalar/RegisterComponent';
 import {PREDICATE_SIZE} from '../../../reducers/machine';
 
+import VLIWIntegration from '../../../../integration/vliw-integration';
+
+
 class GeneralVLIWTabComponent extends React.Component<any, any> {
-    constructor(props: any) {
+    constructor(props: any, state: any) {
         super(props);
     }
 
@@ -36,9 +38,11 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                 title="Instrucciones VLIW"
                                 header={this.props.vliwExecutionHeaderTable}
                                 data={this.props.vliwExecutionTable}
+                                onDropInstruction={VLIWIntegration.setOperation}
                             />
                         </div>  
                         <div className="smd-general_tab-simulation_nat_predicate">
+                                {/* TODO: i18n this */}
                                 <RegisterComponent 
                                     title='Predicado'
                                     data={this.props.predicate.data}
@@ -67,7 +71,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                     </div>
                     <div className="smd-general_tab-simulation_right">
                         <div className="panel panel-default inside-bar panel--stack">
-                            <div className="panel-heading">{t('UF')}</div>
+                            <div className="panel-heading">{this.props.t('UF')}</div>
                             <div className="panel-body">
                                 <FunctionalUnitComponent
                                     title="+Entera"
@@ -162,6 +166,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default translate('common')(
-    connect(mapStateToProps, mapDispatchToProps)(GeneralVLIWTabComponent)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(GeneralVLIWTabComponent));

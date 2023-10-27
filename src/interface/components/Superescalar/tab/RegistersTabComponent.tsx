@@ -57,7 +57,6 @@ export class RegisterTabComponent extends React.Component<any, any> {
 }
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         memory: state.Machine.memory,
         generalRegisters: state.Machine.generalRegisters,

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export function FunctionalUnitComponent(props) {
+  const [t, i18n] = useTranslation();
+
     return (
         <div className="smd-functional_unit panel panel-default">
             <div className="panel-heading">{t(props.title)}</div>
@@ -49,4 +50,4 @@ export function FunctionalUnitComponent(props) {
     );
 }
 
-export default translate('common', { wait: true })(FunctionalUnitComponent);
+export default FunctionalUnitComponent;

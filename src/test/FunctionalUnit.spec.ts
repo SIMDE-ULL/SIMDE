@@ -1,4 +1,4 @@
-import { test } from 'ava';
+import test from 'ava';
 import { FunctionalUnit, FunctionalUnitType } from '../core/Common/FunctionalUnit';
 import { Instruction } from '../core/Common/Instruction';
 

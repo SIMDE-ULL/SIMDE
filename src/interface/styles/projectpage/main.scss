@@ -5,7 +5,8 @@
 .pageproject {
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100% - 50px - 58px);
+    max-height: 90vh;
+
     & > h1 {
         margin-top: 1em;
         text-align: center;
@@ -28,9 +29,11 @@
 
 .simdegif {
     margin-top: 3em;
+    display: flex;
+
     & > img {
         box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.75);
         border-radius: 4px 4px 4px 4px;
-        margin: auto;
+        margin: 0 auto;
     }
 }

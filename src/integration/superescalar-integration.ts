@@ -20,7 +20,7 @@ import {
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
 
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
-import { MAX_HISTORY_SIZE } from '../interface/reducers';
+import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';

@@ -1,4 +1,4 @@
-import { test } from 'ava';
+import test from 'ava';
 import { Instruction } from '../core/Common/Instruction';
 
 let originalInstruction;

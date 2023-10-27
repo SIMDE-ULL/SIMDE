@@ -1,4 +1,4 @@
-import { test } from 'ava';
+import test from 'ava';
 import { Lexer } from '../core/Common/Lexer';
 import { Code } from '../core/Common/Code';
 

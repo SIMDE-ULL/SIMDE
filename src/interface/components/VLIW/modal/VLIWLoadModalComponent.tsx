@@ -1,11 +1,10 @@
 import * as React from 'react';
+import FileReaderInput from '../../Common/FileReaderInput';
 import { Modal, Button } from 'react-bootstrap';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { toggleLoadModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
-import * as FileReaderInput from 'react-file-reader-input';
 
 import VLIWIntegration from '../../../../integration/vliw-integration';
 import { Code } from '../../../../core/Common/Code';
@@ -13,8 +12,9 @@ import { VLIWCode } from '../../../../core/VLIW/VLIWCode';
 
 export class VLIWLoadModalComponent extends React.Component<any, any> {
 
-    constructor(public props: any) {
+    constructor(public props: any, public state: any) {
         super(props);
+
         this.close = this.close.bind(this);
         this.loadCode = this.loadCode.bind(this);
         this.state = {
@@ -56,9 +56,7 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
 
         try {
             let inputVliwCode = (document.getElementById('vliwCodeInput') as HTMLInputElement).value;
-
             vliwCode.load(inputVliwCode, code);
-
             VLIWIntegration.loadCode(vliwCode);
             
             this.setState({vliwCodeError: ''});
@@ -69,9 +67,9 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
     }
 
     render() {
-        return (<Modal className="smd-load_modal" show={this.props.isLoadModalOpen} onHide={this.close}>
+        return (<Modal size='xl' className="smd-load_modal" show={this.props.isLoadModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
-                <Modal.Title>{t('loadModal.title')}</Modal.Title>
+                <Modal.Title>{this.props.t('loadModal.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <textarea id='superescalarCodeInput' defaultValue={`11
@@ -116,17 +114,17 @@ LOOP:
             <Modal.Footer className="smd-load_modal-footer">
                 <div className="smd-load_modal-file_input">
                     <FileReaderInput as='text' onChange={this.handleSuperescalarInputFileChange} accept='.pla'>
-                        <Button className='btn btn-primary'>{t('commonButtons.uploadFromFile')}</Button>
+                        <Button className='btn btn-primary'>{this.props.t('commonButtons.uploadFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-file_input">
                     <FileReaderInput as='text' onChange={this.handleVliwInputFileChange} accept='.vliw'>
-                        <Button className='btn btn-primary'>{t('commonButtons.uploadVliwFromFile')}</Button>
+                        <Button className='btn btn-primary'>{this.props.t('commonButtons.uploadVliwFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-actions">
-                    <Button onClick={this.close}>{t('commonButtons.close')}</Button>
-                    <Button className='btn btn-primary' onClick={this.loadCode}>{t('loadModal.load')}</Button>
+                    <Button onClick={this.close}>{this.props.t('commonButtons.close')}</Button>
+                    <Button className='btn btn-primary' onClick={this.loadCode}>{this.props.t('loadModal.load')}</Button>
                 </div>
             </Modal.Footer>
         </Modal>);
@@ -143,4 +141,4 @@ function mapDispatchToProps(dispatch) {
     return { actions: bindActionCreators({toggleLoadModal}, dispatch)};
 }
 
-export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(VLIWLoadModalComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(VLIWLoadModalComponent));

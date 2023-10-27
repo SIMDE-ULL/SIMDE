@@ -1,11 +1,11 @@
 {
-   "extends": "./config/tsconfig.flexible",
    "compilerOptions": {
       "target": "es5",
       "outDir": "build/main",
       "rootDir": "src",
       "moduleResolution": "node",
-      "module": "commonjs",
+      "module": "es6",
+      "allowSyntheticDefaultImports": true,
       "strictNullChecks": false,
       "declaration": true,
       "importHelpers": true,

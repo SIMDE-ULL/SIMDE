@@ -99,7 +99,8 @@
         "save": "Guardar",
         "accept": "Aceptar",
         "launch": "Lanzar",
-        "uploadFromFile": "Subir código superescalar",
+        "uploadSuperscalarFromFile": "Seleccionar fichero",
+        "uploadMemoryFromFile": "Subir contenido memoria-registros",
         "uploadVliwFromFile": "Subir código VLIW"
     },
     "Code": "Código",
@@ -135,7 +136,8 @@
     "Registros de punto flotante": "Registros de punto flotante",
     "execution": {
         "stopped": "Ejecución detenida en breakpoint",
-        "finished": "Ejecución finalizada"
+        "finished": "Ejecución finalizada",
+        "error": "Ha habido un error inesperado durante la ejecución"
     },
     "batchModal": {
         "title": "Ejecución por lotes",

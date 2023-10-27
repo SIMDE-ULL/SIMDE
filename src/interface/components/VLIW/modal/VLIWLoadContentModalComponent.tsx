@@ -1,14 +1,13 @@
 import * as React from 'react';
+import FileReaderInput from '../../Common/FileReaderInput';
 import { Modal, Button } from 'react-bootstrap';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import * as FileReaderInput from 'react-file-reader-input';
 
 import { bindActionCreators } from 'redux';
 import { toggleVliwLoadContentModal } from '../../../actions/modals';
 import VLIWIntegration from '../../../../integration/vliw-integration';
-import { ContentIntegration} from '../../../../integration/content-integration';
+import { ContentIntegration } from '../../../../integration/content-integration';
 
 class VLIWLoadContentModalComponent extends React.Component<any, any> {
 
@@ -48,9 +47,10 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
       }
 
       render() {
-            return (<Modal className="smd-load_content_modal" show={this.props.isVliwLoadContentModalOpen} onHide={this.close}>
+            return (
+            <Modal size='xl' className="smd-load_content_modal" show={this.props.isVliwLoadContentModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
-                <Modal.Title>{t('loadContentModal.title')}</Modal.Title>
+                <Modal.Title>{this.props.t('loadContentModal.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <textarea id='contentInput' defaultValue={``}>
@@ -63,12 +63,12 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
             <Modal.Footer className="smd-load_modal-footer">
                 <div className="smd-load_modal-file_input">
                     <FileReaderInput as='text' onChange={this.handleInputFileChange} accept='.mem'>
-                        <Button className='btn btn-primary'>{t('commonButtons.uploadVliwFromFile')}</Button>
+                        <Button className='btn btn-primary'>{this.props.t('commonButtons.uploadVliwFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-actions">
-                    <Button onClick={this.close}>{t('commonButtons.close')}</Button>
-                    <Button className='btn btn-primary' onClick={this.loadContent}>{t('loadModal.load')}</Button>
+                    <Button onClick={this.close}>{this.props.t('commonButtons.close')}</Button>
+                    <Button className='btn btn-primary' onClick={this.loadContent}>{this.props.t('loadModal.load')}</Button>
                 </div>
             </Modal.Footer>
         </Modal>);
@@ -84,4 +84,4 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
       return { actions: bindActionCreators({toggleVliwLoadContentModal}, dispatch)};
 } 
-export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(VLIWLoadContentModalComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(VLIWLoadContentModalComponent));

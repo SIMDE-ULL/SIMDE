@@ -1,83 +1,81 @@
 import * as React from 'react';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleVliwConfigModal, toggleBatchModal, toggleVliwLoadContentModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton } from 'react-bootstrap';
+import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
+import { downloadJsonFile } from '../../../utils/Downloader';
 
 class VLIWFileBarComponent extends React.Component<any, any> {
     private color: boolean;
 
-    constructor(public props: any, public state: any) {
+    constructor(public props: any) {
         super(props);
         this.color = false;
     }
 
     render() {
-        return (<div className='smd-filebar'>
+        return (<Dropdown className='smd-filebar'>
                     <DropdownButton
-                        title={t('fileBar.file.name')}
+                        title={this.props.t('fileBar.file.name')}
                         key={'dropdown-load'}
                         id={'dropdown-load'}
-                        noCaret
                     >
-                        <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{t('fileBar.file.load')}</MenuItem>
+                        <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{this.props.t('fileBar.file.load')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.download_memory')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
-                        title={t('fileBar.view.name')}
+                        title={this.props.t('fileBar.view.name')}
                         key={'dropdown-view'}
                         id={'dropdown-view'}
-                        noCaret
                     >
-                        <MenuItem eventKey="1" onClick={() => {
+                        <Dropdown.Item eventKey="1" onClick={() => {
                             this.color = !this.color;
                             this.props.actions.viewBasicBlocks(this.color);
-                        }}>{t('fileBar.view.basicBlocks')}</MenuItem>
+                        }}>{this.props.t('fileBar.view.basicBlocks')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
-                        title={t('fileBar.config.name')}
+                        title={this.props.t('fileBar.config.name')}
                         key={'dropdown-options'}
                         id={'dropdown-options'}
-                        noCaret
                     >
-                        <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleVliwConfigModal(true)}}>
-                            {t('fileBar.config.vliw')}
-                        </MenuItem>
-                        <MenuItem eventKey="1" onClick={() => { this.props.actions.toggleVliwLoadContentModal(true)}}>
-                            {t('fileBar.config.content')}
-                        </MenuItem>
+                        <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleVliwConfigModal(true)}}>
+                            {this.props.t('fileBar.config.vliw')}
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleVliwLoadContentModal(true)}}>
+                            {this.props.t('fileBar.config.content')}
+                        </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
-                        title={t('fileBar.experimentation.name')}
+                        title={this.props.t('fileBar.experimentation.name')}
                         key={'dropdown-experimentation'}
                         id={'dropdown-experimentation'}
-                        noCaret
                     >
-                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleBatchModal(true) }}>
-                            {t('fileBar.experimentation.batch')}
-                        </MenuItem>
+                        <Dropdown.Item eventKey="2" onClick={() => { this.props.actions.toggleBatchModal(true) }}>
+                            {this.props.t('fileBar.experimentation.batch')}
+                        </Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
-                        title={t('fileBar.help.name')}
+                        title={this.props.t('fileBar.help.name')}
                         key={'dropdown-help'}
                         id={'dropdown-help'}
-                        noCaret
                     >
-                        <MenuItem eventKey="1" href="https://etsiiull.gitbooks.io/simde/">
-                            {t('fileBar.help.docs')}
-                        </MenuItem>
+                        <Dropdown.Item eventKey="1" href="https://etsiiull.gitbooks.io/simde/">
+                            {this.props.t('fileBar.help.docs')}
+                        </Dropdown.Item>
 
-                        <MenuItem eventKey="2" onClick={() => { this.props.actions.toggleAuthorModal(true) }}>{t('fileBar.help.about')}</MenuItem>
+                        <Dropdown.Item eventKey="2" onClick={() => { this.props.actions.toggleAuthorModal(true) }}>{this.props.t('fileBar.help.about')}</Dropdown.Item>
                     </DropdownButton>
-        </div>);
+        </Dropdown>);
     }
 }
 
 const mapStateToProps = state => {
     return {
         isLoadModalOpen: state.isLoadModalOpen,
+        memory: state.Machine.memory
     }
 }
 
@@ -94,4 +92,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default translate('common', { wait: true })(connect(mapStateToProps, mapDispatchToProps)(VLIWFileBarComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(VLIWFileBarComponent));

@@ -1,4 +1,4 @@
-import { test } from 'ava';
+import test from 'ava';
 import { VLIWCode } from '../../../core/VLIW/VLIWCode';
 import { Code } from '../../../core/Common/Code';
 import { VLIWError } from '../../../core/VLIW/VLIWError';

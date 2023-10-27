@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Queue } from '../../../core/Collections/Queue';
-import { translate } from 'react-i18next';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export function PrefetchDecoderComponent(props) {
+    const [t, i18n] = useTranslation();
+
     return (
             <div className='panel panel-default smd-prefetch_decoder'>
                 <div className='panel-heading'>
@@ -22,4 +23,4 @@ export function PrefetchDecoderComponent(props) {
 }
 
 
-export default translate('common', { wait: true })(PrefetchDecoderComponent);
+export default PrefetchDecoderComponent;
