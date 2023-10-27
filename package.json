@@ -71,7 +71,7 @@
     "node": ">=4"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
+    "@types/node": "^20.0.0",
     "ava": "^5.0.0",
     "codecov": "^3.6.5",
     "css-loader": "6.8.1",
