@@ -82,12 +82,17 @@ const addressParser = apply(
     }
 );
 
+interface OpcodeToken {
+    opcode: number;
+    pos: TokenPosition;
+}
+
 const opcodeParser = apply(
     tok(Tokens.Id),
-    (opcodeTok: Token<Tokens.Id>) => {
+    (opcodeTok: Token<Tokens.Id>) : OpcodeToken => {
         let opcode: number = OpcodesNames.indexOf(opcodeTok.text);
         if (opcode !== -1) {
-            return opcode;
+            return { opcode: opcode, pos: opcodeTok.pos };
         } else {
             throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
         }
@@ -102,13 +107,22 @@ const operationParser = apply(
         seq(opcodeParser, regParser, addressParser),
         opcodeParser
     ), // The order is important, the first succesfull match is the one that is returned
-    (operation: number | [number, Reg, Reg, Reg] | [number, Reg, Reg, number] | [number, Reg, Address] | [number, Reg, Reg, Token<Tokens.Id>]) => {
+    (operation: OpcodeToken | [OpcodeToken, Reg, Reg, Reg] | [OpcodeToken, Reg, Reg, number] | [OpcodeToken, Reg, Address] | [OpcodeToken, Reg, Reg, Token<Tokens.Id>]) => {
         var type: Formats;
         var instruction: Instruction = new Instruction();
+        var pos: TokenPosition;
 
-        instruction.opcode = (typeof operation == "number") ? operation : operation[0];
+        // set the opcode and get the current position
+        if (operation instanceof Array) {
+            instruction.opcode = operation[0].opcode;
+            pos = operation[0].pos;
+        } else {
+            instruction.opcode = operation.opcode;
+            pos = operation.pos;
+        }
 
-        if (typeof operation == "number") {
+        // Check the recived instruction format and set the operands
+        if (!(operation instanceof Array)) {
             type = Formats.NooP;
         } else if ('num' in operation[2] && operation.length == 4) {
             if (operation[2].type !== operation[1].type) {
@@ -161,7 +175,7 @@ const operationParser = apply(
         let expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
             //TODO: add position
-            throw new TokenError(undefined, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
+            throw new TokenError(pos, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
         }
 
         return instruction;

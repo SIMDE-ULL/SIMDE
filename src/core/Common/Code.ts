@@ -204,6 +204,7 @@ export class Code {
                 this.instructions[i].label = codeParsed.labels[i];
                 actual = this.addLabel(codeParsed.labels[i], i, actual);
                 if (actual == null) {
+                    // TODO: Try to use TokenPosition for a more accurate position. Maybe its better to move this check to CodeParser
                     throw new Error(`Error at instruction ${i + this.numberOfBlocks}, label ${codeParsed.labels[i]} already exists`);
                 }
             } else {
