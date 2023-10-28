@@ -52,7 +52,7 @@ test('Parsing operand errors are being thrown', t => {
         `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error.message, 'Error at line 4, expected: REGFP got: H0');
+	t.is(error.message, '{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got Jump format or similar');
 });
 
 test('Parsing addresses errors are being throw', t => {
@@ -65,7 +65,7 @@ test('Parsing addresses errors are being throw', t => {
 
 	let code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error.message, 'Error at line 2, expected: ADDRESS got: R');
+	t.is(error.message, '{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got NooP format or similar');
 });
 
 test('Parsing opcodes errors are being thrown', t => {
@@ -77,7 +77,7 @@ test('Parsing opcodes errors are being thrown', t => {
     `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error.message, 'Error at line 4 unknown opcode ADF');
+	t.is(error.message, '{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode ADF');
 });
 
 test('Repeated labels errors are being thrown', t => {
@@ -90,7 +90,7 @@ test('Repeated labels errors are being thrown', t => {
     `;
 	let code: Code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error.message, 'Error at line 5, label LOOP: already exists');
+	t.is(error.message, 'Error at instruction 5, label LOOP already exists');
 });
 
 test('Example code 1 does not throws errors', t => {
