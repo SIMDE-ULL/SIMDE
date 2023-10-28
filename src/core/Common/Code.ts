@@ -13,16 +13,12 @@ export class Code {
     private _labels: Label[];
     private _basicBlocks: BasicBlock;
     private _numberOfBlocks: number;
-    //private _lexer: Lexer;
-    //private _parser: Parser;
 
     constructor() {
         this._labels = new Array();
         this._numberOfBlocks = 0;
         this._basicBlocks = null;
         this._instructions = new Array();
-        //this._lexer = new Lexer();
-        //this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
     }
 
     private checkLabel(str: string, actual: BasicBlock): number {
@@ -233,6 +229,24 @@ export class Code {
             //TODO: fix jump instructions addresses
         }
         //this.replaceLabels();
+    }
+
+    /**
+     * save
+     */
+    public save() : string {
+        let result = this.lines + "\n";
+
+        for (let i = 0; i < this.instructions.length; i++) {
+            // Check if there is a label at line i
+            if (this.instructions[i].label !== '') {
+                result += this.instructions[i].label + ":\n";
+            }
+
+            result += "\t" + this.instructions[i].toString() + "\n";
+        }
+
+        return result;
     }
 
     public getBasicBlockInstruction(basicBlockIndex: number) {

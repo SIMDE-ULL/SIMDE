@@ -66,6 +66,53 @@ export class ContentIntegration {
         this.parseContent(input);
     }
 
+    /**
+     * deparse
+     */
+    public deparse(): string {
+        let result = '';
+        // Check if FPRContent is not empty
+        if (Object.keys(this.FPRContent).length !== 0) {
+            result += this.deparseContent('#FPR', this.FPRContent);
+        }
+
+        // Check if GPRContent is not empty
+        if (Object.keys(this.GPRContent).length !== 0) {
+            result += this.deparseContent('#GPR', this.GPRContent);
+        }
+
+        // Check if MEMContent is not empty
+        if (Object.keys(this.MEMContent).length !== 0) {
+            result += this.deparseContent('#MEM', this.MEMContent);
+        }
+
+        return result;
+    }
+
+    private deparseContent(headerName: string, content: { [k: number]: number }): string {
+        // Add header
+        let result =  '\n' + headerName;
+        // Iterate over Content
+        let lastPosition = -1;
+        Object.keys(content).forEach(key => {
+            let i = +key;
+            console.log("[" + i + "] " + content[i]);
+
+            // Check if is the next position after the last one
+            let isContinuos = lastPosition !== -1 && i === lastPosition + 1;
+            // Add position
+            if (!isContinuos) {
+                result += '\n[' + i + '] ';
+            }
+            // Add value
+            result += content[i] + ' ';
+            // Update last position
+            lastPosition = i;
+        });
+
+        return result;
+    }
+
     private parseContent(input: string) {
         let result = expectSingleResult(expectEOF(fileParser.parse(tokenizer.parse(input))));
         result.forEach(section => {

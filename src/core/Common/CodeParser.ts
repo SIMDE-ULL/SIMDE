@@ -119,7 +119,7 @@ const operationParser = apply(
                 type = Formats.GeneralRegisterAndInmediate;
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
-                instruction.setOperand(2, operation[3], operation[3].toString());
+                instruction.setOperand(2, operation[3], "#" + operation[3].toString());
                 if (operation[1].type == RegType.FP) {
                     throw new TokenError(operation[1].pos, `Inmediate operand not allowed for floating point registers`);
                 }
@@ -142,7 +142,6 @@ const operationParser = apply(
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
                 instruction.setOperand(2, undefined, operation[3].text);
-                //TODO: pass label to instruction
             }
         } else if (operation.length == 3) {
             if (operation[1].type == RegType.FP) {
@@ -152,7 +151,7 @@ const operationParser = apply(
             }
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].address, operation[2].address.toString());
-            instruction.setOperand(2, operation[2].reg.num, operation[2].reg.text);
+            instruction.setOperand(2, operation[2].reg.num, "(" + operation[2].reg.text + ")");
 
         }
 
@@ -211,6 +210,7 @@ export class CodeParser {
                         break;
                     }
                 }
+
                 if (index !== -1) {
                     this.instructions[i].setOperand(2, index, this.instructions[i].operandsString[2]);
                 } else {
