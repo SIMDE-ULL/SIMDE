@@ -1,4 +1,3 @@
-import { start } from 'repl';
 import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
 
 export class ContentIntegration {

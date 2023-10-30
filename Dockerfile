@@ -52,5 +52,5 @@ FROM nginx:1.25.3-alpine As production
 
 # Copy the bundled code from the build stage to the production server image
 # COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY ./config/docker-nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./docker-nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=node:node --from=build /usr/src/app/dist/* /usr/share/nginx/html

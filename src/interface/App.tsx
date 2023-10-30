@@ -9,7 +9,7 @@ import VLIWComponent from "./components/VLIW/VLIWComponent";
 
 const App = () => {
     return (
-        <BrowserRouter basename={process.env.PUBLIC_URL} >
+        <BrowserRouter basename={import.meta.env.PUBLIC_URL} >
             <div className="pagebody">
             <React.Suspense fallback={<div>Loading... </div>}>
                 <Routes>
