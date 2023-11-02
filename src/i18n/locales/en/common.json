@@ -2,7 +2,10 @@
     "fileBar": {
         "file": {
             "name": "File",
-            "load": "Load"
+            "load": "Load",
+            "download_memory": "Download Memory(JSON)",
+            "download_content": "Download content Memory - Registers",
+            "download_code": "Download Code"
         },
         "view": {
             "name": "View",
