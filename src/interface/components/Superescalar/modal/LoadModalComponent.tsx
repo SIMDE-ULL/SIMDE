@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
 import { Code } from '../../../../core/Common/Code';
+import { TokenError } from 'typescript-parsec';
 
 export class LoadModalComponent extends React.Component<any, any> {
 
@@ -37,7 +38,13 @@ export class LoadModalComponent extends React.Component<any, any> {
             SuperescalarIntegration.loadCode(code);
             this.close();
         } catch (error) {
-            this.setState({error: error.message});
+            
+            // Check if error has the property position. Checking instance of TokenError not working
+            if (error.pos) {
+                this.setState({error: '[' + error.pos?.rowBegin + ':' + error.pos?.columnBegin + ']: ' + error.errorMessage});
+            } else {
+                this.setState({error: error.message});
+            }
         }
     }
 

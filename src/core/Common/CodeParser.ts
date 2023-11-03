@@ -1,5 +1,5 @@
 
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError, alt_sc, list_sc, TokenPosition } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError, alt_sc, fail, TokenPosition } from 'typescript-parsec';
 import { Opcodes, OpcodesNames } from './Opcodes';
 import { Formats, FormatsNames, opcodeToFormat } from './InstructionFormats'
 import { Instruction } from './Instruction';
@@ -174,7 +174,7 @@ const operationParser = apply(
         //TODO: if we check the expected type before, we can throw a more specific error
         let expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
-            //TODO: add position
+            //return fail(`Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
             throw new TokenError(pos, `Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
         }
 
