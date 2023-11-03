@@ -83,6 +83,7 @@ export class VLIWOperation extends Instruction {
         this._predicateFalse = p;
     }
 
+    // TODO: remove this, use Instruction.isJump instead
     public isJump() {
         return (this._opcode === Opcodes.BEQ) || (this._opcode === Opcodes.BGT) || (this._opcode === Opcodes.BNE);
     }

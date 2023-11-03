@@ -110,10 +110,6 @@ export class Code {
         }
     }
 
-    private isJump(opcode: number) {
-        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
-    }
-
     /*
     * PUBLIC METHODS
     */
@@ -161,6 +157,7 @@ export class Code {
         this._basicBlocks = value;
     }
 
+    // TODO: Move this to Instruction
     public getFunctionalUnitType(index: number) {
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
@@ -184,6 +181,13 @@ export class Code {
             default:
                 throw new Error("Error at getFunctionalUnitType, unknown opcode : " + Opcodes[this._instructions[index].opcode]);
         }
+    }
+
+    // TODO: Move this to Instruction
+    public isJump(opcode: number) {
+        //return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
+        // With this we evite redundant code that can produce bugs
+        return this.getFunctionalUnitType(opcode) === FunctionalUnitType.JUMP;
     }
 
     public load(input: string) {
