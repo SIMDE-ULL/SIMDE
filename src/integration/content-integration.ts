@@ -113,19 +113,28 @@ export class ContentIntegration {
         return result;
     }
 
+    private checkBounds(name: string, content: { [k: number]: number }, max: number) {
+        let actualMax = Math.max(...Object.keys(content).map(key => +key));
+        if (actualMax >= max) {
+            throw new Error(`${name} content exceeds bound: ${actualMax} exceeds ${max}`);
+        }
+    }
+
     private parseContent(input: string) {
         let result = expectSingleResult(expectEOF(fileParser.parse(tokenizer.parse(input))));
         result.forEach(section => {
-            //TODO: Validate bounds
             switch (section[0].text) {
                 case '#FPR':
                     this.FPRContent = section[1];
+                    this.checkBounds('#FPR', this.FPRContent, MACHINE_REGISTER_SIZE);
                     break;
                 case '#GPR':
                     this.GPRContent = section[1];
+                    this.checkBounds('#GPR', this.GPRContent, MACHINE_REGISTER_SIZE);
                     break;
                 case '#MEM':
                     this.MEMContent = section[1];
+                    this.checkBounds('#MEM', this.MEMContent, MEMORY_SIZE);
                     break;
                 default:
                     throw new Error('Invalid header: ' + section[0].text);
