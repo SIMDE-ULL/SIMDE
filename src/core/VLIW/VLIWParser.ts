@@ -105,11 +105,10 @@ export class VLIWParser {
         );
 
         const lineParser = seq(tok(Tokens.Number), rep_sc(operationParser));
-        const programParser = seq(tok(Tokens.Number), tok(Tokens.NewLine), list_sc(lineParser, tok(Tokens.NewLine)));
+        const programParser = seq(tok(Tokens.Number), tok(Tokens.NewLine), list_sc(lineParser, tok(Tokens.NewLine)), opt_sc(tok(Tokens.NewLine)));
 
         // Lets parse the input
         let result = expectSingleResult(expectEOF(programParser.parse(tokenizer.parse(input))));
-        console.log(result);
 
         let linesNumber: number = +result[0].text; // Let's extract the amount of lines, this is a retrocompatibility thing, we don't really use it
         let instructions: LargeInstruction[] = new Array<LargeInstruction>(result[2].length);
