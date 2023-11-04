@@ -190,6 +190,7 @@ export class Code {
         return this.getFunctionalUnitType(opcode) === FunctionalUnitType.JUMP;
     }
 
+    //TODO: make this private and use it in constructor, because if we recall load, old data will remain and bugs will appear
     public load(input: string) {
         let codeParsed = new CodeParser(input);
         let actual: BasicBlock;
@@ -217,7 +218,7 @@ export class Code {
                     this._numberOfBlocks++;
                     let basicBlock: BasicBlock = new BasicBlock(this._numberOfBlocks - 1, i, null, null);
 
-                    if (this._basicBlocks == null) {
+                    if (!this._basicBlocks) {
                         this._basicBlocks = actual = basicBlock;
                     } else {
                         actual.next = basicBlock;

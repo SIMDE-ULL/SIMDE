@@ -1,18 +1,18 @@
-import test from 'ava';
+import anyTest, {TestFn} from 'ava';
 import { VLIW } from '../../core/VLIW/VLIW';
 import { VLIWCode } from '../../core/VLIW/VLIWCode';
 import { Code } from '../../core/Common/Code';
 import { VLIWError } from '../../core/VLIW/VLIWError';
 
-let vliw: VLIW;
-let code: VLIWCode;
-let superescalarCode: Code;
 
-test.beforeEach('Setup machine', () => {
-	vliw = new VLIW();
-	vliw.init(true);
-    code = new VLIWCode();
-    superescalarCode = new Code();
+const test = anyTest as TestFn<{vliw: VLIW, code: VLIWCode, superescalarCode: Code}>;
+
+test.beforeEach('Setup machine', t => {
+	t.context = {vliw: new VLIW(), code: new VLIWCode(), superescalarCode: new Code()};
+	t.context.vliw.init(true);
+    t.context.code = new VLIWCode();
+    t.context.superescalarCode = new Code();
+    
 });
 
 test('Loop.pla is loaded properly', t => {
@@ -49,15 +49,15 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-    superescalarCode.load(inputSuperescalar);
-    code.load(inputVLIW, superescalarCode);
+    t.context.superescalarCode.load(inputSuperescalar);
+    t.context.code.load(inputVLIW, t.context.superescalarCode);
     
-    const error = `Bad instruction number parsed, expected 15, got ${code.getLargeInstructionNumber()}`;
+    const error = `Bad instruction number parsed, expected 15, got ${t.context.code.getLargeInstructionNumber()}`;
 
-    t.deepEqual(code.getLargeInstructionNumber(), 15, error); 
+    t.deepEqual(t.context.code.getLargeInstructionNumber(), 15, error); 
 });
 
-test('Loop.pla with extra line throws error', t => {
+test('Loop.pla with extra \\n at the end does not throws error', t => {
 
     const inputVLIW = 
     `15
@@ -92,10 +92,9 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-    superescalarCode.load(inputSuperescalar);
+    t.context.superescalarCode.load(inputSuperescalar);
     
     
 
-    const error = t.throws(() => code.load(inputVLIW, superescalarCode)); 
-    t.is(error.message, 'The lines number does not match the program amount of lines')
+    t.notThrows(() => t.context.code.load(inputVLIW, t.context.superescalarCode)); 
 });

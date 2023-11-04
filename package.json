@@ -106,7 +106,9 @@
   },
   "ava": {
     "files": [
-      "build/module/test/*.spec.js"
+      "build/module/test/*.spec.js",
+      "build/module/test/Integration/*.spec.js",
+      "build/module/test/VLIW/*.spec.js"
     ]
   }
 }
