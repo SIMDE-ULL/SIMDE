@@ -65,7 +65,7 @@ test('Parsing addresses errors are being throw', t => {
 
 	let code = new Code();
 	let error = t.throws(() => code.load(input));
-	t.is(error.message, '{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got NooP format or similar');
+	t.is(error.message, '{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got Noop format or similar');
 });
 
 test('Parsing opcodes errors are being thrown', t => {
