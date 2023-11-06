@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Instruction } from '../core/Common/Instruction';
+import { Instruction } from '../../../../core/Common/Instruction';
 
 let originalInstruction;
 

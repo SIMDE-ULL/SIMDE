@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Code } from '../core/Common/Code';
+import { Code } from '../../../../core/Common/Code';
 
 const input = `2
 ADDI	R2 R0 #50

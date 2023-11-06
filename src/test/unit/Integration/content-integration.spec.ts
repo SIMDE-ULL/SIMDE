@@ -1,5 +1,5 @@
 import test from 'ava';
-import { ContentIntegration } from '../../integration/content-integration';
+import { ContentIntegration } from '../../../integration/content-integration';
 
 const input = `
 #FPR

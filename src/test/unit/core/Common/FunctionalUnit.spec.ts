@@ -1,6 +1,6 @@
 import test from 'ava';
-import { FunctionalUnit, FunctionalUnitType } from '../core/Common/FunctionalUnit';
-import { Instruction } from '../core/Common/Instruction';
+import { FunctionalUnit, FunctionalUnitType } from '../../../../core/Common/FunctionalUnit';
+import { Instruction } from '../../../../core/Common/Instruction';
 
 let functionalUnit: FunctionalUnit;
 let instructions: Instruction[];

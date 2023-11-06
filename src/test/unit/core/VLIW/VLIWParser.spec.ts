@@ -1,8 +1,8 @@
 import anyTest, { TestFn } from 'ava';
-import { VLIW } from '../../core/VLIW/VLIW';
-import { VLIWCode } from '../../core/VLIW/VLIWCode';
-import { Code } from '../../core/Common/Code';
-import { VLIWError } from '../../core/VLIW/VLIWError';
+import { VLIW } from '../../../../core/VLIW/VLIW';
+import { VLIWCode } from '../../../../core/VLIW/VLIWCode';
+import { Code } from '../../../../core/Common/Code';
+import { VLIWError } from '../../../../core/VLIW/VLIWError';
 
 
 const test = anyTest as TestFn<{ vliw: VLIW, code: VLIWCode, superescalarCode: Code }>;

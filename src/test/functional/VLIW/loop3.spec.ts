@@ -1,8 +1,8 @@
 import test from 'ava';
-import { VLIW } from '../../core/VLIW/VLIW';
-import { VLIWCode } from '../../core/VLIW/VLIWCode';
-import { Code } from '../../core/Common/Code';
-import { VLIWError } from '../../core/VLIW/VLIWError';
+import { VLIW } from '../../../core/VLIW/VLIW';
+import { VLIWCode } from '../../../core/VLIW/VLIWCode';
+import { Code } from '../../../core/Common/Code';
+import { VLIWError } from '../../../core/VLIW/VLIWError';
 
 let vliw: VLIW;
 let code: VLIWCode;
