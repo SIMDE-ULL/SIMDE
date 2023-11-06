@@ -6,8 +6,8 @@ ADDI	R2 R0 #50
 ADD     R3 R0 R2
 `;
 
-const inputWithComments = 
-`// This is a comment
+const inputWithComments =
+	`// This is a comment
 // And just another comment
 2
 ADDI	R2 R0 #50

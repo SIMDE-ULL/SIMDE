@@ -1,24 +1,24 @@
-import anyTest, {TestFn} from 'ava';
+import anyTest, { TestFn } from 'ava';
 import { VLIW } from '../../core/VLIW/VLIW';
 import { VLIWCode } from '../../core/VLIW/VLIWCode';
 import { Code } from '../../core/Common/Code';
 import { VLIWError } from '../../core/VLIW/VLIWError';
 
 
-const test = anyTest as TestFn<{vliw: VLIW, code: VLIWCode, superescalarCode: Code}>;
+const test = anyTest as TestFn<{ vliw: VLIW, code: VLIWCode, superescalarCode: Code }>;
 
 test.beforeEach('Setup machine', t => {
-	t.context = {vliw: new VLIW(), code: new VLIWCode(), superescalarCode: new Code()};
-	t.context.vliw.init(true);
+    t.context = { vliw: new VLIW(), code: new VLIWCode(), superescalarCode: new Code() };
+    t.context.vliw.init(true);
     t.context.code = new VLIWCode();
     t.context.superescalarCode = new Code();
-    
+
 });
 
 test('Loop.pla is loaded properly', t => {
 
-    const inputVLIW = 
-    `15
+    const inputVLIW =
+        `15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
     1	5 4 0 0
@@ -35,7 +35,7 @@ test('Loop.pla is loaded properly', t => {
     1	10 5 0 0 2 1 2
     1	9 0 1 0`;
 
-    const inputSuperescalar =  `11
+    const inputSuperescalar = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -51,16 +51,16 @@ LOOP:
 
     t.context.superescalarCode.load(inputSuperescalar);
     t.context.code.load(inputVLIW, t.context.superescalarCode);
-    
+
     const error = `Bad instruction number parsed, expected 15, got ${t.context.code.getLargeInstructionNumber()}`;
 
-    t.deepEqual(t.context.code.getLargeInstructionNumber(), 15, error); 
+    t.deepEqual(t.context.code.getLargeInstructionNumber(), 15, error);
 });
 
 test('Loop.pla with extra \\n at the end does not throws error', t => {
 
-    const inputVLIW = 
-    `15
+    const inputVLIW =
+        `15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
     1	5 4 0 0
@@ -78,7 +78,7 @@ test('Loop.pla with extra \\n at the end does not throws error', t => {
     1	9 0 1 0
     `;
 
-    const inputSuperescalar =  `11
+    const inputSuperescalar = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -93,8 +93,8 @@ LOOP:
 	BNE	R2 R5 LOOP`;
 
     t.context.superescalarCode.load(inputSuperescalar);
-    
-    
 
-    t.notThrows(() => t.context.code.load(inputVLIW, t.context.superescalarCode)); 
+
+
+    t.notThrows(() => t.context.code.load(inputVLIW, t.context.superescalarCode));
 });

@@ -157,7 +157,6 @@ export class Code {
         this._basicBlocks = value;
     }
 
-    // TODO: Move this to Instruction
     public getFunctionalUnitType(index: number) {
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
@@ -183,14 +182,12 @@ export class Code {
         }
     }
 
-    // TODO: Move this to Instruction
     public isJump(opcode: number) {
         //return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
         // With this we evite redundant code that can produce bugs
         return this.getFunctionalUnitType(opcode) === FunctionalUnitType.JUMP;
     }
 
-    //TODO: make this private and use it in constructor, because if we recall load, old data will remain and bugs will appear
     public load(input: string) {
         let codeParsed = new CodeParser(input);
         let actual: BasicBlock;
@@ -209,7 +206,6 @@ export class Code {
                 this.instructions[i].label = codeParsed.labels[i];
                 actual = this.addLabel(codeParsed.labels[i], i, actual);
                 if (actual == null) {
-                    // TODO: Try to use TokenPosition for a more accurate position. Maybe its better to move this check to CodeParser
                     throw new Error(`Error at instruction ${i + this.numberOfBlocks}, label ${codeParsed.labels[i]} already exists`);
                 }
             } else {
@@ -232,15 +228,13 @@ export class Code {
             }
             newBlock = false;
             this._instructions[i].basicBlock = this._numberOfBlocks - 1;
-            //TODO: fix jump instructions addresses
         }
-        //this.replaceLabels();
     }
 
     /**
      * save
      */
-    public save() : string {
+    public save(): string {
         let result = this.lines + "\n";
 
         for (let i = 0; i < this.instructions.length; i++) {
@@ -261,8 +255,6 @@ export class Code {
             return -1;
         }
         let actual: BasicBlock = this._basicBlocks;
-        // WHaat why we are reinventing the wheel using a linked list?
-        // TODO: just use an array
         for (let i = 0; i < basicBlockIndex; i++) {
             actual = actual.next;
         }

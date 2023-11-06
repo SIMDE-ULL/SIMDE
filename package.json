@@ -16,7 +16,7 @@
     "watch": "trash build && multiview [npm watch:build] [npm watch:unit]",
     "watch:build": "tsc -p tsconfig.json -w",
     "watch:unit": "tsc -p tsconfig.json && ava --watch --verbose",
-    "cov": "npm unit && npm html-coverage && opn coverage/index.html",
+    "cov": "npm run test && npm run html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",

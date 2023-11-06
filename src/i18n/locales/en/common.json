@@ -3,9 +3,9 @@
         "file": {
             "name": "File",
             "load": "Load",
-            "download_memory": "Download Memory(JSON)",
-            "download_content": "Download content Memory - Registers",
-            "download_code": "Download Code"
+            "downloadMemory": "Download Memory(JSON)",
+            "downloadContent": "Download content Memory - Registers",
+            "downloadCode": "Download Code"
         },
         "view": {
             "name": "View",

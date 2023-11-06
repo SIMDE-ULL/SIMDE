@@ -3,9 +3,9 @@
         "file": {
             "name": "Archivo",
             "load": "Cargar",
-            "download_memory": "Descargar memoria(JSON)",
-            "download_content": "Descargar contenido Memoria - Registros",
-            "download_code": "Descargar código"
+            "downloadMemory": "Descargar memoria(JSON)",
+            "downloadContent": "Descargar contenido Memoria - Registros",
+            "downloadCode": "Descargar código"
         },
         "view": {
             "name": "Ver",

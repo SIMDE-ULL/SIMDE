@@ -1,9 +1,8 @@
 
 import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError, alt_sc, fail, TokenPosition } from 'typescript-parsec';
-import { Opcodes, OpcodesNames } from './Opcodes';
+import { OpcodesNames } from './Opcodes';
 import { Formats, FormatsNames, opcodeToFormat } from './InstructionFormats'
 import { Instruction } from './Instruction';
-import { throws } from 'assert';
 
 enum Tokens {
     Inmediate,
@@ -56,7 +55,6 @@ const tokenizer = buildLexer([
 const inmParser = apply(
     tok(Tokens.Inmediate),
     (num: Token<Tokens.Inmediate>) => {
-        //TODO: allow hex numbers
         return +num.text.slice(1);
     }
 );
@@ -89,7 +87,7 @@ interface OpcodeToken {
 
 const opcodeParser = apply(
     tok(Tokens.Id),
-    (opcodeTok: Token<Tokens.Id>) : OpcodeToken => {
+    (opcodeTok: Token<Tokens.Id>): OpcodeToken => {
         let opcode: number = OpcodesNames.indexOf(opcodeTok.text);
         if (opcode !== -1) {
             return { opcode: opcode, pos: opcodeTok.pos };
@@ -123,7 +121,7 @@ const operationParser = apply(
 
         // Check the recived instruction format and set the operands
         if (!(operation instanceof Array)) {
-            type = Formats.NooP;
+            type = Formats.Noop;
         } else if ('num' in operation[2] && operation.length == 4) {
             if (operation[2].type !== operation[1].type) {
                 throw new TokenError(operation[2].pos, `Second operand register type(${RegTypeNames[operation[2].type]}) mistmatch. Expected ${RegTypeNames[operation[1].type]}`);
@@ -169,9 +167,6 @@ const operationParser = apply(
 
         }
 
-        //TODO: check if registers are in range?
-
-        //TODO: if we check the expected type before, we can throw a more specific error
         let expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
             //return fail(`Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
@@ -195,7 +190,7 @@ export class CodeParser {
 
     private parse(code: string) {
         let result = expectSingleResult(expectEOF(codeParser.parse(tokenizer.parse(code))));
-        
+
         // Create labels and instructions
         let pos = 0;
 
@@ -231,7 +226,7 @@ export class CodeParser {
                     throw new Error(`Can not find Jump destination(labeled ${this.instructions[i].operandsString[2]}) on instruction ${this.instructions[i].id} at line ${i}`);
                 }
             }
-                
+
         }
     }
 }

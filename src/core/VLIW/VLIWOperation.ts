@@ -23,7 +23,7 @@ export class VLIWOperation extends Instruction {
         }
     }
 
-    buildFromVLIWOperation (operation: VLIWOperation) {
+    buildFromVLIWOperation(operation: VLIWOperation) {
         this.copy(operation);
         this._functionalUnitType = operation._functionalUnitType;
         this._functionalUnitIndex = operation._functionalUnitIndex;
@@ -32,7 +32,7 @@ export class VLIWOperation extends Instruction {
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction (instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
+    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
         this.copy(instruction);
         this._functionalUnitType = functionalUnitType;
         this._functionalUnitIndex = functionalUnitIndex;

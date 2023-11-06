@@ -1,4 +1,4 @@
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, rep_n, seq, tok, combine, opt_sc, Token, TokenError, alt, list_sc, TokenPosition, FailedParser, list_n } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, rep_n, seq, tok, combine, opt_sc, Token, TokenError, list_sc } from 'typescript-parsec';
 import { LargeInstruction } from './LargeInstructions';
 import { Code } from '../Common/Code';
 import { VLIWOperation } from './VLIWOperation';
@@ -24,8 +24,7 @@ const functionalUnitTypeParser = apply(
     tok(Tokens.Number),
     (num: Token<Tokens.Number>): FunctionalUnitType => {
         let type = +num.text;
-        //return (type > FUNCTIONALUNITTYPESQUANTITY-1) ? fail(`Invalid functional unit type ${type}`) : type;
-        if (type > FUNCTIONALUNITTYPESQUANTITY-1) {
+        if (type > FUNCTIONALUNITTYPESQUANTITY - 1) {
             throw new TokenError(num.pos, `Invalid functional unit type ${type}`);
         }
         return type;
@@ -52,7 +51,7 @@ export class VLIWParser {
                 if (index >= code.instructions.length) {
                     throw new TokenError(num.pos, `Invalid index ${index}`);
                 }
-                return {index: index, isJump: code.isJump(index), functionalUnitType: code.getFunctionalUnitType(index)};
+                return { index: index, isJump: code.isJump(index), functionalUnitType: code.getFunctionalUnitType(index) };
             }
         );
 
@@ -75,8 +74,8 @@ export class VLIWParser {
 
                 let index = +currentIndex.index;
                 let functionalUnitType = componets[0];
-                let functionalUnitIndex = +componets[1][0].text;  // TODO: check this as we do with the functional unit type
-                let predicate = +componets[1][1].text;  // TODO: check this as we do with the functional unit type
+                let functionalUnitIndex = +componets[1][0].text; 
+                let predicate = +componets[1][1].text; 
 
                 // Check if the recived functional unit type is the same as the one in the code
                 if (functionalUnitType !== currentIndex.functionalUnitType) {
@@ -90,11 +89,11 @@ export class VLIWParser {
                 if (currentIndex.isJump) {
                     // Check if we received the right amount of operands
                     if (componets[1].length !== 5) {
-                        throw new TokenError(componets[1][componets[1].length-1].pos, `Expected 5 operands(Jump operation), received ${componets[1].length}`);
+                        throw new TokenError(componets[1][componets[1].length - 1].pos, `Expected 5 operands(Jump operation), received ${componets[1].length}`);
                     }
-                    let destiny = +componets[1][2].text; // TODO: check this as we do with the functional unit type
-                    let predTrue = +componets[1][3].text; // TODO: check this as we do with the functional unit type
-                    let predFalse = +componets[1][4].text;  // TODO: check this as we do with the functional unit type
+                    let destiny = +componets[1][2].text;
+                    let predTrue = +componets[1][3].text; 
+                    let predFalse = +componets[1][4].text;
 
                     operation.setOperand(2, destiny, '');
                     operation.setPredTrue(predTrue);

@@ -8,15 +8,15 @@ export enum Formats {
     GeneralLoadStore,               // OP R1, X(R2)
     FloatingLoadStore,              // OP F1, X(R2)
     Jump,                           // OP R1, R2, label
-    NooP                            // NOP
+    Noop                            // NOP
 }
 
-export let FormatsNames: string[] = ["TwoGeneralRegisters", "TwoFloatingRegisters", "GeneralRegisterAndInmediate", "GeneralLoadStore", "FloatingLoadStore", "Jump", "NooP"];
+export let FormatsNames: string[] = ["TwoGeneralRegisters", "TwoFloatingRegisters", "GeneralRegisterAndInmediate", "GeneralLoadStore", "FloatingLoadStore", "Jump", "Noop"];
 
 export function opcodeToFormat(opcode: Opcodes): Formats {
     switch (opcode) {
         case Opcodes.NOP:
-            return Formats.NooP;
+            return Formats.Noop;
         case Opcodes.ADD:
         case Opcodes.SUB:
         case Opcodes.MULT:

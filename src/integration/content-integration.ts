@@ -52,7 +52,6 @@ const contentParser = apply(
         return result;
     });
 
-//TODO: use err() for better error messages?
 const fileParser = rep_sc(seq(tok(Tokens.Header), opt_sc(contentParser)));
 
 export class ContentIntegration {
