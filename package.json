@@ -16,7 +16,7 @@
     "watch": "trash build && multiview [npm watch:build] [npm watch:unit]",
     "watch:build": "tsc -p tsconfig.json -w",
     "watch:unit": "tsc -p tsconfig.json && ava --watch --verbose",
-    "cov": "npm unit && npm html-coverage && opn coverage/index.html",
+    "cov": "npm run test && npm run html-coverage && opn coverage/index.html",
     "html-coverage": "nyc report --reporter=html",
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
@@ -50,7 +50,6 @@
     "i18next-browser-languagedetector": "7.1.0",
     "i18next-http-backend": "^2.2.0",
     "i18next-localstorage-cache": "1.1.1",
-    "lex": "1.7.9",
     "npm": "^10.0.0",
     "react": "17.0.2",
     "react-bootstrap": "^2.4.0",
@@ -64,6 +63,7 @@
     "react-router-dom": "^6.0.0",
     "redux": "^4.2.0",
     "tslib": "^2.2.0",
+    "typescript-parsec": "^0.3.4",
     "webpack-dev-server": "4.15.1",
     "webpack-merge": "^5.8.0"
   },
@@ -106,7 +106,9 @@
   },
   "ava": {
     "files": [
-      "build/module/test/*.spec.js"
+      "build/module/test/*.spec.js",
+      "build/module/test/Integration/*.spec.js",
+      "build/module/test/VLIW/*.spec.js"
     ]
   }
 }

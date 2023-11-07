@@ -1,10 +1,9 @@
 import { Instruction } from './Instruction';
 import { BasicBlock, SuccessorBlock } from './Blocks';
-import { LEX, Lexema, Lexer } from './Lexer';
 import { Label } from './Label';
 
 import { Opcodes } from './Opcodes';
-import { Parser } from './Parser';
+import { CodeParser } from './CodeParser';
 import { FunctionalUnitType } from './FunctionalUnit';
 
 export class Code {
@@ -14,19 +13,15 @@ export class Code {
     private _labels: Label[];
     private _basicBlocks: BasicBlock;
     private _numberOfBlocks: number;
-    private _lexer: Lexer;
-    private _parser: Parser;
 
     constructor() {
         this._labels = new Array();
         this._numberOfBlocks = 0;
         this._basicBlocks = null;
         this._instructions = new Array();
-        this._lexer = new Lexer();
-        this._parser = new Parser(this._lexer, this.checkLexema.bind(this));
     }
 
-    checkLabel(str: string, actual: BasicBlock): number {
+    private checkLabel(str: string, actual: BasicBlock): number {
         let index: number = -1;
         let basicBlock: BasicBlock;
         let nextSucessor: SuccessorBlock = new SuccessorBlock();
@@ -57,7 +52,7 @@ export class Code {
         return index;
     }
 
-    addLabel(str: string, lineNumber: number, actual: BasicBlock): BasicBlock {
+    private addLabel(str: string, lineNumber: number, actual: BasicBlock): BasicBlock {
         let index: number = -1;
         let basicBlock: BasicBlock;
         for (let i = 0; i < this._labels.length; i++) {
@@ -103,7 +98,7 @@ export class Code {
         return basicBlock;
     }
 
-    replaceLabels() {
+    private replaceLabels() {
         for (let i = 0; i < this._lines; i++) {
             if (this.isJump(this._instructions[i].opcode)) {
                 let basicBlock: BasicBlock = this._labels[this._instructions[i].getOperand(2)].blocks;
@@ -115,119 +110,9 @@ export class Code {
         }
     }
 
-    load(input: string) {
-        this._lexer.setInput(input);
-        let lexema: Lexema;
-        let actual: BasicBlock;
-        let newBlock: boolean = true;
-        // First we need the number of code lines
-        lexema = this._lexer.lex();
-
-        if (lexema.value !== LEX.LINESNUMBER) {
-            throw new Error('Error parsing lines number');
-        }
-        this._lines = +lexema.yytext;
-
-        this.instructions.length = this._lines;
-
-        for (let i = 0; i < this._lines; i++) {
-            this.instructions[i] = new Instruction();
-            this.instructions[i].id = i;
-            lexema = this._lexer.lex();
-
-            if (lexema.value === LEX.LABEL) {
-                this._numberOfBlocks++;
-                this.instructions[i].label = lexema.yytext;
-                actual = this.addLabel(lexema.yytext, i, actual);
-                if (actual == null) {
-                    throw new Error(`Error at line ${i + this.numberOfBlocks}, label ${lexema.yytext} already exists`);
-                }
-                lexema = this._lexer.lex();
-            } else {
-                this.instructions[i].label = '';
-                if (newBlock) {
-                    this._numberOfBlocks++;
-                    let basicBlock: BasicBlock = new BasicBlock(this._numberOfBlocks - 1, i, null, null);
-
-                    if (this._basicBlocks == null) {
-                        this._basicBlocks = actual = basicBlock;
-                    } else {
-                        actual.next = basicBlock;
-                        let successor: SuccessorBlock = new SuccessorBlock();
-                        successor.block = basicBlock;
-                        successor.next = actual.successor;
-                        actual.successor = successor;
-                        actual = actual.next;
-                    }
-                }
-            }
-            newBlock = false;
-            this.checkLexema(lexema, LEX.ID, i);
-            let opcode = this._parser.stringToOpcode(lexema.yytext);
-            this._instructions[i].opcode = opcode;
-            this._instructions[i].basicBlock = this._numberOfBlocks - 1;
-            switch (opcode) {
-                case Opcodes.NOP:
-                    this._parser.parseNooP(this._instructions[i]);
-                    break;
-                case Opcodes.ADD:
-                case Opcodes.SUB:
-                case Opcodes.MULT:
-                case Opcodes.OR:
-                case Opcodes.AND:
-                case Opcodes.XOR:
-                case Opcodes.NOR:
-                case Opcodes.SLLV:
-                case Opcodes.SRLV:
-                    this._parser.parseOperationWithTwoGeneralRegisters(i, this._instructions[i]);
-                    break;
-                case Opcodes.ADDF:
-                case Opcodes.SUBF:
-                case Opcodes.MULTF:
-                    this._parser.parseOperationWithTwoFloatingRegisters(i, this._instructions[i]);
-                    break;
-                case Opcodes.ADDI:
-                    this._parser.parseOperationWithGeneralRegisterAndInmediate(i, this._instructions[i]);
-                    break;
-                case Opcodes.SW:
-                case Opcodes.LW:
-                    this._parser.parseGeneralLoadStoreOperation(i, this._instructions[i]);
-                    break;
-                case Opcodes.SF:
-                case Opcodes.LF:
-                    this._parser.parseFloatingLoadStoreOperation(i, this._instructions[i]);
-                    break;
-                case Opcodes.BNE:
-                case Opcodes.BEQ:
-                case Opcodes.BGT:
-                    this._parser.parseJumpOperation(i, this._instructions[i], actual, this.checkLabel.bind(this));
-                    newBlock = true;
-                    break;
-                case Opcodes.OPERROR:
-                    throw new Error(`Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`);
-                default:
-                    throw new Error(`Error at line ${i + this.numberOfBlocks + 1} unknown opcode ${lexema.yytext}`);
-            }
-        }
-        this.replaceLabels();
-    }
-
-    public checkLexema(lexema: Lexema, expectedLexema: number, i: number) {
-        if (lexema.value !== expectedLexema) {
-            throw new Error(`Error at line ${i + this.numberOfBlocks + 1}, expected: ${LEX[expectedLexema]} got: ${lexema.yytext}`);
-        }
-    }
-
-    public getBasicBlockInstruction(basicBlockIndex: number) {
-        if (basicBlockIndex > this._numberOfBlocks) {
-            return -1;
-        }
-        let actual: BasicBlock = this._basicBlocks;
-        for (let i = 0; i < basicBlockIndex; i++) {
-            actual = actual.next;
-        }
-        return actual.lineNumber;
-    }
+    /*
+    * PUBLIC METHODS
+    */
 
     /*
     * SETTERS Y GETTERS
@@ -297,7 +182,83 @@ export class Code {
         }
     }
 
-    private isJump(opcode: number) {
-        return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
+    public isJump(opcode: number) {
+        //return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
+        // With this we evite redundant code that can produce bugs
+        return this.getFunctionalUnitType(opcode) === FunctionalUnitType.JUMP;
     }
+
+    public load(input: string) {
+        let codeParsed = new CodeParser(input);
+        let actual: BasicBlock;
+        let newBlock: boolean = true;
+
+        // First we need the number of code lines
+        this._lines = codeParsed.lines;
+        this.instructions.length = codeParsed.instructions.length;
+
+        for (let i = 0; i < codeParsed.instructions.length; i++) {
+            this.instructions[i] = codeParsed.instructions[i];
+            this.instructions[i].id = i;
+
+            if (i in codeParsed.labels) {
+                this._numberOfBlocks++;
+                this.instructions[i].label = codeParsed.labels[i];
+                actual = this.addLabel(codeParsed.labels[i], i, actual);
+                if (actual == null) {
+                    throw new Error(`Error at instruction ${i + this.numberOfBlocks}, label ${codeParsed.labels[i]} already exists`);
+                }
+            } else {
+                this.instructions[i].label = '';
+                if (newBlock) {
+                    this._numberOfBlocks++;
+                    let basicBlock: BasicBlock = new BasicBlock(this._numberOfBlocks - 1, i, null, null);
+
+                    if (!this._basicBlocks) {
+                        this._basicBlocks = actual = basicBlock;
+                    } else {
+                        actual.next = basicBlock;
+                        let successor: SuccessorBlock = new SuccessorBlock();
+                        successor.block = basicBlock;
+                        successor.next = actual.successor;
+                        actual.successor = successor;
+                        actual = actual.next;
+                    }
+                }
+            }
+            newBlock = false;
+            this._instructions[i].basicBlock = this._numberOfBlocks - 1;
+        }
+    }
+
+    /**
+     * save
+     */
+    public save(): string {
+        let result = this.lines + "\n";
+
+        for (let i = 0; i < this.instructions.length; i++) {
+            // Check if there is a label at line i
+            if (this.instructions[i].label !== '') {
+                result += this.instructions[i].label + ":\n";
+            }
+
+            result += "\t" + this.instructions[i].toString() + "\n";
+        }
+
+        return result;
+    }
+
+    public getBasicBlockInstruction(basicBlockIndex: number) {
+        if (basicBlockIndex > this._numberOfBlocks) {
+            //TODO: throw exception
+            return -1;
+        }
+        let actual: BasicBlock = this._basicBlocks;
+        for (let i = 0; i < basicBlockIndex; i++) {
+            actual = actual.next;
+        }
+        return actual.lineNumber;
+    }
+
 }

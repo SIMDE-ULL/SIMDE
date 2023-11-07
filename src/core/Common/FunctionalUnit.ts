@@ -10,6 +10,8 @@ export enum FunctionalUnitType {
     JUMP
 }
 
+export let FunctionalUnitTypeNames: string[] = ['Integer Sum', 'Integer Multiply', 'Floating Sum', 'Floating Multiply', 'Memory', 'Jump'];
+
 export const FUNCTIONALUNITTYPESQUANTITY = FunctionalUnitType.JUMP - FunctionalUnitType.INTEGERSUM + 1;
 
 export class FunctionalUnit {

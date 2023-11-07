@@ -62,7 +62,12 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
             this.setState({vliwCodeError: ''});
             this.close();
         } catch (error) {
-            this.setState({ vliwCodeError: error.message });
+            // Check if error has the property position. Checking instance of TokenError not working
+            if (error.pos) {
+                this.setState({vliwCodeError: '[' + error.pos?.rowBegin + ':' + error.pos?.columnBegin + ']: ' + error.errorMessage});
+            } else {
+                this.setState({vliwCodeError: error.message});
+            }
         }
     }
 
