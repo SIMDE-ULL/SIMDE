@@ -8,7 +8,8 @@ import { bindActionCreators } from 'redux';
 import { DropdownButton } from 'react-bootstrap';
 import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
-import { downloadJsonFile } from '../../../utils/Downloader';
+import { downloadJsonFile, downloadTextFile } from '../../../utils/Downloader';
+import SuperescalarIntegration from '../../../../integration/superescalar-integration';
 
 class FileBarComponent extends React.Component<any, any> {
     private color: boolean;
@@ -16,6 +17,21 @@ class FileBarComponent extends React.Component<any, any> {
     constructor(public props: any) {
         super(props);
         this.color = false;
+
+        this.downloadContentFile = this.downloadContentFile.bind(this);
+        this.downloadCodeFile = this.downloadCodeFile.bind(this);
+    }
+
+    downloadContentFile() {
+        if (SuperescalarIntegration.contentIntegration) {
+            downloadTextFile('content.txt', SuperescalarIntegration.contentIntegration.deparse());
+        }
+    }
+
+    downloadCodeFile() {
+        if (SuperescalarIntegration.superescalar.code) {
+            downloadTextFile('code.txt', SuperescalarIntegration.superescalar.code.save());
+        }
     }
 
     render() {
@@ -26,7 +42,9 @@ class FileBarComponent extends React.Component<any, any> {
                         id={'dropdown-load'}
                     >
                         <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{this.props.t('fileBar.file.load')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.download_memory')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.downloadMemory')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.downloadContent')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.downloadCode')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}

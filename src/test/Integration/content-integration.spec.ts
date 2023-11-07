@@ -36,7 +36,7 @@ test('Current content is selected properly', t => {
 
 test('Throws error if no content is selected', t => {
 	let error = t.throws(() => new ContentIntegration(input2));
-	t.is(error.message, 'The data has no content (MEM, REG) associated');
+	t.is(error.message, '{"index":1,"rowBegin":2,"columnBegin":1,"rowEnd":2,"columnEnd":5}: Unable to consume token: [40]');
 });
 
 
@@ -59,7 +59,7 @@ test('Fills proper data', t => {
 
 test('Throws error when exceeding bounds', t=> {
     let error = t.throws(() => new ContentIntegration(input4));
-    t.is(error.message, 'Setted data out of bounds');
+    t.is(error.message, '#MEM content exceeds bound: 1025 exceeds 1024');
 });
 
 // test ('Throws error when memory address line isnt wrapped in brackets', t => {
