@@ -76,7 +76,8 @@
   },
   "nyc": {
     "exclude": [
-      "**/*.spec.js"
+      "**/*.spec.js",
+      "**/test/**"
     ]
   },
   "ava": {
