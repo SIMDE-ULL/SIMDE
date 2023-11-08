@@ -23,7 +23,7 @@ test('Bucle2.pla is executed properly', t => {
     
     while (vliw.tic() !== VLIWError.ENDEXE) { }
 
-    t.deepEqual(vliw.status.cycle, 108, 'Loop2 : Bad pc at finish');
+    t.deepEqual(vliw.status.cycle, 108, 'Loop2 : Bad pc at finish'); //TODO: this is not the pc
 
     
 });

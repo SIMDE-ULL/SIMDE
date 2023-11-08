@@ -23,7 +23,7 @@ test('multiwayvliw.pla is executed properly', t => {
     
     while (vliw.tic() !== VLIWError.ENDEXE) { }
 
-    t.deepEqual(vliw.status.cycle, 16, 'multiwayvliw: Bad pc at finish');
+    t.deepEqual(vliw.status.cycle, 16, 'multiwayvliw: Bad pc at finish'); //TODO: this is not the pc
 
     
 });
