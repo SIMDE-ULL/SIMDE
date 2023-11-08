@@ -2,6 +2,7 @@ import anyTest, { TestFn } from 'ava';
 import { Code } from '../../../core/Common/Code';
 import { Superescalar } from '../../../core/Superescalar/Superescalar';
 import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
+import { code } from '../code/r0inmutable';
 
 
 const test = anyTest as TestFn<{ code: Code, machine: Superescalar }>;
@@ -13,12 +14,6 @@ test.beforeEach(t => {
 });
 
 test('Resgister R0 is inmutable', t => {
-    const code = `1
-    // Set R0 to 42
-    ADDI R0 R0 #42 
-    // Copy value R0 -> R1
-    ADD R1 R1 R0`;
-
     // Execute code
     t.context.code.load(code);
     t.context.machine.code = t.context.code;
