@@ -158,11 +158,20 @@ export class Code {
     }
 
     public getFunctionalUnitType(index: number) {
+        // TODO: and NOP?
         switch (this._instructions[index].opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI:
+            case Opcodes.SUB:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV:
                 return FunctionalUnitType.INTEGERSUM;
             case Opcodes.ADDF:
+            case Opcodes.SUBF:
                 return FunctionalUnitType.FLOATINGSUM;
             case Opcodes.MULT:
                 return FunctionalUnitType.INTEGERMULTIPLY;
