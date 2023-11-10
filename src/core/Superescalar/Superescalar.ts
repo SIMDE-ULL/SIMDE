@@ -595,8 +595,6 @@ export class Superescalar extends Machine {
                     case Opcodes.MULT:
                     case Opcodes.LW:
                         this._gpr.setContent(aux.destinyRegister, aux.value, false);
-                        // R0 value is always 0
-                        this._gpr.setContent(0, 0, false);
                         if (this.ROBGpr[aux.destinyRegister] === h) {
                             this._gpr.setBusy(aux.destinyRegister, false);
                         }
