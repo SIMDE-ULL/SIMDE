@@ -27,8 +27,7 @@ test('recorrelista.pla is executed properly', t => {
     while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
-    //TODO
-    //t.deepEqual(t.context.machine.status.cycle, 212, 'Bad pc at finish');
+    t.deepEqual(t.context.machine.pc, 19, 'Bad pc at finish');
 
     // Check the cycles
     //TODO

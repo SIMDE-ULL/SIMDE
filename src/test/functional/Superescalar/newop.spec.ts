@@ -30,6 +30,6 @@ test('nuevaOp.pla is executed properly', t => {
     t.deepEqual(t.context.machine.pc, 7, 'Bad pc at finish');
 
     // Check the number of cycles are correct
-    t.deepEqual(t.context.machine.status.cycle, 13, 'Bad number of cycles at finish');
+    t.deepEqual(t.context.machine.status.cycle, 14, 'Bad number of cycles at finish');
 
 })

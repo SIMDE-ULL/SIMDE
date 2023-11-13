@@ -39,7 +39,6 @@ NOOP:
 	BNE	R2 R33 LOOP
 	SF	F2 (R3)`;
 
-// TODO: ponderarlo
 // lista = [5, 2, 2, 1] resultado = 5 + 2 + 2 + 1*2 = 12
 //	                                   #14       #17       #20
 export const memContent = [5, 0, 14, 0, 2, 0, 17, 2, 0, 20, 1, 1, -1];

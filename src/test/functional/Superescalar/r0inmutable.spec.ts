@@ -22,4 +22,9 @@ test('Resgister R0 is inmutable', t => {
     // Check R1 value
     t.deepEqual(t.context.machine.getGpr(1), 0, 'R1 should be 0');
 
+    // Check where the program counter is
+    t.deepEqual(t.context.machine.pc, 2, 'Bad pc at finish');
+
+    // Check the number of cycles are correct
+    t.deepEqual(t.context.machine.status.cycle, 6, 'Bad number of cycles at finish');
 })
