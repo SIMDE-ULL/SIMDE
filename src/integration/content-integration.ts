@@ -8,6 +8,7 @@ enum Tokens {
     NumberHex,
     Number,
     NumberDecimal,
+    Comma,
     Space,
     NewLine
 }
@@ -18,7 +19,8 @@ const tokenizer = buildLexer([
     [true, /^-/g, Tokens.NumberSign], //TODO: \+|- is not working
     [true, /^0x|x/g, Tokens.NumberHex],
     [true, /^\d+/g, Tokens.Number],
-    [false, /^\.\d+/g, Tokens.NumberDecimal],
+    [false, /^\.\d+/g, Tokens.NumberDecimal], //TODO: also parse this
+    [false, /^,+/g, Tokens.Comma],
     [false, /^\s+/g, Tokens.Space],
     [false, /^\n/g, Tokens.NewLine]
 ]);
