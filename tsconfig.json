@@ -1,35 +1,27 @@
 {
-   "compilerOptions": {
-      "target": "es5",
-      "outDir": "build/main",
-      "rootDir": "src",
-      "moduleResolution": "node",
-      "module": "es6",
-      "allowSyntheticDefaultImports": true,
-      "strictNullChecks": false,
-      "declaration": true,
-      "importHelpers": true,
-      "sourceMap": true,
-      "listFiles": false,
-      "traceResolution": false,
-      "pretty": true,
-      "jsx": "react",
-      "downlevelIteration": true,
-      "lib": [
-         "es6",
-         "dom"
-      ],
-      "types": [
-         "node",
-         "react",
-         "react-dom"
-      ]
-   },
-   "include": [
-      "src/**/*.ts"
-   ],
-   "exclude": [
-      "node_modules/**"
-   ],
-   "compileOnSave": false
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    /*
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+    */
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,4 +1,3 @@
-import { start } from 'repl';
 import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token } from 'typescript-parsec';
 import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
 

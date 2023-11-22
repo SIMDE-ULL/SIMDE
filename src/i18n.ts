@@ -1,6 +1,5 @@
-import i18n from 'i18next';
+import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-
 import HttpApi from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
@@ -12,7 +11,7 @@ i18n
 .init({
     fallbackLng: 'en',
     backend: {
-        loadPath: 'locales/{{lng}}/{{ns}}.json'
+        loadPath: '/locales/{{lng}}/{{ns}}.json'
     },
     react: { 
       useSuspense: true
@@ -20,7 +19,7 @@ i18n
     // have a common namespace used around the full app
     ns: ['common'],
     defaultNS: 'common',
-    debug: true,
+    debug: false,
     cache: {
         enabled: true
     },
