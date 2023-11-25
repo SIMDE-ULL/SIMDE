@@ -1,35 +1,35 @@
-import anyTest, { TestFn } from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
 import { Superescalar } from '../../../core/Superescalar/Superescalar';
 import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
 import { codeInput } from "../code/nuevaOp";
 
 
-const test = anyTest as TestFn<{ code: Code, machine: Superescalar }>;
+const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
 
-test.beforeEach(t => {
-    t.context.code = new Code();
-    t.context.machine = new Superescalar();
-    t.context.machine.init(true);
+beforeEach(() => {
+    context.code = new Code();
+    context.machine = new Superescalar();
+    context.machine.init(true);
 });
 
 test('nuevaOp.pla is executed properly', t => {
     // Execute code
-    t.context.code.load(codeInput);
-    t.context.machine.code = t.context.code;
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    context.code.load(codeInput);
+    context.machine.code = context.code;
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check registers
-    t.deepEqual(t.context.machine.getGpr(2), 3, 'R2 is not 3');
-    t.deepEqual(t.context.machine.getGpr(3), 2, 'R3 is not 2');
-    t.deepEqual(t.context.machine.getGpr(4),-1, 'R4 is not -1');
-    t.deepEqual(t.context.machine.getGpr(5), 0, 'R5 is not 0 (has been modified by the branch)');
-    t.deepEqual(t.context.machine.getGpr(6), 1, 'R6 is not 1');
+    expect(context.machine.getGpr(2)).toBe( 3);
+    expect(context.machine.getGpr(3)).toBe( 2);
+    expect(context.machine.getGpr(4)).toBe(-1);
+    expect(context.machine.getGpr(5)).toBe( 0);
+    expect(context.machine.getGpr(6)).toBe( 1);
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 7, 'Bad pc at finish');
+    expect(context.machine.pc).toBe( 7);
 
     // Check the number of cycles are correct
-    t.deepEqual(t.context.machine.status.cycle, 14, 'Bad number of cycles at finish');
+    expect(context.machine.status.cycle).toBe( 14);
 
 })

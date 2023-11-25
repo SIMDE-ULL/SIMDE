@@ -1,4 +1,4 @@
-import test from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { Queue } from '../../../../core/Collections/Queue';
 
 test('Queue size behaces as expected', (t) => {
@@ -9,7 +9,7 @@ test('Queue size behaces as expected', (t) => {
    queue.add(3);
 
    // Size should be fixed to 3 + 1
-   t.is(queue.size, 4);
+   expect(queue.size).toBe( 4);
 });
 
 test('Queue has fixed size', (t) => {
@@ -20,7 +20,7 @@ test('Queue has fixed size', (t) => {
    queue.add(3);
 
    // Size should be 1 + 1
-   t.is(queue.size, 2);
+   expect(queue.size).toBe( 2);
 });
 
 test('Queue does not let you add extra elements', (t) => {
@@ -31,7 +31,7 @@ test('Queue does not let you add extra elements', (t) => {
    queue.add(3);
 
    // Size should be 3 + 1
-   t.is(queue.add(3), -1);
+   expect(queue.add(3)).toBe( -1);
 });
 
 test('Queue keeps its size after removing elements', (t) => {
@@ -43,14 +43,14 @@ test('Queue keeps its size after removing elements', (t) => {
 
    queue.remove(1);
 
-   t.is(queue.size, 4);
+   expect(queue.size).toBe( 4);
 });
 
 test('Queue standard behavior', (t) => {
    let queue = new Queue<number>(3);
 
    let index = queue.add(1);
-   t.is(index, 0);
+   expect(index).toBe( 0);
 });
 
 test('Queue behavior', (t) => {
@@ -62,5 +62,5 @@ test('Queue behavior', (t) => {
 
    queue.add(3);
    queue.remove();
-   t.is(queue.top(), 3);
+   expect(queue.top()).toBe( 3);
 });

@@ -1,4 +1,4 @@
-import anyTest, { TestFn } from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
 import { Superescalar } from '../../../core/Superescalar/Superescalar';
 import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
@@ -7,85 +7,85 @@ import { codeInput as doubleCodeInput } from "../code/bucledoble";
 import { codeInput as softCodeInput } from "../code/buclesoft";
 
 
-const test = anyTest as TestFn<{ code: Code, machine: Superescalar }>;
+const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
 
-test.beforeEach(t => {
-    t.context.code = new Code();
-    t.context.machine = new Superescalar();
-    t.context.machine.init(true);
+beforeEach(() => {
+    context.code = new Code();
+    context.machine = new Superescalar();
+    context.machine.init(true);
 });
 
 test('Bucle.pla is executed properly', t => {
     // Load code
-    t.context.code.load(codeInput);
-    t.context.machine.code = t.context.code;
+    context.code.load(codeInput);
+    context.machine.code = context.code;
 
     // Load memory
-    t.context.machine.memory.setDatum(40, sumContent);
+    context.machine.memory.setDatum(40, sumContent);
     for (let i = 50; i < vecContent.length + 50; i++) {
-        t.context.machine.memory.setDatum(i, vecContent[i - 50]);
+        context.machine.memory.setDatum(i, vecContent[i - 50]);
     }
 
     // Execute code
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 11, 'Bad pc at finish');
+    expect(context.machine.pc).toBe(11);
 
     // Check the result
     for (let i = 70; i < resultContent.length + 70; i++) {
-        t.deepEqual(t.context.machine.memory.getDatum(i).datum, resultContent[i - 70], `Bad result at position ${i}, expected ${resultContent[i - 70]} but got ${t.context.machine.memory.getDatum(i)}`);
+        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
     }
 
 })
 
 test('Buclesoft.pla is executed properly', t => {
     // Load code
-    t.context.code.load(softCodeInput);
-    t.context.machine.code = t.context.code;
+    context.code.load(softCodeInput);
+    context.machine.code = context.code;
 
     // Load memory
-    t.context.machine.memory.setDatum(40, sumContent);
+    context.machine.memory.setDatum(40, sumContent);
     for (let i = 50; i < vecContent.length + 50; i++) {
-        t.context.machine.memory.setDatum(i, vecContent[i - 50]);
+        context.machine.memory.setDatum(i, vecContent[i - 50]);
     }
 
     // Execute code
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 18, 'Bad pc at finish');
+    expect(context.machine.pc).toBe(18);
 
     // Check the result
     for (let i = 70; i < resultContent.length + 70; i++) {
-        t.deepEqual(t.context.machine.memory.getDatum(i).datum, resultContent[i - 70], `Bad result at position ${i}, expected ${resultContent[i - 70]} but got ${t.context.machine.memory.getDatum(i).datum}`);
+        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
     }
 
 })
 
 test('Bucledoble.pla is executed properly', t => {
     // Load code
-    t.context.code.load(doubleCodeInput);
-    t.context.machine.code = t.context.code;
+    context.code.load(doubleCodeInput);
+    context.machine.code = context.code;
 
     // Load memory
-    t.context.machine.memory.setDatum(40, sumContent);
+    context.machine.memory.setDatum(40, sumContent);
     for (let i = 50; i < vecContent.length + 50; i++) {
-        t.context.machine.memory.setDatum(i, vecContent[i - 50]);
+        context.machine.memory.setDatum(i, vecContent[i - 50]);
     }
 
     // Execute code
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 18, 'Bad pc at finish');
+    expect(context.machine.pc).toBe(18);
 
     // Check the result
     for (let i = 70; i < 5 + 70; i++) {
-        t.deepEqual(t.context.machine.memory.getDatum(i).datum, resultContent[i - 70]*sumContent, `Bad result at position ${i}, expected ${resultContent[i - 70]} but got ${t.context.machine.memory.getDatum(i).datum}`);
+        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70] * sumContent);
     }
 
 })

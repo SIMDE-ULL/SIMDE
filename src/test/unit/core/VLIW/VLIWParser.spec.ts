@@ -1,18 +1,15 @@
-import anyTest, { TestFn } from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { VLIW } from '../../../../core/VLIW/VLIW';
 import { VLIWCode } from '../../../../core/VLIW/VLIWCode';
 import { Code } from '../../../../core/Common/Code';
 import { VLIWError } from '../../../../core/VLIW/VLIWError';
 
 
-const test = anyTest as TestFn<{ vliw: VLIW, code: VLIWCode, superescalarCode: Code }>;
+const context : { code: VLIWCode, superescalarCode: Code } = { code: null, superescalarCode: null };
 
-test.beforeEach('Setup machine', t => {
-    t.context = { vliw: new VLIW(), code: new VLIWCode(), superescalarCode: new Code() };
-    t.context.vliw.init(true);
-    t.context.code = new VLIWCode();
-    t.context.superescalarCode = new Code();
-
+beforeEach(() => {
+    context.code = new VLIWCode();
+    context.superescalarCode = new Code();
 });
 
 test('Loop.pla is loaded properly', t => {
@@ -49,12 +46,12 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-    t.context.superescalarCode.load(inputSuperescalar);
-    t.context.code.load(inputVLIW, t.context.superescalarCode);
+    context.superescalarCode.load(inputSuperescalar);
+    context.code.load(inputVLIW, context.superescalarCode);
 
-    const error = `Bad instruction number parsed, expected 15, got ${t.context.code.getLargeInstructionNumber()}`;
+    const error = `Bad instruction number parsed, expected 15, got ${context.code.getLargeInstructionNumber()}`;
 
-    t.deepEqual(t.context.code.getLargeInstructionNumber(), 15, error);
+    expect(context.code.getLargeInstructionNumber()).toBe( 15);
 });
 
 test('Loop.pla with extra \\n at the end does not throws error', t => {
@@ -92,9 +89,9 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-    t.context.superescalarCode.load(inputSuperescalar);
+    context.superescalarCode.load(inputSuperescalar);
 
 
 
-    t.notThrows(() => t.context.code.load(inputVLIW, t.context.superescalarCode));
+    expect(() => context.code.load(inputVLIW, context.superescalarCode)).not.toThrowError();
 });

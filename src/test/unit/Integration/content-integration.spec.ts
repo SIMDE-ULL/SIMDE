@@ -1,4 +1,4 @@
-import test from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { ContentIntegration } from '../../../integration/content-integration';
 
 const input = `
@@ -40,48 +40,46 @@ const input6 = `
 
 test('Current content is selected properly', t => {
     let contentIntegration = new ContentIntegration(input);
-    t.is(contentIntegration.FPRContent[40], 1, 'Should be 1 at position 40');
-    t.is(contentIntegration.FPRContent[41], 1, 'Should be 1 at position 41');
+    expect(contentIntegration.FPRContent[40]).toBe( 1);
+    expect(contentIntegration.FPRContent[41]).toBe( 1);
 });
 
 test('Throws error if no content is selected', t => {
-    let error = t.throws(() => new ContentIntegration(input2));
-    t.is(error.message, '{"index":1,"rowBegin":2,"columnBegin":1,"rowEnd":2,"columnEnd":5}: Unable to consume token: [40]');
+    expect(() => new ContentIntegration(input2)).toThrowError('{"index":1,"rowBegin":2,"columnBegin":1,"rowEnd":2,"columnEnd":5}: Unable to consume token: [40]');
 });
 
 
 test('Fills proper data', t => {
     let contentIntegration = new ContentIntegration(input3);
-    t.is(contentIntegration.GPRContent[1], 5, 'Should be 1 at position 1');
-    t.is(contentIntegration.GPRContent[2], 1, 'Should be 2 at position 2');
-    t.is(contentIntegration.GPRContent[3], 2, 'Should be 3 at position 3');
-    t.is(contentIntegration.GPRContent[4], -3, 'Should be -3 at position 4');
-    t.is(contentIntegration.GPRContent[5], 4, 'Should be 5 at position 5');
-    t.is(contentIntegration.GPRContent[6], 5, 'Should be 5 at position 6');
+    expect(contentIntegration.GPRContent[1]).toBe( 5);
+    expect(contentIntegration.GPRContent[2]).toBe( 1);
+    expect(contentIntegration.GPRContent[3]).toBe( 2);
+    expect(contentIntegration.GPRContent[4]).toBe( -3);
+    expect(contentIntegration.GPRContent[5]).toBe( 4);
+    expect(contentIntegration.GPRContent[6]).toBe( 5);
 
-    t.is(contentIntegration.MEMContent[33], 5, 'Should be 6 at position 33');
-    t.is(contentIntegration.MEMContent[34], 6, 'Should be 7 at position 34');
-    t.is(contentIntegration.MEMContent[35], 7, 'Should be 8 at position 35');
-    t.is(contentIntegration.MEMContent[36], 8, 'Should be 9 at position 36');
-    t.is(contentIntegration.MEMContent[37], 9, 'Should be 10 at position 37');
-    t.is(contentIntegration.MEMContent[38], 10, 'Should be 10 at position 38');
+    expect(contentIntegration.MEMContent[33]).toBe( 5);
+    expect(contentIntegration.MEMContent[34]).toBe( 6);
+    expect(contentIntegration.MEMContent[35]).toBe( 7);
+    expect(contentIntegration.MEMContent[36]).toBe( 8);
+    expect(contentIntegration.MEMContent[37]).toBe( 9);
+    expect(contentIntegration.MEMContent[38]).toBe( 10);
 });
 
 test('Throws error when exceeding bounds', t => {
-    let error = t.throws(() => new ContentIntegration(input4));
-    t.is(error.message, '#MEM content exceeds bound: 1025 exceeds 1024');
+    expect(() => new ContentIntegration(input4)).toThrowError('#MEM content exceeds bound: 1025 exceeds 1024');
 });
 
 test('Can parse float numbers', t => {
     let contentIntegration = new ContentIntegration(input5);
-    t.is(contentIntegration.FPRContent[0], 2.2, 'Should be 2.2 at position 0');
-    t.is(contentIntegration.FPRContent[1], 6.1, 'Should be 6.1 at position 1');
-    t.is(contentIntegration.FPRContent[2], 7.7, 'Should be 7.7 at position 2');
+    expect(contentIntegration.FPRContent[0]).toBe( 2.2);
+    expect(contentIntegration.FPRContent[1]).toBe( 6.1);
+    expect(contentIntegration.FPRContent[2]).toBe( 7.7);
 });
 
 test('Can parse hexadecimal numbers', t => {
     let contentIntegration = new ContentIntegration(input5);
-    t.is(contentIntegration.GPRContent[0], 10, 'Should be 10(0xA) at position 0');
+    expect(contentIntegration.GPRContent[0]).toBe( 10);
 });
 
 // test ('Throws error when memory address line isnt wrapped in brackets', t => {

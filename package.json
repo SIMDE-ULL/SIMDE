@@ -7,10 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "nyc ava",
+    "test": "nyc vitest",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "cov": "yarn test && yarn html-coverage && opn coverage/index.html",
+    "cov": "vitest run --coverage",
     "check-coverage": "nyc check-coverage --lines 70 --functions 70 --branches 70",
     "html-coverage": "nyc report --reporter=html",
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
@@ -59,31 +59,19 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
-    "ava": "^5.0.0",
+    "@vitest/coverage-v8": "^0.34.6",
     "codecov": "^3.6.5",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "multiview": "3.0.1",
-    "nyc": "15.1.0",
     "sass": "^1.69.5",
     "stylelint": "^15.11.0",
     "stylelint-config-standard-scss": "^11.0.0",
     "stylelint-scss": "^5.3.0",
     "typedoc": "^0.25.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
-  },
-  "nyc": {
-    "exclude": [
-      "**/*.spec.js",
-      "**/test/**"
-    ]
-  },
-  "ava": {
-    "files": [
-      "build/module/test/**/*.spec.js",
-      "build/module/test/**/*.spec.js"
-    ]
+    "vite": "^4.4.5",
+    "vitest": "^0.34.6"
   }
 }

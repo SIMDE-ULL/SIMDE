@@ -1,30 +1,30 @@
-import anyTest, { TestFn } from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
 import { Superescalar } from '../../../core/Superescalar/Superescalar';
 import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
 import { code } from '../code/r0inmutable';
 
 
-const test = anyTest as TestFn<{ code: Code, machine: Superescalar }>;
+const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
 
-test.beforeEach(t => {
-    t.context.code = new Code();
-    t.context.machine = new Superescalar();
-    t.context.machine.init(true);
+beforeEach(() => {
+    context.code = new Code();
+    context.machine = new Superescalar();
+    context.machine.init(true);
 });
 
 test('Resgister R0 is inmutable', t => {
     // Execute code
-    t.context.code.load(code);
-    t.context.machine.code = t.context.code;
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    context.code.load(code);
+    context.machine.code = context.code;
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check R1 value
-    t.deepEqual(t.context.machine.getGpr(1), 0, 'R1 should be 0');
+    expect(context.machine.getGpr(1)).toBe( 0);
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 2, 'Bad pc at finish');
+    expect(context.machine.pc).toBe( 2);
 
     // Check the number of cycles are correct
-    t.deepEqual(t.context.machine.status.cycle, 6, 'Bad number of cycles at finish');
+    expect(context.machine.status.cycle).toBe( 6);
 })

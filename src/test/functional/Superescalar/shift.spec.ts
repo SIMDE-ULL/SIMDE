@@ -1,39 +1,39 @@
-import anyTest, { TestFn } from 'ava';
+import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
 import { Superescalar } from '../../../core/Superescalar/Superescalar';
 import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
 import { codeInput } from "../code/despl";
 
 
-const test = anyTest as TestFn<{ code: Code, machine: Superescalar }>;
+const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
 
-test.beforeEach(t => {
-    t.context.code = new Code();
-    t.context.machine = new Superescalar();
-    t.context.machine.init(true);
+beforeEach(() => {
+    context.code = new Code();
+    context.machine = new Superescalar();
+    context.machine.init(true);
 });
 
 test('despl.pla is executed properly', t => {
     // Execute code
-    t.context.code.load(codeInput);
-    t.context.machine.code = t.context.code;
-    while (t.context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    context.code.load(codeInput);
+    context.machine.code = context.code;
+    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check registers
-    t.deepEqual(t.context.machine.getGpr(1), 3, 'R1 is not 3');
-    t.deepEqual(t.context.machine.getGpr(2), 2, 'R2 is not 2');
-    t.deepEqual(t.context.machine.getGpr(3), 12, 'R3 is not 12, wrong shift left');
-    t.deepEqual(t.context.machine.getGpr(4), 0, 'R4 is not 0, wrong shift right');
-    t.deepEqual(t.context.machine.getGpr(5), 11, 'R5 is not 11');
-    t.deepEqual(t.context.machine.getGpr(6), 6, 'R6 is not 6');
-    t.deepEqual(t.context.machine.getGpr(7), 15, 'R7 is not 15, wrong or');
-    t.deepEqual(t.context.machine.getGpr(8), 2, 'R8 is not 2, wrong and');
-    t.deepEqual(t.context.machine.getGpr(9), -16, 'R9 is not -12, wrong nor');
-    t.deepEqual(t.context.machine.getGpr(10), 13, 'R10 is not 13, wrong xor');
+    expect(context.machine.getGpr(1)).toBe( 3);
+    expect(context.machine.getGpr(2)).toBe( 2);
+    expect(context.machine.getGpr(3)).toBe( 12);
+    expect(context.machine.getGpr(4)).toBe( 0);
+    expect(context.machine.getGpr(5)).toBe( 11);
+    expect(context.machine.getGpr(6)).toBe( 6);
+    expect(context.machine.getGpr(7)).toBe( 15);
+    expect(context.machine.getGpr(8)).toBe( 2);
+    expect(context.machine.getGpr(9)).toBe( -16);
+    expect(context.machine.getGpr(10)).toBe( 13);
 
     // Check where the program counter is
-    t.deepEqual(t.context.machine.pc, 10, 'Bad pc at finish');
+    expect(context.machine.pc).toBe( 10);
 
     // Check the number of cycles are correct
-    t.deepEqual(t.context.machine.status.cycle, 10, 'Bad number of cycles at finish');
+    expect(context.machine.status.cycle).toBe( 10);
 })
