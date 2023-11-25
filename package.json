@@ -10,7 +10,7 @@
     "test": "nyc ava",
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
     "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "cov": "yarn unit && yarn html-coverage && opn coverage/index.html",
+    "cov": "yarn test && yarn html-coverage && opn coverage/index.html",
     "check-coverage": "nyc check-coverage --lines 70 --functions 70 --branches 70",
     "html-coverage": "nyc report --reporter=html",
     "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
