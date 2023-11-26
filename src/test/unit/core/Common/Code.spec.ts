@@ -141,9 +141,9 @@ test('Parser check bounds', t => {
 	SF R0 1025(F0)`;
 	let code: Code = new Code();
 
-	expect(() => code.load(input)).toThrowError('{"index":10,"rowBegin":2,"columnBegin":9,"rowEnd":2,"columnEnd":9}: Unable to tokenize the rest of the input: .0 R0 #0');
-	expect(() => code.load(inpu2)).toThrowError('{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar');
-	expect(() => code.load(inpu3)).toThrowError('{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar');
+	expect(() => code.load(input)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
+	expect(() => code.load(inpu2)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
+	expect(() => code.load(inpu3)).toThrowError('{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":15}: Address register cannot be FP register');
 });
 
 test('Example code 1 does not throws errors', t => {

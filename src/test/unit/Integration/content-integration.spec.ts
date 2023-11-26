@@ -78,7 +78,7 @@ test('Can parse float numbers', t => {
 });
 
 test('Can parse hexadecimal numbers', t => {
-    let contentIntegration = new ContentIntegration(input5);
+    let contentIntegration = new ContentIntegration(input6);
     expect(contentIntegration.GPRContent[0]).toBe( 10);
 });
 
