@@ -16,12 +16,10 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18.x
-    - name: Upgrade npm
-      run: npm install -g npm
-    - name: Install npm packages
-      run: npm ci
+        node-version: 20.9.x
+    - name: Install packages
+      run: yarn install
     - name: Run tests
-      run: npm run test
+      run: yarn test
     - name: Generate production build
-      run: npm run dist
+      run: yarn build
