@@ -11,7 +11,6 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-//TODO: Test every single instruction of a given type, not just one of each type (use a loop inside the test)
 
 test('Interger Sum has a correct latency', t => {
     // Execute code

@@ -11,8 +11,6 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-//TODO: Test every single instruction
-
 test('GPR does not have RaW Hazards', t => {
     // Execute code
     context.code.load("3\n ADDI R1 R0 #1 \n MULT R2 R1 R1 \n ADDI R3 R2 #1");

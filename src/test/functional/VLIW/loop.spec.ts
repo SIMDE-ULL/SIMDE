@@ -193,7 +193,7 @@ test('Buclesoft2.pla is executed properly', t => {
     expect(context.machine.status.cycle).toBe(60);
 })
 
-//TODO: The double loop VLIW code is incorrect
+// The double loop VLIW code is incorrect
 /*test('Bucledoble.pla is executed properly', t => {
     // Load code
     context.superescalarCode.load(doubleCodeInput);
