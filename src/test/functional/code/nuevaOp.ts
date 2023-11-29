@@ -9,3 +9,5 @@ SUB R5 R2 R3
 ET2:
 SUB R6 R2 R3
 `;
+
+export const resultContent = [3, 2, -1, 0, 1];

@@ -34,9 +34,8 @@ test('Bucle.pla is executed properly', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    let result = Array.from(Array(resultContent.length).keys()).map(x => context.machine.memory.getDatum(70 + x).datum);
+    expect(result).toStrictEqual(resultContent);
 
 })
 
@@ -59,9 +58,8 @@ test('Buclesoft.pla is executed properly', t => {
     expect(context.machine.pc).toBe(18);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    let result = Array.from(Array(resultContent.length).keys()).map(x => context.machine.memory.getDatum(70 + x).datum);
+    expect(result).toStrictEqual(resultContent);
 
 })
 
