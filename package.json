@@ -85,5 +85,6 @@
       "build/module/test/Integration/*.spec.js",
       "build/module/test/VLIW/*.spec.js"
     ]
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
