@@ -13,7 +13,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('Resgister R0 is inmutable', t => {
+test('Register R0 is inmutable', t => {
     // Execute code
     context.code.load(code);
     context.machine.code = context.code;

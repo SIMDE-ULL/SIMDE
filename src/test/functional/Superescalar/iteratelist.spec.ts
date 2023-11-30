@@ -20,9 +20,8 @@ test('recorrelista.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    for (let i = 10; i < memContent.length + 10; i++) {
-        context.machine.memory.setDatum(i, memContent[i - 10]);
-    }
+    const memContentBaseAddress = 10;
+    context.machine.memory.data.splice(memContentBaseAddress, memContent.length, ...memContent);
 
     // Execute code
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) {

@@ -22,9 +22,8 @@ test('Bucle.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
@@ -34,7 +33,10 @@ test('Bucle.pla is executed properly', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    let result = Array.from(Array(resultContent.length).keys()).map(x => context.machine.memory.getDatum(70 + x).datum);
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
     expect(result).toStrictEqual(resultContent);
 
 })
@@ -46,9 +48,8 @@ test('Buclesoft.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
@@ -58,7 +59,10 @@ test('Buclesoft.pla is executed properly', t => {
     expect(context.machine.pc).toBe(18);
 
     // Check the result
-    let result = Array.from(Array(resultContent.length).keys()).map(x => context.machine.memory.getDatum(70 + x).datum);
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
     expect(result).toStrictEqual(resultContent);
 
 })
@@ -70,9 +74,8 @@ test('Bucledoble.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
@@ -82,8 +85,10 @@ test('Bucledoble.pla is executed properly', t => {
     expect(context.machine.pc).toBe(18);
 
     // Check the result
-    for (let i = 70; i < 5 + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70] * sumContent);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + 5
+    );
+    expect(result).toStrictEqual(resultContent.map(x => x * sumContent).slice(0, 5));
 
 })

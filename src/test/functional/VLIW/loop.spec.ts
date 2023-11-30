@@ -28,9 +28,8 @@ test('Bucle.pla is executed properly', () => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -39,9 +38,11 @@ test('Bucle.pla is executed properly', () => {
     expect(context.machine.pc).toBe(15);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
 
     // Check the cycles
     // 2 (loop init) + 16 * 13 (loop) + 1 (jump final extra step) = 211 + 1
@@ -56,9 +57,8 @@ test('Bucle2.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -68,9 +68,11 @@ test('Bucle2.pla is executed properly', t => {
     expect(context.machine.pc).toBe(15);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
 
     // Check the cycles
     // 2 (loop init) + 16/2 * 13 (2 loops) + 1 (jump final extra step) = 107 + 1
@@ -85,9 +87,8 @@ test('Bucle3.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -97,9 +98,11 @@ test('Bucle3.pla is executed properly', t => {
     expect(context.machine.pc).toBe(16);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
 
     // Check the cycles
     // 2 (loop init) + 16/4 * 14 (4 loops) + 1 (jump final extra step) = 59 + 1
@@ -114,9 +117,8 @@ test('Bucle4.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -126,9 +128,11 @@ test('Bucle4.pla is executed properly', t => {
     expect(context.machine.pc).toBe(18);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
 
     // Check the cycles
     // 2 (loop init) + 16/8 * 16 (4 loops) + 1 (jump final extra step) = 35 + 1
@@ -143,9 +147,8 @@ test('Buclesoft.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -155,9 +158,11 @@ test('Buclesoft.pla is executed properly', t => {
     expect(context.machine.pc).toBe(18);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
 
     // Check the cycles
     // 9 (loop init + 2 loops) + 14 * 6 (loop) + 3 (final) + 4(last inst latency) = 100 + 1
@@ -172,9 +177,8 @@ test('Buclesoft2.pla is executed properly', t => {
 
     // Load memory
     context.machine.memory.setDatum(40, sumContent);
-    for (let i = 50; i < vecContent.length + 50; i++) {
-        context.machine.memory.setDatum(i, vecContent[i - 50]);
-    }
+    const vecBaseAddress = 50;
+    context.machine.memory.data.splice(vecBaseAddress, vecContent.length, ...vecContent);
 
     // Execute code
     while (context.machine.tic() !== VLIWError.ENDEXE) { }
@@ -184,10 +188,11 @@ test('Buclesoft2.pla is executed properly', t => {
     expect(context.machine.pc).toBe(20);
 
     // Check the result
-    for (let i = 70; i < resultContent.length + 70; i++) {
-        expect(context.machine.memory.getDatum(i).datum).toBe(resultContent[i - 70]);
-    }
-
+    const resultBaseAddress = 70;
+    const result = context.machine.memory.data.slice(
+        resultBaseAddress, resultBaseAddress + resultContent.length
+    );
+    expect(result).toStrictEqual(resultContent);
     // Check the cycles
     // 10 (loop init + 4 loops) + 12/2 * 7 (2 loops) + 3 (final) + 4(last inst latency) = 59 + 1
     expect(context.machine.status.cycle).toBe(60);
