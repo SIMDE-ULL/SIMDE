@@ -20,7 +20,10 @@ test('nuevaOp.pla is executed properly', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check registers
-    let result = Array.from(Array(resultContent.length).keys()).map(x => context.machine.getGpr(x + 2));
+    const resultBase = 2;
+    const result = context.machine.gpr.content.slice(
+        resultBase, resultBase + resultContent.length
+    );
     expect(result).toStrictEqual(resultContent);
 
     // Check where the program counter is

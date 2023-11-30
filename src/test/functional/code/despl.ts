@@ -9,3 +9,5 @@ OR   R7 R5 R6
 AND  R8 R5 R6
 NOR  R9 R5 R6
 XOR  R10 R5 R6`;
+
+export const resultContent = [3, 2, 12, 0, 11, 6, 15, 2, -16, 13];
