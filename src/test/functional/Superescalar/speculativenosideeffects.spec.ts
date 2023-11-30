@@ -20,20 +20,20 @@ test('Speculative execution has no side effects', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check R5 value
-    expect(context.machine.getGpr(5)).toBe( 0);
+    expect(context.machine.getGpr(5)).toBe(0);
 
     // Check memory pos 5 value
-    expect(context.machine.memory.getDatum(5).datum).toBe( 0);
+    expect(context.machine.memory.getDatum(5).datum).toBe(0);
 
     // Check F1 value
-    expect(context.machine.getFpr(1)).toBe( 0);
+    expect(context.machine.getFpr(1)).toBe(0);
 
     // Check jump prediction table
-    expect(context.machine.jumpPrediction[7]).toBe( 0);
+    expect(context.machine.jumpPrediction[7]).toBe(0);
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 9);
+    expect(context.machine.pc).toBe(9);
 
     // Check the number of cycles are correct
-    expect(context.machine.status.cycle).toBe( 30);
+    expect(context.machine.status.cycle).toBe(30);
 })

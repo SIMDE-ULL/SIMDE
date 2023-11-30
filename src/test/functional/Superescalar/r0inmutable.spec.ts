@@ -20,11 +20,11 @@ test('Register R0 is inmutable', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check R1 value
-    expect(context.machine.getGpr(1)).toBe( 0);
+    expect(context.machine.getGpr(1)).toBe(0);
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 2);
+    expect(context.machine.pc).toBe(2);
 
     // Check the number of cycles are correct
-    expect(context.machine.status.cycle).toBe( 6);
+    expect(context.machine.status.cycle).toBe(6);
 })

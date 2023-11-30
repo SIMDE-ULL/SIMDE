@@ -18,10 +18,10 @@ test('GPR does not have RaW Hazards', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 3);
+    expect(context.machine.pc).toBe(3);
 
     // Check the result
-    expect(context.machine.getGpr(3)).toBe( 2);
+    expect(context.machine.getGpr(3)).toBe(2);
 })
 
 test('FPR does not have RaW Hazards', t => {
@@ -32,10 +32,10 @@ test('FPR does not have RaW Hazards', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 2);
+    expect(context.machine.pc).toBe(2);
 
     // Check the result
-    expect(context.machine.getFpr(3)).toBe( 2);
+    expect(context.machine.getFpr(3)).toBe(2);
 })
 
 test('Memory does not have RaW Hazards', t => {
@@ -45,8 +45,8 @@ test('Memory does not have RaW Hazards', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 3);
+    expect(context.machine.pc).toBe(3);
 
     // Check the result
-    expect(context.machine.getGpr(3)).toBe( 1);
+    expect(context.machine.getGpr(3)).toBe(1);
 })

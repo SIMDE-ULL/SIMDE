@@ -20,20 +20,20 @@ test('despl.pla is executed properly', t => {
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
 
     // Check registers
-    expect(context.machine.getGpr(1)).toBe( 3);
-    expect(context.machine.getGpr(2)).toBe( 2);
-    expect(context.machine.getGpr(3)).toBe( 12);
-    expect(context.machine.getGpr(4)).toBe( 0);
-    expect(context.machine.getGpr(5)).toBe( 11);
-    expect(context.machine.getGpr(6)).toBe( 6);
-    expect(context.machine.getGpr(7)).toBe( 15);
-    expect(context.machine.getGpr(8)).toBe( 2);
-    expect(context.machine.getGpr(9)).toBe( -16);
-    expect(context.machine.getGpr(10)).toBe( 13);
+    expect(context.machine.getGpr(1)).toBe(3);
+    expect(context.machine.getGpr(2)).toBe(2);
+    expect(context.machine.getGpr(3)).toBe(12);
+    expect(context.machine.getGpr(4)).toBe(0);
+    expect(context.machine.getGpr(5)).toBe(11);
+    expect(context.machine.getGpr(6)).toBe(6);
+    expect(context.machine.getGpr(7)).toBe(15);
+    expect(context.machine.getGpr(8)).toBe(2);
+    expect(context.machine.getGpr(9)).toBe(-16);
+    expect(context.machine.getGpr(10)).toBe(13);
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 10);
+    expect(context.machine.pc).toBe(10);
 
     // Check the number of cycles are correct
-    expect(context.machine.status.cycle).toBe( 10);
+    expect(context.machine.status.cycle).toBe(10);
 })

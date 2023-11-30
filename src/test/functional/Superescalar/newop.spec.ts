@@ -24,9 +24,9 @@ test('nuevaOp.pla is executed properly', t => {
     expect(result).toStrictEqual(resultContent);
 
     // Check where the program counter is
-    expect(context.machine.pc).toBe( 7);
+    expect(context.machine.pc).toBe(7);
 
     // Check the number of cycles are correct
-    expect(context.machine.status.cycle).toBe( 14);
+    expect(context.machine.status.cycle).toBe(14);
 
 })
