@@ -44,7 +44,7 @@ export class Machine {
         this.memory = new Memory();
 
         this._gpr = new Register();
-        this._fpr = new Register();
+        this._fpr = new Register(true); // F0 is writable, not always 0
         this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY);
         this.functionalUnit.fill(null);
     }

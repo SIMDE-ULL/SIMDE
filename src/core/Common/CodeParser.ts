@@ -3,6 +3,7 @@ import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt
 import { OpcodesNames } from './Opcodes';
 import { Formats, FormatsNames, opcodeToFormat } from './InstructionFormats'
 import { Instruction } from './Instruction';
+import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../Constants';
 
 enum Tokens {
     Inmediate,
@@ -129,6 +130,14 @@ const operationParser = apply(
 
             if (typeof operation[3] == "number") {
                 type = Formats.GeneralRegisterAndInmediate;
+
+                // Check that the registers are in bounds
+                if (operation[1].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[1].pos, `Destiny register number out of bounds`);
+                } else if (operation[2].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[2].pos, `Operand 1 register number out of bounds`);
+                }
+
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
                 instruction.setOperand(2, operation[3], "#" + operation[3].toString());
@@ -146,11 +155,29 @@ const operationParser = apply(
                 } else {
                     type = Formats.TwoGeneralRegisters;
                 }
+
+                // Check that the registers are in bounds
+                if (operation[1].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[1].pos, `Destiny register number out of bounds`);
+                } else if (operation[2].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[2].pos, `Operand 1 register number out of bounds`);
+                } else if (operation[3].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[3].pos, `Operand 2 register number out of bounds`);
+                }
+
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
                 instruction.setOperand(2, operation[3].num, operation[3].text);
             } else if ('pos' in operation[3]) {
                 type = Formats.Jump;
+
+                // Check that the registers are in bounds
+                if (operation[1].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[1].pos, `Operand 1 register number out of bounds`);
+                } else if (operation[2].num > MACHINE_REGISTER_SIZE) {
+                    throw new TokenError(operation[2].pos, `Operand 2 register number out of bounds`);
+                }
+
                 instruction.setOperand(0, operation[1].num, operation[1].text);
                 instruction.setOperand(1, operation[2].num, operation[2].text);
                 instruction.setOperand(2, undefined, operation[3].text);
@@ -161,6 +188,16 @@ const operationParser = apply(
             } else {
                 type = Formats.GeneralLoadStore;
             }
+
+            // Check that the registers are in bounds
+            if (operation[1].num > MACHINE_REGISTER_SIZE) {
+                throw new TokenError(operation[1].pos, `Destiny register number out of bounds`);
+            } else if (operation[2].reg.num > MACHINE_REGISTER_SIZE) {
+                throw new TokenError(operation[2].reg.pos, `Adress register number out of bounds`);
+            } else if (operation[2].address > MEMORY_SIZE) {
+                throw new TokenError(operation[2].reg.pos, `Memory address out of bounds`);
+            }
+
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].address, operation[2].address.toString());
             instruction.setOperand(2, operation[2].reg.num, "(" + operation[2].reg.text + ")");

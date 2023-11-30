@@ -1,4 +1,4 @@
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError } from 'typescript-parsec';
 import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
 
 enum Tokens {
@@ -8,6 +8,7 @@ enum Tokens {
     NumberHex,
     Number,
     NumberDecimal,
+    Comma,
     Space,
     NewLine
 }
@@ -16,24 +17,41 @@ const tokenizer = buildLexer([
     [true, /^#(\w+)/g, Tokens.Header],
     [true, /^\[(\d+)\]/g, Tokens.Pos],
     [true, /^-/g, Tokens.NumberSign], //TODO: \+|- is not working
-    [true, /^0x|x/g, Tokens.NumberHex],
-    [true, /^\d+/g, Tokens.Number],
-    [false, /^\.\d+/g, Tokens.NumberDecimal],
+    [true, /^0x/g, Tokens.NumberHex], //TODO: 0x|x is not working
+    [true, /^[\dA-Fa-f]+/g, Tokens.Number],
+    [true, /^\.\d+/g, Tokens.NumberDecimal],
+    [false, /^,+/g, Tokens.Comma],
     [false, /^\s+/g, Tokens.Space],
     [false, /^\n/g, Tokens.NewLine]
 ]);
 
 const numberParser = apply(
-    seq(opt_sc(tok(Tokens.NumberSign)), opt_sc(tok(Tokens.NumberHex)), tok(Tokens.Number)),
-    (num: [Token<Tokens.NumberSign>, Token<Tokens.NumberHex>, Token<Tokens.Number>]) => {
-        // Check te number base (hex or decimal)
+    seq(opt_sc(tok(Tokens.NumberSign)), opt_sc(tok(Tokens.NumberHex)), tok(Tokens.Number), opt_sc(tok(Tokens.NumberDecimal))),
+    (num: [Token<Tokens.NumberSign>, Token<Tokens.NumberHex>, Token<Tokens.Number>, Token<Tokens.NumberDecimal>]) => {
+        // Check the number base (hex or decimal)
         let base = 10;
         if (num[1]) {
             // Parse hex number
             base = 16;
         }
 
-        return parseInt(((num[0]) ? num[0].text : "") + num[2].text, base);
+        // Throw an error if NumberDecimal and NumberHex are present
+        if (num[1] && num[3]) {
+            throw new TokenError(num[3].pos, 'Hexadecimal number can not be float: ' + num[1].text + num[2].text + num[3].text);
+        }
+
+        // Throw an error if NumberHex is not present but Number has a A-F characters
+        if (!num[1] && /[A-Fa-f]/g.test(num[2].text)) {
+            throw new TokenError(num[2].pos, 'Decimal number can not have hexadecimal characters(ABCDEF): ' + num[2].text);
+        }
+
+        // Check if float or int
+        if (num[3]) {
+            // Parse float number
+            return parseFloat(((num[0]) ? num[0].text : "") + num[2].text + num[3].text);
+        } else {
+            return parseInt(((num[0]) ? num[0].text : "") + num[2].text, base);
+        }
     }
 );
 
@@ -89,7 +107,7 @@ export class ContentIntegration {
 
     private deparseContent(headerName: string, content: { [k: number]: number }): string {
         // Add header
-        let result =  '\n' + headerName;
+        let result = '\n' + headerName;
         // Iterate over Content
         let lastPosition = -1;
         Object.keys(content).forEach(key => {
