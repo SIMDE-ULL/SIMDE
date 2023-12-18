@@ -677,6 +677,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-free@npm:^6.5.1":
+  version: 6.5.1
+  resolution: "@fortawesome/fontawesome-free@npm:6.5.1"
+  checksum: dc359ede1ddfc6d91915345143008420001c56b164a6fe95d81bcca631eecca41009bfacf794d55bdb9d927c112119ce90a11cb4f576a815ed69ec681e5eb824
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.13":
   version: 0.11.13
   resolution: "@humanwhocodes/config-array@npm:0.11.13"
@@ -2639,13 +2646,6 @@ __metadata:
   version: 3.2.9
   resolution: "flatted@npm:3.2.9"
   checksum: 5c91c5a0a21bbc0b07b272231e5b4efe6b822bcb4ad317caf6bb06984be4042a9e9045026307da0fdb4583f1f545e317a67ef1231a59e71f7fced3cc429cfc53
-  languageName: node
-  linkType: hard
-
-"font-awesome@npm:4.7.0":
-  version: 4.7.0
-  resolution: "font-awesome@npm:4.7.0"
-  checksum: 1c456e2939c55192eed67db9c0efb8db3e92fd357ca189ca00030eb44acffa1e9f835288d2204c14b9a9c490a7b14b7090dfaff80ded6b2473f50a923dfb41e7
   languageName: node
   linkType: hard
 
@@ -4755,6 +4755,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "simde@workspace:."
   dependencies:
+    "@fortawesome/fontawesome-free": "npm:^6.5.1"
     "@popperjs/core": "npm:^2.11.8"
     "@types/node": "npm:^20.8.9"
     "@types/react": "npm:^18.2.15"
@@ -4768,7 +4769,6 @@ __metadata:
     eslint: "npm:^8.45.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.3"
-    font-awesome: "npm:4.7.0"
     i18next: "npm:^22.4.14"
     i18next-browser-languagedetector: "npm:7.1.0"
     i18next-http-backend: "npm:^2.2.0"
