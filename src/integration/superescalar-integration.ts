@@ -82,7 +82,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                         }]
                     ),
                     nextReorderBufferMapperCycle([this.superescalar.ROBGpr, this.superescalar.ROBFpr]),
-                    nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
+                    nextReorderBufferCycle(this.superescalar.reorderBuffer),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
                     nextMemoryCycle(this.superescalar.memory.data),
                     nextCycle(this.superescalar.status.cycle),
