@@ -218,7 +218,7 @@ const codeParser = seq(tok(Tokens.Number), rep_sc(alt_sc(operationParser, tok(To
 
 export class CodeParser {
     public instructions: Instruction[] = [];
-    public labels: { [k: number]: string } = {};
+    public labels: { [k: string]: number } = {};
     public lines: number = 0;
 
     constructor(code: string) {
@@ -230,40 +230,22 @@ export class CodeParser {
 
         // Create labels and instructions
         let pos = 0;
-
         for (let i = 0; i < result[1].length; i++) {
             let line = result[1][i];
             if ('kind' in line && line.kind == Tokens.Label) {
-                this.labels[pos] = line.text.slice(0, -1);
+                let name = line.text.slice(0, -1);
+                if (name in this.labels) {
+                    throw new Error(`Error at instruction ${pos}, label ${line.text.slice(0, -1)} already exists`);
+                }
+                this.labels[name] = pos;
             } else if (line instanceof Instruction) {
                 this.instructions.push(line);
                 pos++;
             } else {
-                throw new Error(`Unexpected code par fail: ${JSON.stringify(line)}`);
+                throw new Error(`Unexpected code parser fail: ${JSON.stringify(line)}`);
             }
         }
 
         this.lines = pos; // +result[0].text; We totally ignore the line counter, it's just a retrocompatibility thing
-
-        // Resolve labels
-        for (let i = 0; i < this.instructions.length; i++) {
-            if (opcodeToFormat(this.instructions[i].opcode) == Formats.Jump) {
-                let index: number = -1;
-                //Iterate over this.labels to find the label
-                for (let key in this.labels) {
-                    if (this.labels[key] == this.instructions[i].operandsString[2]) {
-                        index = +key;
-                        break;
-                    }
-                }
-
-                if (index !== -1) {
-                    this.instructions[i].setOperand(2, index, this.instructions[i].operandsString[2]);
-                } else {
-                    throw new Error(`Can not find Jump destination(labeled ${this.instructions[i].operandsString[2]}) on instruction ${this.instructions[i].id} at line ${i}`);
-                }
-            }
-
-        }
     }
 }

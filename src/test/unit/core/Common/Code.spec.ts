@@ -98,7 +98,7 @@ test('Repeated labels errors are being thrown', t => {
     BNE	R2 R5 LOOP
     `;
 	let code: Code = new Code();
-	expect(() => code.load(input)).toThrowError('Error at instruction 5, label LOOP already exists');
+	expect(() => code.load(input)).toThrowError('Error at instruction 2, label LOOP already exists');
 });
 
 test('Parsing strange inmediates throws errors', t => {
