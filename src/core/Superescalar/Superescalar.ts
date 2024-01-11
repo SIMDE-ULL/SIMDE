@@ -7,7 +7,6 @@ import { PrefetchEntry } from './PrefetchEntry';
 import { DecoderEntry } from './DecoderEntry';
 import { ReserveStationEntry } from './ReserveStationEntry';
 import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
-import { Queue } from '../Collections/Queue';
 import { Instruction } from '../Common/Instruction';
 import { CommitStatus, SuperStage, SuperescalarStatus } from './SuperescalarEnums';
 

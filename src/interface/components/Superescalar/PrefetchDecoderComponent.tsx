@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Queue } from '../../../core/Collections/Queue';
 import { useTranslation } from 'react-i18next';
 
 export function PrefetchDecoderComponent(props) {
