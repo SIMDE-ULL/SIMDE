@@ -32,7 +32,7 @@ test('recorrelista.pla is executed properly', t => {
 
             // Check that in fact the prefetch and decoder are empty, as the jump didn't speculatively loop
             expect(context.machine.prefetchUnit.length).toBe(0);
-            expect(context.machine.decoder.isEmpty()).toBe(true);
+            expect(context.machine.decoder.length).toBe(0);
 
             // Check that instructions are being executed in the correct Functional Units
             // 13 -> FLOATINGMULTIPLY, 16 -> MEMORY and 12 -> JUMP
@@ -48,7 +48,7 @@ test('recorrelista.pla is executed properly', t => {
 
             // Now the prefetch and decoder should be full, as the jump is speculatively looped
             expect(context.machine.prefetchUnit.length).toBeGreaterThan(0);
-            expect(context.machine.decoder.isEmpty()).toBe(false);
+            expect(context.machine.decoder.length).toBeGreaterThan(0);
         }
 
         if (context.machine.status.cycle === 90) {
@@ -58,7 +58,7 @@ test('recorrelista.pla is executed properly', t => {
 
             // Check that in fact the prefetch and decoder are empty, as the jump didn't speculatively loop
             expect(context.machine.prefetchUnit.length).toBe(0);
-            expect(context.machine.decoder.isEmpty()).toBe(true);
+            expect(context.machine.decoder.length).toBe(0);
         }
     }
 

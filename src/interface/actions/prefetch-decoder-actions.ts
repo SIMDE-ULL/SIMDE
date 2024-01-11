@@ -16,17 +16,5 @@ export function nextDecoderCycle(data) {
 }
 
 export function mapPrefetchDecoderData(data) {
-    let toReturn = new Array(data.elements.length - 1);
-    toReturn.fill(' ');
-    let j = 0;
-    for (let i = data.first;
-        i !== data.last;
-        i = data.nextIterator(i), j++
-    ) {
-        toReturn[j] =
-            data.getElement(i) != null
-                ? data.getElement(i).instruction.id
-                : '0';
-    }
-    return toReturn;
+    return data.map((inst) => inst.instruction.id);
 }

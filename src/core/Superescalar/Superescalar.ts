@@ -27,7 +27,7 @@ export class Superescalar extends Machine {
     private _reorderBuffer: ReorderBufferEntry[];
     private reorderBufferSize: number;
     private _prefetchUnit: PrefetchEntry[];
-    private _decoder: Queue<DecoderEntry>;
+    private _decoder: DecoderEntry[];
     private _aluMem: FunctionalUnit[];
 
     private _jumpPrediction: number[];
@@ -51,9 +51,8 @@ export class Superescalar extends Machine {
         this.reorderBuffer = new Array();
         this.reorderBufferSize = total;
         this.prefetchUnit = new Array();
-        this.decoder = new Queue<DecoderEntry>();
+        this.decoder = new Array();
 
-        this.decoder.init(this.issue);
         this._code = null;
 
         this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
@@ -79,7 +78,8 @@ export class Superescalar extends Machine {
             total += this.getReserveStationSize(i);
         }
         this.reorderBuffer = new Array();
-        this.decoder.init(this.issue);
+        this.decoder = new Array();
+        this.prefetchUnit = new Array();
         this._code = null;
 
         this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
@@ -118,13 +118,13 @@ export class Superescalar extends Machine {
     }
 
     ticDecoder(): number {
-        while (!this.decoder.isFull() && this.prefetchUnit.length > 0) {
+        while (this.decoder.length < this.issue && this.prefetchUnit.length > 0) {
             let aux: PrefetchEntry = this.prefetchUnit.shift();
             let newDecoderEntry = new DecoderEntry();
             newDecoderEntry.instruction = aux.instruction;
-            this.decoder.add(newDecoderEntry);
+            this.decoder.push(newDecoderEntry);
         }
-        return this.decoder.getCount();
+        return this.decoder.length;
     }
 
     checkRegister(register: number, floatingPoint: boolean, reserveStationEntry: ReserveStationEntry, j: boolean) {
@@ -246,18 +246,17 @@ export class Superescalar extends Machine {
     }
 
     ticIssue(): number {
-        let cont = 0;
+        let i = 0;
 
-        for (let i = this.decoder.first; i !== this.decoder.end();
-            i = this.decoder.nextIterator(i), cont++) {
-            let instruction: Instruction = this.decoder.elements[i].instruction;
+        while (this.decoder.length > 0) {
             if (this.reorderBuffer.length >= this.reorderBufferSize) {
                 break;
             }
-            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(instruction.id);
+            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(this.decoder[0].instruction.id);
             if (this.reserveStationEntry[fuType].length === this.getReserveStationSize(fuType)) {
                 break;
             }
+            let instruction: Instruction = this.decoder.shift().instruction;
             let newROB: ReorderBufferEntry = new ReorderBufferEntry();
             newROB.value = 0.0;
             newROB.destinyRegister = -1;
@@ -270,10 +269,11 @@ export class Superescalar extends Machine {
             this.reorderBuffer[robPos].instruction = instruction;
             this.reorderBuffer[robPos].ready = false;
             this.reorderBuffer[robPos].superStage = SuperStage.SUPER_ISSUE;
-            this.decoder.remove(i);
+
+            i++;
         }
 
-        return cont;
+        return i;
     }
 
     checkStore(robIndex: number, address: number): boolean {
@@ -542,9 +542,8 @@ export class Superescalar extends Machine {
             // Clean prefetch, decoder and reorder buffer, the simplest way is
             // to rebuild the objects
             this.prefetchUnit = new Array();
-            this.decoder = new Queue<DecoderEntry>();
+            this.decoder = new Array();
             this.reorderBuffer = new Array();
-            this.decoder.init(this.issue);
 
             // Clean the structures related to the registers
             this.ROBGpr.fill(-1);
@@ -742,11 +741,11 @@ export class Superescalar extends Machine {
         this._prefetchUnit = value;
     }
 
-    public get decoder(): Queue<DecoderEntry> {
+    public get decoder(): DecoderEntry[] {
         return this._decoder;
     }
 
-    public set decoder(value: Queue<DecoderEntry>) {
+    public set decoder(value: DecoderEntry[]) {
         this._decoder = value;
     }
 
