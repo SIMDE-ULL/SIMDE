@@ -31,7 +31,7 @@ test('recorrelista.pla is executed properly', t => {
             expect(context.machine.jumpPrediction[1]).toBe(1);// 'Jump prediction of BNE R2 R33 LOOP should be 1 at cycle 40');
 
             // Check that in fact the prefetch and decoder are empty, as the jump didn't speculatively loop
-            expect(context.machine.prefetchUnit.isEmpty()).toBe(true);
+            expect(context.machine.prefetchUnit.length).toBe(0);
             expect(context.machine.decoder.isEmpty()).toBe(true);
 
             // Check that instructions are being executed in the correct Functional Units
@@ -47,7 +47,7 @@ test('recorrelista.pla is executed properly', t => {
             expect(context.machine.jumpPrediction[1]).toBe(3);//'Jump prediction of BNE R2 R33 LOOP should be 3 at cycle 60');
 
             // Now the prefetch and decoder should be full, as the jump is speculatively looped
-            expect(context.machine.prefetchUnit.isEmpty()).toBe(false);
+            expect(context.machine.prefetchUnit.length).toBeGreaterThan(0);
             expect(context.machine.decoder.isEmpty()).toBe(false);
         }
 
@@ -57,7 +57,7 @@ test('recorrelista.pla is executed properly', t => {
             expect(context.machine.jumpPrediction[1]).toBe(2);//  Jump prediction of BNE R2 R33 LOOP should be 2 at cycle 90
 
             // Check that in fact the prefetch and decoder are empty, as the jump didn't speculatively loop
-            expect(context.machine.prefetchUnit.isEmpty()).toBe(true);
+            expect(context.machine.prefetchUnit.length).toBe(0);
             expect(context.machine.decoder.isEmpty()).toBe(true);
         }
     }

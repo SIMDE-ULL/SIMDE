@@ -26,7 +26,7 @@ export class Superescalar extends Machine {
     private _reserveStationEntry: ReserveStationEntry[][];
     private _reorderBuffer: ReorderBufferEntry[];
     private reorderBufferSize: number;
-    private _prefetchUnit: Queue<PrefetchEntry>;
+    private _prefetchUnit: PrefetchEntry[];
     private _decoder: Queue<DecoderEntry>;
     private _aluMem: FunctionalUnit[];
 
@@ -50,11 +50,10 @@ export class Superescalar extends Machine {
         }
         this.reorderBuffer = new Array();
         this.reorderBufferSize = total;
-        this.prefetchUnit = new Queue<PrefetchEntry>();
+        this.prefetchUnit = new Array();
         this.decoder = new Queue<DecoderEntry>();
 
         this.decoder.init(this.issue);
-        this.prefetchUnit.init(2 * this.issue);
         this._code = null;
 
         this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
@@ -81,7 +80,6 @@ export class Superescalar extends Machine {
         }
         this.reorderBuffer = new Array();
         this.decoder.init(this.issue);
-        this.prefetchUnit.init(2 * this.issue);
         this._code = null;
 
         this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
@@ -94,7 +92,7 @@ export class Superescalar extends Machine {
     }
 
     ticPrefetch(): number {
-        while (!this.prefetchUnit.isFull() && (this.pc < this.code.lines)) {
+        while ((this.prefetchUnit.length < this.issue * 2) && (this.pc < this.code.lines)) {
             let aux: PrefetchEntry = new PrefetchEntry();
             // Importante: Hago una copia de la instrucción original para distinguir
             // las distintas apariciones de una misma inst.
@@ -110,9 +108,9 @@ export class Superescalar extends Machine {
             } else {
                 this.pc++;
             }
-            this.prefetchUnit.add(aux);
+            this.prefetchUnit.push(aux);
         }
-        return this.prefetchUnit.getCount();
+        return this.prefetchUnit.length;
     }
 
     public getReserveStationSize(type: FunctionalUnitType): number {
@@ -120,9 +118,8 @@ export class Superescalar extends Machine {
     }
 
     ticDecoder(): number {
-        for (let i = this.prefetchUnit.first; !this.decoder.isFull() && i !== this.prefetchUnit.end(); i = this.prefetchUnit.nextIterator(i)) {
-            let aux: PrefetchEntry = this.prefetchUnit.elements[i];
-            this.prefetchUnit.remove(i);
+        while (!this.decoder.isFull() && this.prefetchUnit.length > 0) {
+            let aux: PrefetchEntry = this.prefetchUnit.shift();
             let newDecoderEntry = new DecoderEntry();
             newDecoderEntry.instruction = aux.instruction;
             this.decoder.add(newDecoderEntry);
@@ -544,11 +541,10 @@ export class Superescalar extends Machine {
 
             // Clean prefetch, decoder and reorder buffer, the simplest way is
             // to rebuild the objects
-            this.prefetchUnit = new Queue<PrefetchEntry>();
+            this.prefetchUnit = new Array();
             this.decoder = new Queue<DecoderEntry>();
             this.reorderBuffer = new Array();
             this.decoder.init(this.issue);
-            this.prefetchUnit.init(2 * this.issue);
 
             // Clean the structures related to the registers
             this.ROBGpr.fill(-1);
@@ -664,8 +660,8 @@ export class Superescalar extends Machine {
             (commit === CommitStatus.SUPER_COMMITEND)) {
             return SuperescalarStatus.SUPER_ENDEXE;
         }
-        for (let i = this.prefetchUnit.first; i !== this.prefetchUnit.last; i = this.prefetchUnit.nextIterator(i)) {
-            if (this.prefetchUnit.elements[i].instruction.breakPoint) {
+        for (let i = 0; i < this.prefetchUnit.length; i++) {
+            if (this.prefetchUnit[i].instruction.breakPoint) {
                 this.status.breakPoint = true;
                 return SuperescalarStatus.SUPER_BREAKPOINT;
             }
@@ -738,11 +734,11 @@ export class Superescalar extends Machine {
         this._reorderBuffer = value;
     }
 
-    public get prefetchUnit(): Queue<PrefetchEntry> {
+    public get prefetchUnit(): PrefetchEntry[] {
         return this._prefetchUnit;
     }
 
-    public set prefetchUnit(value: Queue<PrefetchEntry>) {
+    public set prefetchUnit(value: PrefetchEntry[]) {
         this._prefetchUnit = value;
     }
 
