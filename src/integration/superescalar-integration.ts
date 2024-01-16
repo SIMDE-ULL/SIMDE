@@ -81,7 +81,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                             size: this.superescalar.getReserveStationSize(5)
                         }]
                     ),
-                    nextReorderBufferMapperCycle([this.superescalar.ROBGpr, this.superescalar.ROBFpr]),
+                    nextReorderBufferMapperCycle([this.superescalar.reorderBuffer.getVisualRegisterMap(false), this.superescalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superescalar.reorderBuffer),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
                     nextMemoryCycle(this.superescalar.memory.data),
@@ -219,7 +219,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     colorCell = (instructionId, color) => {
-        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
+        this.superescalar.reorderBuffer.getVisualData().filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
         this.superescalar.reserveStationEntry = this.superescalar.reserveStationEntry.map(ree => ree.map(reserveStationEntry => {
             if (reserveStationEntry.instruction.id === +instructionId) {
                 reserveStationEntry.instruction.color = color.hex;
@@ -237,7 +237,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         }));
         store.dispatch(
             batchActions(
-                nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
+                nextReorderBufferCycle(this.superescalar.reorderBuffer),
                 nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                 nextReserveStationCycle(
                     [{

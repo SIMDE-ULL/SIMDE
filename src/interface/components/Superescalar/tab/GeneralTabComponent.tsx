@@ -13,12 +13,6 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { superescalarLoad } from '../../../actions';
-import {
-    addRobFprInterval,
-    removeRobFprInterval,
-    addRobGprInterval,
-    removeRobGprInterval
-} from '../../../actions/intervals-actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -56,9 +50,6 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ROBMapperComponent
                                     title="ROB<->GPR"
                                     data={this.props.ROBGpr.data}
-                                    visibleRange={
-                                        this.props.ROBGpr.visibleRangeValues
-                                    }
                                     addInterval={
                                         this.props.actions.addRobGprInterval
                                     }
@@ -71,9 +62,6 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ROBMapperComponent
                                     title="ROB<->FPR"
                                     data={this.props.ROBFpr.data}
-                                    visibleRange={
-                                        this.props.ROBFpr.visibleRangeValues
-                                    }
                                     addInterval={
                                         this.props.actions.addRobFprInterval
                                     }
@@ -236,10 +224,6 @@ const mapDispatchToProps = dispatch => {
         actions: bindActionCreators(
             {
                 superescalarLoad,
-                addRobFprInterval,
-                removeRobFprInterval,
-                addRobGprInterval,
-                removeRobGprInterval
             },
             dispatch
         )

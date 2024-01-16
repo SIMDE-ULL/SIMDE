@@ -17,10 +17,6 @@ import {
 } from '../actions';
 
 import {
-    ADD_ROB_FPR_INTERVAL,
-    ADD_ROB_GPR_INTERVAL,
-    REMOVE_ROB_FPR_INTERVAL,
-    REMOVE_ROB_GPR_INTERVAL,
     ADD_MEMORY_INTERVAL,
     REMOVE_MEMORY_INTERVAL,
     ADD_GENERAL_REGISTERS_INTERVAL,
@@ -68,12 +64,10 @@ export const initialState = {
     reserveStationMemory: [],
     reserveStationJump: [],
     ROBGpr: {
-        data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        data: {}
     },
     ROBFpr: {
-        data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        data: {}
     },
     reorderBuffer: [],
     generalRegisters: {
@@ -150,8 +144,8 @@ export function MachineReducers(state = initialState, action) {
         case NEXT_REORDER_BUFFER_MAPPER_CYCLE:
             return (state = {
                 ...state,
-                ROBGpr: { ...state.ROBGpr, data: [...action.value[0]] },
-                ROBFpr: { ...state.ROBFpr, data: [...action.value[1]] }
+                ROBGpr: { ...state.ROBGpr, data: action.value[0] },
+                ROBFpr: { ...state.ROBFpr, data: action.value[1] }
             });
         case NEXT_REORDER_BUFFER_CYCLE:
             return (state = {
@@ -193,14 +187,6 @@ export function MachineReducers(state = initialState, action) {
                 ...state,
                 colorBasicBlocks: action.value
             });
-        case ADD_ROB_FPR_INTERVAL:
-            return addInterval(state, 'ROBFpr', action.value);
-        case ADD_ROB_GPR_INTERVAL:
-            return addInterval(state, 'ROBGpr', action.value);
-        case REMOVE_ROB_FPR_INTERVAL:
-            return removeInterval(state, 'ROBFpr', action.value);
-        case REMOVE_ROB_GPR_INTERVAL:
-            return removeInterval(state, 'ROBGpr', action.value);
         case ADD_MEMORY_INTERVAL:
             return addInterval(state, 'memory', action.value);
         case REMOVE_MEMORY_INTERVAL:

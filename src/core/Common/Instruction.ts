@@ -1,4 +1,4 @@
-import { OpcodesNames } from './Opcodes';
+import { OpcodesNames, Opcodes } from './Opcodes';
 
 export class Instruction {
     protected _id: number;
@@ -45,6 +45,60 @@ export class Instruction {
 
     getOperand(index: number): number {
         return this._operands[index];
+    }
+
+    /**
+     * isJumpInstruction - this method checks if the instruction is a jump instruction
+     */
+    public isJumpInstruction(): boolean {
+        return this.opcode === Opcodes.BNE || this.opcode === Opcodes.BEQ || this.opcode === Opcodes.BGT;
+    }
+
+    /**
+     * isStoreInstruction - this method checks if the instruction that stores from memory
+     */
+    public isStoreInstruction(): boolean {
+        return this.opcode === Opcodes.SW || this.opcode === Opcodes.SF;
+    }
+
+    /**
+     * isRegisterInstruction - this method checks if the instruction writes to a register
+     */
+    public isRegisterInstruction(): boolean {
+        return !this.isJumpInstruction() && !this.isStoreInstruction() && this.opcode !== Opcodes.NOP && this.opcode !== Opcodes.OPERROR;
+    }
+
+    /**
+     * isDestinyRegisterFloat
+     */
+    public isDestinyRegisterFloat(): boolean {
+        return this.opcode === Opcodes.ADDF || this.opcode === Opcodes.SUBF || this.opcode === Opcodes.MULTF || this.opcode === Opcodes.LF || this.opcode === Opcodes.SF;
+    }
+
+    /**
+     * getDestinyRegister - this method returns the destiny register of the instruction or -1 if it doesn't have one
+     */
+    public getDestinyRegister(): number {
+        switch (this.opcode) {
+            case Opcodes.ADD:
+            case Opcodes.SUB:
+            case Opcodes.MULT:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV:
+            case Opcodes.ADDI:
+            case Opcodes.ADDF:
+            case Opcodes.SUBF:
+            case Opcodes.MULTF:
+            case Opcodes.LW:
+            case Opcodes.LF:
+                return this.operands[0];
+            default:
+                return -1;
+        }
     }
 
     public get id(): number {
