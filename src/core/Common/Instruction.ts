@@ -55,6 +55,13 @@ export class Instruction {
     }
 
     /**
+     * isLoadInstruction - this method checks if the instruction that loads from memory
+     */
+    public isLoadInstruction() {
+        return this.opcode === Opcodes.LW || this.opcode === Opcodes.LF;
+    }
+
+    /**
      * isStoreInstruction - this method checks if the instruction that stores from memory
      */
     public isStoreInstruction(): boolean {
@@ -96,6 +103,123 @@ export class Instruction {
             case Opcodes.LW:
             case Opcodes.LF:
                 return this.operands[0];
+            default:
+                return -1;
+        }
+    }
+
+    /**
+     * isFirstOperandFloat
+     */
+    public isFirstOperandFloat(): boolean {
+        return this.opcode === Opcodes.ADDF || this.opcode === Opcodes.SUBF || this.opcode === Opcodes.MULTF || this.opcode === Opcodes.SF;
+    }
+
+    /**
+     * getFirstOperandRegister - this method returns the frist operand register of the instruction or -1 if it doesn't have one
+     */
+    public getFirstOperandRegister(): number {
+        switch (this.opcode) {
+            case Opcodes.ADD:
+            case Opcodes.SUB:
+            case Opcodes.MULT:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV:
+            case Opcodes.ADDI:
+            case Opcodes.ADDF:
+            case Opcodes.SUBF:
+            case Opcodes.MULTF:
+                return this.operands[1];
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.BEQ:
+            case Opcodes.BNE:
+            case Opcodes.BGT:
+                return this.operands[0];
+            default:
+                return -1;
+        }
+    }
+
+    /**
+     * isSecondOperandFloat
+     */
+    public isSecondOperandFloat(): boolean {
+        return this.opcode === Opcodes.ADDF || this.opcode === Opcodes.SUBF || this.opcode === Opcodes.MULTF || this.opcode === Opcodes.SF || this.opcode === Opcodes.LF;
+    }
+
+    /**
+     * getSecondOperandRegister - this method returns the second operand register of the instruction or -1 if it doesn't have one
+     */
+    public getSecondOperandRegister(): number {
+        switch (this.opcode) {
+            case Opcodes.ADD:
+            case Opcodes.SUB:
+            case Opcodes.MULT:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.NOR:
+            case Opcodes.XOR:
+            case Opcodes.SLLV:
+            case Opcodes.SRLV:
+            case Opcodes.ADDF:
+            case Opcodes.SUBF:
+            case Opcodes.MULTF:
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.LW:
+            case Opcodes.LF:
+                return this.operands[2];
+            case Opcodes.BEQ:
+            case Opcodes.BNE:
+            case Opcodes.BGT:
+                return this.operands[1];
+
+            default:
+                return -1;
+        }
+    }
+
+    /**
+     * getAddressOperand - this method returns the address operand of the instruction or -1 if it doesn't have one
+     */
+    public getAddressOperand(): number {
+        switch (this.opcode) {
+            case Opcodes.SW:
+            case Opcodes.SF:
+            case Opcodes.LW:
+            case Opcodes.LF:
+                return this.operands[1];
+            case Opcodes.BEQ:
+            case Opcodes.BNE:
+            case Opcodes.BGT:
+                return this.operands[2];
+            default:
+                return -1;
+        }
+    }
+
+    /**
+     * hasImmediateOperand - this method checks if the instruction has an immediate operand
+     */
+    public hasImmediateOperand(): boolean {
+        return this.opcode === Opcodes.ADDI || this.opcode === Opcodes.LW || this.opcode === Opcodes.LF;
+    }
+
+    /**
+     * getImmediateOperand - this method returns the immediate operand of the instruction or -1 if it doesn't have one
+     */
+    public getImmediateOperand(): number {
+        switch (this.opcode) {
+            case Opcodes.ADDI:
+                return this.operands[2];
+            case Opcodes.LW:
+            case Opcodes.LF:
+                return this.operands[1];
             default:
                 return -1;
         }
