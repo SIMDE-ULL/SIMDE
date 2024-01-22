@@ -57,27 +57,27 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                     nextReserveStationCycle(
                         [{
-                            data: this.superescalar.reserveStationEntry[0],
+                            data: this.superescalar.getReserveStation(0).getVisualData(),
                             size: this.superescalar.getReserveStationSize(0)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[1],
+                            data: this.superescalar.getReserveStation(1).getVisualData(),
                             size: this.superescalar.getReserveStationSize(1)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[2],
+                            data: this.superescalar.getReserveStation(2).getVisualData(),
                             size: this.superescalar.getReserveStationSize(2)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[3],
+                            data: this.superescalar.getReserveStation(3).getVisualData(),
                             size: this.superescalar.getReserveStationSize(3)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[4],
+                            data: this.superescalar.getReserveStation(4).getVisualData(),
                             size: this.superescalar.getReserveStationSize(4)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[5],
+                            data: this.superescalar.getReserveStation(5).getVisualData(),
                             size: this.superescalar.getReserveStationSize(5)
                         }]
                     ),

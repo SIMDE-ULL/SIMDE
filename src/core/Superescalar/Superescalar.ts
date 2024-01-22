@@ -20,7 +20,7 @@ export class Superescalar extends Machine {
     private _issue: number;
     private _code: Code;
 
-    private _reserveStations: Record<FunctionalUnitType, ReserveStation>;
+    private _reserveStations: Map<FunctionalUnitType, ReserveStation>;
     private _reorderBuffer: ReorderBuffer;
     private _prefetchUnit: PrefetchEntry[];
     private _decoder: DecoderEntry[];
@@ -33,6 +33,7 @@ export class Superescalar extends Machine {
         this.issue = Superescalar.ISSUE_DEF;
 
         this.jumpPrediction = new Array(Superescalar.PREDTABLESIZE).fill(0);
+        this._reserveStations = new Map<FunctionalUnitType, ReserveStation>();
         let total = 0; //  total ROB size
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             let size = this.getReserveStationSize(i);
@@ -156,7 +157,7 @@ export class Superescalar extends Machine {
         // check were the value of the second operand is
         let secondOperandReg = instruction.getSecondOperandRegister();
         if (secondOperandReg !== -1) {
-            let [value, isROBRef] = this.getRegisterValueOrROBRef(firstOperandReg, instruction.isFirstOperandFloat());
+            let [value, isROBRef] = this.getRegisterValueOrROBRef(secondOperandReg, instruction.isSecondOperandFloat());
             if (isROBRef) {
                 this._reserveStations[type].setSecondOperandReference(instrRef, value);
             } else {
@@ -172,7 +173,7 @@ export class Superescalar extends Machine {
 
         // move the value of the address to the reserve station, if it has one
         if (instruction.getAddressOperand() !== -1) {
-            this._reserveStations[type].setAddressOperand(instruction.getAddressOperand());
+            this._reserveStations[type].setAddressOperand(instrRef, instruction.getAddressOperand());
         }
 
         // set the destination register as busy, if it has one
@@ -222,7 +223,13 @@ export class Superescalar extends Machine {
             // Check if the instruction is a store and skip it
             // TODO: dont do this?
             if (instruction.isStoreInstruction()) {
-                continue;
+                if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
+                    // assosiate the instruction with the address ALU, 
+                    // so their address can be calculated
+                    this._reserveStations[type].associateAddressALU(instrRef, num, this.aluMem[num].fillFlow(instruction));
+                    this._reorderBuffer.executeInstruction(instrROBRef);
+                    break;
+                }
             }
 
             // if it is a load check that is really ready
@@ -230,7 +237,11 @@ export class Superescalar extends Machine {
             // or there is an store pending on that address
             if (instruction.isLoadInstruction()) {
                 if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
-                    continue;
+                    // assosiate the instruction with the address ALU, 
+                    // so their address can be calculated
+                    this._reserveStations[type].associateAddressALU(instrRef, num, this.aluMem[num].fillFlow(instruction));
+                    this._reorderBuffer.executeInstruction(instrROBRef);
+                    break;
                 }
                 if (this._reorderBuffer.hasPreviousStores(instrROBRef)) {
                     continue;
@@ -242,6 +253,7 @@ export class Superescalar extends Machine {
             // and set the instruction as executing in the reorder buffer
             this._reserveStations[type].associateFU(instrRef, num, this.functionalUnit[type][num].fillFlow(instruction));
             this._reorderBuffer.executeInstruction(instrROBRef);
+            break; // only execute one instruction per cycle
         }
     }
 
@@ -254,41 +266,23 @@ export class Superescalar extends Machine {
                 }
             }
         }
-        // Steb b of address calculation
-        // Now it's time to gi through the FU of Address Calc
-        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            if (this.aluMem[i].getTopInstruction() != null) {
-                // Look the entry of the Reserve station that matchs this instruction
-                let j = 0;
-                while ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum !== (this.functionalUnitNumbers[FunctionalUnitType.MEMORY] + i))
-                    || (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos !== this.aluMem[i].getLast())) {
-                    j++;
-                }
 
-                let address = this.reserveStationEntry[FunctionalUnitType.MEMORY][j].Vk + this.reserveStationEntry[FunctionalUnitType.MEMORY][j].A;
-                this._reorderBuffer.writeResultAddress(this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB, address);
-                this.reserveStationEntry[FunctionalUnitType.MEMORY][j].A = address;
-                this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum = -1; // Vuelve a no tener una UF asociada
-            }
-            this.aluMem[i].tic();
-        }
-        // Step a of address calculation
-        // Fil the ALU of address calculations related to this FU
+        // Go through all the Address ALU
         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            let j = 0;
-            for (; j !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length; j++) {
-                // Operand value available AND address not calculated yet AND is being calculated right now
-                if ((this.reserveStationEntry[FunctionalUnitType.MEMORY][j].Qk === -1)
-                    && (!this._reorderBuffer.hasResultAddress(this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB))
-                    && (this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum === -1)) {
-                    break;
-                }
+            let inst = this.aluMem[i].getTopInstruction();
+            if (inst != null) {
+                // if an instruction is ready, write the result address to the reorder buffer and reserve station
+                let instRef = this._reserveStations[FunctionalUnitType.MEMORY].getFUInstruction(i, this.aluMem[i].getLast(), true);
+                let instROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instRef);
+                let baseAddress = this._reserveStations[FunctionalUnitType.MEMORY].getAddressOperand(instRef);
+                let offset = this._reserveStations[FunctionalUnitType.MEMORY].getSecondOperandValue(instRef);
+                let address = baseAddress + offset;
+
+                this._reorderBuffer.writeResultAddress(instROBRef, address);
+                this._reserveStations[FunctionalUnitType.MEMORY].setAddressOperand(instRef, address);
             }
-            if (j !== this.reserveStationEntry[FunctionalUnitType.MEMORY].length) {
-                this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUNum = i + this.functionalUnitNumbers[FunctionalUnitType.MEMORY];  // Así las distingo de las UF de Memoria
-                this.reserveStationEntry[FunctionalUnitType.MEMORY][j].FUPos = this.aluMem[i].fillFlow(this.reserveStationEntry[FunctionalUnitType.MEMORY][j].instruction);
-                this._reorderBuffer.executeInstruction(this.reserveStationEntry[FunctionalUnitType.MEMORY][j].ROB);
-            }
+
+            this.aluMem[i].tic();
         }
     }
 
@@ -376,6 +370,7 @@ export class Superescalar extends Machine {
         // so here we are doing the execution stage of the stores. And also, we are writing the result of all the stores at the same time with no limits
         // why? because potatos
         let readyLoadsRefs = this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions();
+        let refsToRemove = new Array<number>();
         for (let instrRef of readyLoadsRefs) {
             let instrROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instrRef);
             let instruction = this._reorderBuffer.getInstruction(instrROBRef);
@@ -388,8 +383,12 @@ export class Superescalar extends Machine {
 
                 // write the result to the ROB and remove the instruction from the reserve station
                 this._reorderBuffer.writeResultValue(instrROBRef, this._reserveStations[FunctionalUnitType.MEMORY].getFirstOperandValue(instrRef));
-                this._reserveStations[FunctionalUnitType.MEMORY].removeInstruction(instrRef);
+                //this._reserveStations[FunctionalUnitType.MEMORY].removeInstruction(instrRef);
+                refsToRemove.push(instrRef);
             }
+        }
+        for (let instrRef of refsToRemove) {
+            this._reserveStations[FunctionalUnitType.MEMORY].removeInstruction(instrRef);
         }
 
         // Now it's time to retrieve all the results from the UFs
@@ -424,7 +423,7 @@ export class Superescalar extends Machine {
             for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
                 for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
                     this.functionalUnit[i][j].clean();
-                    this._reserveStations[i].clean();
+                    this._reserveStations[i].clear();
                 }
                 total += this.getReserveStationSize(i);
             }
@@ -549,16 +548,12 @@ export class Superescalar extends Machine {
         this._issue = value;
     }
 
-    public get reserveStationEntry(): ReserveStationEntry[][] {
-        return this._reserveStationEntry;
-    }
-
-    public set reserveStationEntry(value: ReserveStationEntry[][]) {
-        this._reserveStationEntry = value;
-    }
-
     public get reorderBuffer(): ReorderBuffer {
         return this._reorderBuffer;
+    }
+
+    public getReserveStation(type: FunctionalUnitType): ReserveStation {
+        return this._reserveStations[type];
     }
 
     public get prefetchUnit(): PrefetchEntry[] {

@@ -10,6 +10,7 @@ export class ReserveStationEntry {
     private _ROB: number;
     private _FUNum: number;
     private _FUPos: number;
+    private _FUIsAddALU: boolean;
 
     public get instruction(): Instruction {
         return this._instruction;
@@ -81,6 +82,14 @@ export class ReserveStationEntry {
 
     public set FUPos(value: number) {
         this._FUPos = value;
+    }
+
+    public get FUIsAddALU(): boolean {
+        return this._FUIsAddALU;
+    }
+
+    public set FUIsAddALU(value: boolean) {
+        this._FUIsAddALU = value;
     }
 
 }

@@ -34,6 +34,7 @@ export class ReserveStation {
         entry.instruction = instruction;
         entry.FUNum = -1;
         entry.FUPos = -1;
+        entry.FUIsAddALU = false;
         entry.ROB = -1;
         entry.A = -1;
         entry.Qj = -1;
@@ -97,10 +98,16 @@ export class ReserveStation {
     }
 
     /**
-     * setAddressOperand - sets the address operand of the instruction
+     * setAddressOperand - sets the address operand of the instruction, this will deasociate it from an Address ALU if it was associated
      */
     public setAddressOperand(entryRef: number, address: number) {
         this._entries[entryRef].A = address;
+
+        if (this._entries[entryRef].FUIsAddALU) {
+            this._entries[entryRef].FUNum = -1;
+            this._entries[entryRef].FUPos = -1;
+            this._entries[entryRef].FUIsAddALU = false;
+        }
     }
 
     /**
@@ -147,7 +154,7 @@ export class ReserveStation {
     public getReadyInstructions(): number[] {
         let readyInstructions = new Array();
         for (let i = 0; i < this._entries.length; i++) {
-            if (this._entries[i].Qj === -1 && this._entries[i].Qk === -1 && this._entries[i].FUNum !== -1) {
+            if (this._entries[i].Qj === -1 && this._entries[i].Qk === -1 && this._entries[i].FUNum === -1) {
                 readyInstructions.push(i);
             }
         }
@@ -159,20 +166,28 @@ export class ReserveStation {
      */
     public associateFU(entryRef: number, fuNum: number, fuPos: number) {
         this._entries[entryRef].FUNum = fuNum;
-        this._entries[entryRef].FUPos = fuPos;   
+        this._entries[entryRef].FUPos = fuPos;
+    }
+
+    /**
+     * associateAddressALU - associates a FU to the instruction
+     */
+    public associateAddressALU(entryRef: number, fuNum: number, fuPos: number) {
+        this._entries[entryRef].FUNum = fuNum;
+        this._entries[entryRef].FUPos = fuPos;
+        this._entries[entryRef].FUIsAddALU = true;
     }
 
     /**
      * getFUInstruction - returns the reference to the instruction that is associated to the FU
      */
-    public getFUInstruction(fuNum: number, fuPos: number): number {
+    public getFUInstruction(fuNum: number, fuPos: number, isAddressALU: boolean = false): number {
         for (let i = 0; i < this._entries.length; i++) {
-            if (this._entries[i].FUNum === fuNum && this._entries[i].FUPos === fuPos) {
+            if (this._entries[i].FUNum === fuNum && this._entries[i].FUPos === fuPos && ((isAddressALU && this._entries[i].FUIsAddALU) || (!isAddressALU && !this._entries[i].FUIsAddALU))) {
                 return i;
             }
         }
         return -1;
-        
     }
 
     /**
@@ -193,5 +208,9 @@ export class ReserveStation {
                 entry.Qk--;
             }
         }
+    }
+
+    public getVisualData(): ReserveStationEntry[] {
+        return this._entries;
     }
 }

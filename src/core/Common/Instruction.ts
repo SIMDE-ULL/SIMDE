@@ -149,7 +149,7 @@ export class Instruction {
      * isSecondOperandFloat
      */
     public isSecondOperandFloat(): boolean {
-        return this.opcode === Opcodes.ADDF || this.opcode === Opcodes.SUBF || this.opcode === Opcodes.MULTF || this.opcode === Opcodes.SF || this.opcode === Opcodes.LF;
+        return this.opcode === Opcodes.ADDF || this.opcode === Opcodes.SUBF || this.opcode === Opcodes.MULTF;
     }
 
     /**
@@ -207,7 +207,7 @@ export class Instruction {
      * hasImmediateOperand - this method checks if the instruction has an immediate operand
      */
     public hasImmediateOperand(): boolean {
-        return this.opcode === Opcodes.ADDI || this.opcode === Opcodes.LW || this.opcode === Opcodes.LF;
+        return this.opcode === Opcodes.ADDI;
     }
 
     /**
@@ -217,9 +217,6 @@ export class Instruction {
         switch (this.opcode) {
             case Opcodes.ADDI:
                 return this.operands[2];
-            case Opcodes.LW:
-            case Opcodes.LF:
-                return this.operands[1];
             default:
                 return -1;
         }
