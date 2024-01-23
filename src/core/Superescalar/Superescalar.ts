@@ -85,9 +85,9 @@ export class Superescalar extends Machine {
             aux.instruction = new Instruction();
             aux.instruction.copy(this.code.instructions[this.pc]);
             if (((aux.instruction.opcode === Opcodes.BEQ
-            || aux.instruction.opcode === Opcodes.BNE
-            || aux.instruction.opcode === Opcodes.BGT)
-            && this.prediction(this.pc))) {
+                || aux.instruction.opcode === Opcodes.BNE
+                || aux.instruction.opcode === Opcodes.BGT)
+                && this.prediction(this.pc))) {
                 //this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
                 // The new parser just put the line number instead of the basic block, it is more simple
                 this.pc = aux.instruction.getOperand(2);
@@ -114,7 +114,7 @@ export class Superescalar extends Machine {
     }
 
     getRegisterValueOrROBRef(register: number, floatingPoint: boolean): [number, boolean] {
-        let isROBRef = false; 
+        let isROBRef = false;
         let result = 0; // Value or Rob index
 
         // Check if the value is available in the register file or ROB
@@ -123,7 +123,7 @@ export class Superescalar extends Machine {
         } else if (!floatingPoint && !this._gpr.busy[register]) {
             result = this._gpr.content[register];
         } else if (this._reorderBuffer.isRegisterValueReady(register, floatingPoint)) {
-            result = this._reorderBuffer.getRegisterValue(register, floatingPoint); 
+            result = this._reorderBuffer.getRegisterValue(register, floatingPoint);
         } else {
             // The value is still being calculated
             isROBRef = true;
@@ -192,7 +192,7 @@ export class Superescalar extends Machine {
         let i = 0;
 
         while (this.decoder.length > 0) {
-            let fuType: FunctionalUnitType =  this.code.getFunctionalUnitType(this.decoder[0].instruction.id);
+            let fuType: FunctionalUnitType = this.code.getFunctionalUnitType(this.decoder[0].instruction.id);
 
             // Check if there is space in the reorder buffer and the reserve station
             if (this._reorderBuffer.isFull()) {
@@ -223,13 +223,7 @@ export class Superescalar extends Machine {
             // Check if the instruction is a store and skip it
             // TODO: dont do this?
             if (instruction.isStoreInstruction()) {
-                if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
-                    // assosiate the instruction with the address ALU, 
-                    // so their address can be calculated
-                    this._reserveStations[type].associateAddressALU(instrRef, num, this.aluMem[num].fillFlow(instruction));
-                    this._reorderBuffer.executeInstruction(instrROBRef);
-                    break;
-                }
+                continue;
             }
 
             // if it is a load check that is really ready
@@ -237,11 +231,7 @@ export class Superescalar extends Machine {
             // or there is an store pending on that address
             if (instruction.isLoadInstruction()) {
                 if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
-                    // assosiate the instruction with the address ALU, 
-                    // so their address can be calculated
-                    this._reserveStations[type].associateAddressALU(instrRef, num, this.aluMem[num].fillFlow(instruction));
-                    this._reorderBuffer.executeInstruction(instrROBRef);
-                    break;
+                    continue;
                 }
                 if (this._reorderBuffer.hasPreviousStores(instrROBRef)) {
                     continue;
@@ -267,7 +257,7 @@ export class Superescalar extends Machine {
             }
         }
 
-        // Go through all the Address ALU
+        // Go through all the Address ALU and execute the address calculus
         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
             let inst = this.aluMem[i].getTopInstruction();
             if (inst != null) {
@@ -284,6 +274,25 @@ export class Superescalar extends Machine {
 
             this.aluMem[i].tic();
         }
+
+        // Go again through all the memory reserve stations but this time sending the instructions to the address ALU
+        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            let readyInstsRefs = this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions(true);
+            for (let instrRef of readyInstsRefs) {
+                let instrROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instrRef);
+                let instruction = this._reorderBuffer.getInstruction(instrROBRef);
+
+                if (instruction.isStoreInstruction() || instruction.isLoadInstruction()) {
+                    if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
+                        // assosiate the instruction with the address ALU, 
+                        // so their address can be calculated
+                        this._reserveStations[FunctionalUnitType.MEMORY].associateAddressALU(instrRef, i, this.aluMem[i].fillFlow(instruction));
+                        this._reorderBuffer.executeInstruction(instrROBRef);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     writeInstruction(type: FunctionalUnitType, num: number) {
@@ -297,56 +306,56 @@ export class Superescalar extends Machine {
             let opcode = inst.opcode;
             /* tslint:disable:ter-indent */
             switch (opcode) {
-            case Opcodes.ADD:
-            case Opcodes.ADDI:
-            case Opcodes.ADDF:
-                resul = firstValue + secondValue;
-                break;
-            case Opcodes.SUB:
-            case Opcodes.SUBF:
-                resul = firstValue - secondValue;
-                break;
-            case Opcodes.OR:
-                resul = firstValue | secondValue;
-                break;
-            case Opcodes.AND:
-                resul = firstValue & secondValue;
-                break;
-            case Opcodes.XOR:
-                resul = firstValue ^ secondValue;
-                break;
-            case Opcodes.NOR:
-                resul = ~(firstValue | secondValue);
-                break;
-            case Opcodes.SRLV:
-                resul = firstValue >> secondValue;
-                break;
-            case Opcodes.SLLV:
-                resul = firstValue << secondValue;
-                break;
-            case Opcodes.MULT:
-            case Opcodes.MULTF:
-                resul = firstValue * secondValue;
-                break;
-            // En esta fase no se hace nada con los STORES
-            case Opcodes.LW:
-            case Opcodes.LF:
-                let a = this.memory.getDatum(this._reserveStations[type].getAddressOperand(instRef));
-                resul = a.datum;
-                if (!a.got) {
-                    this.functionalUnit[type][num].status.stall = this.memoryFailLatency - this.functionalUnit[type][num].latency;
-                }
-                break;
-            case Opcodes.BEQ:
-                resul = (firstValue === secondValue) ? 1 : 0;
-                break;
-            case Opcodes.BNE:
-                resul = (firstValue !== secondValue) ? 1 : 0;
-                break;
-            case Opcodes.BGT:
-                resul = (firstValue > secondValue) ? 1 : 0;
-                break;
-            /* tslint:enable:ter-indent */
+                case Opcodes.ADD:
+                case Opcodes.ADDI:
+                case Opcodes.ADDF:
+                    resul = firstValue + secondValue;
+                    break;
+                case Opcodes.SUB:
+                case Opcodes.SUBF:
+                    resul = firstValue - secondValue;
+                    break;
+                case Opcodes.OR:
+                    resul = firstValue | secondValue;
+                    break;
+                case Opcodes.AND:
+                    resul = firstValue & secondValue;
+                    break;
+                case Opcodes.XOR:
+                    resul = firstValue ^ secondValue;
+                    break;
+                case Opcodes.NOR:
+                    resul = ~(firstValue | secondValue);
+                    break;
+                case Opcodes.SRLV:
+                    resul = firstValue >> secondValue;
+                    break;
+                case Opcodes.SLLV:
+                    resul = firstValue << secondValue;
+                    break;
+                case Opcodes.MULT:
+                case Opcodes.MULTF:
+                    resul = firstValue * secondValue;
+                    break;
+                // En esta fase no se hace nada con los STORES
+                case Opcodes.LW:
+                case Opcodes.LF:
+                    let a = this.memory.getDatum(this._reserveStations[type].getAddressOperand(instRef));
+                    resul = a.datum;
+                    if (!a.got) {
+                        this.functionalUnit[type][num].status.stall = this.memoryFailLatency - this.functionalUnit[type][num].latency;
+                    }
+                    break;
+                case Opcodes.BEQ:
+                    resul = (firstValue === secondValue) ? 1 : 0;
+                    break;
+                case Opcodes.BNE:
+                    resul = (firstValue !== secondValue) ? 1 : 0;
+                    break;
+                case Opcodes.BGT:
+                    resul = (firstValue > secondValue) ? 1 : 0;
+                    break;
+                /* tslint:enable:ter-indent */
             }
             // Finish the instruction execution
             if (this.functionalUnit[type][num].status.stall === 0) {

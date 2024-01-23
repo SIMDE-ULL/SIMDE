@@ -151,10 +151,10 @@ export class ReserveStation {
     /**
      * getReadyInstructions - returns the references to the instructions that are ready to be executed and has no FU associated
      */
-    public getReadyInstructions(): number[] {
+    public getReadyInstructions(ignoreFirstOperand: boolean = false): number[] {
         let readyInstructions = new Array();
         for (let i = 0; i < this._entries.length; i++) {
-            if (this._entries[i].Qj === -1 && this._entries[i].Qk === -1 && this._entries[i].FUNum === -1) {
+            if (((!ignoreFirstOperand && this._entries[i].Qj === -1) || ignoreFirstOperand) && this._entries[i].Qk === -1 && this._entries[i].FUNum === -1) {
                 readyInstructions.push(i);
             }
         }
