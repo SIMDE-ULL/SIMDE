@@ -85,7 +85,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                             key={'ReorderBuffer' + e.i}
                                         >
                                             <div className="smd-table_cell">
-                                                {e.i}
+                                                {'[' + e.i + ']'}
                                             </div>
                                             <div className="smd-table_cell">
                                                 {e.row.instruction.id}

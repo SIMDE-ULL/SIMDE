@@ -277,7 +277,7 @@ export class Superescalar extends Machine {
 
         // Go again through all the memory reserve stations but this time sending the instructions to the address ALU
         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            let readyInstsRefs = this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions(true);
+            let readyInstsRefs = this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions(true); // we dont need the first operand ready, as we are only calculating the address
             for (let instrRef of readyInstsRefs) {
                 let instrROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instrRef);
                 let instruction = this._reorderBuffer.getInstruction(instrROBRef);

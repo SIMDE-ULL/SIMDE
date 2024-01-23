@@ -1,6 +1,16 @@
 import { ReserveStationEntry } from "./ReserveStationEntry";
 import { Instruction } from '../Common/Instruction';
 
+export interface VisualReserveStationEntry {
+    instruction: { id: string, value: string, color: string };
+    Qj: string;
+    Vj: string;
+    Qk: string;
+    Vk: string;
+    A: string;
+    ROB: string;
+}
+
 export class ReserveStation {
 
     private _entries: ReserveStationEntry[];
@@ -210,7 +220,36 @@ export class ReserveStation {
         }
     }
 
-    public getVisualData(): ReserveStationEntry[] {
-        return this._entries;
+    public getVisualData(): VisualReserveStationEntry[] {
+        return this._entries.map(entry => {
+            let toReturn: VisualReserveStationEntry = {
+                instruction: { id: '', value: '', color: '' },
+                Qj: '',
+                Vj: '',
+                Qk: '',
+                Vk: '',
+                A: '',
+                ROB: ''
+            };
+
+            if (entry != null) {
+                toReturn = {
+                    instruction: { id: '', value: '', color: '' },
+                    Qj: (entry.Qj !== -1)? '[' + entry.Qj + ']' : '',
+                    Vj: (entry.Vj !== -1)? '' + entry.Vj : '',
+                    Qk: (entry.Qk !== -1)? '[' + entry.Qk + ']' : '',
+                    Vk: (entry.Vk !== -1)? '' + entry.Vk : '',
+                    A: (entry.A !== -1)? '#' + entry.A : '',
+                    ROB: '[' + entry.ROB + ']'
+                };
+                if (entry.instruction != null) {
+                    toReturn.instruction.id = '' + entry.instruction.id;
+                    toReturn.instruction.value = entry.instruction.toString();
+                    toReturn.instruction.color = entry.instruction.color;
+                }
+            }
+
+            return toReturn;
+        });
     }
 }

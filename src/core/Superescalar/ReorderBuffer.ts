@@ -1,8 +1,21 @@
 
 import { ReorderBufferEntry } from "./ReorderBufferEntry";
-import { SuperStage } from './SuperescalarEnums';
+import { SuperStage, stageToString } from './SuperescalarEnums';
 import { Instruction } from '../Common/Instruction';
+import { ifError } from "assert";
 
+
+export interface VisualReorderBufferEntry {
+    instruction: {
+        id: string,
+        value: string,
+        color: string
+    },
+    destinyRegister: string,
+    value: string,
+    address: string,
+    superStage: string
+}
 
 // TODO: dont use rob entry pos as a reference to the instruction, use an instruction uid instead?
 export class ReorderBuffer {
@@ -228,11 +241,41 @@ export class ReorderBuffer {
             }
         }
         return false;
-        
+
     }
 
-    public getVisualData(): ReorderBufferEntry[] {
-        return this._queue;
+    public getVisualData(): VisualReorderBufferEntry[] {
+        return this._queue.map(entry => {
+            if (entry != null) {
+                let aux = {
+                    instruction: { id: '', value: '', color: '' },
+                    destinyRegister: (entry.destinyRegister !== -1) ? '' + entry.destinyRegister : '',
+                    value: '' + entry.value,
+                    address: (entry.address !== -1) ? '#' + entry.address : '',
+                    superStage: stageToString(entry.superStage)
+                };
+                if (entry.instruction != null) {
+                    if (entry.destinyRegister !== -1) {
+                        if (entry.instruction.isDestinyRegisterFloat()) {
+                            aux.destinyRegister = 'F' + aux.destinyRegister;
+                        } else {
+                            aux.destinyRegister = 'R' + aux.destinyRegister;
+                        }
+                    }
+                    aux.instruction.id = '' + entry.instruction.id;
+                    aux.instruction.value = entry.instruction.toString();
+                    aux.instruction.color = entry.instruction.color;
+                }
+                return aux;
+            }
+            return {
+                instruction: { id: '', value: '', color: '' },
+                destinyRegister: '',
+                value: '',
+                address: '',
+                superStage: ''
+            };
+        });
     }
 
     public getVisualRegisterMap(isFloat: boolean): { [reg: string]: number } {
@@ -244,6 +287,4 @@ export class ReorderBuffer {
         }
         return visualMap;
     }
-
-
 }

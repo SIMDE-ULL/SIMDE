@@ -219,13 +219,14 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     colorCell = (instructionId, color) => {
-        this.superescalar.reorderBuffer.getVisualData().filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
+        //TODO: redo this
+        /*this.superescalar.reorderBuffer.getVisualData().filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
         this.superescalar.reserveStationEntry = this.superescalar.reserveStationEntry.map(ree => ree.map(reserveStationEntry => {
             if (reserveStationEntry.instruction.id === +instructionId) {
                 reserveStationEntry.instruction.color = color.hex;
             }
             return reserveStationEntry;
-        }));
+        }));*/
         this.superescalar.functionalUnit = this.superescalar.functionalUnit.map(functionalUnit => functionalUnit.map(fu => {
             fu.flow = fu.flow.map(instruction => {
                 if (instruction && instruction.id === +instructionId) {
@@ -241,32 +242,27 @@ export class SuperescalarIntegration extends MachineIntegration {
                 nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                 nextReserveStationCycle(
                     [{
-                        data: this.superescalar.reserveStationEntry[0],
+                        data: this.superescalar.getReserveStation(0).getVisualData(),
                         size: this.superescalar.getReserveStationSize(0)
                     },
-
                     {
-                        data: this.superescalar.reserveStationEntry[1],
+                        data: this.superescalar.getReserveStation(1).getVisualData(),
                         size: this.superescalar.getReserveStationSize(1)
                     },
-
                     {
-                        data: this.superescalar.reserveStationEntry[2],
+                        data: this.superescalar.getReserveStation(2).getVisualData(),
                         size: this.superescalar.getReserveStationSize(2)
                     },
-
                     {
-                        data: this.superescalar.reserveStationEntry[3],
+                        data: this.superescalar.getReserveStation(3).getVisualData(),
                         size: this.superescalar.getReserveStationSize(3)
                     },
-
                     {
-                        data: this.superescalar.reserveStationEntry[4],
+                        data: this.superescalar.getReserveStation(4).getVisualData(),
                         size: this.superescalar.getReserveStationSize(4)
                     },
-
                     {
-                        data: this.superescalar.reserveStationEntry[5],
+                        data: this.superescalar.getReserveStation(5).getVisualData(),
                         size: this.superescalar.getReserveStationSize(5)
                     }]
                 ),
