@@ -52,8 +52,8 @@ export class SuperescalarIntegration extends MachineIntegration {
         store.dispatch(
                 batchActions(
                     nextJumpTableCycle(this.superescalar.jumpPrediction),
-                    nextPrefetchCycle(this.superescalar.prefetchUnit),
-                    nextDecoderCycle(this.superescalar.decoder),
+                    nextPrefetchCycle(this.superescalar.prefetchUnit.getInstructionsIds()),
+                    nextDecoderCycle(this.superescalar.decoder.getInstructionsIds()),
                     nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                     nextReserveStationCycle(
                         [{
