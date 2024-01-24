@@ -6,6 +6,7 @@ import { ReorderBuffer } from "./ReorderBuffer";
 import { PrefetchUnit } from './PrefetchUnit';
 import { ReserveStation } from './ReserveStation';
 import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
+import { JumpPredictor } from './JumpPredictor';
 import { Instruction } from '../Common/Instruction';
 import { CommitStatus, SuperStage, SuperescalarStatus } from './SuperescalarEnums';
 
@@ -25,13 +26,13 @@ export class Superescalar extends Machine {
     private _decoder: PrefetchUnit;
     private _aluMem: FunctionalUnit[];
 
-    private _jumpPrediction: number[];
+    private _jumpPrediction: JumpPredictor;
 
     constructor() {
         super();
         this.issue = Superescalar.ISSUE_DEF;
 
-        this.jumpPrediction = new Array(Superescalar.PREDTABLESIZE).fill(0);
+        this._jumpPrediction = new JumpPredictor(Superescalar.PREDTABLESIZE);
         this._reserveStations = new Map<FunctionalUnitType, ReserveStation>();
         let total = 0; //  total ROB size
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
@@ -57,7 +58,7 @@ export class Superescalar extends Machine {
     init(reset: boolean) {
         super.init(reset);
         // Clean Gpr, Fpr, predSalto
-        this.jumpPrediction.fill(0);
+        this._jumpPrediction.clean();
 
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             this._reserveStations[i].clear();
@@ -82,7 +83,7 @@ export class Superescalar extends Machine {
             // las distintas apariciones de una misma inst.
             let instruction = new Instruction();
             instruction.copy(this.code.instructions[this.pc]);
-            if ((instruction.isJumpInstruction() && this.prediction(this.pc))) {
+            if ((instruction.isJumpInstruction() && this._jumpPrediction.getPrediction(this.pc))) {
                 //this.pc = this.code.getBasicBlockInstruction(aux.instruction.getOperand(2));
                 // The new parser just put the line number instead of the basic block, it is more simple
                 this.pc = instruction.getOperand(2);
@@ -408,8 +409,8 @@ export class Superescalar extends Machine {
     checkJump(instruction: Instruction, executionResult: number): boolean {
         // Check if the prediction was correct
         // Typescript does not support ^ operator for boolean
-        if (+this.prediction(instruction.id) ^ +(!!executionResult)) {
-            this.changePrediction(instruction.id, !!executionResult);
+        if (+this._jumpPrediction.getPrediction(instruction.id) ^ +(!!executionResult)) {
+            this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
             // Change pc
             if (executionResult) {
                 //this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
@@ -443,7 +444,7 @@ export class Superescalar extends Machine {
             this._fpr.setAllBusy(false);
             return false;
         }
-        this.changePrediction(instruction.id, !!executionResult);
+        this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
         return true;
     }
 
@@ -514,23 +515,6 @@ export class Superescalar extends Machine {
         return SuperescalarStatus.SUPER_OK;
     }
 
-    changePrediction(address: number, result: boolean) {
-        address = address % Superescalar.PREDTABLESIZE;
-        /* tslint:disable ter-indent */
-        switch (this.jumpPrediction[address]) {
-            case 0: this.jumpPrediction[address] = (result) ? 1 : 0; break;
-            case 1: this.jumpPrediction[address] = (result) ? 3 : 0; break;
-            case 2: this.jumpPrediction[address] = (result) ? 3 : 0; break;
-            case 3: this.jumpPrediction[address] = (result) ? 3 : 2; break;
-            default: this.jumpPrediction[address] = 0; break;
-        }
-        /* tslint:enable ter-indent */
-    }
-
-    prediction(address: number): boolean {
-        return (this.jumpPrediction[address % Superescalar.PREDTABLESIZE] >= 2);
-    }
-
     public get code(): Code {
         return this._code;
     }
@@ -571,12 +555,8 @@ export class Superescalar extends Machine {
         this._aluMem = value;
     }
 
-    public get jumpPrediction(): number[] {
+    public get jumpPrediction(): JumpPredictor {
         return this._jumpPrediction;
-    }
-
-    public set jumpPrediction(value: number[]) {
-        this._jumpPrediction = value;
     }
 
 }

@@ -29,7 +29,7 @@ test('Speculative execution has no side effects', t => {
     expect(context.machine.getFpr(1)).toBe(0);
 
     // Check jump prediction table
-    expect(context.machine.jumpPrediction[7]).toBe(0);
+    expect(context.machine.jumpPrediction.getPrediction(7)).toBe(false);
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(9);

@@ -235,11 +235,11 @@ export class ReserveStation {
             if (entry != null) {
                 toReturn = {
                     instruction: { id: '', value: '', color: '' },
-                    Qj: (entry.Qj !== -1)? '[' + entry.Qj + ']' : '',
-                    Vj: (entry.Vj !== -1)? '' + entry.Vj : '',
-                    Qk: (entry.Qk !== -1)? '[' + entry.Qk + ']' : '',
-                    Vk: (entry.Vk !== -1)? '' + entry.Vk : '',
-                    A: (entry.A !== -1)? '#' + entry.A : '',
+                    Qj: (entry.Qj !== -1)? '[' + entry.Qj + ']' : '-',
+                    Vj: (entry.Vj !== -1)? '' + entry.Vj : '-',
+                    Qk: (entry.Qk !== -1)? '[' + entry.Qk + ']' : '-',
+                    Vk: (entry.Vk !== -1)? '' + entry.Vk : '-',
+                    A: (entry.A !== -1)? '@' + entry.A : '-',
                     ROB: '[' + entry.ROB + ']'
                 };
                 if (entry.instruction != null) {

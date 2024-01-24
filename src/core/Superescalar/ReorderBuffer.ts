@@ -249,9 +249,9 @@ export class ReorderBuffer {
             if (entry != null) {
                 let aux = {
                     instruction: { id: '', value: '', color: '' },
-                    destinyRegister: (entry.destinyRegister !== -1) ? '' + entry.destinyRegister : '',
+                    destinyRegister: (entry.destinyRegister !== -1) ? '' + entry.destinyRegister : '-',
                     value: '' + entry.value,
-                    address: (entry.address !== -1) ? '#' + entry.address : '',
+                    address: (entry.address !== -1) ? '@' + entry.address : '-',
                     superStage: stageToString(entry.superStage)
                 };
                 if (entry.instruction != null) {

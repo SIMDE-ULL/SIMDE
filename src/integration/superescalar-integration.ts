@@ -51,7 +51,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         // Code should only be setted on the first iteration
         store.dispatch(
                 batchActions(
-                    nextJumpTableCycle(this.superescalar.jumpPrediction),
+                    nextJumpTableCycle(this.superescalar.jumpPrediction.getVisualTable()),
                     nextPrefetchCycle(this.superescalar.prefetchUnit.getInstructionsIds()),
                     nextDecoderCycle(this.superescalar.decoder.getInstructionsIds()),
                     nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
