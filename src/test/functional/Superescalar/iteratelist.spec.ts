@@ -36,9 +36,9 @@ test('recorrelista.pla is executed properly', t => {
 
             // Check that instructions are being executed in the correct Functional Units
             // 13 -> FLOATINGMULTIPLY, 16 -> MEMORY and 12 -> JUMP
-            expect(context.machine.functionalUnit[FunctionalUnitType.FLOATINGMULTIPLY][0].flow.filter(inst => inst !== null && inst.id === 13).length).toBeGreaterThan(0); // Instruction 13 is not at FLOATINGMULTIPLY Functional unit at cycle 40');
-            expect(context.machine.functionalUnit[FunctionalUnitType.MEMORY][0].flow.filter(inst => inst !== null && inst.id === 16).length).toBeGreaterThan(0); // Instruction 16 is not at MEMORY Functional unit at cycle 40');
-            expect(context.machine.functionalUnit[FunctionalUnitType.JUMP][0].flow.filter(inst => inst !== null && inst.id === 12).length).toBeGreaterThan(0); // Instruction 12 is not at JUMP Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitType.FLOATINGMULTIPLY][0].getVisualIds().filter(id => id === 13).length).toBeGreaterThan(0); // Instruction 13 is not at FLOATINGMULTIPLY Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitType.MEMORY][0].getVisualIds().filter(id => id === 16).length).toBeGreaterThan(0); // Instruction 16 is not at MEMORY Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitType.JUMP][0].getVisualIds().filter(id => id === 12).length).toBeGreaterThan(0); // Instruction 12 is not at JUMP Functional unit at cycle 40');
         }
 
         if (context.machine.status.cycle === 60 || context.machine.status.cycle === 70) { // at cycle 70 the jump is still looping

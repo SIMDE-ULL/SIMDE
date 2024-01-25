@@ -108,13 +108,14 @@ export class VLIW extends Machine {
         let stopFlow: boolean = false;
         this.status.cycle++;
 
-        if (this.functionalUnit[FunctionalUnitType.JUMP][0].hasPendingInstruction()) {
+        if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isEmpty()) {
             pending = true;
         }
 
-        if (this.functionalUnit[FunctionalUnitType.JUMP][0].status.stall === 0) {
+        if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isStalled()) {
 
-            let operation: any = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
+            let execution = this.functionalUnit[FunctionalUnitType.JUMP][0].executeReadyInstruction();
+            let operation: any = (execution != null) ? execution.instruction : null;
             if (operation != null) {
                 if (this._predR[operation.getPred()]) {
                     this.pc = this.runJump(operation);
@@ -127,12 +128,13 @@ export class VLIW extends Machine {
         for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
             for (j = 0; j < this._functionalUnitNumbers[i]; j++) {
 
-                if (this.functionalUnit[i][j].hasPendingInstruction()) {
+                if (!this.functionalUnit[i][j].isEmpty()) {
                     pending = true;
                 }
-                if (this._functionalUnit[i][j].status.stall === 0) {
+                if (!this.functionalUnit[i][j].isStalled()) {
 
-                    let operation: any = this.functionalUnit[i][j].getTopInstruction();
+                    let execution = this.functionalUnit[i][j].executeReadyInstruction();
+                    let operation: any = (execution != null) ? execution.instruction : null;
 
                     if (operation != null) {
                         if (this._predR[operation.getPred()]) {
@@ -177,7 +179,7 @@ export class VLIW extends Machine {
                 for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
 
                     let operation = instruction.getOperation(i);
-                    this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].fillFlow(operation);
+                    this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].addInstruction(operation);
 
                     if (operation.opcode === Opcodes.LW) {
                         this._NaTGP[operation.getOperand(0)] = true;
@@ -241,7 +243,7 @@ export class VLIW extends Machine {
             case Opcodes.LW:
                 let datumInteger: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
                 if (!datumInteger.got) {
-                    functionalUnit.status.stall = this._memoryFailLatency - functionalUnit.latency;
+                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
                     this._gpr.setContent(operation.getOperand(0), datumInteger.datum, true);
                     this._NaTGP[operation.getOperand(0)] = false;
@@ -250,7 +252,7 @@ export class VLIW extends Machine {
             case Opcodes.LF:
                 let datumFloat: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
                 if (!datumFloat.got) {
-                    functionalUnit.status.stall = this._memoryFailLatency - functionalUnit.latency;
+                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
                     this._fpr.setContent(operation.getOperand(0), datumFloat.datum, true);
                     this._NaTFP[operation.getOperand(0)] = false;

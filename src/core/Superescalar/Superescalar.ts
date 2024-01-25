@@ -49,9 +49,7 @@ export class Superescalar extends Machine {
         this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
 
         for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
-            this.aluMem[j] = new FunctionalUnit();
-            this.aluMem[j].type = FunctionalUnitType.INTEGERSUM;
-            this.aluMem[j].latency = this.functionalUnitLatencies[FunctionalUnitType.INTEGERSUM];
+            this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM);
         }
     }
 
@@ -68,12 +66,8 @@ export class Superescalar extends Machine {
         this._prefetchUnit.clean();
         this._code = null;
 
-        this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]).fill(new FunctionalUnit());
-
         for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
-            this.aluMem[j] = new FunctionalUnit();
-            this.aluMem[j].type = FunctionalUnitType.INTEGERSUM;
-            this.aluMem[j].latency = this.functionalUnitLatencies[FunctionalUnitType.INTEGERSUM];
+            this.aluMem[j].clean();
         }
     }
 
@@ -235,7 +229,7 @@ export class Superescalar extends Machine {
             // move the instruction to the functional unit,
             // associate it with the reserve station entry 
             // and set the instruction as executing in the reorder buffer
-            this._reserveStations[type].associateFU(instrRef, num, this.functionalUnit[type][num].fillFlow(instruction));
+            this._reserveStations[type].associateFU(instrRef, num, this.functionalUnit[type][num].addInstruction(instruction));
             this._reorderBuffer.executeInstruction(instrROBRef);
             break; // only execute one instruction per cycle
         }
@@ -253,10 +247,11 @@ export class Superescalar extends Machine {
 
         // Go through all the Address ALU and execute the address calculus
         for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-            let inst = this.aluMem[i].getTopInstruction();
-            if (inst != null) {
+            let execution = this.aluMem[i].executeReadyInstruction();
+            if (execution != null) {
                 // if an instruction is ready, write the result address to the reorder buffer and reserve station
-                let instRef = this._reserveStations[FunctionalUnitType.MEMORY].getFUInstruction(i, this.aluMem[i].getLast(), true);
+                let instALURef = execution.ref;
+                let instRef = this._reserveStations[FunctionalUnitType.MEMORY].getFUInstruction(i, instALURef, true);
                 let instROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instRef);
                 let baseAddress = this._reserveStations[FunctionalUnitType.MEMORY].getAddressOperand(instRef);
                 let offset = this._reserveStations[FunctionalUnitType.MEMORY].getSecondOperandValue(instRef);
@@ -280,7 +275,7 @@ export class Superescalar extends Machine {
                     if (!this._reorderBuffer.hasResultAddress(instrROBRef)) {
                         // assosiate the instruction with the address ALU, 
                         // so their address can be calculated
-                        this._reserveStations[FunctionalUnitType.MEMORY].associateAddressALU(instrRef, i, this.aluMem[i].fillFlow(instruction));
+                        this._reserveStations[FunctionalUnitType.MEMORY].associateAddressALU(instrRef, i, this.aluMem[i].addInstruction(instruction));
                         this._reorderBuffer.executeInstruction(instrROBRef);
                         break;
                     }
@@ -291,74 +286,42 @@ export class Superescalar extends Machine {
 
     writeInstruction(type: FunctionalUnitType, num: number) {
         let resul;
-        let inst: Instruction = this.functionalUnit[type][num].getTopInstruction();
-        if (inst != null) {
-            let instRef = this._reserveStations[type].getFUInstruction(num, this.functionalUnit[type][num].getLast());
+        let instFURef = this.functionalUnit[type][num].getReadyInstructionRef();
+        if (instFURef !== -1) {
+            let instRef = this._reserveStations[type].getFUInstruction(num, instFURef);
             let instROBRef = this._reserveStations[type].getROBReference(instRef);
+            let inst = this._reorderBuffer.getInstruction(instROBRef);
             let firstValue = this._reserveStations[type].getFirstOperandValue(instRef);
             let secondValue = this._reserveStations[type].getSecondOperandValue(instRef);
-            let opcode = inst.opcode;
-            /* tslint:disable:ter-indent */
-            switch (opcode) {
-                case Opcodes.ADD:
-                case Opcodes.ADDI:
-                case Opcodes.ADDF:
-                    resul = firstValue + secondValue;
-                    break;
-                case Opcodes.SUB:
-                case Opcodes.SUBF:
-                    resul = firstValue - secondValue;
-                    break;
-                case Opcodes.OR:
-                    resul = firstValue | secondValue;
-                    break;
-                case Opcodes.AND:
-                    resul = firstValue & secondValue;
-                    break;
-                case Opcodes.XOR:
-                    resul = firstValue ^ secondValue;
-                    break;
-                case Opcodes.NOR:
-                    resul = ~(firstValue | secondValue);
-                    break;
-                case Opcodes.SRLV:
-                    resul = firstValue >> secondValue;
-                    break;
-                case Opcodes.SLLV:
-                    resul = firstValue << secondValue;
-                    break;
-                case Opcodes.MULT:
-                case Opcodes.MULTF:
-                    resul = firstValue * secondValue;
-                    break;
-                // En esta fase no se hace nada con los STORES
-                case Opcodes.LW:
-                case Opcodes.LF:
-                    let a = this.memory.getDatum(this._reserveStations[type].getAddressOperand(instRef));
-                    resul = a.datum;
-                    if (!a.got) {
-                        this.functionalUnit[type][num].status.stall = this.memoryFailLatency - this.functionalUnit[type][num].latency;
-                    }
-                    break;
-                case Opcodes.BEQ:
-                    resul = (firstValue === secondValue) ? 1 : 0;
-                    break;
-                case Opcodes.BNE:
-                    resul = (firstValue !== secondValue) ? 1 : 0;
-                    break;
-                case Opcodes.BGT:
-                    resul = (firstValue > secondValue) ? 1 : 0;
-                    break;
-                /* tslint:enable:ter-indent */
+
+            // execute it
+            let execution = this.functionalUnit[type][num].executeReadyInstruction(firstValue, secondValue);
+
+            // load and stores are a special cases, because they need to access the memory
+            if (inst.isLoadInstruction()) {
+                let a = this.memory.getDatum(this._reserveStations[type].getAddressOperand(instRef));
+                resul = a.datum;
+                if (!a.got) {
+                    this.functionalUnit[type][num].stall(this.memoryFailLatency - this.functionalUnit[type][num].latency);
+                }
+            } else if (inst.isStoreInstruction()) {
+                // we dont do anything at this stage with stores
+                // in fact, stores cant enter a functional unit
+            } else {
+                resul = execution.result;
             }
+
             // Finish the instruction execution
-            if (this.functionalUnit[type][num].status.stall === 0) {
-                if ((opcode !== Opcodes.BNE) && (opcode !== Opcodes.BEQ) && (opcode !== Opcodes.BGT)) {
-                    // Update all the reserve stations values that are waiting for this result
+            if (!this.functionalUnit[type][num].isStalled()) {
+                // Update all the reserve stations values that are waiting for this result
+                // (jumps dont return a value for instructions, so we skip them)
+                if (!inst.isJumpInstruction()) {
                     for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
                         this._reserveStations[j].setROBValue(instROBRef, resul);
                     }
                 }
+
+                // update the reorder buffer with the result
                 this._reorderBuffer.writeResultValue(instROBRef, resul);
 
                 // Remove the instruction entry from the reserve station
@@ -397,7 +360,7 @@ export class Superescalar extends Machine {
         // Now it's time to retrieve all the results from the UFs
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-                if (this.functionalUnit[i][j].status.stall === 0) {
+                if (!this.functionalUnit[i][j].isStalled()) {
                     this.writeInstruction(i, j);
                 }
                 // Update clocks of the uf

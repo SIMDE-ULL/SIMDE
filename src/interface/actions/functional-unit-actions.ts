@@ -13,25 +13,28 @@ function mapFunctionalUnitData(data): any {
     };
     let content = new Array();
     if (data != null && data[0] != null) {
-        for (let i = 0; i < data[0].flow.length; i++) {
-            let aux = [];
-            for (let j = 0; j < data.length; j++) {
-                if (data[j].flow[i] != null) {
+        let aux = [];
+        for (let j = 0; j < data.length; j++) {
+            let instrIds = data[j].getVisualIds();
+
+            for (let id of instrIds) {
+                if (id !== -1) {
                     aux.push({
-                        id: data[j].flow[i].id,
-                        value: data[j].flow[i].toString(),
-                        color: data[j].flow[i].color
+                        id: data[j].getInstruction(id).id,
+                        value: data[j].getInstruction(id).toString(),
+                        color: data[j].getInstruction(id).color
                     });
                 } else {
                     aux.push({
-                        id: ' ',
+                        id: '-',
                         value: '',
                         color: ''
                     });
                 }
             }
-            content.push(aux);
         }
+        content.push(aux);
+
     }
     toReturnObject.content = content;
     toReturnObject.header = generateFunctionalUnitHeader(data);

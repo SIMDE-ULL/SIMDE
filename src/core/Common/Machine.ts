@@ -55,9 +55,7 @@ export class Machine {
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             this.functionalUnit[i] = new Array(this._functionalUnitNumbers[i]);
             for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-                this.functionalUnit[i][j] = new FunctionalUnit();
-                this.functionalUnit[i][j].type = FunctionalUnitType[FunctionalUnitType[i]];
-                this.functionalUnit[i][j].latency = this.functionalUnitLatencies[i];
+                this.functionalUnit[i][j] = new FunctionalUnit(i);
             }
         }
         this.status.cycle = 0;
