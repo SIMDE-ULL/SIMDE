@@ -27,7 +27,7 @@ import {
 import { generateRangeArray } from '../utils/interval';
 import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
 
-import { MACHINE_REGISTER_SIZE, MEMORY_SIZE } from '../../core/Constants';
+import { Machine } from '../../core/Common/Machine';
 import { colorHistoryInstruction } from './color';
 import { removeInterval, addInterval } from './interval';
 import {
@@ -72,15 +72,15 @@ export const initialState = {
     reorderBuffer: [],
     generalRegisters: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.NGP)
     },
     floatingRegisters: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.NFP)
     },
     memory: {
         data: [],
-        visibleRangeValues: generateRangeArray(MEMORY_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.MEMORY_SIZE)
     },
     predicate: {
         data: [],

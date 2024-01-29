@@ -46,17 +46,18 @@ export class FunctionalUnit {
     private _currentBlankTimeUnits: number;
     private _hasExectutedInstBeforeTick: boolean;
 
+    public get type(): FunctionalUnitType {
+        return this._type;
+    }
+
+    public get latency(): number {
+        return this._latency;
+    }
+
     constructor(type: FunctionalUnitType) {
         this._type = type;
         this._latency = FunctionalUnitLantencies[type];
         this.clean();
-    }
-
-    public get type(): FunctionalUnitType {
-        return this._type;
-    }
-    public get latency(): number {
-        return this._latency;
     }
 
     public clean() {

@@ -1,14 +1,40 @@
 import { OpcodesNames, Opcodes } from './Opcodes';
+import { FunctionalUnitType } from './FunctionalUnit';
+import { opcodeToFunctionalUnit } from './Opcodes';
 
 export class Instruction {
-    protected _id: number;
-    protected _basicBlock: number;
-    protected _opcode: number;
+    public id: number;
+    public basicBlock: number;
+    public opcode: number;
     protected _operands: number[];
     protected _operandsString: string[];
     protected _label: string;
     protected _breakPoint: boolean;
     protected _color: string;
+
+    public get breakPoint(): boolean {
+        return this._breakPoint;
+    }
+
+    public get color(): string {
+        return this._color;
+    }
+
+    public get operands(): number[] {
+        return this._operands;
+    }
+
+    public get label(): string {
+        return this._label;
+    }
+
+    public set label(value: string) {
+        this._label = value;
+    }
+
+    public get operandsString(): string[] {
+        return this._operandsString;
+    }
 
     constructor() {
         this._breakPoint = false;
@@ -18,9 +44,9 @@ export class Instruction {
     }
 
     copy(other: Instruction) {
-        this._id = other.id;
-        this._basicBlock = other.basicBlock;
-        this._opcode = other.opcode;
+        this.id = other.id;
+        this.basicBlock = other.basicBlock;
+        this.opcode = other.opcode;
         this._operands = other.operands.slice();
         this._operandsString = other.operandsString.slice();
         this._breakPoint = other.breakPoint;
@@ -35,7 +61,7 @@ export class Instruction {
         if (this._operandsString[2]) {
             aux += ' ' + this._operandsString[2];
         }
-        return `${OpcodesNames[this._opcode]} ${this._operandsString[0]} ${aux}`;
+        return `${OpcodesNames[this.opcode]} ${this._operandsString[0]} ${aux}`;
     }
 
     setOperand(index: number, value: number, valueString: string) {
@@ -222,68 +248,11 @@ export class Instruction {
         }
     }
 
-    public get id(): number {
-        return this._id;
+    public toggleBreakPoint() {
+        this._breakPoint = !this._breakPoint;
     }
 
-    public set id(value: number) {
-        this._id = value;
+    public getFunctionalUnitType(): FunctionalUnitType {
+        return opcodeToFunctionalUnit(this.opcode);
     }
-
-    public get basicBlock(): number {
-        return this._basicBlock;
-    }
-
-    public set basicBlock(value: number) {
-        this._basicBlock = value;
-    }
-
-    public set opcode(value: number) {
-        this._opcode = value;
-    }
-
-    public set breakPoint(value: boolean) {
-        this._breakPoint = value;
-    }
-
-    public set color(value: string) {
-        this._color = value;
-    }
-
-    public get opcode(): number {
-        return this._opcode;
-    }
-
-    public get breakPoint(): boolean {
-        return this._breakPoint;
-    }
-
-    public get color(): string {
-        return this._color;
-    }
-
-    public get operands(): number[] {
-        return this._operands;
-    }
-
-    public set operands(value: number[]) {
-        this._operands = value;
-    }
-
-    public get label(): string {
-        return this._label;
-    }
-
-    public set label(value: string) {
-        this._label = value;
-    }
-
-    public get operandsString(): string[] {
-        return this._operandsString;
-    }
-
-    public set operandsString(value: string[]) {
-        this._operandsString = value;
-    }
-
 }

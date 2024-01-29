@@ -51,7 +51,7 @@ export class VLIWParser {
                 if (index >= code.instructions.length) {
                     throw new TokenError(num.pos, `Invalid index ${index}`);
                 }
-                return { index: index, isJump: code.isJump(index), functionalUnitType: code.getFunctionalUnitType(index) };
+                return { index: index, isJump: code.instructions[index].isJumpInstruction(), functionalUnitType: code.instructions[index].getFunctionalUnitType() };
             }
         );
 

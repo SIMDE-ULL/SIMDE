@@ -220,28 +220,28 @@ export class VLIW extends Machine {
     private runOperation(operation: VLIWOperation, functionalUnit: FunctionalUnit) {
         switch (operation.opcode) {
             case Opcodes.ADD:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + this._gpr.getContent(operation.getOperand(2)), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)]+ this._gpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.MULT:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) * this._gpr.getContent(operation.getOperand(2)), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] * this._gpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.ADDI:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + operation.getOperand(2), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + operation.getOperand(2), true);
                 break;
             case Opcodes.ADDF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.getContent(operation.getOperand(1)) + this._fpr.getContent(operation.getOperand(2)), true);
+                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] + this._fpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.MULTF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.getContent(operation.getOperand(1)) * this._fpr.getContent(operation.getOperand(2)), true);
+                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] * this._fpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.SW:
-                this._memory.setDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), this._gpr.getContent(operation.getOperand(0)));
+                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._gpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.SF:
-                this._memory.setDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), this._fpr.getContent(operation.getOperand(0)));
+                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.LW:
-                let datumInteger: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
+                let datumInteger: Datum = this._memory.getDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
                 if (!datumInteger.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
@@ -250,7 +250,7 @@ export class VLIW extends Machine {
                 }
                 break;
             case Opcodes.LF:
-                let datumFloat: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
+                let datumFloat: Datum = this._memory.getDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
                 if (!datumFloat.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
@@ -269,7 +269,7 @@ export class VLIW extends Machine {
 
         let newPC = this.pc;
         if (operation.opcode === Opcodes.BEQ) {
-            if (this._gpr.getContent(operation.getOperand(0)) === this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] === this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;
@@ -278,7 +278,7 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredFalse()] = true;
             }
         } else if (operation.opcode === Opcodes.BNE) {
-            if (this._gpr.getContent(operation.getOperand(0)) !== this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] !== this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;
@@ -287,7 +287,7 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredFalse()] = true;
             }
         } else if (operation.opcode === Opcodes.BGT) {
-            if (this._gpr.getContent(operation.getOperand(0)) > this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] > this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;

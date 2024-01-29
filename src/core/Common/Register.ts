@@ -1,71 +1,38 @@
-import { MACHINE_REGISTER_SIZE } from '../Constants';
 
 export class Register {
-
-    private static REGISTRY_NUMBER: number = MACHINE_REGISTER_SIZE;
 
     private _content: number[];
     private _bufferIn: number[];
     private _busy: boolean[];
     private _zeroWritable: boolean;
-
-    constructor(zeroWritable: boolean = false) {
-        this.busy = new Array(Register.REGISTRY_NUMBER);
-        this.content = new Array(Register.REGISTRY_NUMBER);
-        this.bufferIn = new Array(Register.REGISTRY_NUMBER);
-        this._zeroWritable = zeroWritable;
-    }
+    private _registryNumber: number;
 
     public get content(): number[] {
         return this._content;
-    }
-
-    // TODO: dont expose this
-    public set content(value: number[]) {
-        this._content = value;
-        // Don't allow to set R0 to a value different than 0 if zeroWritable is false
-        if (!this._zeroWritable) {
-            this._content[0] = 0;
-        }
-    }
-
-    public get bufferIn(): number[] {
-        return this._bufferIn;
-    }
-
-    public set bufferIn(value: number[]) {
-        this._bufferIn = value;
     }
 
     public get busy(): boolean[] {
         return this._busy;
     }
 
-    // TODO: dont expose this
-    public set busy(value: boolean[]) {
-        this._busy = value;
+    constructor(numberOfRegs: number, zeroWritable: boolean = false) {
+        this._busy = new Array(numberOfRegs);
+        this._content = new Array(numberOfRegs);
+        this._bufferIn = new Array(numberOfRegs);
+        this._zeroWritable = zeroWritable;
+        this._registryNumber = numberOfRegs;
     }
 
     public setContent(index: number, value: number, useBuffer: boolean) {
         // Don't allow to set R0 to a value different than 0 if zeroWritable is false
         if (index > 0 || this._zeroWritable) {
             if (useBuffer) {
-                this.bufferIn[index] = value;
+                this._bufferIn[index] = value;
                 this.busy[index] = true;
             } else {
-
                 this.content[index] = value;
-
             }
         }
-    }
-
-    public getContent(index: number): number {
-        return this.content[index];
-    }
-
-    public getRegistryNumber() {
-        return Register.REGISTRY_NUMBER;
     }
 
     public setBusy(index: number, value: boolean) {
@@ -76,7 +43,7 @@ export class Register {
     }
 
     public setAllBusy(value: boolean) {
-        this.busy.fill(value);
+        this._busy.fill(value);
         // Don't allow to set R0 as busy if zeroWritable is false
         if (!this._zeroWritable) {
             this.busy[0] = false;
@@ -92,12 +59,12 @@ export class Register {
         }
     }
 
-    tic() {
-        for (let i = 0; i < Register.REGISTRY_NUMBER; i++) {
+    public tic() {
+        for (let i = 0; i < this._registryNumber; i++) {
             if (this.busy[i]) {
-                this.busy[i] = false;
+                this._busy[i] = false;
                 // Reuse setContent logic
-                this.setContent(i, this.bufferIn[i], false);
+                this.setContent(i, this._bufferIn[i], false);
             }
         }
     }

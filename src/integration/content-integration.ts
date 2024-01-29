@@ -1,5 +1,5 @@
 import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError } from 'typescript-parsec';
-import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../core/Constants';
+import { Machine } from '../core/Common/Machine';
 
 enum Tokens {
     Header,
@@ -142,15 +142,15 @@ export class ContentIntegration {
             switch (section[0].text) {
                 case '#FPR':
                     this.FPRContent = section[1];
-                    this.checkBounds('#FPR', this.FPRContent, MACHINE_REGISTER_SIZE);
+                    this.checkBounds('#FPR', this.FPRContent, Machine.NFP);
                     break;
                 case '#GPR':
                     this.GPRContent = section[1];
-                    this.checkBounds('#GPR', this.GPRContent, MACHINE_REGISTER_SIZE);
+                    this.checkBounds('#GPR', this.GPRContent, Machine.NGP);
                     break;
                 case '#MEM':
                     this.MEMContent = section[1];
-                    this.checkBounds('#MEM', this.MEMContent, MEMORY_SIZE);
+                    this.checkBounds('#MEM', this.MEMContent, Machine.MEMORY_SIZE);
                     break;
                 default:
                     throw new Error('Invalid header: ' + section[0].text);

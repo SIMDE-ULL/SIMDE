@@ -1,89 +1,36 @@
 import { Instruction } from './Instruction';
 
-import { Opcodes } from './Opcodes';
 import { CodeParser } from './CodeParser';
-import { FunctionalUnitType } from './FunctionalUnit';
+import { Machine } from './Machine';
 
 export class Code {
     private _lines: number;
     private _instructions: Instruction[];
     private _numberOfBlocks: number;
 
-    constructor() {
-        this._numberOfBlocks = 0;
-        this._instructions = new Array();
-    }
-
-
-    /*
-    * SETTERS Y GETTERS
-    */
     public get instructions(): Instruction[] {
         return this._instructions;
-    }
-
-    public set instructions(value: Instruction[]) {
-        this._instructions = value;
     }
 
     public get lines(): number {
         return this._lines;
     }
 
-    public set lines(value: number) {
-        this._lines = value;
-    }
-
     public get numberOfBlocks(): number {
         return this._numberOfBlocks;
     }
 
-    public set numberOfBlocks(value: number) {
-        this._numberOfBlocks = value;
+    constructor() {
+        this._numberOfBlocks = 0;
+        this._instructions = new Array();
     }
 
-    public getFunctionalUnitType(index: number) {
-        // TODO: and NOP?
-        switch (this._instructions[index].opcode) {
-            case Opcodes.ADD:
-            case Opcodes.ADDI:
-            case Opcodes.SUB:
-            case Opcodes.OR:
-            case Opcodes.AND:
-            case Opcodes.NOR:
-            case Opcodes.XOR:
-            case Opcodes.SLLV:
-            case Opcodes.SRLV:
-                return FunctionalUnitType.INTEGERSUM;
-            case Opcodes.ADDF:
-            case Opcodes.SUBF:
-                return FunctionalUnitType.FLOATINGSUM;
-            case Opcodes.MULT:
-                return FunctionalUnitType.INTEGERMULTIPLY;
-            case Opcodes.MULTF:
-                return FunctionalUnitType.FLOATINGMULTIPLY;
-            case Opcodes.SW:
-            case Opcodes.SF:
-            case Opcodes.LW:
-            case Opcodes.LF:
-                return FunctionalUnitType.MEMORY;
-            case Opcodes.BGT:
-            case Opcodes.BNE:
-            case Opcodes.BEQ:
-                return FunctionalUnitType.JUMP;
-            default:
-                throw new Error("Error at getFunctionalUnitType, unknown opcode : " + Opcodes[this._instructions[index].opcode]);
-        }
-    }
-
-    public isJump(index: number) {
-        //return (opcode === Opcodes.BEQ) || (opcode === Opcodes.BGT) || (opcode === Opcodes.BNE);
-        // With this we evite redundant code that can produce bugs
-        return this.getFunctionalUnitType(index) === FunctionalUnitType.JUMP;
+    public toggleBreakpoint(index: number) {
+        this.instructions[index].toggleBreakPoint();
     }
 
     public load(input: string) {
-        let codeParsed = new CodeParser(input);
+        let codeParsed = new CodeParser(input, Machine.NGP, Machine.MEMORY_SIZE);
 
         // First we need the number of code lines
         this._lines = codeParsed.lines;
@@ -106,7 +53,7 @@ export class Code {
             }
 
             // Resolve labels on the operands of jump instructions
-            if (this.isJump(i)) {
+            if (this.instructions[i].isJumpInstruction()) {
                 if (this.instructions[i].operandsString[2] in codeParsed.labels) {
                     this.instructions[i].setOperand(2, codeParsed.labels[this.instructions[i].operandsString[2]], this.instructions[i].operandsString[2]);
                 } else {
@@ -136,5 +83,9 @@ export class Code {
         }
 
         return result;
+    }
+
+    public getFunctionalUnitType(index: number) {
+        return this.instructions[index].getFunctionalUnitType();
     }
 }

@@ -1,4 +1,4 @@
-import { ExecutionStatus } from '../main-consts';
+import { ExecutionStatus } from './utils';
 import { store } from '../store';
 import {
     nextFunctionalUnitCycle,

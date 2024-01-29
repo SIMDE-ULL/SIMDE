@@ -90,7 +90,7 @@ export class Superescalar extends Machine {
     }
 
     public getReserveStationSize(type: FunctionalUnitType): number {
-        return this.functionalUnitNumbers[type] * (this._functionalUnitLatencies[type] + 1);
+        return this.functionalUnitNumbers[type] * (this.functionalUnit[type][0].latency + 1);
     }
 
     ticDecoder(): boolean {

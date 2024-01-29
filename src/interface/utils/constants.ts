@@ -1,6 +1,3 @@
-export const MACHINE_REGISTER_SIZE = 64;
-export const MEMORY_SIZE = 1024;
-
 export const SUPERESCALAR_CONFIG = {
     FUNCTIONAL_UNIT_MIN: 1,
     FUNCTIONAL_UNIT_MAX: 10,

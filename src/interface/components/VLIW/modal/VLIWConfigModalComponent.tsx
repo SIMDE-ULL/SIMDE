@@ -5,7 +5,7 @@ import { toggleVliwConfigModal } from '../../../actions/modals';
 import { bindActionCreators } from 'redux';
 
 import VLIWIntegration from '../../../../integration/vliw-integration';
-import { VLIW_CONFIG } from '../../../../core/Constants';
+import { VLIW_CONFIG } from '../../../utils/constants';
 
 import { connect } from 'react-redux';
 
