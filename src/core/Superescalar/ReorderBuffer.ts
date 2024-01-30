@@ -1,9 +1,5 @@
-
-import { ReorderBufferEntry } from "./ReorderBufferEntry";
 import { SuperStage, stageToString } from './SuperescalarEnums';
 import { Instruction } from '../Common/Instruction';
-import { ifError } from "assert";
-
 
 export interface VisualReorderBufferEntry {
     instruction: {
@@ -17,12 +13,22 @@ export interface VisualReorderBufferEntry {
     superStage: string
 }
 
+interface ReorderBufferEntry {
+    instruction: Instruction;
+    ready: boolean;
+    value: number;
+    destinyRegister: number;
+    address: number;
+    superStage: SuperStage;
+}
+
 // TODO: dont use rob entry pos as a reference to the instruction, use an instruction uid instead?
 export class ReorderBuffer {
     _queue: ReorderBufferEntry[];
     _GprMapping: { [reg: number]: number };
     _FprMapping: { [reg: number]: number };
     _size: number;
+
     constructor(size: number) {
         this._queue = [];
         this._size = size;
@@ -153,16 +159,8 @@ export class ReorderBuffer {
      * issueInstruction - this method issues an instruction to the reorder buffer
      */
     public issueInstruction(instruction: Instruction): number {
-        let newEntry = new ReorderBufferEntry();
-        newEntry.instruction = instruction;
-        newEntry.ready = false;
-        newEntry.superStage = SuperStage.SUPER_ISSUE;
-        newEntry.destinyRegister = instruction.getDestinyRegister();
-        //newEntry.address = instruction.getAddress();
-        newEntry.address = -1;
-        newEntry.value = 0.0;
+        let newEntry = { instruction: instruction, ready: false, value: 0.0, destinyRegister: instruction.getDestinyRegister(), address: -1, superStage: SuperStage.SUPER_ISSUE };
         let pos = this._queue.push(newEntry) - 1;
-
 
         if (instruction.getDestinyRegister() !== -1) {
             if (instruction.isDestinyRegisterFloat()) {

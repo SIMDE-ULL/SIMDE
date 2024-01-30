@@ -17,7 +17,9 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 import { t } from 'i18next';
 
 import { MachineIntegration } from './machine-integration';
-import { VLIW, VLIWCode, VLIWError } from '../core/VLIW';
+import { VLIW } from '../core/VLIW/VLIW';
+import { VLIWCode } from '../core/VLIW/VLIWCode';
+import { VLIWError } from '../core/VLIW/VLIWError';
 import { VLIWOperation } from '../core/VLIW/VLIWOperation';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 import { displayBatchResults } from '../interface/actions/modals';

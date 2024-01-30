@@ -1,4 +1,3 @@
-import { ReserveStationEntry } from "./ReserveStationEntry";
 import { Instruction } from '../Common/Instruction';
 
 export interface VisualReserveStationEntry {
@@ -9,6 +8,19 @@ export interface VisualReserveStationEntry {
     Vk: string;
     A: string;
     ROB: string;
+}
+
+export interface ReserveStationEntry {
+    instruction: Instruction;
+    Qj: number;
+    Qk: number;
+    Vj: number;
+    Vk: number;
+    A: number;
+    ROB: number;
+    FUNum: number;
+    FUPos: number;
+    FUIsAddALU: boolean;
 }
 
 export class ReserveStation {
@@ -40,17 +52,18 @@ export class ReserveStation {
      * issueInstruction - issues an instruction to the reservation station and returns a reference to the entry
      */
     public issueInstruction(instruction: Instruction): number {
-        let entry = new ReserveStationEntry();
-        entry.instruction = instruction;
-        entry.FUNum = -1;
-        entry.FUPos = -1;
-        entry.FUIsAddALU = false;
-        entry.ROB = -1;
-        entry.A = -1;
-        entry.Qj = -1;
-        entry.Qk = -1;
-        entry.Vj = -1;
-        entry.Vk = -1;
+        let entry = {
+            instruction: instruction,
+            Qj: -1,
+            Qk: -1,
+            Vj: -1,
+            Vk: -1,
+            A: -1,
+            ROB: -1,
+            FUNum: -1,
+            FUPos: -1,
+            FUIsAddALU: false
+        };
         return this._entries.push(entry) - 1;
     }
 
@@ -235,11 +248,11 @@ export class ReserveStation {
             if (entry != null) {
                 toReturn = {
                     instruction: { id: '', value: '', color: '' },
-                    Qj: (entry.Qj !== -1)? '[' + entry.Qj + ']' : '-',
-                    Vj: (entry.Vj !== -1)? '' + entry.Vj : '-',
-                    Qk: (entry.Qk !== -1)? '[' + entry.Qk + ']' : '-',
-                    Vk: (entry.Vk !== -1)? '' + entry.Vk : '-',
-                    A: (entry.A !== -1)? '@' + entry.A : '-',
+                    Qj: (entry.Qj !== -1) ? '[' + entry.Qj + ']' : '-',
+                    Vj: (entry.Vj !== -1) ? '' + entry.Vj : '-',
+                    Qk: (entry.Qk !== -1) ? '[' + entry.Qk + ']' : '-',
+                    Vk: (entry.Vk !== -1) ? '' + entry.Vk : '-',
+                    A: (entry.A !== -1) ? '@' + entry.A : '-',
                     ROB: '[' + entry.ROB + ']'
                 };
                 if (entry.instruction != null) {

@@ -4,6 +4,10 @@ export class PrefetchUnit {
     _entries: Instruction[];
     _size: number;
 
+    public get size() {
+        return this._size;
+    }
+
     constructor(size: number) {
         this._size = size;
         this._entries = [];
@@ -11,10 +15,6 @@ export class PrefetchUnit {
 
     public clean() {
         this._entries = [];
-    }
-
-    public get size() {
-        return this._size;
     }
 
     public isFull() {

@@ -35,7 +35,7 @@ function mapReserveStationEntry(content: { data: any, size: number }): any {
             };
             if (data[i].instruction != null) {
                 aux.instruction.id = data[i].instruction.id;
-                aux.instruction.value = data[i].instruction.toString();
+                aux.instruction.value = data[i].instruction.value;
                 aux.instruction.color = data[i].instruction.color;
             }
         }

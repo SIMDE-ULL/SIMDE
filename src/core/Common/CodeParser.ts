@@ -1,7 +1,7 @@
 
 import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError, alt_sc, fail, TokenPosition } from 'typescript-parsec';
-import { OpcodesNames } from './Opcodes';
-import { Formats, FormatsNames, opcodeToFormat } from './InstructionFormats'
+import { OpcodesNames, opcodeToFormat } from './Opcodes';
+import { Formats, FormatsNames } from './InstructionFormats'
 import { Instruction } from './Instruction';
 
 

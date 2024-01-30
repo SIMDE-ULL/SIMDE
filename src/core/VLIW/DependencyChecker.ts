@@ -77,7 +77,7 @@ export class DependencyChecker {
             case Opcodes.ADDF:
             case Opcodes.MULTF:
                 if (((checkFPR[operation.getOperand(1)].latency > 0) && (checkFPR[operation.getOperand(1)].register < operation.id))
-                || ((checkFPR[operation.getOperand(2)].latency > 0) && (checkFPR[operation.getOperand(2)].register < operation.id))) {
+                    || ((checkFPR[operation.getOperand(2)].latency > 0) && (checkFPR[operation.getOperand(2)].register < operation.id))) {
                     result = false;
                 }
                 break;
@@ -89,13 +89,13 @@ export class DependencyChecker {
                 break;
             case Opcodes.SW:
                 if (((checkGPR[operation.getOperand(0)].latency > 0) && (checkGPR[operation.getOperand(0)].register < operation.id))
-                || ((checkGPR[operation.getOperand(2)].latency > 0) && (checkGPR[operation.getOperand(2)].register < operation.id))) {
+                    || ((checkGPR[operation.getOperand(2)].latency > 0) && (checkGPR[operation.getOperand(2)].register < operation.id))) {
                     result = false;
                 }
                 break;
             case Opcodes.SF:
                 if (((checkFPR[operation.getOperand(0)].latency > 0) && (checkFPR[operation.getOperand(0)].register < operation.id))
-                || ((checkGPR[operation.getOperand(2)].latency > 0) && (checkGPR[operation.getOperand(2)].register < operation.id))) {
+                    || ((checkGPR[operation.getOperand(2)].latency > 0) && (checkGPR[operation.getOperand(2)].register < operation.id))) {
                     result = false;
                 }
                 break;
@@ -103,7 +103,7 @@ export class DependencyChecker {
             case Opcodes.BNE:
             case Opcodes.BGT:
                 if (((checkGPR[operation.getOperand(0)].latency > 0) && (checkGPR[operation.getOperand(0)].register < operation.id))
-                || ((checkGPR[operation.getOperand(1)].latency > 0) && (checkGPR[operation.getOperand(1)].register < operation.id))) {
+                    || ((checkGPR[operation.getOperand(1)].latency > 0) && (checkGPR[operation.getOperand(1)].register < operation.id))) {
                     result = false;
                 }
                 break;

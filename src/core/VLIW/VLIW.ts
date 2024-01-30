@@ -97,7 +97,7 @@ export class VLIW extends Machine {
             } else {
                 return VLIWError.ERRNO;
             }
-        }     
+        }
     }
 
     public tic() {
@@ -220,7 +220,7 @@ export class VLIW extends Machine {
     private runOperation(operation: VLIWOperation, functionalUnit: FunctionalUnit) {
         switch (operation.opcode) {
             case Opcodes.ADD:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)]+ this._gpr.content[operation.getOperand(2)], true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + this._gpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.MULT:
                 this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] * this._gpr.content[operation.getOperand(2)], true);

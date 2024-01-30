@@ -1,5 +1,4 @@
 import { Machine } from '../Common/Machine';
-import { Opcodes } from '../Common/Opcodes';
 import { Code } from '../Common/Code';
 
 import { ReorderBuffer } from "./ReorderBuffer";
@@ -25,8 +24,43 @@ export class Superescalar extends Machine {
     private _prefetchUnit: PrefetchUnit;
     private _decoder: PrefetchUnit;
     private _aluMem: FunctionalUnit[];
-
     private _jumpPrediction: JumpPredictor;
+
+    public get code(): Code {
+        return this._code;
+    }
+
+    public set code(value: Code) {
+        this._code = value;
+    }
+
+    public get issue(): number {
+        return this._issue;
+    }
+
+    public set issue(value: number) {
+        this._issue = value;
+    }
+
+    public get reorderBuffer(): ReorderBuffer {
+        return this._reorderBuffer;
+    }
+
+    public get prefetchUnit(): PrefetchUnit {
+        return this._prefetchUnit;
+    }
+
+    public get decoder(): PrefetchUnit {
+        return this._decoder;
+    }
+
+    public get aluMem(): FunctionalUnit[] {
+        return this._aluMem;
+    }
+
+    public get jumpPrediction(): JumpPredictor {
+        return this._jumpPrediction;
+    }
 
     constructor() {
         super();
@@ -46,11 +80,82 @@ export class Superescalar extends Machine {
 
         this._code = null;
 
-        this.aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
+        this._aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
 
         for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
             this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM);
         }
+    }
+
+    public getReserveStation(type: FunctionalUnitType): ReserveStation {
+        return this._reserveStations[type];
+    }
+
+    public getReserveStationSize(type: FunctionalUnitType): number {
+        return this.functionalUnitNumbers[type] * (this.functionalUnit[type][0].latency + 1);
+    }
+
+    private getRegisterValueOrROBRef(register: number, floatingPoint: boolean): [number, boolean] {
+        let isROBRef = false;
+        let result = 0; // Value or Rob index
+
+        // Check if the value is available in the register file or ROB
+        if (floatingPoint && !this._fpr.busy[register]) {
+            result = this._fpr.content[register];
+        } else if (!floatingPoint && !this._gpr.busy[register]) {
+            result = this._gpr.content[register];
+        } else if (this._reorderBuffer.isRegisterValueReady(register, floatingPoint)) {
+            result = this._reorderBuffer.getRegisterValue(register, floatingPoint);
+        } else {
+            // The value is still being calculated
+            isROBRef = true;
+            result = this._reorderBuffer.getRegisterMapping(register, floatingPoint);
+        }
+
+
+        return [result, isROBRef];
+    }
+
+    private checkJump(instruction: Instruction, executionResult: number): boolean {
+        // Check if the prediction was correct
+        // Typescript does not support ^ operator for boolean
+        if (+this._jumpPrediction.getPrediction(instruction.id) ^ +(!!executionResult)) {
+            this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
+            // Change pc
+            if (executionResult) {
+                //this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
+                // The new parser just put the line number instead of the basic block, it is more simple
+                this.pc = instruction.getOperand(2);
+            } else {
+                this.pc = instruction.id + 1;
+            }
+
+            // Clean functional Units and Reserve Stations,
+            for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+                for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+                    this.functionalUnit[i][j].clean();
+                    this._reserveStations[i].clear();
+                }
+            }
+
+            // Clean the alus for the address calculus
+            for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+                this.aluMem[i].clean();
+            }
+
+            // Clean prefetch, decoder and reorder buffer, the simplest way is
+            // to rebuild the objects
+            this._prefetchUnit.clean();
+            this._decoder.clean();
+            this._reorderBuffer.clear();
+
+            // Clean the structures related to the registers
+            this._gpr.setAllBusy(false);
+            this._fpr.setAllBusy(false);
+            return false;
+        }
+        this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
+        return true;
     }
 
     init(reset: boolean) {
@@ -71,7 +176,7 @@ export class Superescalar extends Machine {
         }
     }
 
-    ticPrefetch(): boolean {
+    ticPrefetch() {
         while ((!this._prefetchUnit.isFull()) && (this.pc < this.code.lines)) {
             // Importante: Hago una copia de la instrucción original para distinguir
             // las distintas apariciones de una misma inst.
@@ -86,40 +191,13 @@ export class Superescalar extends Machine {
             }
             this._prefetchUnit.add(instruction);
         }
-        return this._prefetchUnit.isEmpty();
     }
 
-    public getReserveStationSize(type: FunctionalUnitType): number {
-        return this.functionalUnitNumbers[type] * (this.functionalUnit[type][0].latency + 1);
-    }
-
-    ticDecoder(): boolean {
+    ticDecoder() {
         while (!this._decoder.isFull() && !this._prefetchUnit.isEmpty()) {
             let instruction = this._prefetchUnit.get();
             this._decoder.add(instruction);
         }
-        return this._decoder.isEmpty();
-    }
-
-    getRegisterValueOrROBRef(register: number, floatingPoint: boolean): [number, boolean] {
-        let isROBRef = false;
-        let result = 0; // Value or Rob index
-
-        // Check if the value is available in the register file or ROB
-        if (floatingPoint && !this._fpr.busy[register]) {
-            result = this._fpr.content[register];
-        } else if (!floatingPoint && !this._gpr.busy[register]) {
-            result = this._gpr.content[register];
-        } else if (this._reorderBuffer.isRegisterValueReady(register, floatingPoint)) {
-            result = this._reorderBuffer.getRegisterValue(register, floatingPoint);
-        } else {
-            // The value is still being calculated
-            isROBRef = true;
-            result = this._reorderBuffer.getRegisterMapping(register, floatingPoint);
-        }
-
-
-        return [result, isROBRef];
     }
 
     issueInstructionToReserveStation(instruction: Instruction, type: number): number {
@@ -176,9 +254,7 @@ export class Superescalar extends Machine {
         return instrRef;
     }
 
-    ticIssue(): number {
-        let i = 0;
-
+    ticIssue() {
         while (!this._decoder.isEmpty()) {
             let fuType: FunctionalUnitType = this.code.getFunctionalUnitType(this._decoder.getId());
 
@@ -195,11 +271,7 @@ export class Superescalar extends Machine {
             // This is a hack, because putting the instruction in the reorder buffer before that in the reserve station will cause a circular dependency on instructions that reads and writes the same register, but the reserve station entry needs the rob index
             let robPos = this._reorderBuffer.issueInstruction(instruction);
             this._reserveStations[fuType].setROBReference(reserveStationPos, robPos);
-
-            i++;
         }
-
-        return i;
     }
 
     executeInstruction(type: FunctionalUnitType, num: number) {
@@ -369,48 +441,6 @@ export class Superescalar extends Machine {
         }
     }
 
-    checkJump(instruction: Instruction, executionResult: number): boolean {
-        // Check if the prediction was correct
-        // Typescript does not support ^ operator for boolean
-        if (+this._jumpPrediction.getPrediction(instruction.id) ^ +(!!executionResult)) {
-            this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
-            // Change pc
-            if (executionResult) {
-                //this.pc = this.code.getBasicBlockInstruction(rob.instruction.getOperand(2));
-                // The new parser just put the line number instead of the basic block, it is more simple
-                this.pc = instruction.getOperand(2);
-            } else {
-                this.pc = instruction.id + 1;
-            }
-
-            // Clean functional Units and Reserve Stations,
-            for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-                for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-                    this.functionalUnit[i][j].clean();
-                    this._reserveStations[i].clear();
-                }
-            }
-
-            // Clean the alus for the address calculus
-            for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
-                this.aluMem[i].clean();
-            }
-
-            // Clean prefetch, decoder and reorder buffer, the simplest way is
-            // to rebuild the objects
-            this._prefetchUnit.clean();
-            this._decoder.clean();
-            this._reorderBuffer.clear();
-
-            // Clean the structures related to the registers
-            this._gpr.setAllBusy(false);
-            this._fpr.setAllBusy(false);
-            return false;
-        }
-        this._jumpPrediction.updatePrediction(instruction.id, !!executionResult);
-        return true;
-    }
-
     ticCommit(): CommitStatus {
         for (let i = 0; i < this.issue; i++) {
             if (this._reorderBuffer.canCommitStoreInstruction()) {
@@ -452,7 +482,7 @@ export class Superescalar extends Machine {
         return CommitStatus.SUPER_COMMITOK;
     }
 
-    tic(): SuperescalarStatus {
+    public tic(): SuperescalarStatus {
         this.status.cycle++;
 
         let commit = this.ticCommit();
@@ -461,11 +491,11 @@ export class Superescalar extends Machine {
             this.ticExecute();
         }
 
-        let resultIssue = this.ticIssue();
-        let resultDecoder = this.ticDecoder() ? 0 : 1;
-        let resultPrefetch = this.ticPrefetch() ? 0 : 1;
+        this.ticIssue();
+        this.ticDecoder();
+        this.ticPrefetch();
 
-        if ((resultIssue + resultDecoder + resultPrefetch === 0) &&
+        if ((this.decoder.isEmpty() && this.prefetchUnit.isEmpty() && this.reorderBuffer.isEmpty()) &&
             (commit === CommitStatus.SUPER_COMMITEND)) {
             return SuperescalarStatus.SUPER_ENDEXE;
         }
@@ -473,53 +503,9 @@ export class Superescalar extends Machine {
         if (this._prefetchUnit.hasBreakpoint()) {
             this.status.breakPoint = true;
             return SuperescalarStatus.SUPER_BREAKPOINT;
-            
+
         }
         return SuperescalarStatus.SUPER_OK;
-    }
-
-    public get code(): Code {
-        return this._code;
-    }
-
-    public set code(value: Code) {
-        this._code = value;
-    }
-
-    public get issue(): number {
-        return this._issue;
-    }
-
-    public set issue(value: number) {
-        this._issue = value;
-    }
-
-    public get reorderBuffer(): ReorderBuffer {
-        return this._reorderBuffer;
-    }
-
-    public getReserveStation(type: FunctionalUnitType): ReserveStation {
-        return this._reserveStations[type];
-    }
-
-    public get prefetchUnit(): PrefetchUnit {
-        return this._prefetchUnit;
-    }
-
-    public get decoder(): PrefetchUnit {
-        return this._decoder;
-    }
-
-    public get aluMem(): FunctionalUnit[] {
-        return this._aluMem;
-    }
-
-    public set aluMem(value: FunctionalUnit[]) {
-        this._aluMem = value;
-    }
-
-    public get jumpPrediction(): JumpPredictor {
-        return this._jumpPrediction;
     }
 
 }

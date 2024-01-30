@@ -1,10 +1,15 @@
 import { Register } from './Register';
 import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType } from './FunctionalUnit';
 import { Memory } from './Memory';
-import { MachineStatus } from './MachineStatus';
 
 const MACHINE_REGISTER_SIZE = 64;
 const MACHINE_MEMORY_SIZE = 1024;
+
+export interface MachineStatus {
+    cycle: number;
+    executing: boolean;
+    breakPoint: boolean;
+}
 
 export class Machine {
 
