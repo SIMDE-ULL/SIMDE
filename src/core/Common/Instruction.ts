@@ -6,10 +6,15 @@ export class Instruction {
     public id: number;
     public basicBlock: number;
     public opcode: number;
+    protected _uuid: number;
     protected _operands: number[];
     protected _operandsString: string[];
     protected _label: string;
     protected _breakPoint: boolean;
+
+    public get uuid(): number {
+        return this._uuid;
+    }
 
     public get breakPoint(): boolean {
         return this._breakPoint;
@@ -35,6 +40,11 @@ export class Instruction {
         this._breakPoint = false;
         this._operands = new Array(3);
         this._operandsString = new Array(3);
+    }
+
+    instantiate(from: Instruction, cycle: number) {
+        this.copy(from);
+        this._uuid = cycle * 1000 + this.id;
     }
 
     copy(other: Instruction) {

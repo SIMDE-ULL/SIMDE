@@ -65,7 +65,7 @@ export class ReorderBuffer {
             // error
             throw new Error("Register not found in mapping");
         }
-        let entry = this._queue[mapping[register]];
+        let entry = this._queue[this.getInstructionPos(mapping[register])];
         return entry.ready;
 
     }
@@ -79,13 +79,13 @@ export class ReorderBuffer {
             // error
             throw new Error("Register not found in mapping");
         }
-        let entry = this._queue[mapping[register]];
+        let entry = this._queue[this.getInstructionPos(mapping[register])];
         return entry.value;
 
     }
 
     /**
-     * getRegisterMapping - this method returns the rob entry number wich will write in that register.
+     * getRegisterMapping - this method returns the rob instr uuid wich will write in that register.
      */
     public getRegisterMapping(register: number, isFloatRegister: boolean): number {
         let mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
@@ -126,18 +126,6 @@ export class ReorderBuffer {
      */
     public commitInstruction() {
         this._queue.shift();
-
-        // update all references to the rob entries in the mappings
-        for (let key in this._GprMapping) {
-            if (this._GprMapping[key] > 0) {
-                this._GprMapping[key]--;
-            }
-        }
-        for (let key in this._FprMapping) {
-            if (this._FprMapping[key] > 0) {
-                this._FprMapping[key]--;
-            }
-        }
     }
 
     /**
@@ -146,8 +134,9 @@ export class ReorderBuffer {
     public purgeCommitMapping(): boolean {
         let mapping = this._queue[0].instruction.isDestinyRegisterFloat() ? this._FprMapping : this._GprMapping;
         let register = this._queue[0].destinyRegister;
+        let uuid = this._queue[0].instruction.uuid;
 
-        if (mapping[register] === 0) {
+        if (mapping[register] === uuid) {
             delete mapping[register];
             return true;
         }
@@ -157,83 +146,97 @@ export class ReorderBuffer {
     /**
      * issueInstruction - this method issues an instruction to the reorder buffer
      */
-    public issueInstruction(instruction: Instruction): number {
+    public issueInstruction(instruction: Instruction) {
         let newEntry = { instruction: instruction, ready: false, value: 0.0, destinyRegister: instruction.getDestinyRegister(), address: -1, superStage: SuperStage.SUPER_ISSUE };
         let pos = this._queue.push(newEntry) - 1;
 
         if (instruction.getDestinyRegister() !== -1) {
             if (instruction.isDestinyRegisterFloat()) {
-                this._FprMapping[instruction.getDestinyRegister()] = pos;
+                this._FprMapping[instruction.getDestinyRegister()] = instruction.uuid;
             } else {
-                this._GprMapping[instruction.getDestinyRegister()] = pos;
+                this._GprMapping[instruction.getDestinyRegister()] = instruction.uuid;
             }
         }
-        return pos;
+    }
+
+    public getInstructionPos(uuid: number): number {
+        for (let i = 0; i < this._queue.length; i++) {
+            if (this._queue[i].instruction.uuid === uuid) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
      * executeInstruction - this method executes an instruction from the reorder buffer
      */
-    public executeInstruction(pos: number) {
-        this._queue[pos].superStage = SuperStage.SUPER_EXECUTE;
+    public executeInstruction(uuid: number) {
+        this._queue[this.getInstructionPos(uuid)].superStage = SuperStage.SUPER_EXECUTE;
     }
 
     /**
      * writeResultValue - this method writes the result value of an instruction to the reorder buffer
      */
-    public writeResultValue(pos: number, value: number) {
+    public writeResultValue(uuid: number, value: number) {
+        let pos = this.getInstructionPos(uuid);
         this._queue[pos].value = value;
         this._queue[pos].ready = true;
         this._queue[pos].superStage = SuperStage.SUPER_WRITERESULT;
     }
 
-    public getInstruction(pos: number = 0): Instruction {
+    public getInstruction(uuid: number = -1): Instruction {
+        let pos = (uuid === -1) ? 0 : this.getInstructionPos(uuid);
         return this._queue[pos].instruction;
     }
 
     /**
      * writeResultAddress - this method writes the result address of an instruction to the reorder buffer
      */
-    public writeResultAddress(pos: number, address: number) {
+    public writeResultAddress(uuid: number, address: number) {
+        let pos = this.getInstructionPos(uuid);
         this._queue[pos].address = address;
     }
 
     /**
      * hasResultValue - this method checks if an instruction has already the result value
      */
-    public hasResultValue(pos: number): boolean {
+    public hasResultValue(uuid: number): boolean {
+        let pos = this.getInstructionPos(uuid);
         return this._queue[pos].ready;
     }
 
     /**
-     * getResultValue - this method returns the result value of an instruction
+     * getResultValue - this method returns the result value of the top instruction
      */
-    public getResultValue(pos: number = 0): number {
-        return this._queue[pos].value;
+    public getResultValue(): number {
+        return this._queue[0].value;
     }
 
     /**
      * hasResultAddress - this method checks if an instruction has already the result address
      */
-    public hasResultAddress(pos: number): boolean {
+    public hasResultAddress(uuid: number): boolean {
+        let pos = this.getInstructionPos(uuid);
         return this._queue[pos].address !== -1;
     }
 
     /**
-     * getResultAddress - this method returns the result address of an instruction
+     * getResultAddress - this method returns the result address of the top instruction
      */
-    public getResultAddress(pos: number = 0): number {
-        return this._queue[pos].address;
+    public getResultAddress(): number {
+        return this._queue[0].address;
     }
 
     /**
      * hasPreviousStores - this method checks if there are previous store instructions that write to the same address
      */
-    public hasPreviousStores(pos: number): boolean {
+    public hasPreviousStores(uuid: number): boolean {
+        let pos = this.getInstructionPos(uuid);
         let address = this._queue[pos].address;
         for (let i = 0; i < pos; i++) {
             // check if it is a store instruction and if it the address is the same or if it doesn't have a result address yet
-            if (this._queue[i].instruction.isStoreInstruction() && (!this.hasResultAddress(i) || this._queue[i].address === address)) {
+            if (this._queue[i].instruction.isStoreInstruction() && (this._queue[pos].address === -1 || this._queue[i].address === address)) {
                 return true;
             }
         }
@@ -245,7 +248,7 @@ export class ReorderBuffer {
         return this._queue.map(entry => {
             if (entry != null) {
                 let aux = {
-                    instruction: { id: '', value: ''},
+                    instruction: { id: '', uuid: '', value: '' },
                     destinyRegister: (entry.destinyRegister !== -1) ? '' + entry.destinyRegister : '-',
                     value: '' + entry.value,
                     address: (entry.address !== -1) ? '@' + entry.address : '-',
@@ -260,12 +263,13 @@ export class ReorderBuffer {
                         }
                     }
                     aux.instruction.id = '' + entry.instruction.id;
+                    aux.instruction.uuid = '' + entry.instruction.uuid;
                     aux.instruction.value = entry.instruction.toString();
                 }
                 return aux;
             }
             return {
-                instruction: { id: '', value: '' },
+                instruction: { id: '', uuid: '', value: '' },
                 destinyRegister: '',
                 value: '',
                 address: '',
@@ -279,7 +283,15 @@ export class ReorderBuffer {
 
         let visualMap: { [reg: string]: number } = {};
         for (let key in mapping) {
-            visualMap[(isFloat ? "F" : "R") + key] = mapping[key];
+            visualMap[(isFloat ? "F" : "R") + key] = this.getInstructionPos(mapping[key]);
+        }
+        return visualMap;
+    }
+
+    public getVisualInstructionMap(): { [uuid: number]: number } {
+        let visualMap: { [uuid: string]: number } = {};
+        for (let i = 0; i < this._queue.length; i++) {
+            visualMap[this._queue[i].instruction.uuid] = i;
         }
         return visualMap;
     }

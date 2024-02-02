@@ -127,8 +127,8 @@ export class FunctionalUnit {
         return this._stalled > 0;
     }
 
-    public getReadyInstructionRef(): number {
-        return (this._instructions.length > 0 && this._instructions[0].blankTimeUnitsAhead == 0) ? this._instructions[0].ref : -1;
+    public getReadyInstructionUuid(): number {
+        return (this._instructions.length > 0 && this._instructions[0].blankTimeUnitsAhead == 0) ? this._instructions[0].instruction.uuid : -1;
     }
 
     // return the execution result of the instruction ready in the current cycle, or null if none
