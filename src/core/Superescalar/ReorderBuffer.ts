@@ -5,7 +5,6 @@ export interface VisualReorderBufferEntry {
     instruction: {
         id: string,
         value: string,
-        color: string
     },
     destinyRegister: string,
     value: string,
@@ -246,7 +245,7 @@ export class ReorderBuffer {
         return this._queue.map(entry => {
             if (entry != null) {
                 let aux = {
-                    instruction: { id: '', value: '', color: '' },
+                    instruction: { id: '', value: ''},
                     destinyRegister: (entry.destinyRegister !== -1) ? '' + entry.destinyRegister : '-',
                     value: '' + entry.value,
                     address: (entry.address !== -1) ? '@' + entry.address : '-',
@@ -262,12 +261,11 @@ export class ReorderBuffer {
                     }
                     aux.instruction.id = '' + entry.instruction.id;
                     aux.instruction.value = entry.instruction.toString();
-                    aux.instruction.color = entry.instruction.color;
                 }
                 return aux;
             }
             return {
-                instruction: { id: '', value: '', color: '' },
+                instruction: { id: '', value: '' },
                 destinyRegister: '',
                 value: '',
                 address: '',

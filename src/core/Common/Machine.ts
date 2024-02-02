@@ -1,9 +1,10 @@
 import { Register } from './Register';
-import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType } from './FunctionalUnit';
+import { FunctionalUnit, FUNCTIONALUNITTYPESQUANTITY, FunctionalUnitType, FunctionalUnitNumbers } from './FunctionalUnit';
 import { Memory } from './Memory';
 
 const MACHINE_REGISTER_SIZE = 64;
 const MACHINE_MEMORY_SIZE = 1024;
+const MACHINE_MEMORY_FAIL_LATENCY = 9;
 
 export interface MachineStatus {
     cycle: number;
@@ -13,22 +14,12 @@ export interface MachineStatus {
 
 export class Machine {
 
-    // Const properties
-    protected static NUF_MAX: number[] = [10, 10, 10, 10, 10, 10];
-    protected static NUF_MIN: number[] = [1, 1, 1, 1, 1, 1];
-    protected static NUF_DEF: number[] = [2, 2, 2, 2, 2, 1];
-
-    protected static MEMORYFAILLATENCYDEF = 9;
-    protected static MEMORYFAILLATENCYMIN = 0;
-    protected static MEMORYFAILLATENCYMAX = 100;
+    protected static MEMORY_FAIL_LATENCY = MACHINE_MEMORY_FAIL_LATENCY;
 
     public static MEMORY_SIZE: number = MACHINE_MEMORY_SIZE;
-    protected static WORD_SIZE: number = 32;
     public static NGP: number = MACHINE_REGISTER_SIZE;
     public static NFP: number = MACHINE_REGISTER_SIZE;
 
-    public _functionalUnitNumbers: number[];
-    protected _functionalUnitLatencies: number[];
     protected _memoryFailLatency: number;
 
     protected _gpr: Register;
@@ -38,14 +29,6 @@ export class Machine {
     protected _memory: Memory;
     protected _pc: number;
     protected _status: MachineStatus;
-
-    public get functionalUnitNumbers(): number[] {
-        return this._functionalUnitNumbers;
-    }
-
-    public set functionalUnitNumbers(value: number[]) {
-        this._functionalUnitNumbers = value;
-    }
 
     public get memoryFailLatency(): number {
         return this._memoryFailLatency;
@@ -96,8 +79,7 @@ export class Machine {
     }
 
     constructor() {
-        this.functionalUnitNumbers = Machine.NUF_DEF.slice();
-        this.memoryFailLatency = Machine.MEMORYFAILLATENCYDEF;
+        this.memoryFailLatency = Machine.MEMORY_FAIL_LATENCY;
 
         // Init val
         this.status = {
@@ -112,28 +94,26 @@ export class Machine {
         this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY);
         this.functionalUnit.fill(null);
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            this.functionalUnit[i] = new Array(this._functionalUnitNumbers[i]);
-            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+            this.functionalUnit[i] = new Array(FunctionalUnitNumbers[i]);
+            for (let j = 0; j < FunctionalUnitNumbers[i]; j++) {
                 this.functionalUnit[i][j] = new FunctionalUnit(i);
             }
         }
     }
 
-    public init(reset: boolean) {
+    public init(resetContent: boolean) {
         this.pc = 0;
-        this.functionalUnit.fill(null);
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            this.functionalUnit[i] = new Array(this._functionalUnitNumbers[i]);
-            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
-                this.functionalUnit[i][j] = new FunctionalUnit(i);
+            for (let j = 0; j < this.functionalUnit[i].length; j++) {
+                this.functionalUnit[i][j].clean();
             }
         }
         this.status.cycle = 0;
         this.status.breakPoint = false;
         this.status.executing = false;
 
-        if (reset) {
-            this.reset();
+        if (resetContent) {
+            this.resetContent();
         }
     }
 
@@ -146,19 +126,28 @@ export class Machine {
         this.status.executing = false;
     }
 
-    public reset() {
+    public resetContent() {
         this._gpr.setAllContent(0);
         this._fpr.setAllContent(0);
         this.memory.clean();
     }
 
-    public getTotalFunctionalUnit(): number {
-        let sum = 0;
-        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            sum += this.functionalUnitNumbers[i];
+    public changeFunctionalUnitLatency(type: FunctionalUnitType, latency: number) {
+        if (latency >= 0) {
+            for (let i = 0; i < this.functionalUnit[type].length; i++) {
+                this.functionalUnit[type][i] = new FunctionalUnit(type, latency);
+            }
         }
+    }
 
-        return sum;
+    public changeFunctionalUnitNumber(type: FunctionalUnitType, number: number) {
+        let currentLatency = this.functionalUnit[type][0].latency;
+        if (number > 0) {
+            this.functionalUnit[type] = new Array(number);
+            for (let i = 0; i < number; i++) {
+                this.functionalUnit[type][i] = new FunctionalUnit(type, currentLatency);
+            }
+        }
     }
 
     public getGpr(index: number): number {
@@ -179,9 +168,5 @@ export class Machine {
         if (index < Machine.NGP && index >= 0) {
             this._fpr.setContent(index, value, false);
         }
-    }
-
-    public setFunctionalUnitNumber(index: number, quantity: number) {
-        this.functionalUnitNumbers[index] = quantity;
     }
 }

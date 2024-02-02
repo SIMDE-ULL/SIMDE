@@ -15,6 +15,14 @@ export class VLIW extends Machine {
     private _NaTFP: boolean[] = new Array(Machine.NFP);
     private _code: VLIWCode;
 
+    public get functionalUnitNumbers(): number[] {
+        let numbers: number[] = [];
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            numbers.push(this.functionalUnit[i].length);
+        }
+        return numbers;
+    }
+
     constructor() {
         super();
         this._code = new VLIWCode();
@@ -58,17 +66,13 @@ export class VLIW extends Machine {
         this._NaTFP[index] = n;
     }
 
-    public setNUF(index: number, n: number) {
-        this._functionalUnitNumbers[index] = (index === FunctionalUnitType.JUMP) ? 1 : n;
-    }
-
     //TODO: These checks functions are never used
     public checkCode() {
         for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
             let instruction = this._code.getLargeInstruction(i);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 let operation = instruction.getOperation(j);
-                if (operation.getFunctionalUnitIndex() >= this.functionalUnitNumbers[operation.getFunctionalUnitType()]) {
+                if (operation.getFunctionalUnitIndex() >= this.functionalUnit[operation.getFunctionalUnitType()].length) {
                     throw VLIWError.ERRHARD; // VLIW_ERRHARD;
                 }
             }
@@ -126,7 +130,7 @@ export class VLIW extends Machine {
         this.functionalUnit[FunctionalUnitType.JUMP][0].tic();
 
         for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
-            for (j = 0; j < this._functionalUnitNumbers[i]; j++) {
+            for (j = 0; j < this.functionalUnit[i].length; j++) {
 
                 if (!this.functionalUnit[i][j].isEmpty()) {
                     pending = true;
@@ -166,6 +170,12 @@ export class VLIW extends Machine {
 
                 let type = instruction.getOperation(i).getFunctionalUnitType();
                 let index = instruction.getOperation(i).getFunctionalUnitIndex();
+
+                // Check if the functional unit exists or if this operation is out of bounds
+                if (index >= this.functionalUnit[type].length) {
+                    //TODO: better handling of this error
+                    return VLIWError.ERRHARD; // VLIW_ERRHARD;
+                }
 
                 if (!this.functionalUnit[type][index].isFree() ||
                     DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
@@ -316,7 +326,8 @@ export class VLIW extends Machine {
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             let instruction = this._code.getLargeInstruction(row);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
-                DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
+                //TODO
+                //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
             }
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (!DependencyChecker.checkSourceOperands(instruction.getOperation(j), checkGPR, checkFPR)) {
@@ -355,8 +366,8 @@ export class VLIW extends Machine {
                 if (instruction.getOperation(j).getFunctionalUnitType() === FunctionalUnitType.JUMP) {
                     let check1: Check;
                     let check2: Check;
-                    check1.latency = this._functionalUnitLatencies[FunctionalUnitType.JUMP];
-                    check2.latency = this._functionalUnitLatencies[FunctionalUnitType.JUMP];
+                    check1.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
+                    check2.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
                     check1.register = instruction.getOperation(j).getPredTrue();
                     check2.register = instruction.getOperation(j).getPredFalse();
                     controlCheckList.push(check1);
@@ -377,7 +388,7 @@ export class VLIW extends Machine {
                             controlCheckList[i].register = 0;
                         }
                         throw VLIWError.ERRPRED; // VLIW_ERRPRED;
-                    } else if (this._functionalUnitLatencies[instruction.getOperation(j).getFunctionalUnitType()] < controlCheckList[index].latency) {
+                    } else if (this.functionalUnit[instruction.getOperation(j).getFunctionalUnitType()].length < controlCheckList[index].latency) {
                         id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;

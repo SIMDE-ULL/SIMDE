@@ -330,26 +330,26 @@ export class SuperescalarIntegration extends MachineIntegration {
     saveSuperConfig = (superConfig) => {
         // TODO: enforce this through a unique map so that we can overwrite the config directly
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultLatency"]);
-        
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.JUMP,+superConfig["jumpQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.JUMP,+superConfig["jumpLatency"]);
-        
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.MEMORY,+superConfig["memoryQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.MEMORY,+superConfig["memoryLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultLatency);
+
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.JUMP, +superConfig.jumpQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.JUMP, +superConfig.jumpLatency);
+
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.MEMORY, +superConfig.memoryQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.MEMORY, +superConfig.memoryLatency);
         
         this.superescalar.issue = +superConfig.issueGrade;
         this.resetMachine();

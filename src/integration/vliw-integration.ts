@@ -48,8 +48,8 @@ export class VLIWIntegration extends MachineIntegration {
         store.dispatch(
             batchActions(
                 nextFunctionalUnitCycle([...this.vliw.functionalUnit]),
-                nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers),
-                nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw._functionalUnitNumbers),
+                nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
+                nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
                 nextMemoryCycle(this.vliw.memory.data),
                 nextCycle(this.vliw.status.cycle),
@@ -100,9 +100,9 @@ export class VLIWIntegration extends MachineIntegration {
         this.resetMachine();
         // There is no need to update the code with the rest,
         // it should remain the same during all the program execution
-        store.dispatch(nextVLIWHeaderTableCycle(this.vliw._functionalUnitNumbers));
+        store.dispatch(nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers));
         store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code.instructions,
-                                                   this.vliw._functionalUnitNumbers));
+            this.vliw.functionalUnitNumbers));
         store.dispatch(superescalarLoad(vliwCode.superescalarCode.instructions));
     }
 
@@ -144,14 +144,14 @@ export class VLIWIntegration extends MachineIntegration {
         // Pop out any former operations in the same slot
         let popIdx = this.vliw.code.instructions[instructionIdx].operations
             .findIndex(op => op.getFunctionalUnitType() === functionalUnitType &&
-                              op.getFunctionalUnitIndex() === functionalUnitIdx);
+                op.getFunctionalUnitIndex() === functionalUnitIdx);
         if (popIdx >= 0) {
             this.vliw.code.instructions[instructionIdx].operations.splice(popIdx, 1);
         }
 
         this.vliw.code.instructions[instructionIdx].addOperation(operation);
         store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code.instructions,
-                                                   this.vliw._functionalUnitNumbers));
+            this.vliw.functionalUnitNumbers));
     }
 
     play = () => {
@@ -242,9 +242,9 @@ export class VLIWIntegration extends MachineIntegration {
     }
 
     stepBack = () => {
-         // There is no time travelling for batch mode and initial mode
+        // There is no time travelling for batch mode and initial mode
         if (this.vliw.status.cycle > 0 && this.backStep < MAX_HISTORY_SIZE &&
-           (this.vliw.status.cycle - this.backStep > 0)) {
+            (this.vliw.status.cycle - this.backStep > 0)) {
             this.backStep++;
             store.dispatch(takeHistory(this.backStep));
         }
@@ -313,10 +313,10 @@ export class VLIWIntegration extends MachineIntegration {
 
         for (let i = 0; i < vliwConfigKeys.length; i++) {
             if (i % 2 === 0) {
-                this.vliw.setFunctionalUnitNumber(i / 2,
+                this.vliw.changeFunctionalUnitNumber(i / 2,
                     +vliwConfig[vliwConfigKeys[i]]);
             } else {
-                this.vliw.setFunctionalUnitLatency(i / 2,
+                this.vliw.changeFunctionalUnitLatency((i - 1) / 2,
                     +vliwConfig[vliwConfigKeys[i]]);
             }
         }
@@ -344,9 +344,9 @@ export class VLIWIntegration extends MachineIntegration {
     }
 
     private calculateBatchStatistics(results: number[]) {
-        const average = (results.reduce((a,b) => a + b) / results.length);
+        const average = (results.reduce((a, b) => a + b) / results.length);
         return {
-            replications:  this.replications,
+            replications: this.replications,
             average: average.toFixed(2),
             standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
             worst: Math.max(...results),

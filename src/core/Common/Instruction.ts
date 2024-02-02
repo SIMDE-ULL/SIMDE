@@ -10,14 +10,9 @@ export class Instruction {
     protected _operandsString: string[];
     protected _label: string;
     protected _breakPoint: boolean;
-    protected _color: string;
 
     public get breakPoint(): boolean {
         return this._breakPoint;
-    }
-
-    public get color(): string {
-        return this._color;
     }
 
     public get operands(): number[] {
@@ -38,7 +33,6 @@ export class Instruction {
 
     constructor() {
         this._breakPoint = false;
-        this._color = 'white';
         this._operands = new Array(3);
         this._operandsString = new Array(3);
     }
@@ -50,7 +44,6 @@ export class Instruction {
         this._operands = other.operands.slice();
         this._operandsString = other.operandsString.slice();
         this._breakPoint = other.breakPoint;
-        this._color = other.color;
     }
 
     toString(): string {

@@ -4,7 +4,7 @@ import { Code } from '../Common/Code';
 import { ReorderBuffer } from "./ReorderBuffer";
 import { PrefetchUnit } from './PrefetchUnit';
 import { ReserveStation } from './ReserveStation';
-import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
+import { FunctionalUnit, FunctionalUnitType, FunctionalUnitNumbers, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
 import { JumpPredictor } from './JumpPredictor';
 import { Instruction } from '../Common/Instruction';
 import { CommitStatus, SuperStage, SuperescalarStatus } from './SuperescalarEnums';
@@ -80,10 +80,34 @@ export class Superescalar extends Machine {
 
         this._code = null;
 
-        this._aluMem = new Array(this.functionalUnitNumbers[FunctionalUnitType.MEMORY]);
+        this._aluMem = new Array(FunctionalUnitNumbers[FunctionalUnitType.MEMORY]);
 
-        for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
+        for (let j = 0; j < FunctionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
             this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM);
+        }
+    }
+
+    public changeFunctionalUnitLatency(type: FunctionalUnitType, latency: number) {
+        super.changeFunctionalUnitLatency(type, latency);
+
+        // Update the latency of the alu mem if the type is interger sum (same type of unit)
+        if (type === FunctionalUnitType.INTEGERSUM) {
+            for (let j = 0; j < this.aluMem.length; j++) {
+                this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM, latency);
+            }
+        }
+    }
+
+    public changeFunctionalUnitNumber(type: FunctionalUnitType, number: number) {
+        super.changeFunctionalUnitNumber(type, number);
+
+        // Update the number of alu mem units acortding to the number of memory units
+        if (type === FunctionalUnitType.MEMORY) {
+            let currentLatency = this.aluMem[0].latency;
+            this._aluMem = new Array(number);
+            for (let j = 0; j < number; j++) {
+                this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM, currentLatency);
+            }
         }
     }
 
@@ -92,7 +116,7 @@ export class Superescalar extends Machine {
     }
 
     public getReserveStationSize(type: FunctionalUnitType): number {
-        return this.functionalUnitNumbers[type] * (this.functionalUnit[type][0].latency + 1);
+        return this.functionalUnit[type].length * (this.functionalUnit[type][0].latency + 1);
     }
 
     private getRegisterValueOrROBRef(register: number, floatingPoint: boolean): [number, boolean] {
@@ -132,14 +156,14 @@ export class Superescalar extends Machine {
 
             // Clean functional Units and Reserve Stations,
             for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-                for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+                for (let j = 0; j < this.functionalUnit[i].length; j++) {
                     this.functionalUnit[i][j].clean();
                     this._reserveStations[i].clear();
                 }
             }
 
             // Clean the alus for the address calculus
-            for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+            for (let i = 0; i < this.aluMem.length; i++) {
                 this.aluMem[i].clean();
             }
 
@@ -171,7 +195,7 @@ export class Superescalar extends Machine {
         this._prefetchUnit.clean();
         this._code = null;
 
-        for (let j = 0; j < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
+        for (let j = 0; j < this.aluMem.length; j++) {
             this.aluMem[j].clean();
         }
     }
@@ -310,7 +334,7 @@ export class Superescalar extends Machine {
     ticExecute(): void {
         // Go through all the Functional Unit
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+            for (let j = 0; j < this.functionalUnit[i].length; j++) {
                 if (this.functionalUnit[i][j].isFree()) {
                     this.executeInstruction(i, j);
                 }
@@ -318,7 +342,7 @@ export class Superescalar extends Machine {
         }
 
         // Go through all the Address ALU and execute the address calculus
-        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+        for (let i = 0; i < this.aluMem.length; i++) {
             let execution = this.aluMem[i].executeReadyInstruction();
             if (execution != null) {
                 // if an instruction is ready, write the result address to the reorder buffer and reserve station
@@ -337,7 +361,7 @@ export class Superescalar extends Machine {
         }
 
         // Go again through all the memory reserve stations but this time sending the instructions to the address ALU
-        for (let i = 0; i < this.functionalUnitNumbers[FunctionalUnitType.MEMORY]; i++) {
+        for (let i = 0; i < this.aluMem.length; i++) {
             let readyInstsRefs = this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions(true); // we dont need the first operand ready, as we are only calculating the address
             for (let instrRef of readyInstsRefs) {
                 let instrROBRef = this._reserveStations[FunctionalUnitType.MEMORY].getROBReference(instrRef);
@@ -431,7 +455,7 @@ export class Superescalar extends Machine {
 
         // Now it's time to retrieve all the results from the UFs
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-            for (let j = 0; j < this.functionalUnitNumbers[i]; j++) {
+            for (let j = 0; j < this.functionalUnit[i].length; j++) {
                 if (!this.functionalUnit[i][j].isStalled()) {
                     this.writeInstruction(i, j);
                 }

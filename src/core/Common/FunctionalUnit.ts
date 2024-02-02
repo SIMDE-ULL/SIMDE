@@ -23,6 +23,15 @@ const FunctionalUnitLantencies: Record<FunctionalUnitType, number> = {
     [FunctionalUnitType.JUMP]: 2
 };
 
+export const FunctionalUnitNumbers: Record<FunctionalUnitType, number> = {
+    [FunctionalUnitType.INTEGERSUM]: 2,
+    [FunctionalUnitType.INTEGERMULTIPLY]: 2,
+    [FunctionalUnitType.FLOATINGSUM]: 2,
+    [FunctionalUnitType.FLOATINGMULTIPLY]: 2,
+    [FunctionalUnitType.MEMORY]: 2,
+    [FunctionalUnitType.JUMP]: 1
+};
+
 export interface FunctionalUnitResult {
     instruction: Instruction;
     result: number;
@@ -54,9 +63,9 @@ export class FunctionalUnit {
         return this._latency;
     }
 
-    constructor(type: FunctionalUnitType) {
+    constructor(type: FunctionalUnitType, latency: number = FunctionalUnitLantencies[type]) {
         this._type = type;
-        this._latency = FunctionalUnitLantencies[type];
+        this._latency = latency;
         this.clean();
     }
 
