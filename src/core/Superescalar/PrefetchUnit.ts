@@ -1,5 +1,11 @@
 import { Instruction } from "../Common/Instruction"
 
+export interface PrefetchUnitVisualEntry {
+    id: number;
+    value: string;
+    uuid: number;
+}
+
 export class PrefetchUnit {
     _entries: Instruction[];
     _size: number;
@@ -41,7 +47,7 @@ export class PrefetchUnit {
         return this._entries[0].id;
     }
 
-    public getInstructionsIds(): number[] {
-        return this._entries.map((inst) => inst.id);
+    public getVisualData(): PrefetchUnitVisualEntry[] {
+        return this._entries.map((inst) => { return { id: inst.id, value: inst.toString(), uuid: inst.uuid } });
     }
 }

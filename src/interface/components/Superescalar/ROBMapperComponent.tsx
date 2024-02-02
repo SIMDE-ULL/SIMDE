@@ -1,6 +1,5 @@
 import * as React from "react";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
-import { MACHINE_REGISTER_SIZE } from '../../../core/Constants';
 
 export class ROBMapperComponent extends React.Component<any, any> {
   constructor(props: any) {

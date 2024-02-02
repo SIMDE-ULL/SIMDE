@@ -14,6 +14,12 @@ export let FunctionalUnitTypeNames: string[] = ['Integer Sum', 'Integer Multiply
 
 export const FUNCTIONALUNITTYPESQUANTITY = FunctionalUnitType.JUMP - FunctionalUnitType.INTEGERSUM + 1;
 
+export interface FunctionalUntitVisualEntry {
+    id: number;
+    value: string;
+    uuid: number;
+}
+
 const FunctionalUnitLantencies: Record<FunctionalUnitType, number> = {
     [FunctionalUnitType.INTEGERSUM]: 1,
     [FunctionalUnitType.INTEGERMULTIPLY]: 2,
@@ -213,17 +219,17 @@ export class FunctionalUnit {
         return null;
     }
 
-    public getVisualIds(): number[] {
+    public getVisualData(): FunctionalUntitVisualEntry[] {
         let list = [];
         let lastPos = 0;
         let j = 0;
         for (let i = 0; i < this._latency; i++) {
             if (this._instructions[j] != null && this._instructions[j].blankTimeUnitsAhead === i - lastPos) {
-                list.push(this._instructions[j].instruction.id);
+                list.push({ id: this._instructions[j].instruction.id, value: this._instructions[j].instruction.toString(), uuid: this._instructions[j].instruction.uuid });
                 j++;
                 lastPos = i + 1;
             } else {
-                list.push(-1);
+                list.push({ id: -1, value: '', uuid: -1 });
             }
         }
 

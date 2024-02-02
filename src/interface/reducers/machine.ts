@@ -12,8 +12,7 @@ import {
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
     SUPERESCALAR_LOAD,
-    VIEW_BASIC_BLOCKS,
-    COLOR_CELL
+    VIEW_BASIC_BLOCKS
 } from '../actions';
 
 import {
@@ -28,7 +27,6 @@ import { generateRangeArray } from '../utils/interval';
 import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
 
 import { Machine } from '../../core/Common/Machine';
-import { colorHistoryInstruction } from './color';
 import { removeInterval, addInterval } from './interval';
 import {
     NEXT_NAT_FPR_CYCLE,
@@ -234,16 +232,6 @@ export function MachineReducers(state = initialState, action) {
                     }
                 ].slice(-MAX_HISTORY_SIZE)
             });
-        case COLOR_CELL:
-        {
-            let newState = { ...state };
-            newState.history = colorHistoryInstruction(
-                newState.history,
-                action.value[0],
-                action.value[1]
-            );
-            return newState;
-        }
         case TAKE_HISTORY:
             return (state = {
                 ...state,

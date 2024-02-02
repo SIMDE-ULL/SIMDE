@@ -27,7 +27,7 @@ export function ReserveStationComponent(props) {
                                     title={row.instruction.value}
                                     key={`${props.title + i}`}
                                     style={{
-                                        background: row.instruction.color
+                                        background: props.colors.uuidColors[row.instruction.uuid]
                                     }}
                                 >
                                     <div className="smd-table_cell">

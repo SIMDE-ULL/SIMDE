@@ -1,3 +1,5 @@
+import { FunctionalUntitVisualEntry } from "../../core/Common/FunctionalUnit";
+
 export const FUNCTIONAL_UNIT_CYCLE = 'FUNCTIONAL_UNIT_CYCLE';
 
 export function nextFunctionalUnitCycle(data) {
@@ -15,19 +17,21 @@ function mapFunctionalUnitData(data): any {
     if (data != null && data[0] != null) {
         let aux = [];
         for (let j = 0; j < data.length; j++) {
-            let instrIds = data[j].getVisualIds();
+            let instrsEntries: FunctionalUntitVisualEntry[] = data[j].getVisualData();
 
-            for (let id of instrIds) {
-                if (id !== -1) {
+            for (let entry of instrsEntries) {
+                if (entry.id !== -1) {
                     aux.push({
-                        id: data[j].getInstruction(id).id,
-                        value: data[j].getInstruction(id).toString(),
-                        color: data[j].getInstruction(id).color
+                        id: entry.id,
+                        value: entry.value,
+                        uuid: entry.uuid,
+                        color: ''
                     });
                 } else {
                     aux.push({
                         id: '-',
                         value: '',
+                        uuid: -1,
                         color: ''
                     });
                 }

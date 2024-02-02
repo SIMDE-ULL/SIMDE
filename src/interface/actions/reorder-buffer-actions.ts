@@ -15,9 +15,9 @@ export function mapReorderBufferData(unit: ReorderBuffer) {
     return unit.getVisualData();
 }
 
-export function colorCell(instructionid, color) {
+export function colorCell(instructionUuid, color) {
     return {
         type: COLOR_CELL,
-        value: [instructionid, color]
+        value: [instructionUuid, color]
     };
 }
