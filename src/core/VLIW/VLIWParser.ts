@@ -75,7 +75,7 @@ export class VLIWParser {
                 let index = +currentIndex.index;
                 let functionalUnitType = componets[0];
                 let functionalUnitIndex = +componets[1][0].text; //TODO: Check if this is out of bounds
-                let predicate = +componets[1][1].text;
+                let predicate = +componets[1][1].text; //TODO: Check if this is out of bounds
 
                 // Check if the recived functional unit type is the same as the one in the code
                 if (functionalUnitType !== currentIndex.functionalUnitType) {

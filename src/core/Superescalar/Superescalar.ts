@@ -40,6 +40,8 @@ export class Superescalar extends Machine {
 
     public set issue(value: number) {
         this._issue = value;
+        this._prefetchUnit = new PrefetchUnit(this.issue * 2);
+        this._decoder = new PrefetchUnit(this.issue);
     }
 
     public get reorderBuffer(): ReorderBuffer {
