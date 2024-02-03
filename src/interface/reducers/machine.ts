@@ -11,6 +11,7 @@ import {
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
+    CURRENT_PC,
     SUPERESCALAR_LOAD,
     VIEW_BASIC_BLOCKS
 } from '../actions';
@@ -93,6 +94,7 @@ export const initialState = {
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     cycle: 0,
+    pc: 0,
     code: [],
     vliwCode: [],
     vliwExecutionHeaderTable: [],
@@ -174,6 +176,11 @@ export function MachineReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 cycle: action.value
+            });
+        case CURRENT_PC:
+            return (state = {
+                ...state,
+                pc: action.value
             });
         case SUPERESCALAR_LOAD:
             return (state = {

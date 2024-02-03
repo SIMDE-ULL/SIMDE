@@ -7,6 +7,7 @@ import {
     nextRegistersCycle,
     nextMemoryCycle,
     nextCycle,
+    currentPC,
     superescalarLoad,
     batchActions
 } from '../interface/actions';
@@ -53,6 +54,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
                 nextMemoryCycle(this.vliw.memory.data),
                 nextCycle(this.vliw.status.cycle),
+                currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),
                 nextNatGprCycle(this.vliw.getNaTGP()),
                 nextPredicateCycle(this.vliw.getPredReg()),
