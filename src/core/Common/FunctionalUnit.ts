@@ -74,6 +74,10 @@ export class FunctionalUnit {
     return this._latency;
   }
 
+  public get ocupation(): number {
+    return this._instructions.length / this._latency;
+  }
+
   constructor(
     private _type: FunctionalUnitType,
     private _latency: number = FunctionalUnitLantencies[_type]

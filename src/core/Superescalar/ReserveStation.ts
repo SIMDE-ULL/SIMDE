@@ -28,6 +28,10 @@ export class ReserveStation {
     return this._size;
   }
 
+  public get ocupation() {
+    return this._entries.length / this._size;
+  }
+
   constructor(private _size: number) {}
 
   private getInstrPos(uuid: number): number {

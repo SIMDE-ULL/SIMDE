@@ -27,6 +27,8 @@ import { Code } from '../core/Common/Code';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 import { displayBatchResults } from '../interface/actions/modals';
 
+import { SuperescalarStats } from '../stats/superescalar-stats';
+
 import { MachineIntegration } from './machine-integration';
 
 export class SuperescalarIntegration extends MachineIntegration {
@@ -41,6 +43,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     replications = 0;
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
+    stats = new SuperescalarStats();
 
     /*
     * This call all the components to update the state
@@ -92,6 +95,38 @@ export class SuperescalarIntegration extends MachineIntegration {
         );
     }
 
+    collectStats = () => {
+        let prefetchInstrs = this.superescalar.prefetchUnit.getVisualData();
+        this.stats.collectPrefetchUuids(prefetchInstrs.map((data) => data.uuid));
+        this.stats.collectDecodeUuids(this.superescalar.decoder.getVisualData().map((data) => data.uuid));
+        this.stats.collectIssuedUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "ISSUE").map((data) => data.instruction.uuid));
+        this.stats.collectExecutingUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "EXECUTE").map((data) => data.instruction.uuid));
+        this.stats.collectWriteBackUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "WRITE").map((data) => data.instruction.uuid));
+        this.stats.collectCommitUuids(this.superescalar.currentCommitedInstrs);
+
+        this.stats.collectUnitOcupation('prefetch', this.superescalar.prefetchUnit.ocupation);
+        this.stats.collectUnitOcupation('decode', this.superescalar.decoder.ocupation);
+        this.stats.collectUnitOcupation('rob', this.superescalar.reorderBuffer.ocupation);
+        this.stats.collectUnitOcupation('rs0', this.superescalar.getReserveStation(0).ocupation);
+        this.stats.collectUnitOcupation('rs1', this.superescalar.getReserveStation(1).ocupation);
+        this.stats.collectUnitOcupation('rs2', this.superescalar.getReserveStation(2).ocupation);
+        this.stats.collectUnitOcupation('rs3', this.superescalar.getReserveStation(3).ocupation);
+        this.stats.collectUnitOcupation('rs4', this.superescalar.getReserveStation(4).ocupation);
+        this.stats.collectUnitOcupation('rs5', this.superescalar.getReserveStation(5).ocupation);
+        this.stats.collectMultipleUnitOcupation('fu0', this.superescalar.functionalUnit[0].map((fu) => fu.ocupation));
+        this.stats.collectMultipleUnitOcupation('fu1', this.superescalar.functionalUnit[1].map((fu) => fu.ocupation));
+        this.stats.collectMultipleUnitOcupation('fu2', this.superescalar.functionalUnit[2].map((fu) => fu.ocupation));
+        this.stats.collectMultipleUnitOcupation('fu3', this.superescalar.functionalUnit[3].map((fu) => fu.ocupation));
+        this.stats.collectMultipleUnitOcupation('fu4', this.superescalar.functionalUnit[4].map((fu) => fu.ocupation));
+        this.stats.collectMultipleUnitOcupation('fu5', this.superescalar.functionalUnit[5].map((fu) => fu.ocupation));
+
+        for (let instr of prefetchInstrs) {
+            this.stats.associateUuidWithInstruction(instr.uuid, instr.id);
+        }
+
+        this.stats.advanceCycle();
+    }
+
     superExe = (reset: boolean = true) => {
         this.superescalar.init(reset);
     }
@@ -120,6 +155,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                 }
             }
             let machineStatus = this.superescalar.tic();
+            this.collectStats();
             this.dispatchAllSuperescalarActions();
 
             return machineStatus;
@@ -163,7 +199,9 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.executionLoop(speed);
         } else {
             // tslint:disable-next-line:no-empty
-            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) {
+                this.collectStats();
+            }
             this.dispatchAllSuperescalarActions();
             this.finishedExecution = true;
             alert(t('execution.finished'));
@@ -191,7 +229,9 @@ export class SuperescalarIntegration extends MachineIntegration {
             }
 
             // tslint:disable-next-line:no-empty
-            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { 
+                this.collectStats();
+            }
             results.push(this.superescalar.status.cycle);
         }
 
@@ -267,6 +307,8 @@ export class SuperescalarIntegration extends MachineIntegration {
                     } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
                         alert(t('execution.finished'));
+                        console.log(this.stats.exportStats());
+                        
                     }
                 }
             }, speed);

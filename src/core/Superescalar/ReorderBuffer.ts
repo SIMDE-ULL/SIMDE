@@ -4,6 +4,7 @@ import { Instruction } from "../Common/Instruction";
 export interface VisualReorderBufferEntry {
   instruction: {
     id: string;
+    uuid: number;
     value: string;
   };
   destinyRegister: string;
@@ -29,6 +30,10 @@ export class ReorderBuffer {
 
   public get size() {
     return this._size;
+  }
+
+  public get ocupation() {
+    return this._queue.length / this._size;
   }
 
   constructor(private _size: number) {}
@@ -126,10 +131,14 @@ export class ReorderBuffer {
   }
 
   /**
-   * commitInstruction - this method commits an instruction from the reorder buffer
+   * commitInstruction - this method commits an instruction from the reorder buffer, returning their uuid
    */
-  public commitInstruction() {
-    this._queue.shift();
+  public commitInstruction(): number {
+    let e = this._queue.shift();
+    if (e == undefined) {
+      return -1;
+    }
+    return e.instruction.uuid;
   }
 
   /**
@@ -264,7 +273,7 @@ export class ReorderBuffer {
     return this._queue.map((entry) => {
       if (entry != null) {
         let aux = {
-          instruction: { id: "", uuid: "", value: "" },
+          instruction: { id: "", uuid: -1, value: "" },
           destinyRegister:
             entry.destinyRegister !== -1 ? "" + entry.destinyRegister : "-",
           value: "" + entry.value,
@@ -280,13 +289,13 @@ export class ReorderBuffer {
             }
           }
           aux.instruction.id = "" + entry.instruction.id;
-          aux.instruction.uuid = "" + entry.instruction.uuid;
+          aux.instruction.uuid = entry.instruction.uuid;
           aux.instruction.value = entry.instruction.toString();
         }
         return aux;
       }
       return {
-        instruction: { id: "", uuid: "", value: "" },
+        instruction: { id: "", uuid: -1, value: "" },
         destinyRegister: "",
         value: "",
         address: "",

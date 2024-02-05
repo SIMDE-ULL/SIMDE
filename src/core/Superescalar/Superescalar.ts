@@ -34,6 +34,8 @@ export class Superescalar extends Machine {
   private _aluMem: FunctionalUnit[];
   private _jumpPrediction: JumpPredictor;
 
+  private _currentCommitedInstrs: number[];
+
   public get code(): Code {
     return this._code;
   }
@@ -72,6 +74,10 @@ export class Superescalar extends Machine {
     return this._jumpPrediction;
   }
 
+  public get currentCommitedInstrs(): number[] {
+    return this._currentCommitedInstrs;
+  }
+
   constructor() {
     super();
     this.issue = Superescalar.ISSUE_DEF;
@@ -95,6 +101,8 @@ export class Superescalar extends Machine {
     for (let j = 0; j < FunctionalUnitNumbers[FunctionalUnitType.MEMORY]; j++) {
       this.aluMem[j] = new FunctionalUnit(FunctionalUnitType.INTEGERSUM);
     }
+
+    this._currentCommitedInstrs = new Array<number>();
   }
 
   public changeFunctionalUnitLatency(
@@ -242,6 +250,8 @@ export class Superescalar extends Machine {
         this.aluMem[j].latency
       );
     }
+
+    this._currentCommitedInstrs = new Array<number>();
   }
 
   ticPrefetch() {
@@ -489,7 +499,7 @@ export class Superescalar extends Machine {
         //hack: as we dont have a well made error handling, intercept the error and just throw it
         if (a instanceof Error) {
           throw a;
-      }
+        }
 
         resul = a.value;
         if (!a.got) {
@@ -583,7 +593,10 @@ export class Superescalar extends Machine {
             this._reorderBuffer.getResultValue()
           )
         ) {
-          this._reorderBuffer.commitInstruction();
+          let instUuid = this._reorderBuffer.commitInstruction();
+          if (instUuid !== -1) {
+            this._currentCommitedInstrs.push(instUuid);
+          }
           // the jump was mispredicted
           return CommitStatus.SUPER_COMMITMISS;
         }
@@ -617,7 +630,10 @@ export class Superescalar extends Machine {
         return CommitStatus.SUPER_COMMITNO;
       }
 
-      this._reorderBuffer.commitInstruction();
+      let instUuid = this._reorderBuffer.commitInstruction();
+      if (instUuid !== -1) {
+        this._currentCommitedInstrs.push(instUuid);
+      }
     }
     return CommitStatus.SUPER_COMMITOK;
   }

@@ -5,7 +5,8 @@
             "load": "Load",
             "downloadMemory": "Download Memory(JSON)",
             "downloadContent": "Download content Memory - Registers",
-            "downloadCode": "Download Code"
+            "downloadCode": "Download Code",
+            "downloadStats": "Descargar raw stats"
         },
         "view": {
             "name": "View",
