@@ -1,6 +1,4 @@
-
-
-interface InstructionStatsEntry {
+export interface InstructionStatsEntry {
     instructionId: number;
 
     prefetchCycles: number;
@@ -110,6 +108,75 @@ export class SuperescalarStats {
 
     public advanceCycle() {
         this._currentCycle++;
+    }
+    
+    public getCommitedPercentage(): number {
+        let commited = 0;
+        let total = 0;
+        for (let [_, entry] of this._instrEntries) {
+            if (entry.commited) {
+                commited++;
+            }
+            total++;
+        }
+        return commited / total;
+    }
+
+    public getCommitedPercentagePerInstruction(): Map<number, number> {
+        let commited = new Map<number, number>();
+        let total = new Map<number, number>();
+        for (let [_, entry] of this._instrEntries) {
+            if (!total.has(entry.instructionId)) {
+                total.set(entry.instructionId, 0);
+                commited.set(entry.instructionId, 0);
+            }
+            total.set(entry.instructionId, total.get(entry.instructionId) + 1);
+            if (entry.commited) {
+                commited.set(entry.instructionId, commited.get(entry.instructionId) + 1);
+            }
+        }
+
+        for (let [instructionId, commitedCount] of commited) {
+            commited.set(instructionId, commitedCount / total.get(instructionId));
+        }
+        return commited;
+    }
+
+    public getInstructionsStatusesAverage(): Map<number, InstructionStatsEntry> {
+        let average = new Map<number, InstructionStatsEntry>();
+        let count = new Map<number, number>();
+        for (let [uuid, entry] of this._instrEntries) {
+            if (!count.has(entry.instructionId)) {
+                count.set(entry.instructionId, 0);
+                average.set(entry.instructionId, {
+                    instructionId: entry.instructionId,
+                    prefetchCycles: 0,
+                    decodeCycles: 0,
+                    issueCycles: 0,
+                    executeCycles: 0,
+                    writeBackCycles: 0,
+                    commited: false
+                });
+            }
+
+            if (entry.commited) {
+                average.get(entry.instructionId).prefetchCycles += entry.prefetchCycles;
+                average.get(entry.instructionId).decodeCycles += entry.decodeCycles;
+                average.get(entry.instructionId).issueCycles += entry.issueCycles;
+                average.get(entry.instructionId).executeCycles += entry.executeCycles;
+                average.get(entry.instructionId).writeBackCycles += entry.writeBackCycles;
+                count.set(entry.instructionId, count.get(entry.instructionId) + 1);
+            }
+        }
+
+        for (let [instructionId, entry] of average) {
+            entry.prefetchCycles /= count.get(instructionId);
+            entry.decodeCycles /= count.get(instructionId);
+            entry.issueCycles /= count.get(instructionId);
+            entry.executeCycles /= count.get(instructionId);
+            entry.writeBackCycles /= count.get(instructionId);
+        }
+        return average;
     }
 
     public exportStats(): object {

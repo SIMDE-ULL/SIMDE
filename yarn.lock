@@ -790,6 +790,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kbox-labs/react-echarts@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "@kbox-labs/react-echarts@npm:1.0.3"
+  peerDependencies:
+    echarts: ^5
+    react: ^18
+  checksum: eb4ee8cebc8e7d3a659fffe2161c1a54b2ce091b9b31ebf9ff4b340fb9075d66ee3823d0a9c74c42d250fab83ac9a7fa502f59bdd39c29d30ceb14343c9f8160
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -2154,6 +2164,16 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"echarts@npm:^5.4.3":
+  version: 5.4.3
+  resolution: "echarts@npm:5.4.3"
+  dependencies:
+    tslib: "npm:2.3.0"
+    zrender: "npm:5.4.4"
+  checksum: d2040d3fabbe5f0a2c230cceedf9f12361131a221f81cc30bcb75e98e1ee99a0764b1d7372a23fab9a020f36f5549cf0835f14dfa580907f56ccf0146a99a7bd
   languageName: node
   linkType: hard
 
@@ -4756,6 +4776,7 @@ __metadata:
   resolution: "simde@workspace:."
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.5.1"
+    "@kbox-labs/react-echarts": "npm:^1.0.3"
     "@popperjs/core": "npm:^2.11.8"
     "@types/node": "npm:^20.8.9"
     "@types/react": "npm:^18.2.15"
@@ -4766,6 +4787,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^0.34.6"
     bootstrap: "npm:^5.1.3"
     codecov: "npm:^3.6.5"
+    echarts: "npm:^5.4.3"
     eslint: "npm:^8.45.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.3"
@@ -5352,6 +5374,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: a845aed84e7e7dbb4c774582da60d7030ea39d67307250442d35c4c5dd77e4b44007098c37dd079e100029c76055f2a362734b8442ba828f8cc934f15ed9be61
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^2.2.0, tslib@npm:^2.4.0":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
@@ -5907,5 +5936,14 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 856117aa15cf5103d2a2fb173f0ab4acb12b4b4d0ed3ab249fdbbf612e55d1cadfd27a6110940e24746fb0a78cf640b522cc8bca76f30a3b00b66e90cf82abe0
+  languageName: node
+  linkType: hard
+
+"zrender@npm:5.4.4":
+  version: 5.4.4
+  resolution: "zrender@npm:5.4.4"
+  dependencies:
+    tslib: "npm:2.3.0"
+  checksum: 7c298595c506556b9182edbf94894b9311ebf9cf698934863521232a37dbdcd1c530f895ae2d29c2c170a765fdb390583ba331743f8c92cb6a077f746f6f52d8
   languageName: node
   linkType: hard

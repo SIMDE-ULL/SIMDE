@@ -42,6 +42,7 @@
         "speed": "Speed",
         "superescalar": "Superescalar",
         "memReg": "Memory - Registers",
+        "stats": "Stats",
         "vliw": "VLIW"
     },
     "authorModal": {
