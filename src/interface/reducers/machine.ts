@@ -11,6 +11,8 @@ import {
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
+    NEXT_INSTRUCTIONS_COMMITED,
+    NEXT_TOTAL_COMMITED,
     CURRENT_PC,
     SUPERESCALAR_LOAD,
     VIEW_BASIC_BLOCKS
@@ -92,6 +94,11 @@ export const initialState = {
     natFpr: {
         data: [],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
+    },
+    stats: {
+        commited: 0,
+        discarded: 0,
+        commitedPerInstr: []
     },
     cycle: 0,
     pc: 0,
@@ -181,6 +188,23 @@ export function MachineReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 pc: action.value
+            });
+        case NEXT_INSTRUCTIONS_COMMITED:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    commitedPerInstr: Array.from(action.value, ([name, value]) => ({ name, value }))
+                }
+            });
+        case NEXT_TOTAL_COMMITED:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    commited: action.value.commited,
+                    discarded: action.value.discarded
+                }
             });
         case SUPERESCALAR_LOAD:
             return (state = {

@@ -163,8 +163,8 @@ export class StatsTabComponent extends React.Component<any, any> {
                                         formatter: '{b}: {c} ({d}%)'
                                     },
                                     data: [
-                                        { value: 335, name: 'Commited' },
-                                        { value: 50, name: 'Discarded' },
+                                        { value: this.props.commited, name: 'Commited' },
+                                        { value: this.props.discarded, name: 'Discarded' },
                                     ]
                                 }
                             ]}
@@ -186,146 +186,20 @@ export class StatsTabComponent extends React.Component<any, any> {
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>ADDI R0 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>ADDI R1 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>ADDI R2 #40</td>
-                                    <td>2</td>
-                                    <td>1.5</td>
-                                    <td>1.2</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>90%</td>
-                                </tr>
+                                {
+                                    this.props.instrCommitPercentage && this.props.instrCommitPercentage.map((d) =>
+                                        <tr key={d.name}>
+                                            <th scope="row">{d.name}</th>
+                                            <td>-</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>{d.value * 100}%</td>
+                                        </tr>
+                                    )
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -338,7 +212,9 @@ export class StatsTabComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-
+        commited: state.Machine.stats.commited,
+        discarded: state.Machine.stats.discarded,
+        instrCommitPercentage: state.Machine.stats.commitedPerInstr,
     }
 }
 

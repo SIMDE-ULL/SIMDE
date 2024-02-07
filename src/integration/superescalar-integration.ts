@@ -14,7 +14,8 @@ import {
     nextCycle,
     superescalarLoad,
     batchActions,
-    colorCell
+    nextTotalCommited,
+    nextInstructionsCommited
 } from '../interface/actions';
 
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
@@ -90,6 +91,8 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
                     nextMemoryCycle(Array.from(this.superescalar.memory).map(d => d.value)),
                     nextCycle(this.superescalar.status.cycle),
+                    nextTotalCommited(this.stats.getCommitedAndDiscarded()),
+                    nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
                     pushHistory()
                 )
         );

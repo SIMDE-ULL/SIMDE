@@ -110,7 +110,7 @@ export class SuperescalarStats {
         this._currentCycle++;
     }
 
-    public getCommitedPercentage(): number {
+    public getCommitedAndDiscarded(): { commited: number, discarded: number } {
         let commited = 0;
         let total = 0;
         for (let [_, entry] of this._instrEntries) {
@@ -119,7 +119,7 @@ export class SuperescalarStats {
             }
             total++;
         }
-        return commited / total;
+        return { commited, discarded: total - commited };
     }
 
     public getCommitedPercentagePerInstruction(): Map<number, number> {
