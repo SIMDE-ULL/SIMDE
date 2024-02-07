@@ -109,7 +109,7 @@ export class SuperescalarStats {
     public advanceCycle() {
         this._currentCycle++;
     }
-    
+
     public getCommitedPercentage(): number {
         let commited = 0;
         let total = 0;
