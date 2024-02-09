@@ -15,7 +15,10 @@ import {
     superescalarLoad,
     batchActions,
     nextTotalCommited,
-    nextInstructionsCommited
+    nextInstructionsCommited,
+    nextUnitsOcupation,
+    nextInstructionsStatusesAverageCycles,
+    nextStatusesCount
 } from '../interface/actions';
 
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
@@ -93,6 +96,9 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextCycle(this.superescalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
+                    nextUnitsOcupation(this.stats.getUnitsOcupation()),
+                    nextStatusesCount(this.stats.getPerStatusCountAtCycle()),
+                    nextInstructionsStatusesAverageCycles(this.stats.getInstructionsStatusesAverage()),
                     pushHistory()
                 )
         );
@@ -310,7 +316,6 @@ export class SuperescalarIntegration extends MachineIntegration {
                     } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
                         alert(t('execution.finished'));
-                        console.log(this.stats.exportStats());
                         
                     }
                 }

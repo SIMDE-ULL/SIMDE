@@ -110,6 +110,14 @@ export class SuperescalarStats {
         this._currentCycle++;
     }
 
+    public getUnitsOcupation(): Map<string, number[]> {
+        let ocupation = new Map<string, number[]>();
+        for (let [unitName, ocupationAtCycle] of this._unitOcupationAtCycle) {
+            ocupation.set(unitName, Array.from(ocupationAtCycle.values()));
+        }
+        return ocupation;
+    }
+
     public getCommitedAndDiscarded(): { commited: number, discarded: number } {
         let commited = 0;
         let total = 0;
@@ -177,6 +185,19 @@ export class SuperescalarStats {
             entry.writeBackCycles /= count.get(instructionId);
         }
         return average;
+    }
+
+    public getPerStatusCountAtCycle(): Map<string, number[]> {
+        let count = new Map<string, number[]>();
+        for (let [cycle, statuses] of this._statusesAtCycle) {
+            for (let [status, value] of Object.entries(statuses)) {
+                if (!count.has(status)) {
+                    count.set(status, []);
+                }
+                count.get(status).push(value);
+            }
+        }
+        return count;
     }
 
     public exportStats(): object {

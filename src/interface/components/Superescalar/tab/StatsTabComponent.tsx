@@ -9,6 +9,10 @@ export class StatsTabComponent extends React.Component<any, any> {
         super(props);
     }
 
+    formatTableNumber(value: number) {
+        return Math.round(value * 100) / 100 || '-';
+    }
+
     render() {
         return (
             <div className="container text-center">
@@ -22,6 +26,9 @@ export class StatsTabComponent extends React.Component<any, any> {
                             style={{
                                 height: "25rem",
                                 width: "100%",
+                            }}
+                            legend={{
+                                top: 'bottom'
                             }}
                             toolbox={{
                                 feature: {
@@ -44,44 +51,16 @@ export class StatsTabComponent extends React.Component<any, any> {
                             yAxis={{
                                 type: 'value'
                             }}
-                            series={[
-                                {
-                                    name: 'Prefetch',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [5, 20, 36, 10, 10, 20]
-                                },
-                                {
-                                    name: 'Decode',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [15, 20, 26, 20, 20, 20]
-                                },
-                                {
-                                    name: 'Issue',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [25, 20, 16, 30, 30, 20]
-                                },
-                                {
-                                    name: 'Execute',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [35, 20, 6, 40, 40, 20]
-                                },
-                                {
-                                    name: 'WriteBack',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [45, 20, 6, 50, 50, 20]
-                                },
-                                {
-                                    name: 'Commit',
-                                    type: 'bar',
-                                    stack: 'statuses',
-                                    data: [45, 20, 6, 50, 50, 20]
-                                },
-                            ]}
+                            series={
+                                this.props.statusesCount && Array.from(this.props.statusesCount.keys()).map((status) => {
+                                    return {
+                                        name: status,
+                                        type: 'bar',
+                                        stack: 'statuses',
+                                        data: this.props.statusesCount.get(status)
+                                    }
+                                })
+                            }
                         />
                     </div>
                     <div className="col">
@@ -93,6 +72,23 @@ export class StatsTabComponent extends React.Component<any, any> {
                             style={{
                                 height: "25rem",
                                 width: "100%",
+                            }}
+                            legend={{
+                                top: 'bottom',
+                                selected: {
+                                    'rs0': false,
+                                    'rs1': false,
+                                    'rs2': false,
+                                    'rs3': false,
+                                    'rs4': false,
+                                    'rs5': false,
+                                    'fu0': false,
+                                    'fu1': false,
+                                    'fu2': false,
+                                    'fu3': false,
+                                    'fu4': false,
+                                    'fu5': false,
+                                }
                             }}
                             toolbox={{
                                 feature: {
@@ -119,23 +115,15 @@ export class StatsTabComponent extends React.Component<any, any> {
                                     formatter: '{value}%'
                                 }
                             }}
-                            series={[
-                                {
-                                    name: 'Prefetch unit',
-                                    type: 'line',
-                                    data: [5, 20, 36, 10, 10, 20]
-                                },
-                                {
-                                    name: 'Decoder',
-                                    type: 'line',
-                                    data: [15, 20, 26, 20, 20, 20]
-                                },
-                                {
-                                    name: 'ROB',
-                                    type: 'line',
-                                    data: [25, 20, 16, 30, 30, 20]
-                                }
-                            ]}
+                            series={
+                                this.props.unitsOcupation && Array.from(this.props.unitsOcupation.keys()).map((unitName) => {
+                                    return {
+                                        name: unitName,
+                                        type: 'line',
+                                        data: this.props.unitsOcupation.get(unitName).map((value) => value * 100)
+                                    }
+                                })
+                            }
                         />
                     </div>
                 </div>
@@ -190,13 +178,13 @@ export class StatsTabComponent extends React.Component<any, any> {
                                     this.props.instrCommitPercentage && this.props.instrCommitPercentage.map((d) =>
                                         <tr key={d.name}>
                                             <th scope="row">{d.name}</th>
-                                            <td>-</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>{d.value * 100}%</td>
+                                            <td>{this.props.code[d.name].toString()}</td>
+                                            <td>{this.formatTableNumber(this.props.instrStatuses.get(d.name).prefetchCycles)}</td>
+                                            <td>{this.formatTableNumber(this.props.instrStatuses.get(d.name).decodeCycles)}</td>
+                                            <td>{this.formatTableNumber(this.props.instrStatuses.get(d.name).issueCycles)}</td>
+                                            <td>{this.formatTableNumber(this.props.instrStatuses.get(d.name).executeCycles)}</td>
+                                            <td>{this.formatTableNumber(this.props.instrStatuses.get(d.name).writeBackCycles)}</td>
+                                            <td>{this.formatTableNumber(d.value * 100)}%</td>
                                         </tr>
                                     )
                                 }
@@ -215,6 +203,10 @@ const mapStateToProps = state => {
         commited: state.Machine.stats.commited,
         discarded: state.Machine.stats.discarded,
         instrCommitPercentage: state.Machine.stats.commitedPerInstr,
+        unitsOcupation: state.Machine.stats.unitsOcupation,
+        statusesCount: state.Machine.stats.statusesCount,
+        instrStatuses: state.Machine.stats.instructionsStatusesAverageCycles,
+        code: state.Machine.code
     }
 }
 

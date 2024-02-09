@@ -13,6 +13,9 @@ import {
     NEXT_CYCLE,
     NEXT_INSTRUCTIONS_COMMITED,
     NEXT_TOTAL_COMMITED,
+    NEXT_UNITS_OCUPATION,
+    NEXT_STATUSES_COUNT,
+    NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES,
     CURRENT_PC,
     SUPERESCALAR_LOAD,
     VIEW_BASIC_BLOCKS
@@ -41,7 +44,7 @@ import {
     REMOVE_NAT_FPR_INTERVAL,
     NEXT_NAT_GPR_CYCLE,
     NEXT_PREDICATE_CYCLE
- } from '../actions/predicate-nat-actions';
+} from '../actions/predicate-nat-actions';
 
 export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
@@ -98,7 +101,10 @@ export const initialState = {
     stats: {
         commited: 0,
         discarded: 0,
-        commitedPerInstr: []
+        commitedPerInstr: [],
+        unitsOcupation: new Map(),
+        statusesCount: new Map(),
+        instructionsStatusesAverageCycles: new Map()
     },
     cycle: 0,
     pc: 0,
@@ -204,6 +210,30 @@ export function MachineReducers(state = initialState, action) {
                     ...state.stats,
                     commited: action.value.commited,
                     discarded: action.value.discarded
+                }
+            });
+        case NEXT_UNITS_OCUPATION:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    unitsOcupation: action.value
+                }
+            });
+        case NEXT_STATUSES_COUNT:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    statusesCount: action.value
+                }
+            });
+        case NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    instructionsStatusesAverageCycles: action.value
                 }
             });
         case SUPERESCALAR_LOAD:
