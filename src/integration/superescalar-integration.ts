@@ -162,6 +162,8 @@ export class SuperescalarIntegration extends MachineIntegration {
                     this.setGpr(this.contentIntegration.GPRContent);
                     this.setMemory(this.contentIntegration.MEMContent);
                 }
+
+                this.stats = new SuperescalarStats();
             }
             let machineStatus = this.superescalar.tic();
             this.collectStats();
@@ -202,6 +204,8 @@ export class SuperescalarIntegration extends MachineIntegration {
                 this.setGpr(this.contentIntegration.GPRContent);
                 this.setMemory(this.contentIntegration.MEMContent);
             }
+
+            this.stats = new SuperescalarStats();
         }
 
         if (speed) {
@@ -370,6 +374,9 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.setGpr(this.contentIntegration.GPRContent);
             this.setMemory(this.contentIntegration.MEMContent);
         }
+
+        this.stats = new SuperescalarStats();
+
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
     }
