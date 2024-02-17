@@ -23,14 +23,11 @@ interface ReorderBufferEntry {
 
 // TODO: dont use rob entry pos as a reference to the instruction, use an instruction uid instead?
 export class ReorderBuffer {
-    _queue: ReorderBufferEntry[];
+    _queue: ReorderBufferEntry[] = [];
     _GprMapping: { [reg: number]: number };
     _FprMapping: { [reg: number]: number };
-    _size: number;
 
-    constructor(size: number) {
-        this._queue = [];
-        this._size = size;
+    constructor(private _size: number) {
     }
 
     /**

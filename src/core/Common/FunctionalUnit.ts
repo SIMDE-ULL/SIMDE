@@ -52,8 +52,6 @@ interface FunctionalUnitInstruction {
 
 export class FunctionalUnit {
 
-    private _type: FunctionalUnitType;
-    private _latency: number;
     private _stalled: number; // if >0, it is stalling (for ex because a memory fail) for that many cycles
     private _instructions: FunctionalUnitInstruction[];
 
@@ -69,9 +67,7 @@ export class FunctionalUnit {
         return this._latency;
     }
 
-    constructor(type: FunctionalUnitType, latency: number = FunctionalUnitLantencies[type]) {
-        this._type = type;
-        this._latency = latency;
+    constructor(private _type: FunctionalUnitType, private _latency: number = FunctionalUnitLantencies[_type]) {
         this.clean();
     }
 

@@ -9,7 +9,7 @@ export class Memory {
 
     private _data: number[];
     private _fail: boolean[];
-    public failProbability: number;
+    public failProbability: number = 0;
     private _memorySize: number;
 
     public get data(): number[] {
@@ -20,8 +20,6 @@ export class Memory {
         this._data = new Array(size);
         this._fail = new Array(size);
         this._memorySize = size;
-
-        this.failProbability = 0;
     }
 
     public clean() {

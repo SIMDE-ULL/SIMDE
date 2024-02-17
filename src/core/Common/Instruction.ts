@@ -7,10 +7,10 @@ export class Instruction {
     public basicBlock: number;
     public opcode: number;
     protected _uuid: number;
-    protected _operands: number[];
-    protected _operandsString: string[];
+    protected _operands: number[] = new Array(3);
+    protected _operandsString: string[] = new Array(3);
     protected _label: string;
-    protected _breakPoint: boolean;
+    protected _breakPoint: boolean = false;
 
     public get uuid(): number {
         return this._uuid;
@@ -34,12 +34,6 @@ export class Instruction {
 
     public get operandsString(): string[] {
         return this._operandsString;
-    }
-
-    constructor() {
-        this._breakPoint = false;
-        this._operands = new Array(3);
-        this._operandsString = new Array(3);
     }
 
     instantiate(from: Instruction, cycle: number) {

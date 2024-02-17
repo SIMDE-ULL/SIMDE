@@ -5,8 +5,8 @@ import { Machine } from './Machine';
 
 export class Code {
     private _lines: number;
-    private _instructions: Instruction[];
-    private _numberOfBlocks: number;
+    private readonly _instructions: Instruction[] = new Array();
+    private _numberOfBlocks: number = 0;
 
     public get instructions(): Instruction[] {
         return this._instructions;
@@ -18,11 +18,6 @@ export class Code {
 
     public get numberOfBlocks(): number {
         return this._numberOfBlocks;
-    }
-
-    constructor() {
-        this._numberOfBlocks = 0;
-        this._instructions = new Array();
     }
 
     public toggleBreakpoint(index: number) {

@@ -4,8 +4,6 @@ export class Register {
     private _content: number[];
     private _bufferIn: number[];
     private _busy: boolean[];
-    private _zeroWritable: boolean;
-    private _registryNumber: number;
 
     public get content(): number[] {
         return this._content;
@@ -15,12 +13,10 @@ export class Register {
         return this._busy;
     }
 
-    constructor(numberOfRegs: number, zeroWritable: boolean = false) {
-        this._busy = new Array(numberOfRegs);
-        this._content = new Array(numberOfRegs);
-        this._bufferIn = new Array(numberOfRegs);
-        this._zeroWritable = zeroWritable;
-        this._registryNumber = numberOfRegs;
+    constructor(private _numberOfRegs: number, private _zeroWritable: boolean = false) {
+        this._busy = new Array(_numberOfRegs);
+        this._content = new Array(_numberOfRegs);
+        this._bufferIn = new Array(_numberOfRegs);
     }
 
     public setContent(index: number, value: number, useBuffer: boolean) {
@@ -60,7 +56,7 @@ export class Register {
     }
 
     public tic() {
-        for (let i = 0; i < this._registryNumber; i++) {
+        for (let i = 0; i < this._numberOfRegs; i++) {
             if (this.busy[i]) {
                 this._busy[i] = false;
                 // Reuse setContent logic

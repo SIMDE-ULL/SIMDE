@@ -23,13 +23,10 @@ export interface ReserveStationEntry {
 
 export class ReserveStation {
 
-    private _entries: ReserveStationEntry[];
-    private _size: number;
+    private _entries: ReserveStationEntry[] = new Array();
 
 
-    constructor(size: number) {
-        this._entries = new Array();
-        this._size = size;
+    constructor(private _size: number) {
     }
 
     private getInstrPos(uuid: number): number {

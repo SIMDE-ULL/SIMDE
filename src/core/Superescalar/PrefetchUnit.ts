@@ -7,16 +7,13 @@ export interface PrefetchUnitVisualEntry {
 }
 
 export class PrefetchUnit {
-    _entries: Instruction[];
-    _size: number;
+    private _entries: Instruction[] = [];
 
     public get size() {
         return this._size;
     }
 
-    constructor(size: number) {
-        this._size = size;
-        this._entries = [];
+    constructor(private _size: number) {
     }
 
     public clean() {
