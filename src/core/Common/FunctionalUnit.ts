@@ -90,39 +90,34 @@ export class FunctionalUnit {
   }
 
   public tic() {
-    if (!this.isStalled()) {
-      if (!this.isEmpty()) {
-        //decrement blank time units of the next instruction to be executed
-        if (this._instructions[0].blankTimeUnitsAhead == 0) {
-          // If an instruction has 0 blank time units ahead, it means it was behind another
-          // or it wasnt executed and should be dropped
-
-          if (!this._hasExectutedInstBeforeTick) {
-            // If no instruction was executed in this cycle,
-            // it means that this instruction was skipped
-            //TODO: throw error
-            this._instructions.shift();
-          }
-        } else {
-          // decrease blank time units, only if no instruction was executed in this cycle
-          if (!this._hasExectutedInstBeforeTick) {
-            this._instructions[0].blankTimeUnitsAhead--;
-          }
-        }
-      }
-
-      this._hasExectutedInstBeforeTick = false;
-
-      // Acumulate blank time units for the next instruction to be pushed
-      this._currentBlankTimeUnits++;
-      this._currentBlankTimeUnits = Math.min(
-        this._currentBlankTimeUnits,
-        this._latency - 1
-      ); // it cannot be more than the latency
-    } else {
-      // decrease stall time
+    if (this.isStalled()) {
+      // only decrease stall time
       this._stalled--;
+      return;
     }
+
+    if (!this.isEmpty() && !this._hasExectutedInstBeforeTick) {
+      //decrement blank time units of the next instruction to be executed
+      if (this._instructions[0].blankTimeUnitsAhead == 0) {
+        // If an instruction has 0 blank time units ahead, it means it was behind another
+        // or it wasnt executed and should be dropped
+        // If no instruction was executed in this cycle,
+        // it means that this instruction was skipped
+        //TODO: throw error
+        this._instructions.shift();
+      } else {
+        // decrease blank time units, only if no instruction was executed in this cycle
+        this._instructions[0].blankTimeUnitsAhead--;
+      }
+    }
+
+    this._hasExectutedInstBeforeTick = false;
+    // Acumulate blank time units for the next instruction to be pushed
+    this._currentBlankTimeUnits++;
+    this._currentBlankTimeUnits = Math.min(
+      this._currentBlankTimeUnits,
+      this._latency - 1
+    ); // it cannot be more than the latency
   }
 
   public stall(time: number) {
@@ -155,68 +150,68 @@ export class FunctionalUnit {
     secondValue: number = 0
   ): FunctionalUnitResult {
     if (
-      this._instructions.length > 0 &&
-      this._instructions[0].blankTimeUnitsAhead == 0
+      this._instructions.length == 0 ||
+      this._instructions[0].blankTimeUnitsAhead > 0
     ) {
-      let instruction = this._instructions[0].instruction;
-      let opcode = instruction.opcode;
-      let ref = this._instructions[0].ref;
-      this._instructions.shift();
-
-      // execute it
-      let resul: number;
-      switch (opcode) {
-        case Opcodes.ADD:
-        case Opcodes.ADDI:
-        case Opcodes.ADDF:
-          resul = firstValue + secondValue;
-          break;
-        case Opcodes.SUB:
-        case Opcodes.SUBF:
-          resul = firstValue - secondValue;
-          break;
-        case Opcodes.OR:
-          resul = firstValue | secondValue;
-          break;
-        case Opcodes.AND:
-          resul = firstValue & secondValue;
-          break;
-        case Opcodes.XOR:
-          resul = firstValue ^ secondValue;
-          break;
-        case Opcodes.NOR:
-          resul = ~(firstValue | secondValue);
-          break;
-        case Opcodes.SRLV:
-          resul = firstValue >> secondValue;
-          break;
-        case Opcodes.SLLV:
-          resul = firstValue << secondValue;
-          break;
-        case Opcodes.MULT:
-        case Opcodes.MULTF:
-          resul = firstValue * secondValue;
-          break;
-        case Opcodes.BEQ:
-          resul = firstValue === secondValue ? 1 : 0;
-          break;
-        case Opcodes.BNE:
-          resul = firstValue !== secondValue ? 1 : 0;
-          break;
-        case Opcodes.BGT:
-          resul = firstValue > secondValue ? 1 : 0;
-          break;
-        default:
-          resul = -1;
-          break;
-      }
-
-      this._hasExectutedInstBeforeTick = true;
-
-      return { instruction: instruction, result: resul, ref: ref };
-    } else {
       return null;
     }
+
+    let instruction = this._instructions[0].instruction;
+    let opcode = instruction.opcode;
+    let ref = this._instructions[0].ref;
+    this._instructions.shift();
+
+    // execute it
+    let resul: number;
+    switch (opcode) {
+      case Opcodes.ADD:
+      case Opcodes.ADDI:
+      case Opcodes.ADDF:
+        resul = firstValue + secondValue;
+        break;
+      case Opcodes.SUB:
+      case Opcodes.SUBF:
+        resul = firstValue - secondValue;
+        break;
+      case Opcodes.OR:
+        resul = firstValue | secondValue;
+        break;
+      case Opcodes.AND:
+        resul = firstValue & secondValue;
+        break;
+      case Opcodes.XOR:
+        resul = firstValue ^ secondValue;
+        break;
+      case Opcodes.NOR:
+        resul = ~(firstValue | secondValue);
+        break;
+      case Opcodes.SRLV:
+        resul = firstValue >> secondValue;
+        break;
+      case Opcodes.SLLV:
+        resul = firstValue << secondValue;
+        break;
+      case Opcodes.MULT:
+      case Opcodes.MULTF:
+        resul = firstValue * secondValue;
+        break;
+      case Opcodes.BEQ:
+        resul = firstValue === secondValue ? 1 : 0;
+        break;
+      case Opcodes.BNE:
+        resul = firstValue !== secondValue ? 1 : 0;
+        break;
+      case Opcodes.BGT:
+        resul = firstValue > secondValue ? 1 : 0;
+        break;
+      default:
+        resul = -1;
+        break;
+    }
+
+    this._hasExectutedInstBeforeTick = true;
+
+    return { instruction: instruction, result: resul, ref: ref };
   }
 
   // return instruction reference (TODO: use instruction uid)

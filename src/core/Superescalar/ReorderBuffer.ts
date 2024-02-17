@@ -166,7 +166,7 @@ export class ReorderBuffer {
       address: -1,
       superStage: SuperStage.SUPER_ISSUE,
     };
-    let pos = this._queue.push(newEntry) - 1;
+    this._queue.push(newEntry) - 1;
 
     if (instruction.getDestinyRegister() !== -1) {
       if (instruction.isDestinyRegisterFloat()) {

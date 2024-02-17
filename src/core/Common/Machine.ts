@@ -140,20 +140,24 @@ export class Machine {
     type: FunctionalUnitType,
     latency: number
   ) {
-    if (latency >= 0) {
-      for (let i = 0; i < this.functionalUnit[type].length; i++) {
-        this.functionalUnit[type][i] = new FunctionalUnit(type, latency);
-      }
+    if (latency == 0) {
+      return;
+    }
+
+    for (let i = 0; i < this.functionalUnit[type].length; i++) {
+      this.functionalUnit[type][i] = new FunctionalUnit(type, latency);
     }
   }
 
   public changeFunctionalUnitNumber(type: FunctionalUnitType, number: number) {
+    if (number == 0) {
+      return;
+    }
+
     let currentLatency = this.functionalUnit[type][0].latency;
-    if (number > 0) {
-      this.functionalUnit[type] = new Array(number);
-      for (let i = 0; i < number; i++) {
-        this.functionalUnit[type][i] = new FunctionalUnit(type, currentLatency);
-      }
+    this.functionalUnit[type] = new Array(number);
+    for (let i = 0; i < number; i++) {
+      this.functionalUnit[type][i] = new FunctionalUnit(type, currentLatency);
     }
   }
 

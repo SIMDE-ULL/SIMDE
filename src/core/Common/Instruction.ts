@@ -74,25 +74,21 @@ export class Instruction {
    * isJumpInstruction - this method checks if the instruction is a jump instruction
    */
   public isJumpInstruction(): boolean {
-    return (
-      this.opcode === Opcodes.BNE ||
-      this.opcode === Opcodes.BEQ ||
-      this.opcode === Opcodes.BGT
-    );
+    return [Opcodes.BNE, Opcodes.BEQ, Opcodes.BGT].includes(this.opcode);
   }
 
   /**
    * isLoadInstruction - this method checks if the instruction that loads from memory
    */
   public isLoadInstruction() {
-    return this.opcode === Opcodes.LW || this.opcode === Opcodes.LF;
+    return [Opcodes.LW, Opcodes.LF].includes(this.opcode);
   }
 
   /**
    * isStoreInstruction - this method checks if the instruction that stores from memory
    */
   public isStoreInstruction(): boolean {
-    return this.opcode === Opcodes.SW || this.opcode === Opcodes.SF;
+    return [Opcodes.SF, Opcodes.SW].includes(this.opcode);
   }
 
   /**
@@ -102,8 +98,7 @@ export class Instruction {
     return (
       !this.isJumpInstruction() &&
       !this.isStoreInstruction() &&
-      this.opcode !== Opcodes.NOP &&
-      this.opcode !== Opcodes.OPERROR
+      ![Opcodes.NOP, Opcodes.OPERROR].includes(this.opcode)
     );
   }
 
@@ -111,13 +106,13 @@ export class Instruction {
    * isDestinyRegisterFloat
    */
   public isDestinyRegisterFloat(): boolean {
-    return (
-      this.opcode === Opcodes.ADDF ||
-      this.opcode === Opcodes.SUBF ||
-      this.opcode === Opcodes.MULTF ||
-      this.opcode === Opcodes.LF ||
-      this.opcode === Opcodes.SF
-    );
+    return [
+      Opcodes.ADDF,
+      Opcodes.SUBF,
+      Opcodes.MULTF,
+      Opcodes.LF,
+      Opcodes.SF,
+    ].includes(this.opcode);
   }
 
   /**
@@ -150,11 +145,8 @@ export class Instruction {
    * isFirstOperandFloat
    */
   public isFirstOperandFloat(): boolean {
-    return (
-      this.opcode === Opcodes.ADDF ||
-      this.opcode === Opcodes.SUBF ||
-      this.opcode === Opcodes.MULTF ||
-      this.opcode === Opcodes.SF
+    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.SF].includes(
+      this.opcode
     );
   }
 
@@ -192,11 +184,7 @@ export class Instruction {
    * isSecondOperandFloat
    */
   public isSecondOperandFloat(): boolean {
-    return (
-      this.opcode === Opcodes.ADDF ||
-      this.opcode === Opcodes.SUBF ||
-      this.opcode === Opcodes.MULTF
-    );
+    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF].includes(this.opcode);
   }
 
   /**
@@ -261,12 +249,7 @@ export class Instruction {
    * getImmediateOperand - this method returns the immediate operand of the instruction or -1 if it doesn't have one
    */
   public getImmediateOperand(): number {
-    switch (this.opcode) {
-      case Opcodes.ADDI:
-        return this.operands[2];
-      default:
-        return -1;
-    }
+    return this.opcode === Opcodes.ADDI ? this.operands[2] : -1;
   }
 
   public toggleBreakPoint() {

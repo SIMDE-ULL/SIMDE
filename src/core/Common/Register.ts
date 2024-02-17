@@ -22,21 +22,25 @@ export class Register {
 
   public setContent(index: number, value: number, useBuffer: boolean) {
     // Don't allow to set R0 to a value different than 0 if zeroWritable is false
-    if (index > 0 || this._zeroWritable) {
-      if (useBuffer) {
-        this._bufferIn[index] = value;
-        this.busy[index] = true;
-      } else {
-        this.content[index] = value;
-      }
+    if (index < 1 && !this._zeroWritable) {
+      return;
+    }
+
+    if (useBuffer) {
+      this._bufferIn[index] = value;
+      this.busy[index] = true;
+    } else {
+      this.content[index] = value;
     }
   }
 
   public setBusy(index: number, value: boolean) {
     // Don't allow to set R0 as busy(as it will allow the ROB to redirect reads to R0 to instructions writing to R0) if zeroWritable is false
-    if (index > 0 || this._zeroWritable) {
-      this.busy[index] = value;
+    if (index < 1 && !this._zeroWritable) {
+      return;
     }
+
+    this.busy[index] = value;
   }
 
   public setAllBusy(value: boolean) {
