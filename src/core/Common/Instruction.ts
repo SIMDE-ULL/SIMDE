@@ -6,7 +6,6 @@ export class Instruction {
   public id: number;
   public basicBlock: number;
   public opcode: number;
-  protected _uuid: number;
   protected _operands: number[] = new Array(3);
   protected _operandsString: string[] = new Array(3);
   protected _label: string;
@@ -36,18 +35,15 @@ export class Instruction {
     return this._operandsString;
   }
 
-  instantiate(from: Instruction, cycle: number) {
-    this.copy(from);
-    this._uuid = cycle * 1000 + this.id;
-  }
-
-  copy(other: Instruction) {
-    this.id = other.id;
-    this.basicBlock = other.basicBlock;
-    this.opcode = other.opcode;
-    this._operands = other.operands.slice();
-    this._operandsString = other.operandsString.slice();
-    this._breakPoint = other.breakPoint;
+  constructor(from?: Instruction, protected _uuid?: number) {
+    if (from) {
+      this.id = from.id;
+      this.basicBlock = from.basicBlock;
+      this.opcode = from.opcode;
+      this._operands = from.operands.slice();
+      this._operandsString = from.operandsString.slice();
+      this._breakPoint = from.breakPoint;
+    }
   }
 
   toString(): string {

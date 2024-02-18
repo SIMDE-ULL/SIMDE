@@ -59,12 +59,12 @@ interface FunctionalUnitInstruction {
 }
 
 export class FunctionalUnit {
-  private _stalled: number; // if >0, it is stalling (for ex because a memory fail) for that many cycles
-  private _instructions: FunctionalUnitInstruction[];
+  private _stalled: number = 0; // if >0, it is stalling (for ex because a memory fail) for that many cycles
+  private _instructions: FunctionalUnitInstruction[] = [];
 
-  private _nextRef: number; //TODO: use instruction uid
+  private _nextRef: number = 0; //TODO: use instruction uid
   private _currentBlankTimeUnits: number;
-  private _hasExectutedInstBeforeTick: boolean;
+  private _hasExectutedInstBeforeTick: boolean = false;
 
   public get type(): FunctionalUnitType {
     return this._type;
@@ -78,15 +78,7 @@ export class FunctionalUnit {
     private _type: FunctionalUnitType,
     private _latency: number = FunctionalUnitLantencies[_type]
   ) {
-    this.clean();
-  }
-
-  public clean() {
-    this._stalled = 0;
-    this._nextRef = 0;
     this._currentBlankTimeUnits = this._latency - 1;
-    this._hasExectutedInstBeforeTick = false;
-    this._instructions = [];
   }
 
   public tic() {

@@ -24,8 +24,12 @@ interface ReorderBufferEntry {
 // TODO: dont use rob entry pos as a reference to the instruction, use an instruction uid instead?
 export class ReorderBuffer {
   _queue: ReorderBufferEntry[] = [];
-  _GprMapping: { [reg: number]: number };
-  _FprMapping: { [reg: number]: number };
+  _GprMapping: { [reg: number]: number } = {};
+  _FprMapping: { [reg: number]: number } = {};
+
+  public get size() {
+    return this._size;
+  }
 
   constructor(private _size: number) {}
 
@@ -41,15 +45,6 @@ export class ReorderBuffer {
    */
   public isEmpty(): boolean {
     return this._queue.length === 0;
-  }
-
-  /**
-   * clear - this method clears the reorder buffer, it is called when the machine is reseted
-   */
-  public clear() {
-    this._queue = [];
-    this._FprMapping = {};
-    this._GprMapping = {};
   }
 
   /**

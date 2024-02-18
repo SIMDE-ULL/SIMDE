@@ -109,7 +109,10 @@ export class Machine {
     this.pc = 0;
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
       for (let j = 0; j < this.functionalUnit[i].length; j++) {
-        this.functionalUnit[i][j].clean();
+        this.functionalUnit[i][j] = new FunctionalUnit(
+          this.functionalUnit[i][j].type,
+          this.functionalUnit[i][j].latency
+        );
       }
     }
     this.status.cycle = 0;

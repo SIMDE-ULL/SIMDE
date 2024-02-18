@@ -1,12 +1,12 @@
 export class JumpPredictor {
   _table: number[];
 
-  constructor(private _size: number) {
-    this._table = new Array(_size);
-    this._table.fill(0);
+  public get size(): number {
+    return this._size;
   }
 
-  public clean() {
+  constructor(private _size: number) {
+    this._table = new Array(_size);
     this._table.fill(0);
   }
 

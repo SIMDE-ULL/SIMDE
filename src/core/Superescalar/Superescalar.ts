@@ -188,21 +188,29 @@ export class Superescalar extends Machine {
       // Clean functional Units and Reserve Stations,
       for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
         for (let j = 0; j < this.functionalUnit[i].length; j++) {
-          this.functionalUnit[i][j].clean();
-          this._reserveStations[i].clear();
+          this.functionalUnit[i][j] = new FunctionalUnit(
+            this.functionalUnit[i][j].type,
+            this.functionalUnit[i][j].latency
+          );
+          this._reserveStations[i] = new ReserveStation(
+            this._reserveStations[i].size
+          );
         }
       }
 
       // Clean the alus for the address calculus
       for (let i = 0; i < this.aluMem.length; i++) {
-        this.aluMem[i].clean();
+        this.aluMem[i] = new FunctionalUnit(
+          this.aluMem[i].type,
+          this.aluMem[i].latency
+        );
       }
 
       // Clean prefetch, decoder and reorder buffer, the simplest way is
       // to rebuild the objects
-      this._prefetchUnit.clean();
-      this._decoder.clean();
-      this._reorderBuffer.clear();
+      this._prefetchUnit = new PrefetchUnit(this._prefetchUnit.size);
+      this._decoder = new PrefetchUnit(this._decoder.size);
+      this._reorderBuffer = new ReorderBuffer(this._reorderBuffer.size);
 
       // Clean the structures related to the registers
       this._gpr.setAllBusy(false);
@@ -216,18 +224,23 @@ export class Superescalar extends Machine {
   init(reset: boolean) {
     super.init(reset);
     // Clean Gpr, Fpr, predSalto
-    this._jumpPrediction.clean();
+    this._jumpPrediction = new JumpPredictor(this._jumpPrediction.size);
 
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-      this._reserveStations[i].clear();
+      this._reserveStations[i] = new ReserveStation(
+        this._reserveStations[i].size
+      );
     }
-    this._reorderBuffer.clear();
-    this._decoder.clean();
-    this._prefetchUnit.clean();
+    this._reorderBuffer = new ReorderBuffer(this._reorderBuffer.size);
+    this._decoder = new PrefetchUnit(this._decoder.size);
+    this._prefetchUnit = new PrefetchUnit(this._prefetchUnit.size);
     this._code = null;
 
     for (let j = 0; j < this.aluMem.length; j++) {
-      this.aluMem[j].clean();
+      this.aluMem[j] = new FunctionalUnit(
+        this.aluMem[j].type,
+        this.aluMem[j].latency
+      );
     }
   }
 
@@ -236,8 +249,7 @@ export class Superescalar extends Machine {
     while (!this._prefetchUnit.isFull() && this.pc < this.code.lines) {
       // Importante: Hago una copia de la instrucción original para distinguir
       // las distintas apariciones de una misma inst.
-      let instruction = new Instruction();
-      instruction.instantiate(
+      let instruction = new Instruction(
         this.code.instructions[this.pc],
         this.status.cycle * 100 + i
       );

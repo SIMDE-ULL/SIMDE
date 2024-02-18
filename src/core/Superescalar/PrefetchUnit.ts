@@ -15,10 +15,6 @@ export class PrefetchUnit {
 
   constructor(private _size: number) {}
 
-  public clean() {
-    this._entries = [];
-  }
-
   public isFull() {
     return this._entries.length >= this._size;
   }
