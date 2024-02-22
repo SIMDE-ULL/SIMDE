@@ -251,20 +251,32 @@ export class VLIW extends Machine {
                 this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.LW:
-                let datumInteger: Datum = this._memory.getDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+                let datumInteger = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+
+                //hack: as we dont have a well made error handling, intercept the error and just throw it
+                if (datumInteger instanceof Error) {
+                    throw datumInteger;
+                }
+
                 if (!datumInteger.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
-                    this._gpr.setContent(operation.getOperand(0), datumInteger.datum, true);
+                    this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
                     this._NaTGP[operation.getOperand(0)] = false;
                 }
                 break;
             case Opcodes.LF:
-                let datumFloat: Datum = this._memory.getDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+                let datumFloat = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+
+                //hack: as we dont have a well made error handling, intercept the error and just throw it
+                if (datumFloat instanceof Error) {
+                    throw datumFloat;
+                }
+
                 if (!datumFloat.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
-                    this._fpr.setContent(operation.getOperand(0), datumFloat.datum, true);
+                    this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
                     this._NaTFP[operation.getOperand(0)] = false;
                 }
                 break;

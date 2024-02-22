@@ -136,7 +136,7 @@ export class Machine {
   public resetContent() {
     this._gpr.setAllContent(0);
     this._fpr.setAllContent(0);
-    this.memory.clean();
+    this.memory = new Memory(Machine.MEMORY_SIZE, this.memory.faultChance);
   }
 
   public changeFunctionalUnitLatency(

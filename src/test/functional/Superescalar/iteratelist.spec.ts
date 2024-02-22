@@ -21,7 +21,9 @@ test('recorrelista.pla is executed properly', t => {
 
     // Load memory
     const memContentBaseAddress = 10;
-    context.machine.memory.data.splice(memContentBaseAddress, memContent.length, ...memContent);
+    for (let i = 0; i < memContent.length; i++) {
+        context.machine.memory.setDatum(memContentBaseAddress + i, memContent[i]);
+    }
 
     // Execute code
     while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) {
@@ -66,6 +68,6 @@ test('recorrelista.pla is executed properly', t => {
     expect(context.machine.pc).toBe(19);
 
     // Check the result
-    expect(context.machine.memory.getDatum(9).datum).toBe(12);
+    expect(Array.from(context.machine.memory)[9].value).toBe(12);
 
 })

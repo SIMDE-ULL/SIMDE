@@ -482,10 +482,16 @@ export class Superescalar extends Machine {
 
       // load and stores are a special cases, because they need to access the memory
       if (inst.isLoadInstruction()) {
-        let a = this.memory.getDatum(
+        let a = this.memory.getFaultyDatum(
           this._reserveStations[type].getAddressOperand(instUuid)
         );
-        resul = a.datum;
+
+        //hack: as we dont have a well made error handling, intercept the error and just throw it
+        if (a instanceof Error) {
+          throw a;
+      }
+
+        resul = a.value;
         if (!a.got) {
           this.functionalUnit[type][num].stall(
             this.memoryFailLatency - this.functionalUnit[type][num].latency

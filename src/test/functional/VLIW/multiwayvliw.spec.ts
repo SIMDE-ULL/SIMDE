@@ -32,7 +32,7 @@ test('multiwayvliw.pla is executed properly with first parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(context.machine.memory.getDatum(12).datum).toBe(1.1);
+    expect(Array.from(context.machine.memory)[12].value).toBe(1.1);
 
     // Check the cycles
     // 6 + 5 + 1 + 3 (last inst latency) = 15 + 1
@@ -57,7 +57,7 @@ test('multiwayvliw.pla is executed properly with second parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(context.machine.memory.getDatum(12).datum).toBe(2.2);
+    expect(Array.from(context.machine.memory)[12].value).toBe(2.2);
 
     // Check the cycles
     // 6 + 5 + 1 + 3 (last inst latency) = 15 + 1
@@ -82,7 +82,7 @@ test('multiwayvliw.pla is executed properly with third parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(context.machine.memory.getDatum(12).datum).toBeCloseTo(3.3, 5);
+    expect(Array.from(context.machine.memory)[12].value).toBeCloseTo(3.3, 5);
 
     // Check the cycles
     // 6 + 5 + 3 (last inst latency) = 14 + 1

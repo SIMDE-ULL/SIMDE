@@ -85,7 +85,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextReorderBufferMapperCycle([this.superescalar.reorderBuffer.getVisualRegisterMap(false), this.superescalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superescalar.reorderBuffer),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
-                    nextMemoryCycle(this.superescalar.memory.data),
+                    nextMemoryCycle(Array.from(this.superescalar.memory).map(d => d.value)),
                     nextCycle(this.superescalar.status.cycle),
                     pushHistory()
                 )
@@ -180,7 +180,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
-            this.superescalar.memory.failProbability = this.cacheFailPercentage;
+            this.superescalar.memory.faultChance = this.cacheFailPercentage / 100;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
@@ -337,7 +337,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.superescalar.memory.failProbability = 0;
+        this.superescalar.memory.faultChance = 0;
         this.superescalar.memoryFailLatency = 0;
         this.resetMachine();
     }

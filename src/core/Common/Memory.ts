@@ -1,55 +1,63 @@
-import { randomNumber } from "../Utils/Random";
-
 export interface Datum {
-  datum: number;
+  value: number;
   got: boolean;
 }
 
-export class Memory {
-  private _data: number[];
-  private _fail: boolean[];
-  public failProbability: number = 0;
-  private _memorySize: number;
+/**
+ * Returns an Error when target method is called with
+ * a non-positive `address: number` argument.
+ */
+export const forcePositiveAddresses = (address: number): void | Error => {
+  if (address < 0) {
+    return Error("Negative numbers are invalid as addresses");
+  }
+};
 
-  public get data(): number[] {
-    return this._data;
+export class Memory implements Iterable<Datum> {
+  private readonly data: Datum[];
+
+  constructor(size: number, public faultChance: number = 0.0) {
+    // Initialize clean data array with `size` Datum slots.
+    this.data = Array.from(Array(size).keys()).map((n) => ({
+      value: 0,
+      got: false,
+    }));
   }
 
-  constructor(size: number) {
-    this._data = new Array(size);
-    this._fail = new Array(size);
-    this._memorySize = size;
+  // Memory iterator
+  [Symbol.iterator](): IterableIterator<Datum> {
+    return this.data.values();
   }
 
-  public clean() {
-    this._data.fill(0);
-    this._fail.fill(false);
+  /**
+   * Memory size as the amount of datum slots in memory.
+   * @returns memory size as a number.
+   */
+  public get size(): number {
+    return this.data.length;
   }
 
-  public getDatum(address: number): Datum {
-    if (address < 0) {
-      address = 0;
+  public getFaultyDatum(address: number): Datum | Error {
+    let error = forcePositiveAddresses(address);
+    if (error) return error;
+
+    const datum = this.data[address];
+
+    const faultOccurred = this.faultChance > Math.random();
+
+    // This will flip 'got' to false if a fault occurred or to true if there was a fault the last time.
+    // So effectively, we will evite getting the same fault twice in a row.
+    if (faultOccurred || !datum.got) {
+      datum.got = !datum.got;
     }
-    let valueToReturn = {
-      datum: this.data[address],
-      got: true,
-    };
-    let failValue = randomNumber(100);
 
-    // There will be a fail only if there wasn't a previous fail on the same position
-    if (failValue < this.failProbability && !this._fail[address]) {
-      this._fail[address] = true;
-      valueToReturn.got = false;
-      return valueToReturn;
-    }
-    this._fail[address] = true;
-    return valueToReturn;
+    return { ...datum };
   }
 
-  public setDatum(address: number, value: number) {
-    if (address < 0) {
-      address = 0;
-    }
-    this.data[address] = value;
+  public setDatum(address: number, value: number): void | Error {
+    let error = forcePositiveAddresses(address);
+    if (error) return error;
+
+    this.data[address] = { ...this.data[address], value };
   }
 }

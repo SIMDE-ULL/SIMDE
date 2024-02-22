@@ -52,7 +52,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
                 nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
-                nextMemoryCycle(this.vliw.memory.data),
+                nextMemoryCycle(Array.from(this.vliw.memory).map(d => d.value)),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),
@@ -203,7 +203,7 @@ export class VLIWIntegration extends MachineIntegration {
             let code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
-            this.vliw.memory.failProbability = this.cacheFailPercentage;
+            this.vliw.memory.faultChance = this.cacheFailPercentage / 100;
             this.vliw.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
@@ -358,7 +358,7 @@ export class VLIWIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.vliw.memory.failProbability = 0;
+        this.vliw.memory.faultChance = 0;
         this.vliw.memoryFailLatency = 0;
         this.resetMachine();
     }
