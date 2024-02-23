@@ -28,7 +28,10 @@ export class StatsTabComponent extends React.Component<any, any> {
                                 width: "100%",
                             }}
                             legend={{
-                                top: 'bottom'
+                                top: 'bottom',
+                                selected: {
+                                    'commitNumber': false
+                                }
                             }}
                             toolbox={{
                                 feature: {

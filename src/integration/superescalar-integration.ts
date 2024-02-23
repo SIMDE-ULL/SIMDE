@@ -116,18 +116,13 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.stats.collectUnitOcupation('prefetch', this.superescalar.prefetchUnit.ocupation);
         this.stats.collectUnitOcupation('decode', this.superescalar.decoder.ocupation);
         this.stats.collectUnitOcupation('rob', this.superescalar.reorderBuffer.ocupation);
-        this.stats.collectUnitOcupation('rs0', this.superescalar.getReserveStation(0).ocupation);
-        this.stats.collectUnitOcupation('rs1', this.superescalar.getReserveStation(1).ocupation);
-        this.stats.collectUnitOcupation('rs2', this.superescalar.getReserveStation(2).ocupation);
-        this.stats.collectUnitOcupation('rs3', this.superescalar.getReserveStation(3).ocupation);
-        this.stats.collectUnitOcupation('rs4', this.superescalar.getReserveStation(4).ocupation);
-        this.stats.collectUnitOcupation('rs5', this.superescalar.getReserveStation(5).ocupation);
-        this.stats.collectMultipleUnitOcupation('fu0', this.superescalar.functionalUnit[0].map((fu) => fu.ocupation));
-        this.stats.collectMultipleUnitOcupation('fu1', this.superescalar.functionalUnit[1].map((fu) => fu.ocupation));
-        this.stats.collectMultipleUnitOcupation('fu2', this.superescalar.functionalUnit[2].map((fu) => fu.ocupation));
-        this.stats.collectMultipleUnitOcupation('fu3', this.superescalar.functionalUnit[3].map((fu) => fu.ocupation));
-        this.stats.collectMultipleUnitOcupation('fu4', this.superescalar.functionalUnit[4].map((fu) => fu.ocupation));
-        this.stats.collectMultipleUnitOcupation('fu5', this.superescalar.functionalUnit[5].map((fu) => fu.ocupation));
+        for (let i = 0; i < 6; i++) {
+            this.stats.collectUnitOcupation(`rs${i}`, this.superescalar.getReserveStation(i).ocupation);
+        }
+        for (let i = 0; i < 6; i++) {
+            this.stats.collectMultipleUnitOcupation(`fu${i}`, this.superescalar.functionalUnit[i].map((fu) => fu.ocupation));
+        }
+
 
         for (let instr of prefetchInstrs) {
             this.stats.associateUuidWithInstruction(instr.uuid, instr.id);
