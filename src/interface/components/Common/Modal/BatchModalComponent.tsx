@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
-import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../../core/Constants';
+import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../utils/constants';
 
 class BatchModalComponent extends React.Component<any, any> {
     constructor(public props: any) {

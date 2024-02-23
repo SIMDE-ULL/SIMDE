@@ -2,7 +2,7 @@ export const NEXT_REORDER_BUFFER_CYCLE = 'NEXT_REORDER_BUFFER_CYCLE';
 export const COLOR_CELL = 'COLOR_CELL';
 
 import { stageToString } from '../../core/Superescalar/SuperescalarEnums';
-import { ReorderBufferEntry } from '../../core/Superescalar/ReorderBufferEntry';
+import { ReorderBuffer } from '../../core/Superescalar/ReorderBuffer';
 
 export function nextReorderBufferCycle(data) {
     return {
@@ -11,36 +11,13 @@ export function nextReorderBufferCycle(data) {
     };
 }
 
-export function mapReorderBufferData(data: ReorderBufferEntry[]) {
-    return data.map(element => {
-        let aux = {
-            instruction: { id: '', value: '', color: '' },
-            destinyRegister: '',
-            value: '',
-            address: '',
-            superStage: ''
-        };
-        if (element != null) {
-            aux = {
-                instruction: { id: '', value: '', color: '' },
-                destinyRegister: '' + element.destinyRegister,
-                value: '' + element.value,
-                address: '' + element.address,
-                superStage: stageToString(element.superStage)
-            };
-            if (element.instruction != null) {
-                aux.instruction.id = '' + element.instruction.id;
-                aux.instruction.value = element.instruction.toString();
-                aux.instruction.color = element.instruction.color;
-            }
-        }
-        return aux;
-    });
+export function mapReorderBufferData(unit: ReorderBuffer) {
+    return unit.getVisualData();
 }
 
-export function colorCell(instructionid, color) {
+export function colorCell(instructionUuid, color) {
     return {
         type: COLOR_CELL,
-        value: [instructionid, color]
+        value: [instructionUuid, color]
     };
 }

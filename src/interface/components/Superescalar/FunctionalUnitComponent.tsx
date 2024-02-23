@@ -35,7 +35,7 @@ export function FunctionalUnitComponent(props) {
                                             title={content.value}
                                             key={props.title + 'FU' + i + j}
                                             style={{
-                                                background: content.color
+                                                background: props.colors.uuidColors[content.uuid]
                                             }}
                                         >
                                             {content.id}

@@ -38,6 +38,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                 title="Instrucciones VLIW"
                                 header={this.props.vliwExecutionHeaderTable}
                                 data={this.props.vliwExecutionTable}
+                                pc={this.props.pc}
                                 onDropInstruction={VLIWIntegration.setOperation}
                             />
                         </div>  
@@ -149,6 +150,7 @@ const mapStateToProps = state => {
         natGpr: state.Machine.natGpr, 
         predicate: state.Machine.predicate,
         code: state.Machine.code,
+        pc: state.Machine.pc,
         colorBasicBlocks: state.Machine.colorBasicBlocks,
         vliwExecutionTable: state.Machine.vliwExecutionTable,
         vliwExecutionHeaderTable: state.Machine.vliwExecutionHeaderTable

@@ -15,6 +15,14 @@ export class VLIW extends Machine {
     private _NaTFP: boolean[] = new Array(Machine.NFP);
     private _code: VLIWCode;
 
+    public get functionalUnitNumbers(): number[] {
+        let numbers: number[] = [];
+        for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
+            numbers.push(this.functionalUnit[i].length);
+        }
+        return numbers;
+    }
+
     constructor() {
         super();
         this._code = new VLIWCode();
@@ -58,17 +66,13 @@ export class VLIW extends Machine {
         this._NaTFP[index] = n;
     }
 
-    public setNUF(index: number, n: number) {
-        this._functionalUnitNumbers[index] = (index === FunctionalUnitType.JUMP) ? 1 : n;
-    }
-
     //TODO: These checks functions are never used
     public checkCode() {
         for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
             let instruction = this._code.getLargeInstruction(i);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 let operation = instruction.getOperation(j);
-                if (operation.getFunctionalUnitIndex() >= this.functionalUnitNumbers[operation.getFunctionalUnitType()]) {
+                if (operation.getFunctionalUnitIndex() >= this.functionalUnit[operation.getFunctionalUnitType()].length) {
                     throw VLIWError.ERRHARD; // VLIW_ERRHARD;
                 }
             }
@@ -97,7 +101,7 @@ export class VLIW extends Machine {
             } else {
                 return VLIWError.ERRNO;
             }
-        }     
+        }
     }
 
     public tic() {
@@ -108,13 +112,14 @@ export class VLIW extends Machine {
         let stopFlow: boolean = false;
         this.status.cycle++;
 
-        if (this.functionalUnit[FunctionalUnitType.JUMP][0].hasPendingInstruction()) {
+        if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isEmpty()) {
             pending = true;
         }
 
-        if (this.functionalUnit[FunctionalUnitType.JUMP][0].status.stall === 0) {
+        if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isStalled()) {
 
-            let operation: any = this.functionalUnit[FunctionalUnitType.JUMP][0].getTopInstruction();
+            let execution = this.functionalUnit[FunctionalUnitType.JUMP][0].executeReadyInstruction();
+            let operation: any = (execution != null) ? execution.instruction : null;
             if (operation != null) {
                 if (this._predR[operation.getPred()]) {
                     this.pc = this.runJump(operation);
@@ -125,14 +130,15 @@ export class VLIW extends Machine {
         this.functionalUnit[FunctionalUnitType.JUMP][0].tic();
 
         for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
-            for (j = 0; j < this._functionalUnitNumbers[i]; j++) {
+            for (j = 0; j < this.functionalUnit[i].length; j++) {
 
-                if (this.functionalUnit[i][j].hasPendingInstruction()) {
+                if (!this.functionalUnit[i][j].isEmpty()) {
                     pending = true;
                 }
-                if (this._functionalUnit[i][j].status.stall === 0) {
+                if (!this.functionalUnit[i][j].isStalled()) {
 
-                    let operation: any = this.functionalUnit[i][j].getTopInstruction();
+                    let execution = this.functionalUnit[i][j].executeReadyInstruction();
+                    let operation: any = (execution != null) ? execution.instruction : null;
 
                     if (operation != null) {
                         if (this._predR[operation.getPred()]) {
@@ -165,6 +171,12 @@ export class VLIW extends Machine {
                 let type = instruction.getOperation(i).getFunctionalUnitType();
                 let index = instruction.getOperation(i).getFunctionalUnitIndex();
 
+                // Check if the functional unit exists or if this operation is out of bounds
+                if (index >= this.functionalUnit[type].length) {
+                    //TODO: better handling of this error
+                    return VLIWError.ERRHARD; // VLIW_ERRHARD;
+                }
+
                 if (!this.functionalUnit[type][index].isFree() ||
                     DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
                     //TODO: This really fails when there is a RAW dependency?
@@ -177,7 +189,7 @@ export class VLIW extends Machine {
                 for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
 
                     let operation = instruction.getOperation(i);
-                    this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].fillFlow(operation);
+                    this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].addInstruction(operation);
 
                     if (operation.opcode === Opcodes.LW) {
                         this._NaTGP[operation.getOperand(0)] = true;
@@ -218,41 +230,53 @@ export class VLIW extends Machine {
     private runOperation(operation: VLIWOperation, functionalUnit: FunctionalUnit) {
         switch (operation.opcode) {
             case Opcodes.ADD:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + this._gpr.getContent(operation.getOperand(2)), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + this._gpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.MULT:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) * this._gpr.getContent(operation.getOperand(2)), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] * this._gpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.ADDI:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.getContent(operation.getOperand(1)) + operation.getOperand(2), true);
+                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + operation.getOperand(2), true);
                 break;
             case Opcodes.ADDF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.getContent(operation.getOperand(1)) + this._fpr.getContent(operation.getOperand(2)), true);
+                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] + this._fpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.MULTF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.getContent(operation.getOperand(1)) * this._fpr.getContent(operation.getOperand(2)), true);
+                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] * this._fpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.SW:
-                this._memory.setDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), this._gpr.getContent(operation.getOperand(0)));
+                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._gpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.SF:
-                this._memory.setDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1), this._fpr.getContent(operation.getOperand(0)));
+                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.LW:
-                let datumInteger: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
+                let datumInteger = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+
+                //hack: as we dont have a well made error handling, intercept the error and just throw it
+                if (datumInteger instanceof Error) {
+                    throw datumInteger;
+                }
+
                 if (!datumInteger.got) {
-                    functionalUnit.status.stall = this._memoryFailLatency - functionalUnit.latency;
+                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
-                    this._gpr.setContent(operation.getOperand(0), datumInteger.datum, true);
+                    this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
                     this._NaTGP[operation.getOperand(0)] = false;
                 }
                 break;
             case Opcodes.LF:
-                let datumFloat: Datum = this._memory.getDatum(this._gpr.getContent(operation.getOperand(2)) + operation.getOperand(1));
+                let datumFloat = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+
+                //hack: as we dont have a well made error handling, intercept the error and just throw it
+                if (datumFloat instanceof Error) {
+                    throw datumFloat;
+                }
+
                 if (!datumFloat.got) {
-                    functionalUnit.status.stall = this._memoryFailLatency - functionalUnit.latency;
+                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
                 } else {
-                    this._fpr.setContent(operation.getOperand(0), datumFloat.datum, true);
+                    this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
                     this._NaTFP[operation.getOperand(0)] = false;
                 }
                 break;
@@ -267,7 +291,7 @@ export class VLIW extends Machine {
 
         let newPC = this.pc;
         if (operation.opcode === Opcodes.BEQ) {
-            if (this._gpr.getContent(operation.getOperand(0)) === this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] === this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;
@@ -276,7 +300,7 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredFalse()] = true;
             }
         } else if (operation.opcode === Opcodes.BNE) {
-            if (this._gpr.getContent(operation.getOperand(0)) !== this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] !== this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;
@@ -285,7 +309,7 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredFalse()] = true;
             }
         } else if (operation.opcode === Opcodes.BGT) {
-            if (this._gpr.getContent(operation.getOperand(0)) > this._gpr.getContent(operation.getOperand(1))) {
+            if (this._gpr.content[operation.getOperand(0)] > this._gpr.content[operation.getOperand(1)]) {
                 newPC = operation.getOperand(2);
                 this._predR[operation.getPredTrue()] = true;
                 this._predR[operation.getPredFalse()] = false;
@@ -314,7 +338,8 @@ export class VLIW extends Machine {
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             let instruction = this._code.getLargeInstruction(row);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
-                DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
+                //TODO
+                //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
             }
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (!DependencyChecker.checkSourceOperands(instruction.getOperation(j), checkGPR, checkFPR)) {
@@ -353,8 +378,8 @@ export class VLIW extends Machine {
                 if (instruction.getOperation(j).getFunctionalUnitType() === FunctionalUnitType.JUMP) {
                     let check1: Check;
                     let check2: Check;
-                    check1.latency = this._functionalUnitLatencies[FunctionalUnitType.JUMP];
-                    check2.latency = this._functionalUnitLatencies[FunctionalUnitType.JUMP];
+                    check1.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
+                    check2.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
                     check1.register = instruction.getOperation(j).getPredTrue();
                     check2.register = instruction.getOperation(j).getPredFalse();
                     controlCheckList.push(check1);
@@ -375,7 +400,7 @@ export class VLIW extends Machine {
                             controlCheckList[i].register = 0;
                         }
                         throw VLIWError.ERRPRED; // VLIW_ERRPRED;
-                    } else if (this._functionalUnitLatencies[instruction.getOperation(j).getFunctionalUnitType()] < controlCheckList[index].latency) {
+                    } else if (this.functionalUnit[instruction.getOperation(j).getFunctionalUnitType()].length < controlCheckList[index].latency) {
                         id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;

@@ -11,16 +11,12 @@ import {
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
+    CURRENT_PC,
     SUPERESCALAR_LOAD,
-    VIEW_BASIC_BLOCKS,
-    COLOR_CELL
+    VIEW_BASIC_BLOCKS
 } from '../actions';
 
 import {
-    ADD_ROB_FPR_INTERVAL,
-    ADD_ROB_GPR_INTERVAL,
-    REMOVE_ROB_FPR_INTERVAL,
-    REMOVE_ROB_GPR_INTERVAL,
     ADD_MEMORY_INTERVAL,
     REMOVE_MEMORY_INTERVAL,
     ADD_GENERAL_REGISTERS_INTERVAL,
@@ -31,8 +27,7 @@ import {
 import { generateRangeArray } from '../utils/interval';
 import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
 
-import { MACHINE_REGISTER_SIZE, MEMORY_SIZE } from '../../core/Constants';
-import { colorHistoryInstruction } from './color';
+import { Machine } from '../../core/Common/Machine';
 import { removeInterval, addInterval } from './interval';
 import {
     NEXT_NAT_FPR_CYCLE,
@@ -68,25 +63,23 @@ export const initialState = {
     reserveStationMemory: [],
     reserveStationJump: [],
     ROBGpr: {
-        data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        data: {}
     },
     ROBFpr: {
-        data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        data: {}
     },
     reorderBuffer: [],
     generalRegisters: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.NGP)
     },
     floatingRegisters: {
         data: [],
-        visibleRangeValues: generateRangeArray(MACHINE_REGISTER_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.NFP)
     },
     memory: {
         data: [],
-        visibleRangeValues: generateRangeArray(MEMORY_SIZE)
+        visibleRangeValues: generateRangeArray(Machine.MEMORY_SIZE)
     },
     predicate: {
         data: [],
@@ -101,6 +94,7 @@ export const initialState = {
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     cycle: 0,
+    pc: 0,
     code: [],
     vliwCode: [],
     vliwExecutionHeaderTable: [],
@@ -150,8 +144,8 @@ export function MachineReducers(state = initialState, action) {
         case NEXT_REORDER_BUFFER_MAPPER_CYCLE:
             return (state = {
                 ...state,
-                ROBGpr: { ...state.ROBGpr, data: [...action.value[0]] },
-                ROBFpr: { ...state.ROBFpr, data: [...action.value[1]] }
+                ROBGpr: { ...state.ROBGpr, data: action.value[0] },
+                ROBFpr: { ...state.ROBFpr, data: action.value[1] }
             });
         case NEXT_REORDER_BUFFER_CYCLE:
             return (state = {
@@ -183,6 +177,11 @@ export function MachineReducers(state = initialState, action) {
                 ...state,
                 cycle: action.value
             });
+        case CURRENT_PC:
+            return (state = {
+                ...state,
+                pc: action.value
+            });
         case SUPERESCALAR_LOAD:
             return (state = {
                 ...state,
@@ -193,14 +192,6 @@ export function MachineReducers(state = initialState, action) {
                 ...state,
                 colorBasicBlocks: action.value
             });
-        case ADD_ROB_FPR_INTERVAL:
-            return addInterval(state, 'ROBFpr', action.value);
-        case ADD_ROB_GPR_INTERVAL:
-            return addInterval(state, 'ROBGpr', action.value);
-        case REMOVE_ROB_FPR_INTERVAL:
-            return removeInterval(state, 'ROBFpr', action.value);
-        case REMOVE_ROB_GPR_INTERVAL:
-            return removeInterval(state, 'ROBGpr', action.value);
         case ADD_MEMORY_INTERVAL:
             return addInterval(state, 'memory', action.value);
         case REMOVE_MEMORY_INTERVAL:
@@ -248,16 +239,6 @@ export function MachineReducers(state = initialState, action) {
                     }
                 ].slice(-MAX_HISTORY_SIZE)
             });
-        case COLOR_CELL:
-        {
-            let newState = { ...state };
-            newState.history = colorHistoryInstruction(
-                newState.history,
-                action.value[0],
-                action.value[1]
-            );
-            return newState;
-        }
         case TAKE_HISTORY:
             return (state = {
                 ...state,

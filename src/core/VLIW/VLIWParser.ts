@@ -51,7 +51,7 @@ export class VLIWParser {
                 if (index >= code.instructions.length) {
                     throw new TokenError(num.pos, `Invalid index ${index}`);
                 }
-                return { index: index, isJump: code.isJump(index), functionalUnitType: code.getFunctionalUnitType(index) };
+                return { index: index, isJump: code.instructions[index].isJumpInstruction(), functionalUnitType: code.instructions[index].getFunctionalUnitType() };
             }
         );
 
@@ -74,8 +74,8 @@ export class VLIWParser {
 
                 let index = +currentIndex.index;
                 let functionalUnitType = componets[0];
-                let functionalUnitIndex = +componets[1][0].text; 
-                let predicate = +componets[1][1].text; 
+                let functionalUnitIndex = +componets[1][0].text; //TODO: Check if this is out of bounds
+                let predicate = +componets[1][1].text; //TODO: Check if this is out of bounds
 
                 // Check if the recived functional unit type is the same as the one in the code
                 if (functionalUnitType !== currentIndex.functionalUnitType) {
@@ -92,7 +92,7 @@ export class VLIWParser {
                         throw new TokenError(componets[1][componets[1].length - 1].pos, `Expected 5 operands(Jump operation), received ${componets[1].length}`);
                     }
                     let destiny = +componets[1][2].text;
-                    let predTrue = +componets[1][3].text; 
+                    let predTrue = +componets[1][3].text;
                     let predFalse = +componets[1][4].text;
 
                     operation.setOperand(2, destiny, '');
@@ -148,7 +148,7 @@ export class VLIWParser {
                 outputString += ' ';
                 outputString += operation.getPred();
 
-                if (operation.isJump()) {
+                if (operation.isJumpInstruction()) {
                     outputString += ' ';
                     outputString += operation.getOperand(2);
                     outputString += ' ';

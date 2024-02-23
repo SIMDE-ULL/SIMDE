@@ -23,13 +23,13 @@ test('Speculative execution has no side effects', t => {
     expect(context.machine.getGpr(5)).toBe(0);
 
     // Check memory pos 5 value
-    expect(context.machine.memory.getDatum(5).datum).toBe(0);
+    expect(Array.from(context.machine.memory)[5].value).toBe(0);
 
     // Check F1 value
     expect(context.machine.getFpr(1)).toBe(0);
 
     // Check jump prediction table
-    expect(context.machine.jumpPrediction[7]).toBe(0);
+    expect(context.machine.jumpPrediction.getPrediction(7)).toBe(false);
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(9);

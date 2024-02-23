@@ -22,8 +22,7 @@ class CodeComponent extends React.Component<any, any> {
     }
 
     setBreakpoint(index) {
-        SuperescalarIntegration.superescalar.code.instructions[index].breakPoint = !SuperescalarIntegration.superescalar.code.instructions[index].breakPoint;
-        SuperescalarIntegration.superescalar.code.instructions = [...SuperescalarIntegration.superescalar.code.instructions];
+        SuperescalarIntegration.superescalar.code.toggleBreakpoint(index);
         this.props.toggleBreakPoint(SuperescalarIntegration.superescalar.code.instructions);
     }
 

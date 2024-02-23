@@ -1,7 +1,10 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { PhotoshopPicker } from 'react-color';
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
 import { withTranslation } from 'react-i18next';
+
+import { colorCell } from '../../actions/reorder-buffer-actions';
 
 class ReorderBufferComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -19,17 +22,17 @@ class ReorderBufferComponent extends React.Component<any, any> {
     }
 
     handleClick(instructionId, instructionColor) {
-        this.setState({...this.state, displayColorPicker: true, instructionId: instructionId, selectedColor: instructionColor});
+        this.setState({...this.state, displayColorPicker: true, instructionUuid: instructionId, selectedColor: instructionColor});
     }
 
     onColorAccept(value) {
-        SuperescalarIntegration.colorCell(this.state.instructionId, this.state.selectedColor);
-        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionId: null});
+        this.props.actions.colorCell(this.state.instructionUuid, this.state.selectedColor.hex);
+        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUuid: null});
 
     }
 
     onColorCancel() {
-        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionId: null});
+        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUuid: null});
     }
 
     handleChangeComplete(color) {
@@ -79,13 +82,13 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     .map(e => (
                                         <div
                                             className="smd-table_row smd-reorder_buffer_entry"
-                                            style={{background: e.row.instruction.color}}
-                                            onClick={() => this.handleClick(e.row.instruction.id, e.row.instruction.color) as any}
+                                            style={{background: this.props.colors.uuidColors[e.row.instruction.uuid]}}
+                                            onClick={() => this.handleClick(e.row.instruction.uuid, e.row.instruction.color) as any}
                                             title={e.row.instruction.value}
                                             key={'ReorderBuffer' + e.i}
                                         >
                                             <div className="smd-table_cell">
-                                                {e.i}
+                                                {'[' + e.i + ']'}
                                             </div>
                                             <div className="smd-table_cell">
                                                 {e.row.instruction.id}
@@ -112,4 +115,16 @@ class ReorderBufferComponent extends React.Component<any, any> {
     }
 }
 
-export default withTranslation()(ReorderBufferComponent);
+const mapStateToProps = state => {
+    return {
+        colors: state.Colors
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return { actions: bindActionCreators({ 
+        colorCell
+    }, dispatch) };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ReorderBufferComponent));

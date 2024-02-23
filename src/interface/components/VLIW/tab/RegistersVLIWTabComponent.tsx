@@ -10,7 +10,8 @@ import {
     addMemoryInterval,
     removeMemoryInterval
 } from '../../../actions/intervals-actions';
-import { MEMORY_SIZE, MACHINE_REGISTER_SIZE } from '../../../../core/Constants';
+//TODO: dont import from core, expose this data with integrators instead
+import { Machine } from '../../../../core/Common/Machine';
 
 export class RegisterVLIWTabComponent extends React.Component<any, any> {
 
@@ -28,7 +29,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.memory.visibleRangeValues} 
                         addInterval={this.props.actions.addMemoryInterval}
                         removeInterval={this.props.actions.removeMemoryInterval}
-                        max={MEMORY_SIZE}
+                        max={Machine.MEMORY_SIZE}
                     />
                 </div>
                 <div className='smd-register-tab_register'>
@@ -38,7 +39,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.generalRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addGeneralRegistersInterval}
                         removeInterval={this.props.actions.removeGeneralRegistersInterval}
-                        max={MACHINE_REGISTER_SIZE}
+                        max={Machine.NGP}
                     />
                </div>
                <div className='smd-register-tab_register'>
@@ -48,7 +49,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
                         visibleRange={this.props.floatingRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addFloatingRegistersInterval}
                         removeInterval={this.props.actions.removeFloatingRegistersInterval}
-                        max={MACHINE_REGISTER_SIZE}
+                        max={Machine.NFP}
                     />
                 </div>
             </div>

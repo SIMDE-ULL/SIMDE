@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Queue } from '../../../core/Collections/Queue';
 import { useTranslation } from 'react-i18next';
 
 export function PrefetchDecoderComponent(props) {
@@ -14,7 +13,7 @@ export function PrefetchDecoderComponent(props) {
                     {
                         props.data && props.data.map((element, i) =>
                         <div className='smd-table_row' key={props.title + 'row' + i}>
-                                <div className='smd-table_cell' key={props.title + i}>{element != null ? element : `&nbsp;`}</div>
+                                <div className='smd-table_cell' title={element.value} key={props.title + i} style={{background: props.colors.uuidColors[element.uuid]}}>{element != null ? element.id : `&nbsp;`}</div>
                         </div>)
                     }
                     </div>

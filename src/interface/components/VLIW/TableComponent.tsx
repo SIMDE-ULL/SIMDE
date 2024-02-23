@@ -26,7 +26,7 @@ export function TableComponent(props) {
                     <div className="smd-table-body">
                         {props.data &&
                             props.data.map((row, i) => (
-                                <div className="smd-table_row" key={`${'VliwCode' + i}`} >
+                                <div className="smd-table_row" key={`${'VliwCode' + i}`} style={{background: (i === props.pc)? "grey" : ""}} >
                                     <div className="smd-table_cell"> 
                                             { i } 
                                     </div>

@@ -1,5 +1,5 @@
 import { Superescalar } from '../core/Superescalar/Superescalar';
-import { ExecutionStatus } from '../main-consts';
+import { ExecutionStatus } from './utils';
 import { store } from '../store';
 import {
     nextPrefetchCycle,
@@ -49,42 +49,43 @@ export class SuperescalarIntegration extends MachineIntegration {
     */
     dispatchAllSuperescalarActions = (step?: number) => {
         // Code should only be setted on the first iteration
+        let robMap = this.superescalar.reorderBuffer.getVisualInstructionMap();
         store.dispatch(
                 batchActions(
-                    nextJumpTableCycle(this.superescalar.jumpPrediction),
-                    nextPrefetchCycle(this.superescalar.prefetchUnit),
-                    nextDecoderCycle(this.superescalar.decoder),
+                    nextJumpTableCycle(this.superescalar.jumpPrediction.getVisualTable()),
+                    nextPrefetchCycle(this.superescalar.prefetchUnit.getVisualData()),
+                    nextDecoderCycle(this.superescalar.decoder.getVisualData()),
                     nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
                     nextReserveStationCycle(
                         [{
-                            data: this.superescalar.reserveStationEntry[0],
+                            data: this.superescalar.getReserveStation(0).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(0)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[1],
+                            data: this.superescalar.getReserveStation(1).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(1)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[2],
+                            data: this.superescalar.getReserveStation(2).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(2)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[3],
+                            data: this.superescalar.getReserveStation(3).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(3)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[4],
+                            data: this.superescalar.getReserveStation(4).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(4)
                         },
                         {
-                            data: this.superescalar.reserveStationEntry[5],
+                            data: this.superescalar.getReserveStation(5).getVisualData(robMap),
                             size: this.superescalar.getReserveStationSize(5)
                         }]
                     ),
-                    nextReorderBufferMapperCycle([this.superescalar.ROBGpr, this.superescalar.ROBFpr]),
-                    nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
+                    nextReorderBufferMapperCycle([this.superescalar.reorderBuffer.getVisualRegisterMap(false), this.superescalar.reorderBuffer.getVisualRegisterMap(true)]),
+                    nextReorderBufferCycle(this.superescalar.reorderBuffer),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
-                    nextMemoryCycle(this.superescalar.memory.data),
+                    nextMemoryCycle(Array.from(this.superescalar.memory).map(d => d.value)),
                     nextCycle(this.superescalar.status.cycle),
                     pushHistory()
                 )
@@ -179,7 +180,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
-            this.superescalar.memory.failProbability = this.cacheFailPercentage;
+            this.superescalar.memory.faultChance = this.cacheFailPercentage / 100;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
@@ -216,63 +217,6 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.executing = false;
             this.resetMachine();
         }
-    }
-
-    colorCell = (instructionId, color) => {
-        this.superescalar.reorderBuffer.elements.filter(e => e != null && e.instruction.id === +instructionId)[0].instruction.color = color.hex;
-        this.superescalar.reserveStationEntry = this.superescalar.reserveStationEntry.map(ree => ree.map(reserveStationEntry => {
-            if (reserveStationEntry.instruction.id === +instructionId) {
-                reserveStationEntry.instruction.color = color.hex;
-            }
-            return reserveStationEntry;
-        }));
-        this.superescalar.functionalUnit = this.superescalar.functionalUnit.map(functionalUnit => functionalUnit.map(fu => {
-            fu.flow = fu.flow.map(instruction => {
-                if (instruction && instruction.id === +instructionId) {
-                    instruction.color = color.hex;
-                }
-                return instruction;
-            });
-            return fu;
-        }));
-        store.dispatch(
-            batchActions(
-                nextReorderBufferCycle(this.superescalar.reorderBuffer.elements),
-                nextFunctionalUnitCycle([...this.superescalar.functionalUnit, this.superescalar.aluMem]),
-                nextReserveStationCycle(
-                    [{
-                        data: this.superescalar.reserveStationEntry[0],
-                        size: this.superescalar.getReserveStationSize(0)
-                    },
-
-                    {
-                        data: this.superescalar.reserveStationEntry[1],
-                        size: this.superescalar.getReserveStationSize(1)
-                    },
-
-                    {
-                        data: this.superescalar.reserveStationEntry[2],
-                        size: this.superescalar.getReserveStationSize(2)
-                    },
-
-                    {
-                        data: this.superescalar.reserveStationEntry[3],
-                        size: this.superescalar.getReserveStationSize(3)
-                    },
-
-                    {
-                        data: this.superescalar.reserveStationEntry[4],
-                        size: this.superescalar.getReserveStationSize(4)
-                    },
-
-                    {
-                        data: this.superescalar.reserveStationEntry[5],
-                        size: this.superescalar.getReserveStationSize(5)
-                    }]
-                ),
-                colorCell(instructionId, color.hex)
-            )
-        );
     }
 
     stepBack = () => {
@@ -334,26 +278,26 @@ export class SuperescalarIntegration extends MachineIntegration {
     saveSuperConfig = (superConfig) => {
         // TODO: enforce this through a unique map so that we can overwrite the config directly
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM,+superConfig["integerSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY,+superConfig["integerMultLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM,+superConfig["floatingSumLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
 
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY,+superConfig["floatingMultLatency"]);
-        
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.JUMP,+superConfig["jumpQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.JUMP,+superConfig["jumpLatency"]);
-        
-        this.superescalar.setFunctionalUnitNumber(FunctionalUnitType.MEMORY,+superConfig["memoryQuantity"]);
-        this.superescalar.setFunctionalUnitLatency(FunctionalUnitType.MEMORY,+superConfig["memoryLatency"]);
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultLatency);
+
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.JUMP, +superConfig.jumpQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.JUMP, +superConfig.jumpLatency);
+
+        this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.MEMORY, +superConfig.memoryQuantity);
+        this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.MEMORY, +superConfig.memoryLatency);
         
         this.superescalar.issue = +superConfig.issueGrade;
         this.resetMachine();
@@ -393,7 +337,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.superescalar.memory.failProbability = 0;
+        this.superescalar.memory.faultChance = 0;
         this.superescalar.memoryFailLatency = 0;
         this.resetMachine();
     }

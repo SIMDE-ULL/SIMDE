@@ -13,12 +13,6 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { superescalarLoad } from '../../../actions';
-import {
-    addRobFprInterval,
-    removeRobFprInterval,
-    addRobGprInterval,
-    removeRobGprInterval
-} from '../../../actions/intervals-actions';
 
 class GeneralTabComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -41,12 +35,14 @@ class GeneralTabComponent extends React.Component<any, any> {
                             <div className="w-50">
                                 <PrefetchDecoderComponent
                                     data={this.props.prefetchUnit}
+                                    colors={this.props.colors}
                                     title="Prefetch"
                                 />
                             </div>
                             <div className="w-50">
                                 <PrefetchDecoderComponent
                                     data={this.props.decoder}
+                                    colors={this.props.colors}
                                     title="Decoder"
                                 />
                             </div>
@@ -56,9 +52,6 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ROBMapperComponent
                                     title="ROB<->GPR"
                                     data={this.props.ROBGpr.data}
-                                    visibleRange={
-                                        this.props.ROBGpr.visibleRangeValues
-                                    }
                                     addInterval={
                                         this.props.actions.addRobGprInterval
                                     }
@@ -71,9 +64,6 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ROBMapperComponent
                                     title="ROB<->FPR"
                                     data={this.props.ROBFpr.data}
-                                    visibleRange={
-                                        this.props.ROBFpr.visibleRangeValues
-                                    }
                                     addInterval={
                                         this.props.actions.addRobFprInterval
                                     }
@@ -105,26 +95,32 @@ class GeneralTabComponent extends React.Component<any, any> {
                                 <ReserveStationComponent
                                     title="Integer +"
                                     data={this.props.reserveStationIntAdd}
+                                    colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
                                     title="Integer x"
                                     data={this.props.reserveStationIntSub}
+                                    colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
                                     title="Floating +"
                                     data={this.props.reserveStationFloAdd}
+                                    colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
                                     title="Floating x"
                                     data={this.props.reserveStationFloSub}
+                                    colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
                                     title="Memory"
                                     data={this.props.reserveStationMemory}
+                                    colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
                                     title="Jump"
                                     data={this.props.reserveStationJump}
+                                    colors={this.props.colors}
                                 />
                             </div>
                         </div>
@@ -141,6 +137,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitIntAdd.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="xEntera"
@@ -150,6 +147,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitIntSub.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="+Flotante"
@@ -159,6 +157,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitFloAdd.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="xFlotante"
@@ -168,6 +167,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitFloSub.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="Mem"
@@ -177,6 +177,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitMemory.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="JumpUF"
@@ -186,6 +187,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitJump.content
                                     }
+                                    colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
                                     title="AluMem"
@@ -195,6 +197,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     content={
                                         this.props.functionalUnitAluMem.content
                                     }
+                                    colors={this.props.colors}
                                 />
                             </div>
                         </div>
@@ -227,6 +230,7 @@ const mapStateToProps = state => {
         ROBFpr: state.Machine.ROBFpr,
         reorderBuffer: state.Machine.reorderBuffer,
         code: state.Machine.code,
+        colors: state.Colors,
         colorBasicBlocks: state.Machine.colorBasicBlocks
     };
 };
@@ -236,10 +240,6 @@ const mapDispatchToProps = dispatch => {
         actions: bindActionCreators(
             {
                 superescalarLoad,
-                addRobFprInterval,
-                removeRobFprInterval,
-                addRobGprInterval,
-                removeRobGprInterval
             },
             dispatch
         )

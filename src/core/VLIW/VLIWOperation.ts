@@ -11,12 +11,14 @@ export class VLIWOperation extends Instruction {
     private _predicateFalse: number;
 
     constructor(operation?: VLIWOperation, instruction?: Instruction, type?: FunctionalUnitType, functionalUnitIndex?: number) {
-        super();
         if (operation) {
+            super(operation);
             this.buildFromVLIWOperation(operation);
         } else if (instruction) {
+            super(instruction);
             this.buildFromInstruction(instruction, type, functionalUnitIndex);
         } else {
+            super();
             this._predicate = 0;
             this._predicateTrue = 0;
             this._predicateFalse = 0;
@@ -24,7 +26,6 @@ export class VLIWOperation extends Instruction {
     }
 
     buildFromVLIWOperation(operation: VLIWOperation) {
-        this.copy(operation);
         this._functionalUnitType = operation._functionalUnitType;
         this._functionalUnitIndex = operation._functionalUnitIndex;
         this._predicate = operation._predicate;
@@ -33,7 +34,6 @@ export class VLIWOperation extends Instruction {
     }
 
     buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
-        this.copy(instruction);
         this._functionalUnitType = functionalUnitType;
         this._functionalUnitIndex = functionalUnitIndex;
         this._predicate = 0;
@@ -82,10 +82,4 @@ export class VLIWOperation extends Instruction {
     public setPredFalse(p: number) {
         this._predicateFalse = p;
     }
-
-    // TODO: remove this, use Instruction.isJump instead
-    public isJump() {
-        return (this._opcode === Opcodes.BEQ) || (this._opcode === Opcodes.BGT) || (this._opcode === Opcodes.BNE);
-    }
-
 }
