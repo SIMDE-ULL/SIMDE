@@ -3,6 +3,7 @@ export const NEXT_INSTRUCTIONS_COMMITED = 'NEXT_INSTRUCTIONS_COMMITED';
 export const NEXT_UNITS_OCUPATION = 'NEXT_UNITS_OCUPATION';
 export const NEXT_STATUSES_COUNT = 'NEXT_STATUSES_COUNT';
 export const NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES = 'NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES';
+export const SET_CYCLES_PER_REPLICATION = 'SET_CYCLES_PER_REPLICATION';
 
 
 export function nextInstructionsStatusesAverageCycles(data) {
@@ -36,6 +37,13 @@ export function nextTotalCommited(data) {
 export function nextInstructionsCommited(data) {
     return {
         type: NEXT_INSTRUCTIONS_COMMITED,
+        value: data
+    };
+}
+
+export function setCyclesPerReplication(data) {
+    return {
+        type: SET_CYCLES_PER_REPLICATION,
         value: data
     };
 }

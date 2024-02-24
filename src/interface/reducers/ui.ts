@@ -7,9 +7,12 @@ import {
     TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
     TOGGLE_VLIW_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
-    DISPLAY_BATCH_RESULTS,
     CLEAR_BATCH_RESULTS
 } from '../actions/modals';
+
+import {
+    SET_CYCLES_PER_REPLICATION
+} from '../actions/stats-actions';
 
 const initialState = {
     isLoadModalOpen: false,
@@ -21,7 +24,7 @@ const initialState = {
     isVliwLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
-    batchResults: {}
+    batchResults: []
 };
 
 export function UiReducers(state = initialState, action) {
@@ -66,7 +69,7 @@ export function UiReducers(state = initialState, action) {
                 ...state,
                 isVliwLoadContentModalOpen: action.value
             });
-        case DISPLAY_BATCH_RESULTS:
+        case SET_CYCLES_PER_REPLICATION:
             return (state = {
                 ...state,
                 batchResults: action.value,
@@ -75,7 +78,7 @@ export function UiReducers(state = initialState, action) {
         case CLEAR_BATCH_RESULTS:
             return (state = {
                 ...state,
-                batchResults: {},
+                batchResults: [],
                 isBatchResultsModalOpen: false
             });
 

@@ -18,7 +18,8 @@ import {
     nextInstructionsCommited,
     nextUnitsOcupation,
     nextInstructionsStatusesAverageCycles,
-    nextStatusesCount
+    nextStatusesCount,
+    setCyclesPerReplication
 } from '../interface/actions';
 
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
@@ -29,9 +30,10 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
-import { displayBatchResults } from '../interface/actions/modals';
+
 
 import { SuperescalarStats } from '../stats/superescalar-stats';
+import { StatsAgregator } from '../stats/agregator';
 
 import { MachineIntegration } from './machine-integration';
 
@@ -210,6 +212,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) {
                 this.collectStats();
             }
+            this.collectStats();
             this.dispatchAllSuperescalarActions();
             this.finishedExecution = true;
             alert(t('execution.finished'));
@@ -222,6 +225,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
 
         const results = [];
+        let agregator = new StatsAgregator();
         for (let i = 0; i < this.replications; i++) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
@@ -240,12 +244,24 @@ export class SuperescalarIntegration extends MachineIntegration {
             while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { 
                 this.collectStats();
             }
+            this.collectStats();
+            agregator.agragate(this.stats);
             results.push(this.superescalar.status.cycle);
+            this.stats = new SuperescalarStats();
         }
 
         const statistics = this.calculateBatchStatistics(results);
         this.clearBatchStateEffects();
-        store.dispatch(displayBatchResults(statistics));
+        store.dispatch(
+            batchActions(
+                setCyclesPerReplication(results),
+                nextTotalCommited(agregator.getAvgCommitedAndDiscarded()),
+                nextUnitsOcupation(agregator.getAvgUnitsOcupation()),
+                nextInstructionsCommited(agregator.getAvgCommitedPercentagePerInstruction()),
+                nextUnitsOcupation(agregator.getAvgUnitsOcupation()),
+                nextStatusesCount(agregator.getPerStatusCountAtCycle()),
+                nextInstructionsStatusesAverageCycles(agregator.getAvgInstructionsStatusesAverage()),
+                ));
     }
 
     pause = () => {

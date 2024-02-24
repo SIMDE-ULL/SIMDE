@@ -160,6 +160,42 @@ export class StatsTabComponent extends React.Component<any, any> {
                                 }
                             ]}
                         />
+                        { this.props.cyclesPerReplication.length > 0 && <EChart
+                            title={{
+                                text: 'Cycles per iteration',
+                                left: 'center'
+                            }}
+                            style={{
+                                height: "13rem",
+                                width: "100%",
+                            }}
+                            toolbox={{
+                                feature: {
+                                    saveAsImage: {},
+                                    dataView: { readOnly: true, lang: ['Data View', 'Close', 'Refresh'] },
+                                }
+                            }}
+                            tooltip={
+                                {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'cross'
+                                    }
+                                }
+
+                            }
+                            xAxis={{
+                                type: 'category'
+                            }}
+                            yAxis={{
+                                type: 'value'
+                            }}
+                            series={{
+                                name: 'Cycles per iteration',
+                                type: 'line',
+                                data: this.props.cyclesPerReplication
+                            }}
+                        />}
                     </div>
                     <div className="col-8 overflow-auto" style={{ maxHeight: '25rem' }}>
                         <p className='h4'>Per instruction status average cycles</p>
@@ -209,6 +245,7 @@ const mapStateToProps = state => {
         unitsOcupation: state.Machine.stats.unitsOcupation,
         statusesCount: state.Machine.stats.statusesCount,
         instrStatuses: state.Machine.stats.instructionsStatusesAverageCycles,
+        cyclesPerReplication: state.Ui.batchResults,
         code: state.Machine.code
     }
 }
