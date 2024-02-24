@@ -515,21 +515,20 @@ export class Superescalar extends Machine {
       }
 
       // Finish the instruction execution
-      if (!this.functionalUnit[type][num].isStalled()) {
-        // Update all the reserve stations values that are waiting for this result
-        // (jumps dont return a value for instructions, so we skip them)
-        if (!inst.isJumpInstruction()) {
-          for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
-            this._reserveStations[j].setROBValue(instUuid, resul);
-          }
+
+      // Update all the reserve stations values that are waiting for this result
+      // (jumps dont return a value for instructions, so we skip them)
+      if (!inst.isJumpInstruction()) {
+        for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
+          this._reserveStations[j].setROBValue(instUuid, resul);
         }
-
-        // update the reorder buffer with the result
-        this._reorderBuffer.writeResultValue(instUuid, resul);
-
-        // Remove the instruction entry from the reserve station
-        this._reserveStations[type].removeInstruction(instUuid);
       }
+
+      // update the reorder buffer with the result
+      this._reorderBuffer.writeResultValue(instUuid, resul);
+
+      // Remove the instruction entry from the reserve station
+      this._reserveStations[type].removeInstruction(instUuid);
     }
   }
 

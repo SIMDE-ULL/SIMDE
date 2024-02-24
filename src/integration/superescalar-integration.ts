@@ -230,6 +230,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
+            //TODO: check this data, seems to be inverted
             this.superescalar.memory.faultChance = this.cacheFailPercentage / 100;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
 
