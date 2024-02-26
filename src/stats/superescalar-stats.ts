@@ -24,8 +24,6 @@ export class SuperescalarStats {
   private _unitOcupationAtCycle: Map<string, Map<number, number>> = new Map();
   private _currentCycle: number = 0;
 
-  constructor() {}
-
   public collectMultipleUnitOcupation(unitName: string, ocupations: number[]) {
     let ocupation =
       ocupations.reduce((acc, val) => acc + val, 0) / ocupations.length;
