@@ -53,6 +53,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
     stats = new SuperescalarStats();
+    batchStats = new StatsAgregator();
 
     /*
     * This call all the components to update the state
@@ -228,7 +229,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
 
         const results = [];
-        let agregator = new StatsAgregator();
+        this.batchStats = new StatsAgregator();
         for (let i = 0; i < this.replications; i++) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
@@ -249,7 +250,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                 this.collectStats();
             }
             this.collectStats();
-            agregator.agragate(this.stats);
+            this.batchStats.agragate(this.stats);
             results.push(this.superescalar.status.cycle);
             this.stats = new SuperescalarStats();
         }
@@ -258,12 +259,12 @@ export class SuperescalarIntegration extends MachineIntegration {
         store.dispatch(
             batchActions(
                 setCyclesPerReplication(results),
-                nextTotalCommited(agregator.getAvgCommitedAndDiscarded()),
-                nextUnitsOcupation(agregator.getAvgUnitsOcupation()),
-                nextInstructionsCommited(agregator.getAvgCommitedPercentagePerInstruction()),
-                nextUnitsOcupation(agregator.getAvgUnitsOcupation()),
-                nextStatusesCount(agregator.getPerStatusCountAtCycle()),
-                nextInstructionsStatusesAverageCycles(agregator.getAvgInstructionsStatusesAverage()),
+                nextTotalCommited(this.batchStats.getAvgCommitedAndDiscarded()),
+                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
+                nextInstructionsCommited(this.batchStats.getAvgCommitedPercentagePerInstruction()),
+                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
+                nextStatusesCount(this.batchStats.getPerStatusCountAtCycle()),
+                nextInstructionsStatusesAverageCycles(this.batchStats.getAvgInstructionsStatusesAverage()),
                 displayBatchResults()
                 ));
     }

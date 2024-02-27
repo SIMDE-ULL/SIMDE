@@ -153,7 +153,8 @@
     },
     "batchResults": {
         "title": "Batch Execution done",
-        "subtext": "Go to the stats tab to see the results"
+        "subtext": "Go to the stats tab to see the results",
+        "download": "Download raw stats"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",

@@ -152,7 +152,8 @@
     },
     "batchResults": {
         "title": "Ejecución por lotes realizada",
-        "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados"
+        "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
+        "download": "Descargar datos estadísticos(en crudo)"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",

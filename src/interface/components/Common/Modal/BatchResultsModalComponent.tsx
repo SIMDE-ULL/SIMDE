@@ -9,16 +9,22 @@ import {
 } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { downloadJsonFile } from '../../../utils/Downloader';
 
 class BatchResultsModalComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
         this.close = this.close.bind(this);
+        this.download = this.download.bind(this);
     }
 
     close() {
         this.props.actions.closeBatchResults();
+    }
+
+    download() {
+        downloadJsonFile('batch_stats.json', SuperescalarIntegration.batchStats.export());
     }
 
     render() {
@@ -37,6 +43,9 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                                 {this.props.t('batchResults.subtext')}
                             </div>
                         </div>
+                        <Button onClick={this.download}>
+                                {this.props.t('batchResults.download')}
+                        </Button>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
