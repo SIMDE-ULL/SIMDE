@@ -8,7 +8,7 @@ export const TOGGLE_BATCH_MODAL = 'TOGGLE_BATCH_MODAL';
 export const TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL = 'TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL';
 export const TOGGLE_VLIW_LOAD_CONTENT_MODAL = 'TOGGLE_VLIW_LOAD_CONTENT_MODAL';
 export const DISPLAY_BATCH_RESULTS = 'DISPLAY_BATCH_RESULTS';
-export const CLEAR_BATCH_RESULTS = 'CLEAR_BATCH_RESULTS';
+export const CLOSE_BATCH_RESULTS = 'CLOSE_BATCH_RESULTS';
 
 export function toggleLoadModal(value) {
     return {
@@ -73,16 +73,16 @@ export function toggleBatchModal(value) {
     };
 }
 
-export function displayBatchResults(value) {
+export function displayBatchResults() {
     return {
         type: DISPLAY_BATCH_RESULTS,
-        value: value
+        value: null
     };
 }
 
-export function clearBatchResults(value) {
+export function closeBatchResults() {
     return {
-        type: CLEAR_BATCH_RESULTS,
-        value: value
+        type: CLOSE_BATCH_RESULTS,
+        value: null
     };
 }

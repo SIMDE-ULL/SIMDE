@@ -19,8 +19,11 @@ import {
     nextUnitsOcupation,
     nextInstructionsStatusesAverageCycles,
     nextStatusesCount,
-    setCyclesPerReplication
+    setCyclesPerReplication,
+    clearCyclesPerReplication
 } from '../interface/actions';
+
+import { displayBatchResults } from '../interface/actions/modals';
 
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
 
@@ -251,7 +254,6 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.stats = new SuperescalarStats();
         }
 
-        const statistics = this.calculateBatchStatistics(results);
         this.clearBatchStateEffects();
         store.dispatch(
             batchActions(
@@ -262,6 +264,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                 nextUnitsOcupation(agregator.getAvgUnitsOcupation()),
                 nextStatusesCount(agregator.getPerStatusCountAtCycle()),
                 nextInstructionsStatusesAverageCycles(agregator.getAvgInstructionsStatusesAverage()),
+                displayBatchResults()
                 ));
     }
 
@@ -391,17 +394,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
-    }
-
-    private calculateBatchStatistics(results: number[]) {
-        const average = (results.reduce((a,b) => a + b) / results.length);
-        return {
-            replications:  this.replications,
-            average: average.toFixed(2),
-            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
-            worst: Math.max(...results),
-            best: Math.min(...results)
-        };
+        store.dispatch(clearCyclesPerReplication());
     }
 
     private clearBatchStateEffects() {

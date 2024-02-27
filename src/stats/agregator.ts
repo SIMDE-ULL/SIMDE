@@ -138,9 +138,14 @@ export class StatsAgregator {
 
   private avgOfArrays(arr: number[][]): number[] {
     let result = [];
-    for (let i = 0; i < arr[0].length; i++) {
+    let maxlen = arr.reduce((max, arr) => Math.max(max, arr.length), 0);
+    for (let i = 0; i < maxlen; i++) {
       let sum = 0;
       for (let j = 0; j < arr.length; j++) {
+        if (i >= arr[j].length) {
+          continue;
+        }
+
         sum += arr[j][i];
       }
       result.push(sum / arr.length);

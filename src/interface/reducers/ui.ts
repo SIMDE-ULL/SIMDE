@@ -7,7 +7,8 @@ import {
     TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
     TOGGLE_VLIW_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
-    CLEAR_BATCH_RESULTS
+    CLOSE_BATCH_RESULTS,
+    DISPLAY_BATCH_RESULTS
 } from '../actions/modals';
 
 import {
@@ -73,12 +74,15 @@ export function UiReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 batchResults: action.value,
-                isBatchResultsModalOpen: true
             });
-        case CLEAR_BATCH_RESULTS:
+        case DISPLAY_BATCH_RESULTS:
             return (state = {
                 ...state,
-                batchResults: [],
+                isBatchResultsModalOpen: true
+            });
+        case CLOSE_BATCH_RESULTS:
+            return (state = {
+                ...state,
                 isBatchResultsModalOpen: false
             });
 

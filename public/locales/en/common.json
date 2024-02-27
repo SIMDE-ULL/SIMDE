@@ -152,12 +152,8 @@
         "cacheFailLatency": "Cache miss latency"
     },
     "batchResults": {
-        "title": "Batch Results",
-        "replications": "Replications",
-        "average": "Average cycles per execution",
-        "standardDeviation": "Standard Deviation",
-        "worst": "Worst case",
-        "best": "Best case"
+        "title": "Batch Execution done",
+        "subtext": "Go to the stats tab to see the results"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",

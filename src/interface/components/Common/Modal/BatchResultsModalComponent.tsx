@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import {
     toggleOptionsModal,
     toggleBatchModal,
-    clearBatchResults
+    closeBatchResults
 } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
@@ -18,7 +18,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
     }
 
     close() {
-        this.props.actions.clearBatchResults(false);
+        this.props.actions.closeBatchResults();
     }
 
     render() {
@@ -34,43 +34,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                     <div className="smd-batch_results">
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                                {this.props.t('batchResults.replications')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.replications}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.average')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.average}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.standardDeviation')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.standardDeviation}
-                        
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.worst')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.worst}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.best')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.best}
+                                {this.props.t('batchResults.subtext')}
                             </div>
                         </div>
                     </div>
@@ -87,13 +51,12 @@ class BatchResultsModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
-        results: state.Ui.batchResults
+        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen
     };
 };
 
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ clearBatchResults }, dispatch) };
+    return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchResultsModalComponent));

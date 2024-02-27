@@ -47,3 +47,10 @@ export function setCyclesPerReplication(data) {
         value: data
     };
 }
+
+export function clearCyclesPerReplication() {
+    return {
+        type: SET_CYCLES_PER_REPLICATION,
+        value: []
+    };
+}

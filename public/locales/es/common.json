@@ -151,12 +151,8 @@
         "cacheFailLatency": "Latencia en fallos de cachés"
     },
     "batchResults": {
-        "title": "Resultados de la ejecución por lotes",
-        "replications": "Réplicas",
-        "average": "Número medio de ciclos por ejecución",
-        "standardDeviation": "Desviación éstandar",
-        "worst": "Peor caso",
-        "best": "Mejor caso"
+        "title": "Ejecución por lotes realizada",
+        "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",
