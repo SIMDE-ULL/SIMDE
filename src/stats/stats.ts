@@ -18,7 +18,7 @@ interface StatusesStats {
   commitNumber: number;
 }
 
-export class SuperescalarStats {
+export class Stats {
   private _instrEntries: Map<number, InstructionStatsEntry> = new Map();
   private _statusesAtCycle: Map<number, StatusesStats> = new Map();
   private _unitOcupationAtCycle: Map<string, Map<number, number>> = new Map();

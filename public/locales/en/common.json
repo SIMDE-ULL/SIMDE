@@ -6,7 +6,7 @@
             "downloadMemory": "Download Memory(JSON)",
             "downloadContent": "Download content Memory - Registers",
             "downloadCode": "Download Code",
-            "downloadStats": "Descargar raw stats"
+            "downloadStats": "Descargar stats events(JSON)"
         },
         "view": {
             "name": "View",
@@ -154,7 +154,7 @@
     "batchResults": {
         "title": "Batch Execution done",
         "subtext": "Go to the stats tab to see the results",
-        "download": "Download raw stats"
+        "download": "Download stats events(JSON)"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",

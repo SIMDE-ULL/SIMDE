@@ -35,7 +35,7 @@ import { Code } from '../core/Common/Code';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 
 
-import { SuperescalarStats } from '../stats/superescalar-stats';
+import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/agregator';
 
 import { MachineIntegration } from './machine-integration';
@@ -52,7 +52,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     replications = 0;
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
-    stats = new SuperescalarStats();
+    stats = new Stats();
     batchStats = new StatsAgregator();
 
     /*
@@ -164,7 +164,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                     this.setMemory(this.contentIntegration.MEMContent);
                 }
 
-                this.stats = new SuperescalarStats();
+                this.stats = new Stats();
             }
             let machineStatus = this.superescalar.tic();
             this.collectStats();
@@ -206,7 +206,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                 this.setMemory(this.contentIntegration.MEMContent);
             }
 
-            this.stats = new SuperescalarStats();
+            this.stats = new Stats();
         }
 
         if (speed) {
@@ -252,7 +252,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.collectStats();
             this.batchStats.agragate(this.stats);
             results.push(this.superescalar.status.cycle);
-            this.stats = new SuperescalarStats();
+            this.stats = new Stats();
         }
 
         this.clearBatchStateEffects();
@@ -391,7 +391,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.setMemory(this.contentIntegration.MEMContent);
         }
 
-        this.stats = new SuperescalarStats();
+        this.stats = new Stats();
 
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());

@@ -6,7 +6,7 @@
             "downloadMemory": "Descargar memoria(JSON)",
             "downloadContent": "Descargar contenido Memoria - Registros",
             "downloadCode": "Descargar código",
-            "downloadStats": "Descargar datos estadísticos"
+            "downloadStats": "Descargar eventos estadísticos(JSON)"
         },
         "view": {
             "name": "Ver",
@@ -153,7 +153,7 @@
     "batchResults": {
         "title": "Ejecución por lotes realizada",
         "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
-        "download": "Descargar datos estadísticos(en crudo)"
+        "download": "Descargar eventos estadísticos(JSON)"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",
