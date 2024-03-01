@@ -73,10 +73,10 @@ export function toggleBatchModal(value) {
     };
 }
 
-export function displayBatchResults() {
+export function displayBatchResults(exportStatsResults) {
     return {
         type: DISPLAY_BATCH_RESULTS,
-        value: null
+        value: exportStatsResults
     };
 }
 

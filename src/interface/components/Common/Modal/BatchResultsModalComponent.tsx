@@ -24,7 +24,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
     }
 
     download() {
-        downloadJsonFile('batch_stats.json', SuperescalarIntegration.batchStats.export());
+        downloadJsonFile('batch_stats.json', this.props.batchStatsResults);
     }
 
     render() {
@@ -60,7 +60,8 @@ class BatchResultsModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
     return {
-        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen
+        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
+        batchStatsResults: state.Ui.batchStatsResults
     };
 };
 

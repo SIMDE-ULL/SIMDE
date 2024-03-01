@@ -25,7 +25,8 @@ const initialState = {
     isVliwLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
-    batchResults: []
+    batchResults: [],
+    batchStatsResults: {}
 };
 
 export function UiReducers(state = initialState, action) {
@@ -78,12 +79,14 @@ export function UiReducers(state = initialState, action) {
         case DISPLAY_BATCH_RESULTS:
             return (state = {
                 ...state,
-                isBatchResultsModalOpen: true
+                isBatchResultsModalOpen: true,
+                batchStatsResults: action.value
             });
         case CLOSE_BATCH_RESULTS:
             return (state = {
                 ...state,
-                isBatchResultsModalOpen: false
+                isBatchResultsModalOpen: false,
+                batchStatsResults: {}
             });
 
         default: 

@@ -265,8 +265,9 @@ export class SuperescalarIntegration extends MachineIntegration {
                 nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
                 nextStatusesCount(this.batchStats.getPerStatusCountAtCycle()),
                 nextInstructionsStatusesAverageCycles(this.batchStats.getAvgInstructionsStatusesAverage()),
-                displayBatchResults()
+                displayBatchResults(this.batchStats.export())
                 ));
+        this.batchStats = new StatsAgregator();
     }
 
     pause = () => {
