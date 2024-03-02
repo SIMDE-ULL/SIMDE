@@ -262,7 +262,6 @@ export class SuperescalarIntegration extends MachineIntegration {
                 nextTotalCommited(this.batchStats.getAvgCommitedAndDiscarded()),
                 nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
                 nextInstructionsCommited(this.batchStats.getAvgCommitedPercentagePerInstruction()),
-                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
                 nextStatusesCount(this.batchStats.getPerStatusCountAtCycle()),
                 nextInstructionsStatusesAverageCycles(this.batchStats.getAvgInstructionsStatusesAverage()),
                 displayBatchResults(this.batchStats.export())

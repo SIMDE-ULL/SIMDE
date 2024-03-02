@@ -109,7 +109,6 @@ export class VLIW extends Machine {
         let i;
         let j;
         let pending: boolean = false;
-        let stopFlow: boolean = false;
         this.status.cycle++;
 
         if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isEmpty()) {
@@ -129,6 +128,7 @@ export class VLIW extends Machine {
 
         this.functionalUnit[FunctionalUnitType.JUMP][0].tic();
 
+        let hasStalledFU = false;
         for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
             for (j = 0; j < this.functionalUnit[i].length; j++) {
 
@@ -145,6 +145,8 @@ export class VLIW extends Machine {
                             this.runOperation(operation, this.functionalUnit[i][j]);
                         }
                     }
+                } else {
+                    hasStalledFU = true;
                 }
                 this.functionalUnit[i][j].tic();
             }
@@ -153,7 +155,7 @@ export class VLIW extends Machine {
         this._gpr.tic();
         this._fpr.tic();
 
-        if (!stopFlow) {
+        if (!hasStalledFU) {
 
             let instruction = this._code.getLargeInstruction(this.pc);
 
@@ -184,7 +186,7 @@ export class VLIW extends Machine {
                 }
             }
 
-            if (!stopFlow) {
+            if (!hasStalledFU) {
 
                 for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
 

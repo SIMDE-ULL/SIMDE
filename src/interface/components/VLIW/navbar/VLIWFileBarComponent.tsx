@@ -6,7 +6,8 @@ import { bindActionCreators } from 'redux';
 import { DropdownButton } from 'react-bootstrap';
 import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
-import { downloadJsonFile } from '../../../utils/Downloader';
+import { downloadJsonFile, downloadTextFile } from '../../../utils/Downloader';
+import vliwIntegration from '../../../../integration/vliw-integration';
 
 class VLIWFileBarComponent extends React.Component<any, any> {
     private color: boolean;
@@ -14,6 +15,21 @@ class VLIWFileBarComponent extends React.Component<any, any> {
     constructor(public props: any) {
         super(props);
         this.color = false;
+
+        this.downloadContentFile = this.downloadContentFile.bind(this);
+        this.downloadCodeFile = this.downloadCodeFile.bind(this);
+    }
+
+    downloadContentFile() {
+        if (vliwIntegration.contentIntegration) {
+            downloadTextFile('content.txt', vliwIntegration.contentIntegration.deparse());
+        }
+    }
+
+    downloadCodeFile() {
+        if (vliwIntegration.vliw.code) {
+            downloadTextFile('code.txt', vliwIntegration.vliw.code.save());
+        }
     }
 
     render() {
@@ -25,6 +41,9 @@ class VLIWFileBarComponent extends React.Component<any, any> {
                     >
                         <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{this.props.t('fileBar.file.load')}</Dropdown.Item>
                         <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.downloadMemory')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.downloadContent')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.downloadCode')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', vliwIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.downloadStats')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}

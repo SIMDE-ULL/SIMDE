@@ -9,7 +9,9 @@ import {
     nextCycle,
     currentPC,
     superescalarLoad,
-    batchActions
+    batchActions,
+    nextUnitsOcupation,
+    setCyclesPerReplication
 } from '../interface/actions';
 
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
@@ -25,6 +27,9 @@ import { VLIWOperation } from '../core/VLIW/VLIWOperation';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 import { displayBatchResults } from '../interface/actions/modals';
 
+import { Stats } from '../stats/stats';
+import { StatsAgregator } from '../stats/agregator';
+
 export class VLIWIntegration extends MachineIntegration {
     // Global objects for binding React to the View
     vliw = new VLIW();
@@ -37,6 +42,8 @@ export class VLIWIntegration extends MachineIntegration {
     replications = 0;
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
+    stats = new Stats();
+    batchStats = new StatsAgregator();
 
     /*
     * This call all the components to update the state
@@ -58,9 +65,18 @@ export class VLIWIntegration extends MachineIntegration {
                 nextNatFprCycle(this.vliw.getNaTFP()),
                 nextNatGprCycle(this.vliw.getNaTGP()),
                 nextPredicateCycle(this.vliw.getPredReg()),
+                nextUnitsOcupation(this.stats.getUnitsOcupation()),
                 pushHistory()
             )
         );
+    }
+
+    collectStats = () => {
+        for (let i = 0; i < 6; i++) {
+            this.stats.collectMultipleUnitOcupation(`fu${i}`, this.vliw.functionalUnit[i].map((fu) => fu.ocupation));
+        }
+
+        this.stats.advanceCycle();
     }
 
     vliwExe = () => {
@@ -91,6 +107,7 @@ export class VLIWIntegration extends MachineIntegration {
                 }
             }
             let machineStatus = this.vliw.tic();
+            this.collectStats();
             this.dispatchAllVLIWActions();
 
             return machineStatus;
@@ -186,7 +203,10 @@ export class VLIWIntegration extends MachineIntegration {
         } else {
             // tslint:disable-next-line:no-empty
             //TODO: Should we show VLIWErrors and stop execution?
-            while (this.vliw.tic() !== VLIWError.ENDEXE) { }
+            while (this.vliw.tic() !== VLIWError.ENDEXE) { 
+                this.collectStats();
+            }
+            this.collectStats();
             this.dispatchAllVLIWActions();
             this.finishedExecution = true;
             alert(t('execution.finished'));
@@ -215,13 +235,22 @@ export class VLIWIntegration extends MachineIntegration {
 
             // tslint:disable-next-line:no-empty
             //TODO: Should we show VLIWErrors and stop execution?
-            while (this.vliw.tic() !== VLIWError.ENDEXE) { }
+            while (this.vliw.tic() !== VLIWError.ENDEXE) { 
+                this.collectStats();
+            }
+            this.collectStats();
+            this.batchStats.agragate(this.stats);
             results.push(this.vliw.status.cycle);
+            this.stats = new Stats();
         }
 
-        const statistics = this.calculateBatchStatistics(results);
         this.clearBatchStateEffects();
-        store.dispatch(displayBatchResults(statistics));
+        store.dispatch(
+            batchActions(
+                setCyclesPerReplication(results),
+                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
+                displayBatchResults(this.batchStats.export())
+                ));
     }
 
     pause = () => {
@@ -343,17 +372,6 @@ export class VLIWIntegration extends MachineIntegration {
         }
         this.dispatchAllVLIWActions();
         store.dispatch(resetHistory());
-    }
-
-    private calculateBatchStatistics(results: number[]) {
-        const average = (results.reduce((a, b) => a + b) / results.length);
-        return {
-            replications: this.replications,
-            average: average.toFixed(2),
-            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
-            worst: Math.max(...results),
-            best: Math.min(...results)
-        };
     }
 
     private clearBatchStateEffects() {

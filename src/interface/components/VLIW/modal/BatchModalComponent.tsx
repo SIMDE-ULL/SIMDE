@@ -42,8 +42,8 @@ class BatchModalComponent extends React.Component<any, any> {
     setOptions() {
         VLIWIntegration.setBatchMode(
             this.state.replications,
-            this.state.cacheFailPercentage,
-            this.state.cacheFailLatency
+            this.state.cacheFailLatency,
+            this.state.cacheFailPercentage
         );
         this.close();
         VLIWIntegration.makeBatchExecution();

@@ -14,6 +14,7 @@ import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalCompone
 
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";
 import RegisterVLIWTabComponent  from "./tab/RegistersVLIWTabComponent";
+import StatsTabComponent from "./tab/StatsTabComponent";
 import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
 import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
@@ -36,6 +37,9 @@ const VLIWComponent = () => {
                 </Tab>
                 <Tab eventKey={2} title={t('accessBar.memReg')}>
                     <RegisterVLIWTabComponent />
+                </Tab>
+                <Tab eventKey={3} title={t('accessBar.stats')}>
+                    <StatsTabComponent />
                 </Tab>
             </Tabs>
             <VLIWLoadModalComponent />
