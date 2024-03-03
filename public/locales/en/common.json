@@ -195,5 +195,45 @@
         "FloatMult": "xFloat",
         "Memory": "Memory",
         "Jump": "Jump"
+    },
+
+    "stats": {
+        "toolbox": {
+            "dataView": "Data View",
+            "close": "Close",
+            "refresh": "Refresh"
+        },
+        "units": {
+            "prefetch": "Prefetch",
+            "decode": "Decoder",
+            "rob": "ROB",
+            "fu0": "Integer + FU",
+            "fu1": "Integer x FU",
+            "fu2": "Float + FU",
+            "fu3": "Float x FU",
+            "fu4": "Memory FU",
+            "fu5": "Jump FU",
+            "rs0": "Integer + RS",
+            "rs1": "Integer x RS",
+            "rs2": "Float + RS",
+            "rs3": "Float x RS",
+            "rs4": "Memory RS",
+            "rs5": "Jump RS"
+        },
+        "statuses": {
+            "prefetchNumber": "Prefetching",
+            "decodeNumber": "Decoding",
+            "issueNumber": "Issuing",
+            "executeNumber": "Executing",
+            "writeBackNumber": "On Write Back",
+            "commitNumber": "Commiting"
+        },
+        "unitsOcupation": "Units ocupation per cycle",
+        "instrStatuses": "Instructions statuses per cycle",
+        "cycles": "Cycles per iteration",
+        "commitDiscard": "Commited vs Discarded instructions",
+        "commited": "Commited",
+        "discarded": "Discarded",
+        "statusAverage": "Per instruction status average cycles"
     }
 }
