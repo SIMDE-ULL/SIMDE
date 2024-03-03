@@ -29,6 +29,7 @@ import { displayBatchResults } from '../interface/actions/modals';
 
 import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/agregator';
+import { al } from 'vitest/dist/reporters-5f784f42.js';
 
 export class VLIWIntegration extends MachineIntegration {
     // Global objects for binding React to the View
@@ -203,8 +204,14 @@ export class VLIWIntegration extends MachineIntegration {
         } else {
             // tslint:disable-next-line:no-empty
             //TODO: Should we show VLIWErrors and stop execution?
-            while (this.vliw.tic() !== VLIWError.ENDEXE) { 
+            let err = VLIWError.OK;
+            while (err !== VLIWError.ENDEXE) {
+                err = this.vliw.tic();
                 this.collectStats();
+                if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
+                    alert(t('execution.error') + ": " + VLIWError[err]);
+                    err = VLIWError.ENDEXE;
+                }
             }
             this.collectStats();
             this.dispatchAllVLIWActions();
@@ -235,10 +242,15 @@ export class VLIWIntegration extends MachineIntegration {
 
             // tslint:disable-next-line:no-empty
             //TODO: Should we show VLIWErrors and stop execution?
-            while (this.vliw.tic() !== VLIWError.ENDEXE) { 
+            let err = VLIWError.OK;
+            while (err !== VLIWError.ENDEXE) {
+                err = this.vliw.tic();
                 this.collectStats();
+                if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
+                    alert(t('execution.error') + ": " + VLIWError[err]);
+                    err = VLIWError.ENDEXE;
+                }
             }
-            this.collectStats();
             this.batchStats.agragate(this.stats);
             results.push(this.vliw.status.cycle);
             this.stats = new Stats();
