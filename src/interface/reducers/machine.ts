@@ -115,7 +115,7 @@ export const initialState = {
     colorBasicBlocks: false
 };
 
-export function MachineReducers(state = initialState, action) {
+export function MachineReducers(state = initialState, action): typeof initialState {
     switch (action.type) {
         case NEXT_PREFETCH_CYCLE:
             return (state = { ...state, prefetchUnit: action.value });

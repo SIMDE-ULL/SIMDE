@@ -28,7 +28,7 @@ import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interfa
 import { displayBatchResults } from '../interface/actions/modals';
 
 import { Stats } from '../stats/stats';
-import { StatsAgregator } from '../stats/agregator';
+import { StatsAgregator } from '../stats/aggregator';
 import { al } from 'vitest/dist/reporters-5f784f42.js';
 
 export class VLIWIntegration extends MachineIntegration {

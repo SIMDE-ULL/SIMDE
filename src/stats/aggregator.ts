@@ -1,4 +1,4 @@
-import { SuperescalarStats, InstructionStatsEntry } from "./superescalar-stats";
+import { Stats, InstructionStatsEntry } from "./stats";
 
 export interface StatEntry {
   replication: number;
@@ -6,11 +6,11 @@ export interface StatEntry {
 }
 
 export class StatsAgregator {
-  private _stats: Array<SuperescalarStats> = new Array();
+  private _stats: Array<Stats> = new Array();
 
   constructor() {}
 
-  public agragate(stats: SuperescalarStats) {
+  public agragate(stats: Stats) {
     this._stats.push(stats);
   }
 

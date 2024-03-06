@@ -20,10 +20,10 @@ export class StatsTabComponent extends React.Component<any, any> {
         <div className="row">
           <div className="col">
             <EChart
-              title={{
-                text: this.props.t("stats.unitsOcupation"),
-                left: "center",
-              }}
+              // title={{
+              //   text: this.props.t("stats.unitsOcupation"),
+              //   left: "center",
+              // }}
               style={{
                 height: "25rem",
                 width: "100%",
@@ -79,10 +79,10 @@ export class StatsTabComponent extends React.Component<any, any> {
           <div className="col">
             {this.props.cyclesPerReplication.length > 0 && (
               <EChart
-                title={{
-                  text: this.props.t("stats.cycles"),
-                  left: "center",
-                }}
+                // title={{
+                //   text: this.props.t("stats.cycles"),
+                //   left: "center",
+                // }}
                 style={{
                   height: "13rem",
                   width: "100%",

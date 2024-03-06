@@ -36,7 +36,7 @@ import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 
 
 import { Stats } from '../stats/stats';
-import { StatsAgregator } from '../stats/agregator';
+import { StatsAgregator } from '../stats/aggregator';
 
 import { MachineIntegration } from './machine-integration';
 
