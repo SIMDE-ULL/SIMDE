@@ -3,7 +3,7 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { EChart } from "@kbox-labs/react-echarts";
+import ReactECharts from "echarts-for-react";
 
 const mapStateToProps = (state) => {
   return {
@@ -40,178 +40,25 @@ export const StatsTabComponent: React.FC = (
     <div className="container text-center">
       <div className="row">
         <div className="col">
-          <EChart
-            // title={"hello" as string & TitleOption}
-            // title={{
-            //   text: props.t("stats.instrStatuses"),
-            //   left: "center",
-            // }}
+          <ReactECharts
             style={{
               height: "25rem",
               width: "100%",
             }}
-            legend={{
-              top: "bottom",
-              selected: {
-                [props.t("stats.statuses.commitNumber")]: false,
+            option={{
+              title: {
+                text: props.t("stats.instrStatuses"),
+                left: "center",
               },
-            }}
-            toolbox={{
-              feature: {
-                saveAsImage: {},
-                dataView: {
-                  readOnly: true,
-                  lang: [
-                    props.t("stats.toolbox.dataView"),
-                    props.t("stats.toolbox.close"),
-                    props.t("stats.toolbox.refresh"),
-                  ],
+
+              legend: {
+                top: "bottom",
+                selected: {
+                  [props.t("stats.statuses.commitNumber")]: false,
                 },
               },
-            }}
-            tooltip={{
-              trigger: "axis",
-              axisPointer: {
-                type: "cross",
-              },
-            }}
-            xAxis={{
-              type: "category",
-            }}
-            yAxis={{
-              type: "value",
-            }}
-            series={
-              props.statusesCount &&
-              Array.from(props.statusesCount.keys()).map((status) => {
-                return {
-                  name: props.t("stats.statuses." + status),
-                  type: "bar",
-                  stack: "statuses",
-                  data: props.statusesCount.get(status),
-                };
-              })
-            }
-          />
-        </div>
-        <div className="col">
-          <EChart
-            // title={{
-            //   text: props.t("stats.unitsOcupation"),
-            //   left: "center",
-            // }}
-            style={{
-              height: "25rem",
-              width: "100%",
-            }}
-            legend={{
-              top: "bottom",
-              selected: {
-                [props.t("stats.units.rs0")]: false,
-                [props.t("stats.units.rs1")]: false,
-                [props.t("stats.units.rs2")]: false,
-                [props.t("stats.units.rs3")]: false,
-                [props.t("stats.units.rs4")]: false,
-                [props.t("stats.units.rs5")]: false,
-                [props.t("stats.units.fu0")]: false,
-                [props.t("stats.units.fu1")]: false,
-                [props.t("stats.units.fu2")]: false,
-                [props.t("stats.units.fu3")]: false,
-                [props.t("stats.units.fu4")]: false,
-                [props.t("stats.units.fu5")]: false,
-              },
-            }}
-            toolbox={{
-              feature: {
-                saveAsImage: {},
-                dataView: {
-                  readOnly: true,
-                  lang: [
-                    props.t("stats.toolbox.dataView"),
-                    props.t("stats.toolbox.close"),
-                    props.t("stats.toolbox.refresh"),
-                  ],
-                },
-              },
-            }}
-            tooltip={{
-              trigger: "axis",
-              axisPointer: {
-                type: "cross",
-              },
-            }}
-            xAxis={{
-              type: "category",
-            }}
-            yAxis={{
-              type: "value",
-              max: 100,
-              axisLabel: {
-                formatter: "{value}%",
-              },
-            }}
-            series={
-              props.unitsOcupation &&
-              Array.from(props.unitsOcupation.keys()).map((unitName) => {
-                return {
-                  name: props.t("stats.units." + unitName),
-                  type: "line",
-                  data: props.unitsOcupation
-                    .get(unitName)
-                    .map((value) => value * 100),
-                };
-              })
-            }
-          />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <EChart
-            // title={{
-            //   text: props.t("stats.commitDiscard"),
-            //   left: "center",
-            // }}
-            style={{
-              height: "13rem",
-              width: "100%",
-            }}
-            toolbox={{
-              feature: {
-                saveAsImage: {},
-              },
-            }}
-            series={[
-              {
-                type: "pie",
-                radius: "65%",
-                label: {
-                  formatter: "{b}: {c} ({d}%)",
-                },
-                data: [
-                  {
-                    value: props.commited,
-                    name: props.t("stats.commited"),
-                  },
-                  {
-                    value: props.discarded,
-                    name: props.t("stats.discarded"),
-                  },
-                ],
-              },
-            ]}
-          />
-          {props.cyclesPerReplication.length > 0 && (
-            <EChart
-              // title={{
-              //   text: props.t("stats.cycles"),
-              //   left: "center",
-              // }}
-              style={{
-                height: "13rem",
-                width: "100%",
-              }}
-              toolbox={{
+
+              toolbox: {
                 feature: {
                   saveAsImage: {},
                   dataView: {
@@ -223,23 +70,200 @@ export const StatsTabComponent: React.FC = (
                     ],
                   },
                 },
-              }}
-              tooltip={{
+              },
+
+              tooltip: {
                 trigger: "axis",
                 axisPointer: {
                   type: "cross",
                 },
-              }}
-              xAxis={{
+              },
+
+              xAxis: {
                 type: "category",
-              }}
-              yAxis={{
+              },
+
+              yAxis: {
                 type: "value",
+              },
+
+              series:
+                props.statusesCount &&
+                Array.from(props.statusesCount.keys()).map((statusName) => {
+                  return {
+                    name: props.t("stats.statuses." + statusName),
+                    type: "bar",
+                    stack: "statuses",
+                    data: props.statusesCount.get(statusName),
+                  };
+                }),
+            }}
+          />
+        </div>
+        <div className="col">
+          <ReactECharts
+            style={{
+              height: "25rem",
+              width: "100%",
+            }}
+            option={{
+              title: {
+                text: props.t("stats.unitsOcupation"),
+                left: "center",
+              },
+
+              legend: {
+                top: "bottom",
+                selected: {
+                  [props.t("stats.units.rs0")]: false,
+                  [props.t("stats.units.rs1")]: false,
+                  [props.t("stats.units.rs2")]: false,
+                  [props.t("stats.units.rs3")]: false,
+                  [props.t("stats.units.rs4")]: false,
+                  [props.t("stats.units.rs5")]: false,
+                  [props.t("stats.units.fu0")]: false,
+                  [props.t("stats.units.fu1")]: false,
+                  [props.t("stats.units.fu2")]: false,
+                  [props.t("stats.units.fu3")]: false,
+                  [props.t("stats.units.fu4")]: false,
+                  [props.t("stats.units.fu5")]: false,
+                },
+              },
+
+              toolbox: {
+                feature: {
+                  saveAsImage: {},
+                  dataView: {
+                    readOnly: true,
+                    lang: [
+                      props.t("stats.toolbox.dataView"),
+                      props.t("stats.toolbox.close"),
+                      props.t("stats.toolbox.refresh"),
+                    ],
+                  },
+                },
+              },
+
+              tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                  type: "cross",
+                },
+              },
+
+              xAxis: {
+                type: "category",
+              },
+
+              yAxis: {
+                type: "value",
+                max: 100,
+                axisLabel: {
+                  formatter: "{value}%",
+                },
+              },
+
+              series:
+                props.unitsOcupation &&
+                Array.from(props.unitsOcupation.keys()).map((unitName) => {
+                  return {
+                    name: props.t("stats.units." + unitName),
+                    type: "line",
+                    data: props.unitsOcupation
+                      .get(unitName)
+                      .map((value) => value * 100),
+                  };
+                }),
+            }}
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <ReactECharts
+            style={{
+              height: "13rem",
+              width: "100%",
+            }}
+            option={{
+              title: {
+                text: props.t("stats.commitDiscard"),
+                left: "center",
+              },
+
+              toolbox: {
+                feature: {
+                  saveAsImage: {},
+                },
+              },
+
+              series: [
+                {
+                  type: "pie",
+                  radius: "65%",
+                  label: {
+                    formatter: "{b}: {c} ({d}%)",
+                  },
+                  data: [
+                    {
+                      value: props.commited,
+                      name: props.t("stats.commited"),
+                    },
+                    {
+                      value: props.discarded,
+                      name: props.t("stats.discarded"),
+                    },
+                  ],
+                },
+              ],
+            }}
+          />
+          {props.cyclesPerReplication.length > 0 && (
+            <ReactECharts
+              style={{
+                height: "13rem",
+                width: "100%",
               }}
-              series={{
-                name: props.t("stats.cycles"),
-                type: "line",
-                data: props.cyclesPerReplication,
+              option={{
+                title: {
+                  text: props.t("stats.cycles"),
+                  left: "center",
+                },
+
+                toolbox: {
+                  feature: {
+                    saveAsImage: {},
+                    dataView: {
+                      readOnly: true,
+                      lang: [
+                        props.t("stats.toolbox.dataView"),
+                        props.t("stats.toolbox.close"),
+                        props.t("stats.toolbox.refresh"),
+                      ],
+                    },
+                  },
+                },
+
+                tooltip: {
+                  trigger: "axis",
+                  axisPointer: {
+                    type: "cross",
+                  },
+                },
+
+                xAxis: {
+                  type: "category",
+                },
+
+                yAxis: {
+                  type: "value",
+                },
+
+                series: {
+                  name: props.t("stats.cycles"),
+                  type: "line",
+                  data: props.cyclesPerReplication,
+                },
               }}
             />
           )}

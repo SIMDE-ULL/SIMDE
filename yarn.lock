@@ -797,16 +797,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kbox-labs/react-echarts@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "@kbox-labs/react-echarts@npm:1.0.4"
-  peerDependencies:
-    echarts: ^5
-    react: ^18
-  checksum: 10c0/51fea5ffdfe9b9fcff65dd9daa37595e39c282656433c4b76afbda0915d291031f96a6cbafd28fee461cb0b9afbc5fd50368e5ebe896e5aef69d8d10009c2d9b
-  languageName: node
-  linkType: hard
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -2177,6 +2167,19 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 10c0/26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"echarts-for-react@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "echarts-for-react@npm:3.0.2"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.3"
+    size-sensor: "npm:^1.0.1"
+  peerDependencies:
+    echarts: ^3.0.0 || ^4.0.0 || ^5.0.0
+    react: ^15.0.0 || >=16.0.0
+  checksum: 10c0/a67d76d2cea6fdb8efa9e305fa998f4933053a647df13ea58b4ea0c7892a72e9afb7523a7382d98b541983e5e073adafc2c4103d7dcb88d86757c4582d45e400
   languageName: node
   linkType: hard
 
@@ -4799,7 +4802,6 @@ __metadata:
   resolution: "simde@workspace:."
   dependencies:
     "@fortawesome/fontawesome-free": "npm:^6.5.1"
-    "@kbox-labs/react-echarts": "npm:^1.0.3"
     "@popperjs/core": "npm:^2.11.8"
     "@types/node": "npm:^20.8.9"
     "@types/react": "npm:^18.2.15"
@@ -4811,6 +4813,7 @@ __metadata:
     bootstrap: "npm:^5.1.3"
     codecov: "npm:^3.6.5"
     echarts: "npm:^5.4.3"
+    echarts-for-react: "npm:^3.0.2"
     eslint: "npm:^8.45.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.3"
@@ -4842,6 +4845,13 @@ __metadata:
     vitest: "npm:^0.34.6"
   languageName: unknown
   linkType: soft
+
+"size-sensor@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "size-sensor@npm:1.0.2"
+  checksum: 10c0/2cb020cd54ae7bea76a0600ba82c1a09daf51e8bec6f96355e17b4806eb24003626e3349d6cb091f821ed5fbba193f59ca59f0ea7f6dd8b75d7c20b96c465c26
+  languageName: node
+  linkType: hard
 
 "slash@npm:^3.0.0":
   version: 3.0.0
