@@ -1,3 +1,4 @@
+"use strict";
 import { Stats, InstructionStatsEntry } from "./stats";
 
 export interface StatEntry {
@@ -105,7 +106,7 @@ export class StatsAgregator {
       }
     }
 
-    for (let [key, value] of result) {
+    for (let [, value] of result) {
       for (let prop in value) {
         if (value.hasOwnProperty(prop)) {
           value[prop] = value[prop] / this._stats.length;

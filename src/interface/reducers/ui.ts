@@ -15,7 +15,7 @@ import {
     SET_CYCLES_PER_REPLICATION
 } from '../actions/stats-actions';
 
-const initialState = {
+export const initialState = {
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,

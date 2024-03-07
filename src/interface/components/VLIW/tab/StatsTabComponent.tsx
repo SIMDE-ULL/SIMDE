@@ -1,33 +1,97 @@
+"use strict";
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { AnyAction, Dispatch, bindActionCreators } from "redux";
 
 import ReactECharts from "echarts-for-react";
 
-export class StatsTabComponent extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-  }
+type StatsTabComponentProps = WithTranslation &
+  ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
 
-  render() {
-    return (
-      <div className="container text-center">
-        <div className="row">
-          <div className="col">
+export const StatsTabComponent: React.FC = (
+  props: StatsTabComponentProps
+): React.ReactNode => {
+  return (
+    <div className="container text-center">
+      <div className="row">
+        <div className="col">
+          <ReactECharts
+            style={{
+              height: "25rem",
+              width: "100%",
+            }}
+            option={{
+              title: {
+                text: props.t("stats.unitsOcupation"),
+                left: "center",
+              },
+
+              legend: {
+                top: "bottom",
+              },
+
+              toolbox: {
+                feature: {
+                  saveAsImage: {},
+                  dataView: {
+                    readOnly: true,
+                    lang: [
+                      props.t("stats.toolbox.dataView"),
+                      props.t("stats.toolbox.close"),
+                      props.t("stats.toolbox.refresh"),
+                    ],
+                  },
+                },
+              },
+
+              tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                  type: "cross",
+                },
+              },
+
+              xAxis: {
+                type: "category",
+              },
+
+              yAxis: {
+                type: "value",
+                max: 100,
+                axisLabel: {
+                  formatter: "{value}%",
+                },
+              },
+
+              series:
+                props.unitsOcupation &&
+                Array.from(props.unitsOcupation.keys()).map((unitName) => {
+                  return {
+                    name: props.t("stats.units." + unitName),
+                    type: "line",
+                    data: props.unitsOcupation
+                      .get(unitName)
+                      .map((value: number) => value * 100),
+                  };
+                }),
+            }}
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          {props.cyclesPerReplication.length > 0 && (
             <ReactECharts
               style={{
-                height: "25rem",
+                height: "13rem",
                 width: "100%",
               }}
               option={{
                 title: {
-                  text: this.props.t("stats.unitsOcupation"),
+                  text: props.t("stats.cycles"),
                   left: "center",
-                },
-
-                legend: {
-                  top: "bottom",
                 },
 
                 toolbox: {
@@ -36,9 +100,9 @@ export class StatsTabComponent extends React.Component<any, any> {
                     dataView: {
                       readOnly: true,
                       lang: [
-                        this.props.t("stats.toolbox.dataView"),
-                        this.props.t("stats.toolbox.close"),
-                        this.props.t("stats.toolbox.refresh"),
+                        props.t("stats.toolbox.dataView"),
+                        props.t("stats.toolbox.close"),
+                        props.t("stats.toolbox.refresh"),
                       ],
                     },
                   },
@@ -57,86 +121,21 @@ export class StatsTabComponent extends React.Component<any, any> {
 
                 yAxis: {
                   type: "value",
-                  max: 100,
-                  axisLabel: {
-                    formatter: "{value}%",
-                  },
                 },
 
-                series:
-                  this.props.unitsOcupation &&
-                  Array.from(this.props.unitsOcupation.keys()).map(
-                    (unitName) => {
-                      return {
-                        name: this.props.t("stats.units." + unitName),
-                        type: "line",
-                        data: this.props.unitsOcupation
-                          .get(unitName)
-                          .map((value) => value * 100),
-                      };
-                    }
-                  ),
+                series: {
+                  name: props.t("stats.cycles"),
+                  type: "line",
+                  data: props.cyclesPerReplication,
+                },
               }}
             />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            {this.props.cyclesPerReplication.length > 0 && (
-              <ReactECharts
-                style={{
-                  height: "13rem",
-                  width: "100%",
-                }}
-                option={{
-                  title: {
-                    text: this.props.t("stats.cycles"),
-                    left: "center",
-                  },
-
-                  toolbox: {
-                    feature: {
-                      saveAsImage: {},
-                      dataView: {
-                        readOnly: true,
-                        lang: [
-                          this.props.t("stats.toolbox.dataView"),
-                          this.props.t("stats.toolbox.close"),
-                          this.props.t("stats.toolbox.refresh"),
-                        ],
-                      },
-                    },
-                  },
-
-                  tooltip: {
-                    trigger: "axis",
-                    axisPointer: {
-                      type: "cross",
-                    },
-                  },
-
-                  xAxis: {
-                    type: "category",
-                  },
-
-                  yAxis: {
-                    type: "value",
-                  },
-
-                  series: {
-                    name: this.props.t("stats.cycles"),
-                    type: "line",
-                    data: this.props.cyclesPerReplication,
-                  },
-                }}
-              />
-            )}
-          </div>
+          )}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -151,7 +150,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
     actions: bindActionCreators({}, dispatch),
   };

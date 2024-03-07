@@ -1,6 +1,6 @@
 import { COLOR_CELL } from "../actions";
 
-const initialState = {
+export const initialState = {
     uuidColors: {},
     IidColors: {}
 }

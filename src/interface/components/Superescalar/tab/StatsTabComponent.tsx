@@ -1,11 +1,13 @@
+"use strict";
 import * as React from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { AnyAction, Dispatch, bindActionCreators } from "redux";
 
 import ReactECharts from "echarts-for-react";
+import { GlobalState } from "../../../reducers";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: GlobalState) => {
   return {
     commited: state.Machine.stats.commited,
     discarded: state.Machine.stats.discarded,
@@ -18,7 +20,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
   return {
     actions: bindActionCreators({}, dispatch),
   };
@@ -89,7 +91,7 @@ export const StatsTabComponent: React.FC = (
 
               series:
                 props.statusesCount &&
-                Array.from(props.statusesCount.keys()).map((statusName) => {
+                Array.from(props.statusesCount.keys()).map((statusName: string) => {
                   return {
                     name: props.t("stats.statuses." + statusName),
                     type: "bar",
@@ -165,13 +167,13 @@ export const StatsTabComponent: React.FC = (
 
               series:
                 props.unitsOcupation &&
-                Array.from(props.unitsOcupation.keys()).map((unitName) => {
+                Array.from(props.unitsOcupation.keys()).map((unitName: string) => {
                   return {
                     name: props.t("stats.units." + unitName),
                     type: "line",
                     data: props.unitsOcupation
                       .get(unitName)
-                      .map((value) => value * 100),
+                      .map((value: number) => value * 100),
                   };
                 }),
             }}
@@ -285,7 +287,7 @@ export const StatsTabComponent: React.FC = (
             </thead>
             <tbody>
               {props.instrCommitPercentage &&
-                props.instrCommitPercentage.map((d) => (
+                props.instrCommitPercentage.map((d: { name: string; value: number; }) => (
                   <tr key={d.name}>
                     <th scope="row">{d.name}</th>
                     <td>{props.code[d.name].toString()}</td>
