@@ -25,7 +25,7 @@ export const FUNCTIONALUNITTYPESQUANTITY =
 export interface FunctionalUntitVisualEntry {
   id: number;
   value: string;
-  uuid: number;
+  uid: number;
 }
 
 const FunctionalUnitLantencies: Record<FunctionalUnitType, number> = {
@@ -74,7 +74,7 @@ export class FunctionalUnit {
     return this._latency;
   }
 
-  public get ocupation(): number {
+  public get usage(): number {
     return this._instructions.length / this._latency;
   }
 
@@ -133,10 +133,10 @@ export class FunctionalUnit {
     return this._stalled > 0;
   }
 
-  public getReadyInstructionUuid(): number {
+  public getReadyInstructionUid(): number {
     return this._instructions.length > 0 &&
       this._instructions[0].blankTimeUnitsAhead == 0
-      ? this._instructions[0].instruction.uuid
+      ? this._instructions[0].instruction.uid
       : -1;
   }
 
@@ -245,12 +245,12 @@ export class FunctionalUnit {
         list.push({
           id: this._instructions[j].instruction.id,
           value: this._instructions[j].instruction.toString(),
-          uuid: this._instructions[j].instruction.uuid,
+          uid: this._instructions[j].instruction.uid,
         });
         j++;
         lastPos = i + 1;
       } else {
-        list.push({ id: -1, value: "", uuid: -1 });
+        list.push({ id: -1, value: "", uid: -1 });
       }
     }
 

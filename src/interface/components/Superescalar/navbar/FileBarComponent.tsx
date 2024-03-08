@@ -25,12 +25,16 @@ class FileBarComponent extends React.Component<any, any> {
     downloadContentFile() {
         if (SuperescalarIntegration.contentIntegration) {
             downloadTextFile('content.txt', SuperescalarIntegration.contentIntegration.deparse());
+        } else {
+            downloadTextFile('content.txt', '');
         }
     }
 
     downloadCodeFile() {
         if (SuperescalarIntegration.superescalar.code) {
             downloadTextFile('code.txt', SuperescalarIntegration.superescalar.code.save());
+        } else {
+            downloadTextFile('code.txt', '');
         }
     }
 

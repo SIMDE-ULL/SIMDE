@@ -22,17 +22,17 @@ class ReorderBufferComponent extends React.Component<any, any> {
     }
 
     handleClick(instructionId, instructionColor) {
-        this.setState({...this.state, displayColorPicker: true, instructionUuid: instructionId, selectedColor: instructionColor});
+        this.setState({...this.state, displayColorPicker: true, instructionUid: instructionId, selectedColor: instructionColor});
     }
 
     onColorAccept(value) {
-        this.props.actions.colorCell(this.state.instructionUuid, this.state.selectedColor.hex);
-        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUuid: null});
+        this.props.actions.colorCell(this.state.instructionUid, this.state.selectedColor.hex);
+        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUid: null});
 
     }
 
     onColorCancel() {
-        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUuid: null});
+        this.setState({...this.state, displayColorPicker: false, selectedColor: '', instructionUid: null});
     }
 
     handleChangeComplete(color) {
@@ -82,8 +82,8 @@ class ReorderBufferComponent extends React.Component<any, any> {
                                     .map(e => (
                                         <div
                                             className="smd-table_row smd-reorder_buffer_entry"
-                                            style={{background: this.props.colors.uuidColors[e.row.instruction.uuid]}}
-                                            onClick={() => this.handleClick(e.row.instruction.uuid, e.row.instruction.color) as any}
+                                            style={{background: this.props.colors.uidColors[e.row.instruction.uid]}}
+                                            onClick={() => this.handleClick(e.row.instruction.uid, e.row.instruction.color) as any}
                                             title={e.row.instruction.value}
                                             key={'ReorderBuffer' + e.i}
                                         >

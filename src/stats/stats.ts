@@ -22,100 +22,100 @@ interface StatusesStats {
 export class Stats {
   private _instrEntries: Map<number, InstructionStatsEntry> = new Map();
   private _statusesAtCycle: Map<number, StatusesStats> = new Map();
-  private _unitOcupationAtCycle: Map<string, Map<number, number>> = new Map();
+  private _unitUsageAtCycle: Map<string, Map<number, number>> = new Map();
   private _currentCycle: number = 0;
 
-  public collectMultipleUnitOcupation(unitName: string, ocupations: number[]) {
-    let ocupation =
-      ocupations.reduce((acc, val) => acc + val, 0) / ocupations.length;
-    this.collectUnitOcupation(unitName, ocupation);
+  public collectMultipleUnitUsage(unitName: string, usages: number[]) {
+    let usage =
+      usages.reduce((acc, val) => acc + val, 0) / usages.length;
+    this.collectUnitUsage(unitName, usage);
   }
 
-  public collectUnitOcupation(unitName: string, ocupation: number) {
-    if (!this._unitOcupationAtCycle.has(unitName)) {
-      this._unitOcupationAtCycle.set(unitName, new Map());
+  public collectUnitUsage(unitName: string, usage: number) {
+    if (!this._unitUsageAtCycle.has(unitName)) {
+      this._unitUsageAtCycle.set(unitName, new Map());
     }
 
-    this._unitOcupationAtCycle.get(unitName).set(this._currentCycle, ocupation);
+    this._unitUsageAtCycle.get(unitName).set(this._currentCycle, usage);
   }
 
-  public collectDecodeUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).decodeCycles++;
+  public collectDecodeUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).decodeCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).decodeNumber += uuids.length;
+    this._statusesAtCycle.get(this._currentCycle).decodeNumber += uids.length;
   }
 
-  public collectPrefetchUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).prefetchCycles++;
+  public collectPrefetchUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).prefetchCycles++;
     }
 
     this.createStatusesIfNotExists();
     this._statusesAtCycle.get(this._currentCycle).prefetchNumber +=
-      uuids.length;
+      uids.length;
   }
 
-  public collectIssuedUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).issueCycles++;
+  public collectIssuedUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).issueCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).issueNumber += uuids.length;
+    this._statusesAtCycle.get(this._currentCycle).issueNumber += uids.length;
   }
 
-  public collectExecutingUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).executeCycles++;
+  public collectExecutingUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).executeCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).executeNumber += uuids.length;
+    this._statusesAtCycle.get(this._currentCycle).executeNumber += uids.length;
   }
 
-  public collectWriteBackUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).writeBackCycles++;
+  public collectWriteBackUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).writeBackCycles++;
     }
 
     this.createStatusesIfNotExists();
     this._statusesAtCycle.get(this._currentCycle).writeBackNumber +=
-      uuids.length;
+      uids.length;
   }
 
-  public collectCommitUuids(uuids: number[]) {
-    for (let uuid of uuids) {
-      this.createEntryIfNotExists(uuid);
-      this._instrEntries.get(uuid).commited = true;
+  public collectCommitUids(uids: number[]) {
+    for (let uid of uids) {
+      this.createEntryIfNotExists(uid);
+      this._instrEntries.get(uid).commited = true;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).commitNumber += uuids.length;
+    this._statusesAtCycle.get(this._currentCycle).commitNumber += uids.length;
   }
 
-  public associateUuidWithInstruction(uuid: number, instructionId: number) {
-    this.createEntryIfNotExists(uuid);
-    this._instrEntries.get(uuid).instructionId = instructionId;
+  public associateUidWithInstruction(uid: number, instructionId: number) {
+    this.createEntryIfNotExists(uid);
+    this._instrEntries.get(uid).instructionId = instructionId;
   }
 
   public advanceCycle() {
     this._currentCycle++;
   }
 
-  public getUnitsOcupation(): Map<string, number[]> {
-    let ocupation = new Map<string, number[]>();
-    for (let [unitName, ocupationAtCycle] of this._unitOcupationAtCycle) {
-      ocupation.set(unitName, Array.from(ocupationAtCycle.values()));
+  public getUnitsUsage(): Map<string, number[]> {
+    let usage = new Map<string, number[]>();
+    for (let [unitName, usageAtCycle] of this._unitUsageAtCycle) {
+      usage.set(unitName, Array.from(usageAtCycle.values()));
     }
-    return ocupation;
+    return usage;
   }
 
   public getCommitedAndDiscarded(): { commited: number; discarded: number } {
@@ -156,7 +156,7 @@ export class Stats {
   public getInstructionsStatusesAverage(): Map<number, InstructionStatsEntry> {
     let average = new Map<number, InstructionStatsEntry>();
     let count = new Map<number, number>();
-    for (let [uuid, entry] of this._instrEntries) {
+    for (let [uid, entry] of this._instrEntries) {
       if (!count.has(entry.instructionId)) {
         count.set(entry.instructionId, 0);
         average.set(entry.instructionId, {
@@ -205,14 +205,14 @@ export class Stats {
   }
 
   public exportStats(): object {
-    let unitOcupation = {};
-    for (let [unitName, ocupationAtCycle] of this._unitOcupationAtCycle) {
-      unitOcupation[unitName] = Object.fromEntries(ocupationAtCycle);
+    let unitUsage = {};
+    for (let [unitName, usageAtCycle] of this._unitUsageAtCycle) {
+      unitUsage[unitName] = Object.fromEntries(usageAtCycle);
     }
     return {
       instances: Object.fromEntries(this._instrEntries),
       statuses: Object.fromEntries(this._statusesAtCycle),
-      unitOcupation,
+      unitUsage,
     };
   }
 
@@ -229,9 +229,9 @@ export class Stats {
     }
   }
 
-  private createEntryIfNotExists(uuid: number) {
-    if (!this._instrEntries.has(uuid)) {
-      this._instrEntries.set(uuid, {
+  private createEntryIfNotExists(uid: number) {
+    if (!this._instrEntries.has(uid)) {
+      this._instrEntries.set(uid, {
         instructionId: -1,
         prefetchCycles: 0,
         decodeCycles: 0,

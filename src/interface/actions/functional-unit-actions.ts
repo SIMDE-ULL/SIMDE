@@ -24,14 +24,14 @@ function mapFunctionalUnitData(data): any {
                     aux.push({
                         id: entry.id,
                         value: entry.value,
-                        uuid: entry.uuid,
+                        uid: entry.uid,
                         color: ''
                     });
                 } else {
                     aux.push({
                         id: '-',
                         value: '',
-                        uuid: -1,
+                        uid: -1,
                         color: ''
                     });
                 }

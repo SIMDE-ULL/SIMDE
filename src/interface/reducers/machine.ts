@@ -102,7 +102,7 @@ export const initialState = {
         commited: 0,
         discarded: 0,
         commitedPerInstr: [],
-        unitsOcupation: new Map(),
+        unitsUsage: new Map(),
         statusesCount: new Map(),
         instructionsStatusesAverageCycles: new Map()
     },
@@ -217,7 +217,7 @@ export function MachineReducers(state = initialState, action): typeof initialSta
                 ...state,
                 stats: {
                     ...state.stats,
-                    unitsOcupation: action.value
+                    unitsUsage: action.value
                 }
             });
         case NEXT_STATUSES_COUNT:

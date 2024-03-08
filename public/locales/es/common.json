@@ -226,7 +226,7 @@
             "writeBackNumber": "En escritura",
             "commitNumber": "En commit"
         },
-        "unitsOcupation": "Ocupación de cada unidad por ciclo",
+        "unitsUsage": "Ocupación de cada unidad por ciclo",
         "instrStatuses": "Instrucciones en cada etapa por ciclo",
         "cycles": "Ciclos por replica",
         "commitDiscard": "Instrucciones commiteadas VS descartadas",

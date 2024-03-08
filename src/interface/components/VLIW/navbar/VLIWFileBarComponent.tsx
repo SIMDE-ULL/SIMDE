@@ -23,12 +23,16 @@ class VLIWFileBarComponent extends React.Component<any, any> {
     downloadContentFile() {
         if (vliwIntegration.contentIntegration) {
             downloadTextFile('content.txt', vliwIntegration.contentIntegration.deparse());
+        } else {
+            downloadTextFile('content.txt', '');
         }
     }
 
     downloadCodeFile() {
         if (vliwIntegration.vliw.code) {
             downloadTextFile('code.txt', vliwIntegration.vliw.code.save());
+        } else {
+            downloadTextFile('code.txt', '');
         }
     }
 

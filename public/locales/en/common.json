@@ -6,7 +6,7 @@
             "downloadMemory": "Download Memory(JSON)",
             "downloadContent": "Download content Memory - Registers",
             "downloadCode": "Download Code",
-            "downloadStats": "Descargar stats events(JSON)"
+            "downloadStats": "Download stats events(JSON)"
         },
         "view": {
             "name": "View",
@@ -228,7 +228,7 @@
             "writeBackNumber": "On Write Back",
             "commitNumber": "Commiting"
         },
-        "unitsOcupation": "Units ocupation per cycle",
+        "unitsUsage": "Units usage per cycle",
         "instrStatuses": "Instructions statuses per cycle",
         "cycles": "Cycles per iteration",
         "commitDiscard": "Commited vs Discarded instructions",

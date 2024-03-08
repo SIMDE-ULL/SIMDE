@@ -10,7 +10,7 @@ import {
     currentPC,
     superescalarLoad,
     batchActions,
-    nextUnitsOcupation,
+    nextUnitsUsage,
     setCyclesPerReplication
 } from '../interface/actions';
 
@@ -66,7 +66,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextNatFprCycle(this.vliw.getNaTFP()),
                 nextNatGprCycle(this.vliw.getNaTGP()),
                 nextPredicateCycle(this.vliw.getPredReg()),
-                nextUnitsOcupation(this.stats.getUnitsOcupation()),
+                nextUnitsUsage(this.stats.getUnitsUsage()),
                 pushHistory()
             )
         );
@@ -74,7 +74,7 @@ export class VLIWIntegration extends MachineIntegration {
 
     collectStats = () => {
         for (let i = 0; i < 6; i++) {
-            this.stats.collectMultipleUnitOcupation(`fu${i}`, this.vliw.functionalUnit[i].map((fu) => fu.ocupation));
+            this.stats.collectMultipleUnitUsage(`fu${i}`, this.vliw.functionalUnit[i].map((fu) => fu.usage));
         }
 
         this.stats.advanceCycle();
@@ -260,7 +260,7 @@ export class VLIWIntegration extends MachineIntegration {
         store.dispatch(
             batchActions(
                 setCyclesPerReplication(results),
-                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
+                nextUnitsUsage(this.batchStats.getAvgUnitsUsage()),
                 displayBatchResults(this.batchStats.export())
                 ));
     }

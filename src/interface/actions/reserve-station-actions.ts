@@ -13,7 +13,7 @@ function mapReserveStationEntry(content: { data: any, size: number }): any {
     let i;
 
     const defaultObject = {
-        instruction: { id: '', value: '', uuid: '' },
+        instruction: { id: '', value: '', uid: '' },
         Qj: '',
         Vj: '',
         Qk: '',
@@ -25,7 +25,7 @@ function mapReserveStationEntry(content: { data: any, size: number }): any {
         let aux = { ...defaultObject };
         if (data[i] != null) {
             aux = {
-                instruction: { id: '', value: '', uuid: '' },
+                instruction: { id: '', value: '', uid: '' },
                 Qj: data[i].Qj,
                 Vj: data[i].Vj,
                 Qk: data[i].Qk,
@@ -36,7 +36,7 @@ function mapReserveStationEntry(content: { data: any, size: number }): any {
             if (data[i].instruction != null) {
                 aux.instruction.id = data[i].instruction.id;
                 aux.instruction.value = data[i].instruction.value;
-                aux.instruction.uuid = data[i].instruction.uuid;
+                aux.instruction.uid = data[i].instruction.uid;
             }
         }
 

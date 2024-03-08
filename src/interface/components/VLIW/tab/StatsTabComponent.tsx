@@ -24,7 +24,7 @@ export const StatsTabComponent: React.FC = (
             }}
             option={{
               title: {
-                text: props.t("stats.unitsOcupation"),
+                text: props.t("stats.unitsUsage"),
                 left: "center",
               },
 
@@ -66,12 +66,12 @@ export const StatsTabComponent: React.FC = (
               },
 
               series:
-                props.unitsOcupation &&
-                Array.from(props.unitsOcupation.keys()).map((unitName) => {
+                props.unitsUsage &&
+                Array.from(props.unitsUsage.keys()).map((unitName) => {
                   return {
                     name: props.t("stats.units." + unitName),
                     type: "line",
-                    data: props.unitsOcupation
+                    data: props.unitsUsage
                       .get(unitName)
                       .map((value: number) => value * 100),
                   };
@@ -142,7 +142,7 @@ const mapStateToProps = (state) => {
     commited: state.Machine.stats.commited,
     discarded: state.Machine.stats.discarded,
     instrCommitPercentage: state.Machine.stats.commitedPerInstr,
-    unitsOcupation: state.Machine.stats.unitsOcupation,
+    unitsUsage: state.Machine.stats.unitsUsage,
     statusesCount: state.Machine.stats.statusesCount,
     instrStatuses: state.Machine.stats.instructionsStatusesAverageCycles,
     cyclesPerReplication: state.Ui.batchResults,

@@ -16,7 +16,7 @@ import {
     batchActions,
     nextTotalCommited,
     nextInstructionsCommited,
-    nextUnitsOcupation,
+    nextUnitsUsage,
     nextInstructionsStatusesAverageCycles,
     nextStatusesCount,
     setCyclesPerReplication,
@@ -102,7 +102,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextCycle(this.superescalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
-                    nextUnitsOcupation(this.stats.getUnitsOcupation()),
+                    nextUnitsUsage(this.stats.getUnitsUsage()),
                     nextStatusesCount(this.stats.getPerStatusCountAtCycle()),
                     nextInstructionsStatusesAverageCycles(this.stats.getInstructionsStatusesAverage()),
                     pushHistory()
@@ -112,26 +112,26 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     collectStats = () => {
         let prefetchInstrs = this.superescalar.prefetchUnit.getVisualData();
-        this.stats.collectPrefetchUuids(prefetchInstrs.map((data) => data.uuid));
-        this.stats.collectDecodeUuids(this.superescalar.decoder.getVisualData().map((data) => data.uuid));
-        this.stats.collectIssuedUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "ISSUE").map((data) => data.instruction.uuid));
-        this.stats.collectExecutingUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "EXECUTE").map((data) => data.instruction.uuid));
-        this.stats.collectWriteBackUuids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "WRITE").map((data) => data.instruction.uuid));
-        this.stats.collectCommitUuids(this.superescalar.currentCommitedInstrs);
+        this.stats.collectPrefetchUids(prefetchInstrs.map((data) => data.uid));
+        this.stats.collectDecodeUids(this.superescalar.decoder.getVisualData().map((data) => data.uid));
+        this.stats.collectIssuedUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "ISSUE").map((data) => data.instruction.uid));
+        this.stats.collectExecutingUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "EXECUTE").map((data) => data.instruction.uid));
+        this.stats.collectWriteBackUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "WRITE").map((data) => data.instruction.uid));
+        this.stats.collectCommitUids(this.superescalar.currentCommitedInstrs);
 
-        this.stats.collectUnitOcupation('prefetch', this.superescalar.prefetchUnit.ocupation);
-        this.stats.collectUnitOcupation('decode', this.superescalar.decoder.ocupation);
-        this.stats.collectUnitOcupation('rob', this.superescalar.reorderBuffer.ocupation);
+        this.stats.collectUnitUsage('prefetch', this.superescalar.prefetchUnit.usage);
+        this.stats.collectUnitUsage('decode', this.superescalar.decoder.usage);
+        this.stats.collectUnitUsage('rob', this.superescalar.reorderBuffer.usage);
         for (let i = 0; i < 6; i++) {
-            this.stats.collectUnitOcupation(`rs${i}`, this.superescalar.getReserveStation(i).ocupation);
+            this.stats.collectUnitUsage(`rs${i}`, this.superescalar.getReserveStation(i).usage);
         }
         for (let i = 0; i < 6; i++) {
-            this.stats.collectMultipleUnitOcupation(`fu${i}`, this.superescalar.functionalUnit[i].map((fu) => fu.ocupation));
+            this.stats.collectMultipleUnitUsage(`fu${i}`, this.superescalar.functionalUnit[i].map((fu) => fu.usage));
         }
 
 
         for (let instr of prefetchInstrs) {
-            this.stats.associateUuidWithInstruction(instr.uuid, instr.id);
+            this.stats.associateUidWithInstruction(instr.uid, instr.id);
         }
 
         this.stats.advanceCycle();
@@ -260,7 +260,7 @@ export class SuperescalarIntegration extends MachineIntegration {
             batchActions(
                 setCyclesPerReplication(results),
                 nextTotalCommited(this.batchStats.getAvgCommitedAndDiscarded()),
-                nextUnitsOcupation(this.batchStats.getAvgUnitsOcupation()),
+                nextUnitsUsage(this.batchStats.getAvgUnitsUsage()),
                 nextInstructionsCommited(this.batchStats.getAvgCommitedPercentagePerInstruction()),
                 nextStatusesCount(this.batchStats.getPerStatusCountAtCycle()),
                 nextInstructionsStatusesAverageCycles(this.batchStats.getAvgInstructionsStatusesAverage()),

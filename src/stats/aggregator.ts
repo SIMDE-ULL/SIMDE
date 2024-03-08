@@ -28,16 +28,16 @@ export class StatsAgregator {
     return result;
   }
 
-  public getAvgUnitsOcupation(): Map<string, number[]> {
+  public getAvgUnitsUsage(): Map<string, number[]> {
     let result = new Map();
 
     for (let stat of this._stats) {
-      let ocupations = stat.getUnitsOcupation();
-      for (let key of ocupations.keys()) {
+      let usages = stat.getUnitsUsage();
+      for (let key of usages.keys()) {
         if (!result.has(key)) {
           result.set(key, []);
         }
-        result.get(key).push(ocupations.get(key));
+        result.get(key).push(usages.get(key));
       }
     }
 

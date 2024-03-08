@@ -3,7 +3,7 @@ import { Instruction } from "../Common/Instruction";
 export interface PrefetchUnitVisualEntry {
   id: number;
   value: string;
-  uuid: number;
+  uid: number;
 }
 
 export class PrefetchUnit {
@@ -13,7 +13,7 @@ export class PrefetchUnit {
     return this._size;
   }
 
-  public get ocupation() {
+  public get usage() {
     return this._entries.length / this._size;
   }
 
@@ -45,7 +45,7 @@ export class PrefetchUnit {
 
   public getVisualData(): PrefetchUnitVisualEntry[] {
     return this._entries.map((inst) => {
-      return { id: inst.id, value: inst.toString(), uuid: inst.uuid };
+      return { id: inst.id, value: inst.toString(), uid: inst.uid };
     });
   }
 }
