@@ -5,20 +5,26 @@ import { bindActionCreators } from 'redux';
 import {
     toggleOptionsModal,
     toggleBatchModal,
-    clearBatchResults
+    closeBatchResults
 } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { downloadJsonFile } from '../../../utils/Downloader';
 
 class BatchResultsModalComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
 
         this.close = this.close.bind(this);
+        this.download = this.download.bind(this);
     }
 
     close() {
-        this.props.actions.clearBatchResults(false);
+        this.props.actions.closeBatchResults();
+    }
+
+    download() {
+        downloadJsonFile('batch_stats.json', this.props.batchStatsResults);
     }
 
     render() {
@@ -34,45 +40,12 @@ class BatchResultsModalComponent extends React.Component<any, any> {
                     <div className="smd-batch_results">
                         <div className="smd-batch_results-entry">
                             <div className="smd-batch_results-entry_label">
-                                {this.props.t('batchResults.replications')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.replications}
+                                {this.props.t('batchResults.subtext')}
                             </div>
                         </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.average')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.average}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.standardDeviation')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.standardDeviation}
-                        
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.worst')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.worst}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.best')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.best}
-                            </div>
-                        </div>
+                        <Button onClick={this.download}>
+                                {this.props.t('batchResults.download')}
+                        </Button>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -88,12 +61,12 @@ class BatchResultsModalComponent extends React.Component<any, any> {
 const mapStateToProps = state => {
     return {
         isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
-        results: state.Ui.batchResults
+        batchStatsResults: state.Ui.batchStatsResults
     };
 };
 
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ clearBatchResults }, dispatch) };
+    return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchResultsModalComponent));

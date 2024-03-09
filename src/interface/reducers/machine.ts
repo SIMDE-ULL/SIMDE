@@ -11,6 +11,11 @@ import {
     NEXT_REGISTERS_CYCLE,
     NEXT_MEMORY_CYCLE,
     NEXT_CYCLE,
+    NEXT_INSTRUCTIONS_COMMITED,
+    NEXT_TOTAL_COMMITED,
+    NEXT_UNITS_OCUPATION,
+    NEXT_STATUSES_COUNT,
+    NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES,
     CURRENT_PC,
     SUPERESCALAR_LOAD,
     VIEW_BASIC_BLOCKS
@@ -39,7 +44,7 @@ import {
     REMOVE_NAT_FPR_INTERVAL,
     NEXT_NAT_GPR_CYCLE,
     NEXT_PREDICATE_CYCLE
- } from '../actions/predicate-nat-actions';
+} from '../actions/predicate-nat-actions';
 
 export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
@@ -93,6 +98,14 @@ export const initialState = {
         data: [],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
+    stats: {
+        commited: 0,
+        discarded: 0,
+        commitedPerInstr: [],
+        unitsUsage: new Map(),
+        statusesCount: new Map(),
+        instructionsStatusesAverageCycles: new Map()
+    },
     cycle: 0,
     pc: 0,
     code: [],
@@ -102,7 +115,7 @@ export const initialState = {
     colorBasicBlocks: false
 };
 
-export function MachineReducers(state = initialState, action) {
+export function MachineReducers(state = initialState, action): typeof initialState {
     switch (action.type) {
         case NEXT_PREFETCH_CYCLE:
             return (state = { ...state, prefetchUnit: action.value });
@@ -181,6 +194,47 @@ export function MachineReducers(state = initialState, action) {
             return (state = {
                 ...state,
                 pc: action.value
+            });
+        case NEXT_INSTRUCTIONS_COMMITED:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    commitedPerInstr: Array.from(action.value, ([name, value]) => ({ name, value }))
+                }
+            });
+        case NEXT_TOTAL_COMMITED:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    commited: action.value.commited,
+                    discarded: action.value.discarded
+                }
+            });
+        case NEXT_UNITS_OCUPATION:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    unitsUsage: action.value
+                }
+            });
+        case NEXT_STATUSES_COUNT:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    statusesCount: action.value
+                }
+            });
+        case NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES:
+            return (state = {
+                ...state,
+                stats: {
+                    ...state.stats,
+                    instructionsStatusesAverageCycles: action.value
+                }
             });
         case SUPERESCALAR_LOAD:
             return (state = {

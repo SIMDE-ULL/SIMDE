@@ -14,8 +14,16 @@ import {
     nextCycle,
     superescalarLoad,
     batchActions,
-    colorCell
+    nextTotalCommited,
+    nextInstructionsCommited,
+    nextUnitsUsage,
+    nextInstructionsStatusesAverageCycles,
+    nextStatusesCount,
+    setCyclesPerReplication,
+    clearCyclesPerReplication
 } from '../interface/actions';
+
+import { displayBatchResults } from '../interface/actions/modals';
 
 import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
 
@@ -25,7 +33,10 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
-import { displayBatchResults } from '../interface/actions/modals';
+
+
+import { Stats } from '../stats/stats';
+import { StatsAgregator } from '../stats/aggregator';
 
 import { MachineIntegration } from './machine-integration';
 
@@ -41,6 +52,8 @@ export class SuperescalarIntegration extends MachineIntegration {
     replications = 0;
     cacheFailPercentage = 0;
     cacheFailLatency = 0;
+    stats = new Stats();
+    batchStats = new StatsAgregator();
 
     /*
     * This call all the components to update the state
@@ -87,9 +100,41 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
                     nextMemoryCycle(Array.from(this.superescalar.memory).map(d => d.value)),
                     nextCycle(this.superescalar.status.cycle),
+                    nextTotalCommited(this.stats.getCommitedAndDiscarded()),
+                    nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
+                    nextUnitsUsage(this.stats.getUnitsUsage()),
+                    nextStatusesCount(this.stats.getPerStatusCountAtCycle()),
+                    nextInstructionsStatusesAverageCycles(this.stats.getInstructionsStatusesAverage()),
                     pushHistory()
                 )
         );
+    }
+
+    collectStats = () => {
+        let prefetchInstrs = this.superescalar.prefetchUnit.getVisualData();
+        this.stats.collectPrefetchUids(prefetchInstrs.map((data) => data.uid));
+        this.stats.collectDecodeUids(this.superescalar.decoder.getVisualData().map((data) => data.uid));
+        this.stats.collectIssuedUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "ISSUE").map((data) => data.instruction.uid));
+        this.stats.collectExecutingUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "EXECUTE").map((data) => data.instruction.uid));
+        this.stats.collectWriteBackUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "WRITE").map((data) => data.instruction.uid));
+        this.stats.collectCommitUids(this.superescalar.currentCommitedInstrs);
+
+        this.stats.collectUnitUsage('prefetch', this.superescalar.prefetchUnit.usage);
+        this.stats.collectUnitUsage('decode', this.superescalar.decoder.usage);
+        this.stats.collectUnitUsage('rob', this.superescalar.reorderBuffer.usage);
+        for (let i = 0; i < 6; i++) {
+            this.stats.collectUnitUsage(`rs${i}`, this.superescalar.getReserveStation(i).usage);
+        }
+        for (let i = 0; i < 6; i++) {
+            this.stats.collectMultipleUnitUsage(`fu${i}`, this.superescalar.functionalUnit[i].map((fu) => fu.usage));
+        }
+
+
+        for (let instr of prefetchInstrs) {
+            this.stats.associateUidWithInstruction(instr.uid, instr.id);
+        }
+
+        this.stats.advanceCycle();
     }
 
     superExe = (reset: boolean = true) => {
@@ -118,8 +163,11 @@ export class SuperescalarIntegration extends MachineIntegration {
                     this.setGpr(this.contentIntegration.GPRContent);
                     this.setMemory(this.contentIntegration.MEMContent);
                 }
+
+                this.stats = new Stats();
             }
             let machineStatus = this.superescalar.tic();
+            this.collectStats();
             this.dispatchAllSuperescalarActions();
 
             return machineStatus;
@@ -157,13 +205,18 @@ export class SuperescalarIntegration extends MachineIntegration {
                 this.setGpr(this.contentIntegration.GPRContent);
                 this.setMemory(this.contentIntegration.MEMContent);
             }
+
+            this.stats = new Stats();
         }
 
         if (speed) {
             this.executionLoop(speed);
         } else {
             // tslint:disable-next-line:no-empty
-            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) {
+                this.collectStats();
+            }
+            this.collectStats();
             this.dispatchAllSuperescalarActions();
             this.finishedExecution = true;
             alert(t('execution.finished'));
@@ -176,10 +229,12 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
 
         const results = [];
+        this.batchStats = new StatsAgregator();
         for (let i = 0; i < this.replications; i++) {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
+            //TODO: check this data, seems to be inverted
             this.superescalar.memory.faultChance = this.cacheFailPercentage / 100;
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
 
@@ -191,13 +246,27 @@ export class SuperescalarIntegration extends MachineIntegration {
             }
 
             // tslint:disable-next-line:no-empty
-            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+            while (this.superescalar.tic() !== SuperescalarStatus.SUPER_ENDEXE) { 
+                this.collectStats();
+            }
+            this.collectStats();
+            this.batchStats.agragate(this.stats);
             results.push(this.superescalar.status.cycle);
+            this.stats = new Stats();
         }
 
-        const statistics = this.calculateBatchStatistics(results);
         this.clearBatchStateEffects();
-        store.dispatch(displayBatchResults(statistics));
+        store.dispatch(
+            batchActions(
+                setCyclesPerReplication(results),
+                nextTotalCommited(this.batchStats.getAvgCommitedAndDiscarded()),
+                nextUnitsUsage(this.batchStats.getAvgUnitsUsage()),
+                nextInstructionsCommited(this.batchStats.getAvgCommitedPercentagePerInstruction()),
+                nextStatusesCount(this.batchStats.getPerStatusCountAtCycle()),
+                nextInstructionsStatusesAverageCycles(this.batchStats.getAvgInstructionsStatusesAverage()),
+                displayBatchResults(this.batchStats.export())
+                ));
+        this.batchStats = new StatsAgregator();
     }
 
     pause = () => {
@@ -267,6 +336,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                     } else if (machineStatus === SuperescalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
                         alert(t('execution.finished'));
+                        
                     }
                 }
             }, speed);
@@ -320,19 +390,12 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.setGpr(this.contentIntegration.GPRContent);
             this.setMemory(this.contentIntegration.MEMContent);
         }
+
+        this.stats = new Stats();
+
         this.dispatchAllSuperescalarActions();
         store.dispatch(resetHistory());
-    }
-
-    private calculateBatchStatistics(results: number[]) {
-        const average = (results.reduce((a,b) => a + b) / results.length);
-        return {
-            replications:  this.replications,
-            average: average.toFixed(2),
-            standardDeviation: this.calculateStandardDeviation(average, results).toFixed(2),
-            worst: Math.max(...results),
-            best: Math.min(...results)
-        };
+        store.dispatch(clearCyclesPerReplication());
     }
 
     private clearBatchStateEffects() {

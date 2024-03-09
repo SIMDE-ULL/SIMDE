@@ -7,6 +7,7 @@ import AccessBarComponent from "./navbar/AccessBarComponent";
 
 import GeneralTabComponent from "./tab/GeneralTabComponent";
 import RegisterTabComponent from './tab/RegistersTabComponent';
+import StatsTabComponent from './tab/StatsTabComponent';
 
 import LoadModalComponent from "./modal/LoadModalComponent";
 import SuperescalarConfigModalComponent from "./modal/SuperescalarConfigModalComponent";
@@ -31,6 +32,9 @@ const SuperescalarComponent = () => {
                 </Tab>
                 <Tab eventKey={2} title={t('accessBar.memReg')}>
                     <RegisterTabComponent />
+                </Tab>
+                <Tab eventKey={3} title={t('accessBar.stats')}>
+                    <StatsTabComponent />
                 </Tab>
             </Tabs>
             <LoadModalComponent />

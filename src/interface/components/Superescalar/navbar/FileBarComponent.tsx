@@ -25,12 +25,16 @@ class FileBarComponent extends React.Component<any, any> {
     downloadContentFile() {
         if (SuperescalarIntegration.contentIntegration) {
             downloadTextFile('content.txt', SuperescalarIntegration.contentIntegration.deparse());
+        } else {
+            downloadTextFile('content.txt', '');
         }
     }
 
     downloadCodeFile() {
         if (SuperescalarIntegration.superescalar.code) {
             downloadTextFile('code.txt', SuperescalarIntegration.superescalar.code.save());
+        } else {
+            downloadTextFile('code.txt', '');
         }
     }
 
@@ -45,6 +49,7 @@ class FileBarComponent extends React.Component<any, any> {
                         <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.downloadMemory')}</Dropdown.Item>
                         <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.downloadContent')}</Dropdown.Item>
                         <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.downloadCode')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', SuperescalarIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.downloadStats')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}

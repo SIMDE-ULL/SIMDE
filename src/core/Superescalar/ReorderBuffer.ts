@@ -4,6 +4,7 @@ import { Instruction } from "../Common/Instruction";
 export interface VisualReorderBufferEntry {
   instruction: {
     id: string;
+    uid: number;
     value: string;
   };
   destinyRegister: string;
@@ -29,6 +30,10 @@ export class ReorderBuffer {
 
   public get size() {
     return this._size;
+  }
+
+  public get usage() {
+    return this._queue.length / this._size;
   }
 
   constructor(private _size: number) {}
@@ -77,7 +82,7 @@ export class ReorderBuffer {
   }
 
   /**
-   * getRegisterMapping - this method returns the rob instr uuid wich will write in that register.
+   * getRegisterMapping - this method returns the rob instr uid wich will write in that register.
    */
   public getRegisterMapping(
     register: number,
@@ -126,10 +131,11 @@ export class ReorderBuffer {
   }
 
   /**
-   * commitInstruction - this method commits an instruction from the reorder buffer
+   * commitInstruction - this method commits an instruction from the reorder buffer, returning their uid
    */
-  public commitInstruction() {
-    this._queue.shift();
+  public commitInstruction(): number {
+    const e = this._queue.shift();
+    return e ? e.instruction.uid : -1;
   }
 
   /**
@@ -140,9 +146,9 @@ export class ReorderBuffer {
       ? this._FprMapping
       : this._GprMapping;
     let register = this._queue[0].destinyRegister;
-    let uuid = this._queue[0].instruction.uuid;
+    let uid = this._queue[0].instruction.uid;
 
-    if (mapping[register] === uuid) {
+    if (mapping[register] === uid) {
       delete mapping[register];
       return true;
     }
@@ -165,16 +171,16 @@ export class ReorderBuffer {
 
     if (instruction.getDestinyRegister() !== -1) {
       if (instruction.isDestinyRegisterFloat()) {
-        this._FprMapping[instruction.getDestinyRegister()] = instruction.uuid;
+        this._FprMapping[instruction.getDestinyRegister()] = instruction.uid;
       } else {
-        this._GprMapping[instruction.getDestinyRegister()] = instruction.uuid;
+        this._GprMapping[instruction.getDestinyRegister()] = instruction.uid;
       }
     }
   }
 
-  public getInstructionPos(uuid: number): number {
+  public getInstructionPos(uid: number): number {
     for (let i = 0; i < this._queue.length; i++) {
-      if (this._queue[i].instruction.uuid === uuid) {
+      if (this._queue[i].instruction.uid === uid) {
         return i;
       }
     }
@@ -184,39 +190,39 @@ export class ReorderBuffer {
   /**
    * executeInstruction - this method executes an instruction from the reorder buffer
    */
-  public executeInstruction(uuid: number) {
-    this._queue[this.getInstructionPos(uuid)].superStage =
+  public executeInstruction(uid: number) {
+    this._queue[this.getInstructionPos(uid)].superStage =
       SuperStage.SUPER_EXECUTE;
   }
 
   /**
    * writeResultValue - this method writes the result value of an instruction to the reorder buffer
    */
-  public writeResultValue(uuid: number, value: number) {
-    let pos = this.getInstructionPos(uuid);
+  public writeResultValue(uid: number, value: number) {
+    let pos = this.getInstructionPos(uid);
     this._queue[pos].value = value;
     this._queue[pos].ready = true;
     this._queue[pos].superStage = SuperStage.SUPER_WRITERESULT;
   }
 
-  public getInstruction(uuid: number = -1): Instruction {
-    let pos = uuid === -1 ? 0 : this.getInstructionPos(uuid);
+  public getInstruction(uid: number = -1): Instruction {
+    let pos = uid === -1 ? 0 : this.getInstructionPos(uid);
     return this._queue[pos].instruction;
   }
 
   /**
    * writeResultAddress - this method writes the result address of an instruction to the reorder buffer
    */
-  public writeResultAddress(uuid: number, address: number) {
-    let pos = this.getInstructionPos(uuid);
+  public writeResultAddress(uid: number, address: number) {
+    let pos = this.getInstructionPos(uid);
     this._queue[pos].address = address;
   }
 
   /**
    * hasResultValue - this method checks if an instruction has already the result value
    */
-  public hasResultValue(uuid: number): boolean {
-    let pos = this.getInstructionPos(uuid);
+  public hasResultValue(uid: number): boolean {
+    let pos = this.getInstructionPos(uid);
     return this._queue[pos].ready;
   }
 
@@ -230,8 +236,8 @@ export class ReorderBuffer {
   /**
    * hasResultAddress - this method checks if an instruction has already the result address
    */
-  public hasResultAddress(uuid: number): boolean {
-    let pos = this.getInstructionPos(uuid);
+  public hasResultAddress(uid: number): boolean {
+    let pos = this.getInstructionPos(uid);
     return this._queue[pos].address !== -1;
   }
 
@@ -245,8 +251,8 @@ export class ReorderBuffer {
   /**
    * hasPreviousStores - this method checks if there are previous store instructions that write to the same address
    */
-  public hasPreviousStores(uuid: number): boolean {
-    let pos = this.getInstructionPos(uuid);
+  public hasPreviousStores(uid: number): boolean {
+    let pos = this.getInstructionPos(uid);
     let address = this._queue[pos].address;
     for (let i = 0; i < pos; i++) {
       // check if it is a store instruction and if it the address is the same or if it doesn't have a result address yet
@@ -264,7 +270,7 @@ export class ReorderBuffer {
     return this._queue.map((entry) => {
       if (entry != null) {
         let aux = {
-          instruction: { id: "", uuid: "", value: "" },
+          instruction: { id: "", uid: -1, value: "" },
           destinyRegister:
             entry.destinyRegister !== -1 ? "" + entry.destinyRegister : "-",
           value: "" + entry.value,
@@ -280,13 +286,13 @@ export class ReorderBuffer {
             }
           }
           aux.instruction.id = "" + entry.instruction.id;
-          aux.instruction.uuid = "" + entry.instruction.uuid;
+          aux.instruction.uid = entry.instruction.uid;
           aux.instruction.value = entry.instruction.toString();
         }
         return aux;
       }
       return {
-        instruction: { id: "", uuid: "", value: "" },
+        instruction: { id: "", uid: -1, value: "" },
         destinyRegister: "",
         value: "",
         address: "",
@@ -307,10 +313,10 @@ export class ReorderBuffer {
     return visualMap;
   }
 
-  public getVisualInstructionMap(): { [uuid: number]: number } {
-    let visualMap: { [uuid: string]: number } = {};
+  public getVisualInstructionMap(): { [uid: number]: number } {
+    let visualMap: { [uid: string]: number } = {};
     for (let i = 0; i < this._queue.length; i++) {
-      visualMap[this._queue[i].instruction.uuid] = i;
+      visualMap[this._queue[i].instruction.uid] = i;
     }
     return visualMap;
   }

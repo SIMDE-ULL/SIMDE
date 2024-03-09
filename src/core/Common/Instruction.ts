@@ -11,8 +11,8 @@ export class Instruction {
   protected _label: string;
   protected _breakPoint: boolean = false;
 
-  public get uuid(): number {
-    return this._uuid;
+  public get uid(): number {
+    return this._uid;
   }
 
   public get breakPoint(): boolean {
@@ -35,7 +35,7 @@ export class Instruction {
     return this._operandsString;
   }
 
-  constructor(from?: Instruction, protected _uuid?: number) {
+  constructor(from?: Instruction, protected _uid?: number) {
     if (from) {
       this.id = from.id;
       this.basicBlock = from.basicBlock;

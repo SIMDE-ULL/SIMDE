@@ -20,7 +20,7 @@ export class Memory implements Iterable<Datum> {
     // Initialize clean data array with `size` Datum slots.
     this.data = Array.from(Array(size).keys()).map((n) => ({
       value: 0,
-      got: false,
+      got: true,
     }));
   }
 

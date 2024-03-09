@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import {
     toggleOptionsModal,
     toggleBatchModal,
-    clearBatchResults
+    closeBatchResults
 } from '../../../actions/modals';
 import { connect } from 'react-redux';
 import VLIWIntegration from '../../../../integration/vliw-integration';
@@ -19,7 +19,7 @@ class BatchResultsModalComponent extends React.Component<any, any> {
     }
 
     close() {
-        this.props.actions.clearBatchResults(false);
+        this.props.actions.closeBatchResults(false);
     }
 
     render() {
@@ -94,7 +94,7 @@ const mapStateToProps = state => {
 };
 
 function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ clearBatchResults }, dispatch) };
+    return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchResultsModalComponent));

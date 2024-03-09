@@ -7,11 +7,15 @@ import {
     TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
     TOGGLE_VLIW_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
-    DISPLAY_BATCH_RESULTS,
-    CLEAR_BATCH_RESULTS
+    CLOSE_BATCH_RESULTS,
+    DISPLAY_BATCH_RESULTS
 } from '../actions/modals';
 
-const initialState = {
+import {
+    SET_CYCLES_PER_REPLICATION
+} from '../actions/stats-actions';
+
+export const initialState = {
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,
@@ -21,7 +25,8 @@ const initialState = {
     isVliwLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
-    batchResults: {}
+    batchResults: [],
+    batchStatsResults: {}
 };
 
 export function UiReducers(state = initialState, action) {
@@ -66,17 +71,22 @@ export function UiReducers(state = initialState, action) {
                 ...state,
                 isVliwLoadContentModalOpen: action.value
             });
-        case DISPLAY_BATCH_RESULTS:
+        case SET_CYCLES_PER_REPLICATION:
             return (state = {
                 ...state,
                 batchResults: action.value,
-                isBatchResultsModalOpen: true
             });
-        case CLEAR_BATCH_RESULTS:
+        case DISPLAY_BATCH_RESULTS:
             return (state = {
                 ...state,
-                batchResults: {},
-                isBatchResultsModalOpen: false
+                isBatchResultsModalOpen: true,
+                batchStatsResults: action.value
+            });
+        case CLOSE_BATCH_RESULTS:
+            return (state = {
+                ...state,
+                isBatchResultsModalOpen: false,
+                batchStatsResults: {}
             });
 
         default: 

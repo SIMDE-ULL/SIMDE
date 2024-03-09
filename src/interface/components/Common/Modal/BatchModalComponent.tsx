@@ -41,8 +41,9 @@ class BatchModalComponent extends React.Component<any, any> {
     setOptions() {
         SuperescalarIntegration.setBatchMode(
             this.state.replications,
-            this.state.cacheFailPercentage,
-            this.state.cacheFailLatency
+            this.state.cacheFailLatency,
+            this.state.cacheFailPercentage
+            
         );
         this.close();
         SuperescalarIntegration.makeBatchExecution();

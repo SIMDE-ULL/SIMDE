@@ -109,7 +109,6 @@ export class VLIW extends Machine {
         let i;
         let j;
         let pending: boolean = false;
-        let stopFlow: boolean = false;
         this.status.cycle++;
 
         if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isEmpty()) {
@@ -129,21 +128,36 @@ export class VLIW extends Machine {
 
         this.functionalUnit[FunctionalUnitType.JUMP][0].tic();
 
+        // check for stalled functional units
+        let hasStalledFU = false;
         for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
             for (j = 0; j < this.functionalUnit[i].length; j++) {
+                if (this.functionalUnit[i][j].isStalled()) {
+                    hasStalledFU = true;
+                    this.functionalUnit[i][j].tic();
+                }
+            }
+        }
 
+        // dont continue if there are stalled functional units
+        if (hasStalledFU) {
+            return VLIWError.OK;
+        }
+
+
+        for (i = 0; i < FUNCTIONALUNITTYPESQUANTITY - 1; i++) {
+            for (j = 0; j < this.functionalUnit[i].length; j++) {
                 if (!this.functionalUnit[i][j].isEmpty()) {
                     pending = true;
                 }
-                if (!this.functionalUnit[i][j].isStalled()) {
 
-                    let execution = this.functionalUnit[i][j].executeReadyInstruction();
-                    let operation: any = (execution != null) ? execution.instruction : null;
 
-                    if (operation != null) {
-                        if (this._predR[operation.getPred()]) {
-                            this.runOperation(operation, this.functionalUnit[i][j]);
-                        }
+                let execution = this.functionalUnit[i][j].executeReadyInstruction();
+                let operation: any = (execution != null) ? execution.instruction : null;
+
+                if (operation != null) {
+                    if (this._predR[operation.getPred()]) {
+                        this.runOperation(operation, this.functionalUnit[i][j]);
                     }
                 }
                 this.functionalUnit[i][j].tic();
@@ -153,65 +167,58 @@ export class VLIW extends Machine {
         this._gpr.tic();
         this._fpr.tic();
 
-        if (!stopFlow) {
+        let instruction = this._code.getLargeInstruction(this.pc);
 
-            let instruction = this._code.getLargeInstruction(this.pc);
-
-            if (!instruction) {
-
-                if (pending) {
-                    return VLIWError.PCOUTOFRANGE;
-                }
-
-                return VLIWError.ENDEXE;
+        if (!instruction) {
+            if (pending) {
+                return VLIWError.PCOUTOFRANGE;
             }
 
-            for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
+            return VLIWError.ENDEXE;
+        }
 
-                let type = instruction.getOperation(i).getFunctionalUnitType();
-                let index = instruction.getOperation(i).getFunctionalUnitIndex();
+        for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
+            let type = instruction.getOperation(i).getFunctionalUnitType();
+            let index = instruction.getOperation(i).getFunctionalUnitIndex();
 
-                // Check if the functional unit exists or if this operation is out of bounds
-                if (index >= this.functionalUnit[type].length) {
-                    //TODO: better handling of this error
-                    return VLIWError.ERRHARD; // VLIW_ERRHARD;
-                }
-
-                if (!this.functionalUnit[type][index].isFree() ||
-                    DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
-                    //TODO: This really fails when there is a RAW dependency?
-                    return VLIWError.ERRRAW; // VLIW_ERRRA;
-                }
+            // Check if the functional unit exists or if this operation is out of bounds
+            if (index >= this.functionalUnit[type].length) {
+                //TODO: better handling of this error
+                return VLIWError.ERRHARD; // VLIW_ERRHARD;
             }
 
-            if (!stopFlow) {
-
-                for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
-
-                    let operation = instruction.getOperation(i);
-                    this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].addInstruction(operation);
-
-                    if (operation.opcode === Opcodes.LW) {
-                        this._NaTGP[operation.getOperand(0)] = true;
-                    }
-
-                    if (operation.opcode === Opcodes.LF) {
-                        this._NaTFP[operation.getOperand(0)] = true;
-                    }
-
-                    if (operation.getFunctionalUnitType() === FunctionalUnitType.JUMP) {
-                        this._predR[operation.getPredTrue()] = false;
-                        this._predR[operation.getPredFalse()] = false;
-                    }
-                }
-                this.pc++;
-            }
-
-            if (instruction.getBreakPoint()) {
-                this.status.breakPoint = true;
-                return VLIWError.BREAKPOINT;
+            if (!this.functionalUnit[type][index].isFree() ||
+                DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
+                //TODO: This really fails when there is a RAW dependency?
+                return VLIWError.ERRRAW; // VLIW_ERRRA;
             }
         }
+
+
+        for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
+            let operation = instruction.getOperation(i);
+            this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].addInstruction(operation);
+
+            if (operation.opcode === Opcodes.LW) {
+                this._NaTGP[operation.getOperand(0)] = true;
+            }
+
+            if (operation.opcode === Opcodes.LF) {
+                this._NaTFP[operation.getOperand(0)] = true;
+            }
+
+            if (operation.getFunctionalUnitType() === FunctionalUnitType.JUMP) {
+                this._predR[operation.getPredTrue()] = false;
+                this._predR[operation.getPredFalse()] = false;
+            }
+        }
+        this.pc++;
+
+        if (instruction.getBreakPoint()) {
+            this.status.breakPoint = true;
+            return VLIWError.BREAKPOINT;
+        }
+
         return VLIWError.OK;
 
     }
@@ -260,10 +267,10 @@ export class VLIW extends Machine {
 
                 if (!datumInteger.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
-                } else {
-                    this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
-                    this._NaTGP[operation.getOperand(0)] = false;
                 }
+
+                this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
+                this._NaTGP[operation.getOperand(0)] = false;
                 break;
             case Opcodes.LF:
                 let datumFloat = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
@@ -275,10 +282,10 @@ export class VLIW extends Machine {
 
                 if (!datumFloat.got) {
                     functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
-                } else {
-                    this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
-                    this._NaTFP[operation.getOperand(0)] = false;
                 }
+                
+                this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
+                this._NaTFP[operation.getOperand(0)] = false;
                 break;
             default:
                 break;

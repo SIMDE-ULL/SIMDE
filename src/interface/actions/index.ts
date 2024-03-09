@@ -8,6 +8,7 @@ export * from './reorder-buffer-actions';
 export * from './reorder-buffer-mapper-actions';
 export * from './reserve-station-actions';
 export * from './table-actions';
+export * from './stats-actions';
 
 export * from './load';
 export * from './basic-blocks-actions';

@@ -1,7 +1,7 @@
 import { COLOR_CELL } from "../actions";
 
-const initialState = {
-    uuidColors: {},
+export const initialState = {
+    uidColors: {},
     IidColors: {}
 }
 
@@ -10,8 +10,8 @@ export function ColorReducers(state = initialState, action) {
         case COLOR_CELL:
             return (state = {
                 ...state,
-                uuidColors: {
-                    ...state.uuidColors,
+                uidColors: {
+                    ...state.uidColors,
                     [action.value[0]]: action.value[1]
                 }
             });

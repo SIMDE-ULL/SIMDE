@@ -5,7 +5,8 @@
             "load": "Cargar",
             "downloadMemory": "Descargar memoria(JSON)",
             "downloadContent": "Descargar contenido Memoria - Registros",
-            "downloadCode": "Descargar código"
+            "downloadCode": "Descargar código",
+            "downloadStats": "Descargar eventos estadísticos(JSON)"
         },
         "view": {
             "name": "Ver",
@@ -41,6 +42,7 @@
         "speed": "Velocidad",
         "superescalar": "Superescalar",
         "memReg": "Memoria - Registros",
+        "stats": "Estadísticas",
         "vliw": "VLIW"
     },
     "authorModal": {
@@ -149,12 +151,9 @@
         "cacheFailLatency": "Latencia en fallos de cachés"
     },
     "batchResults": {
-        "title": "Resultados de la ejecución por lotes",
-        "replications": "Réplicas",
-        "average": "Número medio de ciclos por ejecución",
-        "standardDeviation": "Desviación éstandar",
-        "worst": "Peor caso",
-        "best": "Mejor caso"
+        "title": "Ejecución por lotes realizada",
+        "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
+        "download": "Descargar eventos estadísticos(JSON)"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",
@@ -194,5 +193,45 @@
         "FloatMult": "xFlotante",
         "Memory": "Memoria",
         "Jump": "Salto"
+    },
+
+    "stats": {
+        "toolbox": {
+            "dataView": "Ver datos",
+            "close": "Cerrar",
+            "refresh": "Recargar"
+        },
+        "units": {
+            "prefetch": "Prefetch",
+            "decode": "Decoder",
+            "rob": "ROB",
+            "fu0": "UF + Entera",
+            "fu1": "UF x Entera",
+            "fu2": "UF + Flotante",
+            "fu3": "UF x Flotante",
+            "fu4": "UF Memoria",
+            "fu5": "UF Salto",
+            "rs0": "ER + Entera",
+            "rs1": "ER x Entera",
+            "rs2": "ER + Flotante",
+            "rs3": "ER x Flotante",
+            "rs4": "ER Memoria",
+            "rs5": "ER Salto"
+        },
+        "statuses": {
+            "prefetchNumber": "En Prefetching",
+            "decodeNumber": "En decodificación",
+            "issueNumber": "En emisión",
+            "executeNumber": "En ejecución",
+            "writeBackNumber": "En escritura",
+            "commitNumber": "En commit"
+        },
+        "unitsUsage": "Ocupación de cada unidad por ciclo",
+        "instrStatuses": "Instrucciones en cada etapa por ciclo",
+        "cycles": "Ciclos por replica",
+        "commitDiscard": "Instrucciones commiteadas VS descartadas",
+        "commited": "Commiteada",
+        "discarded": "Descartada",
+        "statusAverage": "Media de ciclos de cada etapa por instrucción"
     }
 }
