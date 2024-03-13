@@ -1,6 +1,6 @@
 {
   "name": "simde",
-  "version": "2.2.0",
+  "version": "2.1.0",
   "description": "Educational superescalar and VLIW simulator",
   "type": "module",
   "packageManager": "yarn@4.1.0",
