@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.2.0...v2.3.0) (2024-03-13)
+
+
+### Miscellaneous Chores
+
+* release version 2.3.0 ([9db2300](https://github.com/SIMDE-ULL/SIMDE/commit/9db23006b233f821cb3bac6d5b402705e8d1f8cc))
+
 ## [2.2.0](https://github.com/oxcabe/SIMDE/compare/v2.1.0...v2.2.0) (2023-05-22)
 
 
