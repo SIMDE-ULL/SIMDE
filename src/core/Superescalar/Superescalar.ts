@@ -579,6 +579,7 @@ export class Superescalar extends Machine {
   }
 
   ticCommit(): CommitStatus {
+    this._currentCommitedInstrs = new Array<number>();
     for (let i = 0; i < this.issue; i++) {
       if (this._reorderBuffer.canCommitStoreInstruction()) {
         this.memory.setDatum(
