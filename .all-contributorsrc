@@ -51,6 +51,16 @@
         "maintenance",
         "platform"
       ]
+    },
+    {
+      "login": "endes0",
+      "name": "endes0",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5920682?v=4",
+      "profile": "https://github.com/endes0",
+      "contributions": [
+        "test",
+        "maintenance"
+      ]
     }
   ]
 }
