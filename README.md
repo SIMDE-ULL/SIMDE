@@ -1,43 +1,48 @@
 # SIMDE
-[![Build Status](https://travis-ci.org/etsiiull/SIMDE.svg?branch=master)](https://travis-ci.org/etsiiull/SIMDE)
-[![All Contributors](https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=ee8449&style=flat-square)](#contributors)
+<p align="center">
+    <img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" />
+    <img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" />
+    <img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" />
+    <img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=ee8449&style=flat-square" />
+</p>
 
+<p align="center">
+    <img width="480px" height="416px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
+</p>
+
+> Access SIMDE from your browser here: https://SIMDE-ULL.github.io/SIMDE/
+
+SIMDE is a [computer](https://en.wikipedia.org/wiki/Computer_architecture) simulator. Its main focus is the teaching of [ILP (Instruction Level Parallelism)](https://en.wikipedia.org/wiki/Instruction-level_parallelism) concepts.
+
+Superscalar mode the visualization how the instructions flow through the multiple stages of the instruction pipeline. 
+
+When used as an assist tool, SIMDE supercharges learning concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the Reorder Buffer.
+
+## SIMDE in action
 ![Live exec](/assets/exec.gif)
 
-## What is SIMDE?
+## Features
+* ILP
+* Simple, Easy to use
+* Cross-platform and web based
+* Superscalar
+* VLIW
+* Batch execution
+* Taint analysis
+* Deterministic
+* 
 
-SIMDE is a simulator for supporting teaching of [ILP (Instruction Level Parallelism)](https://en.wikipedia.org/wiki/Instruction-level_parallelism) Architectures. 
 
-This simulator is a visual representation of a Superecalar machine execution and the students are able to see how the instructions move through the multiple stages of the pipeline. 
+## Getting started
 
-This make easier to learn concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the reorderbuffer.
+[Go to the project website and start learning](https://SIMDE-ULL.github.io/SIMDE/)
 
-## Technologies
-
-SIMDE is powered by Typescript, React, Redux, Sass and Webpack.
-
-## How to use
-
-[Go to the project website and start learning](https://etsiiull.github.io/SIMDE/)
-
-## Development
-
-SIMDE is build on top of typescript,sass and webpack. In order to make the build easier a docker file environment has been added.
-Just install docker and docker-compose and type:
-
-`docker-compose up`
-
-All services should be configurated and ready for deployment.
-
-Please beware that we copy the package.json each time we build the image so if you add more dependencies you should run `docker-compose build` in order to recreate the image.
-
-## Troubling?
-
-If you have any doubt you should check [the official docs](https://etsiiull.gitbooks.io/simde/).
+## Contributing
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## License
 
-The project has been released under GPLv3 License.
+SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
 
 ## Contributors
 

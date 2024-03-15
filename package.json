@@ -2,30 +2,27 @@
   "name": "simde",
   "version": "2.3.0",
   "description": "Educational superescalar and VLIW simulator",
-  "type": "module",
-  "packageManager": "yarn@4.1.1",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest",
-    "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs && opn build/docs/index.html",
-    "docs:json": "typedoc --mode file --json build/docs/typedoc.json src/index.ts",
-    "cov": "vitest run --coverage",
-    "check-coverage": "nyc check-coverage --lines 70 --functions 70 --branches 70",
-    "html-coverage": "nyc report --reporter=html",
-    "send-coverage": "nyc report --reporter=lcov > coverage.lcov && codecov"
+  "homepage": "https://github.com/SIMDE-ULL/SIMDE",
+  "bugs": {
+    "url": "https://github.com/SIMDE-ULL/SIMDE/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/etsiiull/SIMDE.git"
+    "url": "git+https://github.com/SIMDE-ULL/SIMDE.git"
   },
-  "author": "Adrian Abreu Gonzalez",
-  "license": "GPLv3",
-  "bugs": {
-    "url": "https://github.com/etsiiull/SIMDE/issues"
+  "license": "GPL-3.0",
+  "author": "The SIMDE devs",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build",
+    "check": "biome check --apply ./src",
+    "dev": "vite",
+    "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs",
+    "fmt": "biome format --write ./src",
+    "lint": "biome lint --apply ./src",
+    "test": "vitest --run",
+    "test:coverage": "vitest run --coverage"
   },
-  "homepage": "https://github.com/etsiiull/SIMDE",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@popperjs/core": "^2.11.8",
@@ -50,22 +47,14 @@
     "tslib": "^2.2.0",
     "typescript-parsec": "^0.3.4"
   },
-  "engines": {
-    "node": ">=18"
-  },
   "devDependencies": {
+    "@biomejs/biome": "^1.6.1",
     "@types/node": "^20.8.9",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.0.3",
     "@vitest/coverage-v8": "^1.0.0",
     "codecov": "^3.6.5",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "multiview": "3.0.1",
     "sass": "^1.69.5",
     "stylelint": "^16.0.0",
     "stylelint-config-standard-scss": "^13.0.0",
@@ -74,5 +63,9 @@
     "typescript": "^5.0.2",
     "vite": "^5.0.0",
     "vitest": "^1.0.0"
+  },
+  "packageManager": "yarn@4.1.1",
+  "engines": {
+    "node": ">=18"
   }
 }
