@@ -44,6 +44,13 @@ The project has been released under GPLv3 License.
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/endes0"><img src="https://avatars.githubusercontent.com/u/5920682?v=4?s=100" width="100px;" alt="endes0"/><br /><sub><b>endes0</b></sub></a><br /><a href="#maintenance-endes0" title="Maintenance">🚧</a> <a href="#projectManagement-endes0" title="Project Management">📆</a></td>
+    </tr>
+  </tbody>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
