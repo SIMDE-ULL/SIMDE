@@ -1,6 +1,6 @@
 # SIMDE
 [![Build Status](https://travis-ci.org/etsiiull/SIMDE.svg?branch=master)](https://travis-ci.org/etsiiull/SIMDE)
-
+[![All Contributors](https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=ee8449&style=flat-square)](#contributors)
 
 ![Live exec](/assets/exec.gif)
 
@@ -39,8 +39,13 @@ If you have any doubt you should check [the official docs](https://etsiiull.gitb
 
 The project has been released under GPLv3 License.
 
----
+## Contributors
 
-> [@adrianabreu](https://github.com/adrianabreu) 
-> [@Melissa Díaz Arteaga](https://github.com/alu0100884012)
-> [@icasrod](https://twitter.com/icasrod)
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
