@@ -74,7 +74,7 @@
     "stylelint-scss": "^6.0.0",
     "typedoc": "^0.25.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5",
+    "vite": "^5.0.0",
     "vitest": "^0.34.6"
   }
 }
