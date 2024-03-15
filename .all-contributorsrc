@@ -40,6 +40,17 @@
       "contributions": [
         "platform"
       ]
+    },
+    {
+      "login": "oxcabe",
+      "name": "Óscar Carrasco",
+      "avatar_url": "https://avatars.githubusercontent.com/u/25517190?v=4",
+      "profile": "http://oxca.be",
+      "contributions": [
+        "mentoring",
+        "maintenance",
+        "platform"
+      ]
     }
   ]
 }
