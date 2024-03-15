@@ -1,4 +1,26 @@
 {
   "projectName": "SIMDE",
-  "projectOwner": "SIMDE-ULL"
+  "projectOwner": "SIMDE-ULL",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "icasrod",
+      "name": "Iván Castilla Rodríguez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17193911?v=4",
+      "profile": "https://github.com/icasrod",
+      "contributions": [
+        "research",
+        "projectManagement",
+        "mentoring",
+        "ideas",
+        "example",
+        "doc"
+      ]
+    }
+  ]
 }
