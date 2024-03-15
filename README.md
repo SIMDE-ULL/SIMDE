@@ -48,6 +48,7 @@ The project has been released under GPLv3 License.
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/icasrod"><img src="https://avatars.githubusercontent.com/u/17193911?v=4?s=100" width="100px;" alt="Iván Castilla Rodríguez"/><br /><sub><b>Iván Castilla Rodríguez</b></sub></a><br /><a href="#research-icasrod" title="Research">🔬</a> <a href="#projectManagement-icasrod" title="Project Management">📆</a> <a href="#mentoring-icasrod" title="Mentoring">🧑‍🏫</a> <a href="#ideas-icasrod" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-icasrod" title="Examples">💡</a> <a href="#doc-icasrod" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://adrianabreu.gitlab.io"><img src="https://avatars.githubusercontent.com/u/9080392?v=4?s=100" width="100px;" alt="Adrian Abreu Gonzalez"/><br /><sub><b>Adrian Abreu Gonzalez</b></sub></a><br /><a href="#platform-adrianabreu" title="Packaging/porting to new platform">📦</a> <a href="#design-adrianabreu" title="Design">🎨</a></td>
     </tr>
   </tbody>
 </table>
