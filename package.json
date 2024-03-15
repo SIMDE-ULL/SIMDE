@@ -11,7 +11,7 @@
     "url": "git+https://github.com/SIMDE-ULL/SIMDE.git"
   },
   "license": "GPL-3.0",
-  "author": "The SIMDE devs",
+  "author": "The SIMDE authors",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",

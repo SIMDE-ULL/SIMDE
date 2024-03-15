@@ -3,25 +3,26 @@
     <img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" />
     <img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" />
     <img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" />
-    <img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=ee8449&style=flat-square" />
+    <img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=red" />
 </p>
 
 <p align="center">
     <img width="480px" height="416px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
 </p>
 
-> Access SIMDE from your browser here: https://SIMDE-ULL.github.io/SIMDE/
+> 🖥️ Run __SIMDE__ from your browser: https://SIMDE-ULL.github.io/SIMDE/
 
-SIMDE is a [computer](https://en.wikipedia.org/wiki/Computer_architecture) simulator. Its main focus is the teaching of [ILP (Instruction Level Parallelism)](https://en.wikipedia.org/wiki/Instruction-level_parallelism) concepts.
+__SIMDE__ is a computer simulator with a strong focus in learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) concepts with a pragmatic, _learn-by-doing_ approach.
 
-Superscalar mode the visualization how the instructions flow through the multiple stages of the instruction pipeline. 
+__Superscalar machine__ the visualization how the instructions flow through the multiple stages of the instruction pipeline. 
 
-When used as an assist tool, SIMDE supercharges learning concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the Reorder Buffer.
+When used as an assist tool, SIMDE supercharges learning concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the _Reorder Buffer_.
 
-## SIMDE in action
-![Live exec](/assets/exec.gif)
+## This is how SIMDE looks in action
+![SIMDE in action](/assets/exec.gif)
 
 ## Features
+
 * ILP
 * Simple, Easy to use
 * Cross-platform and web based
@@ -30,19 +31,13 @@ When used as an assist tool, SIMDE supercharges learning concepts suchs as *Toma
 * Batch execution
 * Taint analysis
 * Deterministic
-* 
 
 
 ## Getting started
-
-[Go to the project website and start learning](https://SIMDE-ULL.github.io/SIMDE/)
+Lorem ipsum.
 
 ## Contributing
 See [CONTRIBUTING](CONTRIBUTING.md).
-
-## License
-
-SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
 
 ## Contributors
 
@@ -65,3 +60,7 @@ SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+## License
+
+SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
