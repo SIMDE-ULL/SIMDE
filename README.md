@@ -1,40 +1,39 @@
 # SIMDE
 <p align="center">
-    <img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" />
+    <a href=""><img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" /></a>
     <img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" />
     <img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" />
     <img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=red" />
 </p>
 
 <p align="center">
-    <img width="480px" height="416px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
+    <img width="480px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
 </p>
 
-> 🖥️ Run __SIMDE__ from your browser: https://SIMDE-ULL.github.io/SIMDE/
+> <p align="center">🖥️ Run <b>SIMDE</b> directly from your browser: <a href="https://SIMDE-ULL.github.io/SIMDE/">https://SIMDE-ULL.github.io/SIMDE/</a></p>
 
-__SIMDE__ is a computer simulator with a strong focus in learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) concepts with a pragmatic, _learn-by-doing_ approach.
+__SIMDE__ is a computer simulator with a strong focus on learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) principles with a pragmatic, _learn-by-doing_ approach.
 
-__Superscalar machine__ the visualization how the instructions flow through the multiple stages of the instruction pipeline. 
-
-When used as an assist tool, SIMDE supercharges learning concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the _Reorder Buffer_.
+When used to assist teaching, SIMDE shines both in interpreting architectural concepts, such as [_Tomasulo's algorithm_](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) and representing organizational structures, like [_re-order buffers_](https://en.wikipedia.org/wiki/Re-order_buffer).
 
 ## This is how SIMDE looks in action
 ![SIMDE in action](/assets/exec.gif)
 
 ## Features
 
-* ILP
-* Simple, Easy to use
-* Cross-platform and web based
-* Superscalar
-* VLIW
-* Batch execution
-* Taint analysis
-* Deterministic
-
+* Designed to be simple and enjoyable to use.
+* Includes several forms of visualizing computer and memory data.
+* Cross-platform, accessible from any modern web browser.
+* _Superscalar_ architecture simulation.
+* _Very Long Instruction Word_ (VLIW) architecture simulation.
+* Batch execution mode.
+* Instruction flow tracing to visually follow instructions through the pipeline.
+* Project uses modern development standards.
+* _Free_ as in _Freedom_ (see [License](#license) further below).
 
 ## Getting started
-Lorem ipsum.
+
+SIMDE can be accessed directly from any modern browser of your choice at [https://SIMDE-ULL.github.io/SIMDE/](https://SIMDE-ULL.github.io/SIMDE/).
 
 ## Contributing
 See [CONTRIBUTING](CONTRIBUTING.md).
@@ -64,3 +63,5 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 ## License
 
 SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
+
+The rationale behind this decision is that we, the SIMDE authors, believe that society must strive for free, accessible, high quality educational resources. Given that, SIMDE will always be _"Free as in Freedom"_ for anyone to use anywhere, at any time.
