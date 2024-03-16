@@ -1,9 +1,9 @@
 # SIMDE
 <p align="center">
-    <a href=""><img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" /></a>
-    <img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" />
-    <img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" />
-    <img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=red" />
+    <a href="https://github.com/SIMDE-ULL/SIMDE/actions/workflows/build.yml"><img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE?tab=GPL-3.0-1-ov-file"><img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE/stargazers"><img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE?tab=readme-ov-file#contributors"><img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=red" /></a>
 </p>
 
 <p align="center">
