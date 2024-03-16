@@ -1,4 +1,5 @@
 # SIMDE
+
 <p align="center">
     <a href="https://github.com/SIMDE-ULL/SIMDE/actions/workflows/build.yml"><img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" /></a>
     <a href="https://github.com/SIMDE-ULL/SIMDE?tab=GPL-3.0-1-ov-file"><img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" /></a>
@@ -12,28 +13,56 @@
 
 > <p align="center">🖥️ Run <b>SIMDE</b> directly from your browser: <a href="https://SIMDE-ULL.github.io/SIMDE/">https://SIMDE-ULL.github.io/SIMDE/</a></p>
 
-__SIMDE__ is a computer simulator with a strong focus on learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) principles with a pragmatic, _learn-by-doing_ approach.
+__SIMDE__ is a computer simulator with a strong focus on assisting in learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) principles with a pragmatic, _learn-by-doing_ approach.
 
-When used to assist teaching, SIMDE shines both in interpreting architectural concepts, such as [_Tomasulo's algorithm_](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) and representing organizational structures, like [_re-order buffers_](https://en.wikipedia.org/wiki/Re-order_buffer).
+When used in supporting educational practices, SIMDE shines both for reproducing architectural concepts, such as [_Tomasulo's algorithm_](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) and representing organizational structures, like [_re-order buffers_](https://en.wikipedia.org/wiki/Re-order_buffer).
 
 ## This is how SIMDE looks in action
+
 ![SIMDE in action](/assets/exec.gif)
 
 ## Features
 
 * Designed to be simple and enjoyable to use.
-* Includes several forms of visualizing computer and memory data.
+* Includes several forms of visualizing computer units and memory data.
 * Cross-platform, accessible from any modern web browser.
 * _Superscalar_ architecture simulation.
 * _Very Long Instruction Word_ (VLIW) architecture simulation.
-* Batch execution mode.
+* Multiple instruction processing modes, including [batch processing](https://en.wikipedia.org/wiki/Batch_processing).
 * Instruction flow tracing to visually follow instructions through the pipeline.
 * Project uses modern development standards.
 * _Free_ as in _Freedom_ (see [License](#license) further below).
 
 ## Getting started
 
-SIMDE can be accessed directly from any modern browser of your choice at [https://SIMDE-ULL.github.io/SIMDE/](https://SIMDE-ULL.github.io/SIMDE/).
+### Using the official web instance
+
+SIMDE can be accessed directly from any modern browser of your choice at:
+
+ [https://SIMDE-ULL.github.io/SIMDE/](https://SIMDE-ULL.github.io/SIMDE/)
+
+## Building from sources
+
+### Prerequisites
+
+Make sure that the following tools are installed in your system:
+
+* [Node.js](https://nodejs.org/en) (version >=18).
+* [Yarn](https://yarnpkg.com/) (version >=4).
+
+### Build steps
+
+1. Install the project dependencies:
+```bash
+yarn install --immutable --immutable-cache
+```
+
+2. Build the static site:
+```bash
+yarn build
+```
+
+The generated build will be available in the `dist/` directory generated in the root directory of the project. The static files can be served using a HTTP server, such as [Apache httpd](https://httpd.apache.org/), [NGINX](https://www.nginx.com/) or [Traefik](https://traefik.io/).
 
 ## Contributing
 See [CONTRIBUTING](CONTRIBUTING.md).
