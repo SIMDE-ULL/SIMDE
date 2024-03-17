@@ -48,18 +48,18 @@ SIMDE can be accessed directly from any modern browser of your choice at:
 Make sure that the following tools are installed in your system:
 
 * [Node.js](https://nodejs.org/en) (version >=18).
-* [Yarn](https://yarnpkg.com/) (version >=4).
+* [pnpm](https://pnpm.io/) (version >=8).
 
 ### Build steps
 
 1. Install the project dependencies:
 ```bash
-yarn install --immutable --immutable-cache
+pnpm install --frozen-lockfile
 ```
 
 2. Build the static site:
 ```bash
-yarn build
+pnpm build
 ```
 
 The generated build will be available in the `dist/` directory generated in the root directory of the project. The static files can be served using a HTTP server, such as [Apache httpd](https://httpd.apache.org/), [NGINX](https://www.nginx.com/) or [Traefik](https://traefik.io/).
