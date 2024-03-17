@@ -18,8 +18,8 @@ jobs:
       with:
         node-version: 20.9.x
     - name: Install packages
-      run: yarn install
+      run: pnpm install --frozen-lockfile
     - name: Run tests
-      run: yarn test
+      run: pnpm test
     - name: Generate production build
-      run: yarn build
+      run: pnpm build
