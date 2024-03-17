@@ -1,43 +1,71 @@
 # SIMDE
-[![Build Status](https://travis-ci.org/etsiiull/SIMDE.svg?branch=master)](https://travis-ci.org/etsiiull/SIMDE)
-[![All Contributors](https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=ee8449&style=flat-square)](#contributors)
 
-![Live exec](/assets/exec.gif)
+<p align="center">
+    <a href="https://github.com/SIMDE-ULL/SIMDE/actions/workflows/build.yml"><img alt="SIMDE Build Status" src="https://img.shields.io/github/actions/workflow/status/SIMDE-ULL/SIMDE/build.yml" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE?tab=GPL-3.0-1-ov-file"><img alt="SIMDE License" src="https://img.shields.io/github/license/SIMDE-ULL/SIMDE" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE/stargazers"><img alt="SIMDE Stars" src="https://img.shields.io/github/stars/SIMDE-ULL/SIMDE" /></a>
+    <a href="https://github.com/SIMDE-ULL/SIMDE?tab=readme-ov-file#contributors"><img alt="SIMDE Contributors" src="https://img.shields.io/github/all-contributors/SIMDE-ULL/SIMDE?color=red" /></a>
+</p>
 
-## What is SIMDE?
+<p align="center">
+    <img width="480px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
+</p>
 
-SIMDE is a simulator for supporting teaching of [ILP (Instruction Level Parallelism)](https://en.wikipedia.org/wiki/Instruction-level_parallelism) Architectures. 
+> <p align="center">🖥️ Run <b>SIMDE</b> directly from your browser: <a href="https://SIMDE-ULL.github.io/SIMDE/">https://SIMDE-ULL.github.io/SIMDE/</a></p>
 
-This simulator is a visual representation of a Superecalar machine execution and the students are able to see how the instructions move through the multiple stages of the pipeline. 
+__SIMDE__ is a computer simulator with a strong focus on assisting in learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) principles with a pragmatic, _learn-by-doing_ approach.
 
-This make easier to learn concepts suchs as *Tomasulo's algorithm* and the purpose of structures such as the reorderbuffer.
+When used in supporting educational practices, SIMDE shines both for reproducing architectural concepts, such as [_Tomasulo's algorithm_](https://en.wikipedia.org/wiki/Tomasulo%27s_algorithm) and representing organizational structures, like [_re-order buffers_](https://en.wikipedia.org/wiki/Re-order_buffer).
 
-## Technologies
+## This is how SIMDE looks in action
 
-SIMDE is powered by Typescript, React, Redux, Sass and Webpack.
+![SIMDE in action](https://github.com/SIMDE-ULL/SIMDE/assets/25517190/32e20b09-ecf5-45a1-9057-6a708426a6be)
 
-## How to use
+## Features
 
-[Go to the project website and start learning](https://etsiiull.github.io/SIMDE/)
+* Designed to be simple and enjoyable to use.
+* Includes several forms of visualizing computer units and memory data.
+* Cross-platform, accessible from any modern web browser.
+* _Superscalar_ architecture simulation.
+* _Very Long Instruction Word_ (VLIW) architecture simulation.
+* Multiple instruction processing modes, including [batch processing](https://en.wikipedia.org/wiki/Batch_processing).
+* Instruction flow tracing to visually follow instructions through the pipeline.
+* Project uses modern development standards.
+* _Free_ as in _Freedom_ (see [License](#license) further below).
 
-## Development
+## Getting started
 
-SIMDE is build on top of typescript,sass and webpack. In order to make the build easier a docker file environment has been added.
-Just install docker and docker-compose and type:
+### Using the official web instance
 
-`docker-compose up`
+SIMDE can be accessed directly from any modern browser of your choice at:
 
-All services should be configurated and ready for deployment.
+ [https://SIMDE-ULL.github.io/SIMDE/](https://SIMDE-ULL.github.io/SIMDE/)
 
-Please beware that we copy the package.json each time we build the image so if you add more dependencies you should run `docker-compose build` in order to recreate the image.
+## Building from sources
 
-## Troubling?
+### Prerequisites
 
-If you have any doubt you should check [the official docs](https://etsiiull.gitbooks.io/simde/).
+Make sure that the following tools are installed in your system:
 
-## License
+* [Node.js](https://nodejs.org/en) (version >=18).
+* [Yarn](https://yarnpkg.com/) (version >=4).
 
-The project has been released under GPLv3 License.
+### Build steps
+
+1. Install the project dependencies:
+```bash
+yarn install --immutable --immutable-cache
+```
+
+2. Build the static site:
+```bash
+yarn build
+```
+
+The generated build will be available in the `dist/` directory generated in the root directory of the project. The static files can be served using a HTTP server, such as [Apache httpd](https://httpd.apache.org/), [NGINX](https://www.nginx.com/) or [Traefik](https://traefik.io/).
+
+## Contributing
+See [CONTRIBUTING](CONTRIBUTING.md).
 
 ## Contributors
 
@@ -60,3 +88,9 @@ The project has been released under GPLv3 License.
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+## License
+
+SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
+
+The rationale behind this decision is that we, the SIMDE authors, believe that society must strive for free, accessible, high quality educational resources. Given that, SIMDE will always be _"Free as in Freedom"_ for anyone to use anywhere, at any time.
