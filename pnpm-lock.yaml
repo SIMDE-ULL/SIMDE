@@ -37,7 +37,7 @@ dependencies:
     version: 18.2.0
   react-bootstrap:
     specifier: ^2.4.0
-    version: 2.10.1(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
+    version: 2.10.2(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0)
   react-color:
     specifier: ^2.14.0
     version: 2.19.3(react@18.2.0)
@@ -96,7 +96,7 @@ devDependencies:
     version: 16.2.1(typescript@5.4.2)
   stylelint-config-standard-scss:
     specifier: ^13.0.0
-    version: 13.0.0(postcss@8.4.35)(stylelint@16.2.1)
+    version: 13.0.0(postcss@8.4.36)(stylelint@16.2.1)
   typedoc:
     specifier: ^0.25.3
     version: 0.25.12(typescript@5.4.2)
@@ -763,7 +763,7 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0
     dependencies:
-      '@swc/helpers': 0.5.6
+      '@swc/helpers': 0.5.7
       react: 18.2.0
     dev: false
 
@@ -793,8 +793,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@restart/ui@1.6.7(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-rrbADq+7/UIooPjnxOUOwuhBlAdWuf2X2DbVU/ygHSpxwZSo+C4gx/fRx0u1eR9bxOcH2mo/uX8/KZyw+CQxug==}
+  /@restart/ui@1.6.8(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-6ndCv3oZ7r9vuP1Ok9KH55TM1/UkdBnP/fSraW0DFDMbPMzWKhVKeFAIEUCRCSdzayjZDcFYK6xbMlipN9dmMA==}
     peerDependencies:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
@@ -920,8 +920,8 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@swc/helpers@0.5.6:
-    resolution: {integrity: sha512-aYX01Ke9hunpoCexYAgQucEpARGQ5w/cqHFrIR+e9gdKb1QWTsVJuTJ2ozQzIAxLyRQe/m+2RqzkyOOGiMKRQA==}
+  /@swc/helpers@0.5.7:
+    resolution: {integrity: sha512-BVvNZhx362+l2tSwSuyEUV4h7+jk9raNdoTSdLfwTshXJSaGmYKluGRJznziCI3KX02Z19DdsQrdfrpXAU3Hfg==}
     dependencies:
       tslib: 2.6.2
     dev: false
@@ -2168,13 +2168,13 @@ packages:
       postcss: 8.4.35
     dev: true
 
-  /postcss-scss@4.0.9(postcss@8.4.35):
+  /postcss-scss@4.0.9(postcss@8.4.36):
     resolution: {integrity: sha512-AjKOeiwAitL/MXxQW2DliT28EKukvvbEWx3LBmJIRN8KfBGZbRTxNYW0kSqi1COiTZ57nZ9NW06S6ux//N1c9A==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.4.29
     dependencies:
-      postcss: 8.4.35
+      postcss: 8.4.36
     dev: true
 
   /postcss-selector-parser@6.0.16:
@@ -2191,6 +2191,15 @@ packages:
 
   /postcss@8.4.35:
     resolution: {integrity: sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==}
+    engines: {node: ^10 || ^12 || >=14}
+    dependencies:
+      nanoid: 3.3.7
+      picocolors: 1.0.0
+      source-map-js: 1.1.0
+    dev: true
+
+  /postcss@8.4.36:
+    resolution: {integrity: sha512-/n7eumA6ZjFHAsbX30yhHup/IMkOmlmvtEi7P+6RMYf+bGJSUHc3geH4a0NSZxAz/RJfiS9tooCTs9LAVYUZKw==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.7
@@ -2234,8 +2243,8 @@ packages:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
 
-  /react-bootstrap@2.10.1(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-J3OpRZIvCTQK+Tg/jOkRUvpYLHMdGeU9KqFUBQrV0d/Qr/3nsINpiOJyZMWnM5SJ3ctZdhPA6eCIKpEJR3Ellg==}
+  /react-bootstrap@2.10.2(@types/react@18.2.66)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-UvB7mRqQjivdZNxJNEA2yOQRB7L9N43nBnKc33K47+cH90/ujmnMwatTCwQLu83gLhrzAl8fsa6Lqig/KLghaA==}
     peerDependencies:
       '@types/react': '>=16.14.8'
       react: '>=16.14.0'
@@ -2246,7 +2255,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@restart/hooks': 0.4.16(react@18.2.0)
-      '@restart/ui': 1.6.7(react-dom@18.2.0)(react@18.2.0)
+      '@restart/ui': 1.6.8(react-dom@18.2.0)(react@18.2.0)
       '@types/react': 18.2.66
       '@types/react-transition-group': 4.4.10
       classnames: 2.5.1
@@ -2623,7 +2632,7 @@ packages:
       js-tokens: 8.0.3
     dev: true
 
-  /stylelint-config-recommended-scss@14.0.0(postcss@8.4.35)(stylelint@16.2.1):
+  /stylelint-config-recommended-scss@14.0.0(postcss@8.4.36)(stylelint@16.2.1):
     resolution: {integrity: sha512-HDvpoOAQ1RpF+sPbDOT2Q2/YrBDEJDnUymmVmZ7mMCeNiFSdhRdyGEimBkz06wsN+HaFwUh249gDR+I9JR7Onw==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
@@ -2633,8 +2642,8 @@ packages:
       postcss:
         optional: true
     dependencies:
-      postcss: 8.4.35
-      postcss-scss: 4.0.9(postcss@8.4.35)
+      postcss: 8.4.36
+      postcss-scss: 4.0.9(postcss@8.4.36)
       stylelint: 16.2.1(typescript@5.4.2)
       stylelint-config-recommended: 14.0.0(stylelint@16.2.1)
       stylelint-scss: 6.2.1(stylelint@16.2.1)
@@ -2649,7 +2658,7 @@ packages:
       stylelint: 16.2.1(typescript@5.4.2)
     dev: true
 
-  /stylelint-config-standard-scss@13.0.0(postcss@8.4.35)(stylelint@16.2.1):
+  /stylelint-config-standard-scss@13.0.0(postcss@8.4.36)(stylelint@16.2.1):
     resolution: {integrity: sha512-WaLvkP689qSYUpJQPCo30TFJSSc3VzvvoWnrgp+7PpVby5o8fRUY1cZcP0sePZfjrFl9T8caGhcKg0GO34VDiQ==}
     engines: {node: '>=18.12.0'}
     peerDependencies:
@@ -2659,9 +2668,9 @@ packages:
       postcss:
         optional: true
     dependencies:
-      postcss: 8.4.35
+      postcss: 8.4.36
       stylelint: 16.2.1(typescript@5.4.2)
-      stylelint-config-recommended-scss: 14.0.0(postcss@8.4.35)(stylelint@16.2.1)
+      stylelint-config-recommended-scss: 14.0.0(postcss@8.4.36)(stylelint@16.2.1)
       stylelint-config-standard: 36.0.0(stylelint@16.2.1)
     dev: true
 
