@@ -94,3 +94,71 @@ See [CONTRIBUTING](CONTRIBUTING.md).
 SIMDE is licensed under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
 
 The rationale behind this decision is that we, the SIMDE authors, believe that society must strive for free, accessible, high quality educational resources. Given that, SIMDE will always be _"Free as in Freedom"_ for anyone to use anywhere, at any time.
+
+## Citation and papers
+
+In papers and reports, please refer to SIMDE as follows: "The SIMDE contributors. SIMDE. https://github.com/SIMDE-ULL/SIMDE" or using the following BibTeX code (preferred):
+
+```tex
+@misc{SIMDE, 
+        title={SIMDE}, 
+        howpublished = {\url{https://github.com/SIMDE-ULL/SIMDE}}, 
+        url={https://github.com/SIMDE-ULL/SIMDE}, 
+        author={Castilla Rodr{\'i}guez, Iv{\'a}n and Abreu Gonzalez, Adrian and Carrasco, {\'O}scar and D{\'i}az Arteaga, Melissa and La spina, Francesco}, 
+        organization = {Universidad de La Laguna}} 
+```
+
+### Papers
+
+These are some papers talking about SIMDE you can cite. If you are writing a paper referencing SIMDE, feel free to add it to this list through opening [an issue](https://github.com/SIMDE-ULL/SIMDE/issues/new).
+
+```tex
+@inproceedings{Rodrguez2004SIMDEUS,
+  title={SIMDE: un simulador para el apoyo docente en la ense{\~n}anza de las Arquitecturas ILP con planificaci{\'o}n din{\'a}mica y est{\'a}tica},
+  author={Iv{\'a}n Castilla Rodr{\'i}guez and Lorenzo Moreno Ruiz and Jos{\'e} Francisco Sigut Saavedra and Carina Gonz{\'a}lez and Evelio J. Gonz{\'a}lez},
+  year={2004},
+  url={https://api.semanticscholar.org/CorpusID:171841142}
+}
+
+
+@article{Castilla2007SIMDEAE,
+  title={SIMDE: An educational simulator of ILP architectures with dynamic and static scheduling},
+  author={Ivan Castilla and Lorenzo Moreno Ruiz and Carina Soledad Gonz{\'a}lez-Gonz{\'a}lez and Jos{\'e} F. Sigut and Evelio Jos{\'e} Gonz{\'a}lez Gonz{\'a}lez},
+  journal={Computer Applications in Engineering Education},
+  year={2007},
+  volume={15},
+  url={https://api.semanticscholar.org/CorpusID:27505992}
+}
+
+
+@article{abreu2017simulador,
+  title={Simulador did{\'a}ctico de arquitectura de computadores},
+  author={Abreu Gonz{\'a}lez, Adri{\'a}n},
+  year={2017},
+  url={http://riull.ull.es/xmlui/handle/915/5125}
+}
+
+
+@article{lopez2018plataforma,
+  title={Plataforma de ludificaci{\'o}n de un simulador did{\'a}ctico de arquitectura de computadores},
+  author={L{\'o}pez Garnier, Antonio Jes{\'u}s and others},
+  year={2018},
+  url={https://riull.ull.es/xmlui/handle/915/9406}
+}
+
+
+@article{diaz2019simulador,
+  title={Simulador did{\'a}ctico de una arquitectura de planificaci{\'o}n est{\'a}tica.},
+  author={D{\'\i}az Arteaga, Melissa},
+  year={2019},
+  url={http://riull.ull.es/xmlui/handle/915/12393}
+}
+
+
+@article{carrasco2022simulador,
+  title={Simulador did{\'a}ctico de arquitectura de computadores: aplicaci{\'o}n de metodolog{\'\i}as de integraci{\'o}n y mantenimiento},
+  author={Carrasco Ben{\'\i}tez, {\'O}scar and others},
+  year={2022},
+  url={http://riull.ull.es/xmlui/handle/915/30298}
+}
+```
