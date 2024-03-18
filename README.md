@@ -64,6 +64,21 @@ pnpm build
 
 The generated build will be available in the `dist/` directory generated in the root directory of the project. The static files can be served using a HTTP server, such as [Apache httpd](https://httpd.apache.org/), [NGINX](https://www.nginx.com/) or [Traefik](https://traefik.io/).
 
+## Citation
+
+In papers and reports, please refer to SIMDE using the following _BibTex_ entry:
+
+```tex
+@misc{SIMDE,
+  author    = {Castilla Rodríguez, Iván and Abreu González, Adrián and Díaz Arteaga, Melissa and Carrasco Benítez, Óscar and La Spina, Francesco},
+  title     = {Simulador para Planificación Dinámica y Estática},
+  year      = {2017},
+  publisher = {GitHub},
+  journal   = {GitHub repository},
+  note      = {\url{https://github.com/SIMDE-ULL/SIMDE}}
+}
+```
+
 ## Contributing
 See [CONTRIBUTING](CONTRIBUTING.md).
 
