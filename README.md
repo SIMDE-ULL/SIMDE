@@ -66,7 +66,7 @@ The generated build will be available in the `dist/` directory generated in the 
 
 ## Citation
 
-In papers and reports, please refer to SIMDE using the following _BibTex_ entry:
+In papers and reports, please refer to SIMDE by using the following _BibTex_ entry:
 
 ```tex
 @misc{SIMDE,
