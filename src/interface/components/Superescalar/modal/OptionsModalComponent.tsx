@@ -44,7 +44,7 @@ class OptionsModalComponent extends React.Component<any, any> {
                 <form className='form form-horizontal'>
                     <div className='form-group'>
                         <div className='col-sm-4'>
-                            <label htmlFor='cacheFailPercentage' className='control-label'>{this.props.t('optionsModal.cacheFail')}
+                            <label htmlFor='cacheFailPercentage' className='control-label'>{this.props.t('optionsModal.cacheFault')}
                             </label>
                         </div>
                         <div className='col-sm-8'>

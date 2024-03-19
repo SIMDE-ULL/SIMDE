@@ -93,7 +93,7 @@ class BatchModalComponent extends React.Component<any, any> {
                                 htmlFor="cacheFailPercentage"
                                 className="control-label col-sm-4"
                             >
-                                {this.props.t('batchModal.cacheFailPercentage')}
+                                {this.props.t('batchModal.cacheFaultPercentage')}
                             </label>
                             <div className="col-sm-8">
                                 <input
@@ -112,7 +112,7 @@ class BatchModalComponent extends React.Component<any, any> {
                                 htmlFor="cacheFailLatency"
                                 className="control-label col-sm-4"
                             >
-                                {this.props.t('batchModal.cacheFailLatency')}
+                                {this.props.t('batchModal.cacheFaultLatency')}
                             </label>
                             <div className="col-sm-8">
                                 <input
