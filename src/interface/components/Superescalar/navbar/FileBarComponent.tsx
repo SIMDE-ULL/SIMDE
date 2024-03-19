@@ -46,10 +46,10 @@ class FileBarComponent extends React.Component<any, any> {
                         id={'dropdown-load'}
                     >
                         <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleLoadModal(true) }}>{this.props.t('fileBar.file.load')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.downloadMemory')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.downloadContent')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.downloadCode')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', SuperescalarIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.downloadStats')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.exportMemory')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.exportContent')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.exportCode')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', SuperescalarIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.exportStats')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}

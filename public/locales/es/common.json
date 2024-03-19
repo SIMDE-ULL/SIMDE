@@ -2,11 +2,11 @@
     "fileBar": {
         "file": {
             "name": "Archivo",
-            "load": "Cargar",
-            "downloadMemory": "Descargar memoria(JSON)",
-            "downloadContent": "Descargar contenido Memoria - Registros",
-            "downloadCode": "Descargar código",
-            "downloadStats": "Descargar eventos estadísticos(JSON)"
+            "load": "Cargar código ensamblador",
+            "exportCode": "Exportar código ensamblador",
+            "exportMemory": "Exportar memoria (JSON)",
+            "exportContent": "Exportar contenido \"Memoria - Registros\"",
+            "exportStats": "Exportar estadísticas (JSON)"
         },
         "view": {
             "name": "Ver",
@@ -69,6 +69,7 @@
     },
     "superescalarModal": {
         "name": "Configuración",
+        "warning": "La ejecución será reiniciada tras modificar la configuración",
         "latency": "Latencia",
         "quantity": "Cantidad",
         "Integer+": "Suma entera",
@@ -77,12 +78,13 @@
         "Floatingx": "Multiplicación flotante",
         "Memory": "Memoria",
         "Jump": "Salto",
-        "cacheFail": "Fallo de caché",
+        "cacheFault": "Fallo de caché",
         "issue": "Emisión",
         "default": "Valores por defecto"
     },
     "vliwModal": {
         "name": "Configuración VLIW",
+        "warning": "La ejecución será reiniciada tras modificar la configuración",
         "latency": "Latencia",
         "quantity": "Cantidad",
         "Integer+": "Suma entera",
@@ -91,22 +93,20 @@
         "Floatingx": "Multiplicación flotante",
         "Memory": "Memoria",
         "Jump": "Salto",
-        "cacheFail": "Fallo de caché",
+        "cacheFault": "Fallo de caché",
         "issue": "Emisión",
         "default": "Valores por defecto"
     },
     "optionsModal": {
         "title": "Opciones",
-        "cacheFail": "% Fallo caché"
+        "cacheFaultPercent": "% Fallo de caché"
     },
     "commonButtons": {
         "close": "Cerrar",
         "save": "Guardar",
         "accept": "Aceptar",
         "launch": "Lanzar",
-        "uploadSuperscalarFromFile": "Seleccionar fichero",
-        "uploadMemoryFromFile": "Subir contenido memoria-registros",
-        "uploadVliwFromFile": "Subir código VLIW"
+        "loadFromFile": "Cargar desde fichero"
     },
     "Code": "Código",
     "Jump table": "Tabla de saltos",
@@ -147,13 +147,13 @@
     "batchModal": {
         "title": "Ejecución por lotes",
         "replications": "Réplicas",
-        "cacheFailPercentage": "Porcentaje de fallos de caché",
-        "cacheFailLatency": "Latencia en fallos de cachés"
+        "cacheFaultPercentage": "Porcentaje de fallos de caché",
+        "cacheFaultLatency": "Latencia en fallos de cachés"
     },
     "batchResults": {
         "title": "Ejecución por lotes realizada",
         "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
-        "download": "Descargar eventos estadísticos(JSON)"
+        "export": "Exportar estadísticas (JSON)"
     },
     "landingPage": {
         "pagetitle": "SIMDEWeb",

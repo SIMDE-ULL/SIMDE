@@ -84,7 +84,7 @@ LOOP:
             <Modal.Footer className="smd-load_modal-footer">
                 <div className="smd-load_modal-file_input">
                     <FileReaderInput as='text' onChange={this.handleInputFileChange} accept='.pla'>
-                        <Button className='btn btn-primary'>{this.props.t('commonButtons.uploadFromFile')}</Button>
+                        <Button className='btn btn-primary'>{this.props.t('commonButtons.loadFromFile')}</Button>
                     </FileReaderInput>
                 </div>
                 <div className="smd-load_modal-actions">
