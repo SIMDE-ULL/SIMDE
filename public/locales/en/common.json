@@ -14,7 +14,7 @@
         },
         "config": {
             "name": "Options",
-            "superescalar": "Configure Superescalar Machine",
+            "superescalar": "Configure Superscalar Machine",
             "vliw": "Configure VLIW Machine",
             "options": "Options",
             "content": "Load content Memory - Registers"
@@ -68,7 +68,9 @@
         }
     },
     "superescalarModal": {
-        "name": "Configuration",
+        "name": "Superscalar Configuration",
+        "functionalUnits": "Functional Units",
+        "parameters": "Parameters",
         "warning": "Execution will restart once configuration changes",
         "latency": "Latency",
         "quantity": "Quantity",
@@ -159,7 +161,7 @@
         "read": "Read more",
         "home": "Home",
         "project": "Project",
-        "superescalar": "Superescalar",
+        "superescalar": "Superscalar",
         "superescalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
         "go": "Go",
         "vliw": "VLIW",

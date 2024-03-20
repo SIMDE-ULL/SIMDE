@@ -347,7 +347,6 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     saveSuperConfig = (superConfig) => {
         // TODO: enforce this through a unique map so that we can overwrite the config directly
-
         this.superescalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumQuantity);
         this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumLatency);
 

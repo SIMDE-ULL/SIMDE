@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import { MachineReducers, initialState as machineInitialState } from './machine'
-import { UiReducers, initialState as uiInitialState } from './ui'
-import { ColorReducers, initialState as colorsInitialState } from './color'
+import { MachineReducers, type initialState as machineInitialState } from './machine'
+import { ColorReducers, type initialState as colorsInitialState } from './color'
+import { UiReducers, type initialState as uiInitialState } from './ui'
 
 export interface GlobalState {
     Machine: typeof machineInitialState,

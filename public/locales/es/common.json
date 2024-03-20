@@ -68,7 +68,9 @@
         }
     },
     "superescalarModal": {
-        "name": "Configuración",
+        "name": "Configuración Superescalar",
+        "functionalUnits": "Unidades Funcionales",
+        "parameters": "Parámetros",
         "warning": "La ejecución será reiniciada tras modificar la configuración",
         "latency": "Latencia",
         "quantity": "Cantidad",

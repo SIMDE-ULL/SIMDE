@@ -152,14 +152,14 @@ export class Machine {
     }
   }
 
-  public changeFunctionalUnitNumber(type: FunctionalUnitType, number: number) {
-    if (number == 0) {
+  public changeFunctionalUnitNumber(type: FunctionalUnitType, num: number) {
+    if (num === 0) {
       return;
     }
 
-    let currentLatency = this.functionalUnit[type][0].latency;
-    this.functionalUnit[type] = new Array(number);
-    for (let i = 0; i < number; i++) {
+    const currentLatency = this.functionalUnit[type][0].latency;
+    this.functionalUnit[type] = new Array(num);
+    for (let i = 0; i < num; i++) {
       this.functionalUnit[type][i] = new FunctionalUnit(type, currentLatency);
     }
   }

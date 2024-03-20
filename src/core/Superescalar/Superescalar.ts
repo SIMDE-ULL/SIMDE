@@ -122,14 +122,14 @@ export class Superescalar extends Machine {
     }
   }
 
-  public changeFunctionalUnitNumber(type: FunctionalUnitType, number: number) {
-    super.changeFunctionalUnitNumber(type, number);
+  public changeFunctionalUnitNumber(type: FunctionalUnitType, num: number) {
+    super.changeFunctionalUnitNumber(type, num);
 
     // Update the number of alu mem units acortding to the number of memory units
     if (type === FunctionalUnitType.MEMORY) {
       let currentLatency = this.aluMem[0].latency;
-      this._aluMem = new Array(number);
-      for (let j = 0; j < number; j++) {
+      this._aluMem = new Array(num);
+      for (let j = 0; j < num; j++) {
         this.aluMem[j] = new FunctionalUnit(
           FunctionalUnitType.INTEGERSUM,
           currentLatency

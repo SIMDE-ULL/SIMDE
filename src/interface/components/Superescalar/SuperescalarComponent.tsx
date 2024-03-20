@@ -10,7 +10,7 @@ import RegisterTabComponent from './tab/RegistersTabComponent';
 import StatsTabComponent from './tab/StatsTabComponent';
 
 import LoadModalComponent from "./modal/LoadModalComponent";
-import SuperescalarConfigModalComponent from "./modal/SuperescalarConfigModalComponent";
+import SuperescalarConfigModalComponent from "./modal/SuperescalarConfigModal";
 import SuperescalarLoadContentModalComponent from "./modal/SuperescalarLoadContentModalComponent";
 
 import OptionsModalComponent from "./modal/OptionsModalComponent";
