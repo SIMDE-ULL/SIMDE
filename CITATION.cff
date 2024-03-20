@@ -1,0 +1,41 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Simulador para Planificación Dinámica y Estática
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - family-names: Castilla Rodríguez
+    given-names: Iván
+    email: icasrod@ull.es
+    orcid: 'https://orcid.org/0000-0003-3933-2582'
+    affiliation: Universidad de La Laguna
+  - given-names: Adrián
+    family-names: Abreu González
+    email: adrianabreugonzalez@outlook.com
+  - given-names: Melissa
+    family-names: Díaz Arteaga
+  - given-names: Óscar
+    family-names: Carrasco Benítez
+    email: me@oxca.be
+  - given-names: Francesco
+    family-names: La spina
+    email: endes@disroot.org
+repository-code: 'https://github.com/SIMDE-ULL/SIMDE'
+url: 'https://simde-ull.github.io/SIMDE/'
+abstract: >-
+  Educational computer simulator on a mission to
+  "superscalate" the study of computer architecture
+  fundamentals.
+keywords:
+  - simulator
+  - educational
+  - computer architecture
+  - superscalar
+  - VLIW
+  - instruction level parallelism
+  - out of order
+license: GPL-3.0-only
