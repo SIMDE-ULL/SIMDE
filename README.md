@@ -70,12 +70,12 @@ In papers and reports, please refer to SIMDE by using the following _BibTex_ ent
 
 ```tex
 @misc{SIMDE,
-  author    = {Castilla Rodríguez, Iván and Abreu González, Adrián and Díaz Arteaga, Melissa and Carrasco Benítez, Óscar and La Spina, Francesco},
-  title     = {Simulador para Planificación Dinámica y Estática},
-  year      = {2017},
-  publisher = {GitHub},
-  journal   = {GitHub repository},
-  note      = {\url{https://github.com/SIMDE-ULL/SIMDE}}
+  author       = {Castilla Rodríguez, Iván and Abreu González, Adrián and Díaz Arteaga, Melissa and Carrasco Benítez, Óscar and La Spina, Francesco},
+  title        = {Simulador para Planificación Dinámica y Estática},
+  year         = {2017},
+  publisher    = {GitHub},
+  journal      = {GitHub repository},
+  howpublished = {\url{https://github.com/SIMDE-ULL/SIMDE}}
 }
 ```
 
