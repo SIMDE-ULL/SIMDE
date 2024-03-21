@@ -69,13 +69,11 @@ The generated build will be available in the `dist/` directory generated in the 
 In papers and reports, please refer to SIMDE by using the following _BibTex_ entry:
 
 ```tex
-@misc{SIMDE,
-  author       = {Castilla Rodríguez, Iván and Abreu González, Adrián and Díaz Arteaga, Melissa and Carrasco Benítez, Óscar and La Spina, Francesco},
-  title        = {Simulador para Planificación Dinámica y Estática},
-  year         = {2017},
-  publisher    = {GitHub},
-  journal      = {GitHub repository},
-  howpublished = {\url{https://github.com/SIMDE-ULL/SIMDE}}
+@software{Castilla_Rodriguez_Simulador_para_Planificacion,
+  author  = {Castilla Rodríguez, Iván and Abreu González, Adrián and Díaz Arteaga, Melissa and Carrasco Benítez, Óscar and La spina, Francesco},
+  license = {GPL-3.0-only},
+  title   = {{Simulador para Planificación Dinámica y Estática}},
+  url     = {https://github.com/SIMDE-ULL/SIMDE}
 }
 ```
 
