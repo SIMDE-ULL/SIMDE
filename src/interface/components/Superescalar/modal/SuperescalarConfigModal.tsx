@@ -96,7 +96,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Integer+")}
+												{t("functionalUnits.intAdd")}
 											</Form.Label>
 											<Col>
 												<Form.Group>
@@ -125,7 +125,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Integerx")}
+												{t("functionalUnits.intMult")}
 											</Form.Label>
 											<Col>
 												<Form.Group>
@@ -154,7 +154,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Floating+")}
+												{t("functionalUnits.floatAdd")}
 											</Form.Label>
 											<Col>
 												<Form.Group>
@@ -183,7 +183,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Floatingx")}
+												{t("functionalUnits.floatMult")}
 											</Form.Label>
 											<Col>
 												<Form.Group>
@@ -212,7 +212,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Memory")}
+												{t("functionalUnits.memory")}
 											</Form.Label>
 											<Col>
 												<Form.Group>
@@ -241,7 +241,7 @@ export const SuperscalarConfigModal: React.FC = ({
 										</Row>
 										<Row>
 											<Form.Label column>
-												{t("superescalarModal.Jump")}
+												{t("functionalUnits.jump")}
 											</Form.Label>
 											<Col>
 												<Form.Group>

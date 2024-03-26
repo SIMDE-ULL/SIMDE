@@ -6,7 +6,7 @@ export function FunctionalUnitComponent(props) {
 
     return (
         <div className="smd-functional_unit panel panel-default">
-            <div className="panel-heading">{t(props.title)}</div>
+            <div className="panel-heading">{t(`functionalUnits.${props.title}`)}</div>
             <div className="panel-body">
                 <div className="smd-table">
                     {
