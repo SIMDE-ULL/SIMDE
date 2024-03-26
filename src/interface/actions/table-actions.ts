@@ -87,10 +87,10 @@ function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
 }
 
 const functionalUnitTranslateKeys = {
-    0: 'planificator.IntegerAdd',
-    1: 'planificator.IntegerMult',
-    2: 'planificator.FloatAdd',
-    3: 'planificator.FloatMult',
-    4: 'planificator.Memory',
-    5: 'planificator.Jump'
+    0: 'functionalUnits.intAdd',
+    1: 'functionalUnits.intMult',
+    2: 'functionalUnits.floatAdd',
+    3: 'functionalUnits.floatMult',
+    4: 'functionalUnits.memory',
+    5: 'functionalUnits.jump'
 };

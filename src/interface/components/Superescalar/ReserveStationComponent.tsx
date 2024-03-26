@@ -7,7 +7,7 @@ export function ReserveStationComponent(props) {
 
     return (
         <div className="smd-reserve_station panel panel-default">
-            <div className="panel-heading">{t(props.title)}</div>
+            <div className="panel-heading">{t(`functionalUnits.${props.title}`)}</div>
             <div className="smd-reserve_station-body panel-body">
                 <div className="smd-table">
                     <div className="smd-table-header">

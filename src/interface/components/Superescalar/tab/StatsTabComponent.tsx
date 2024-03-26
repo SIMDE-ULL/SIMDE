@@ -277,7 +277,7 @@ export const StatsTabComponent: React.FC = (
 						<thead>
 							<tr>
 								<th scope="col">#</th>
-								<th scope="col">{props.t("Code")}</th>
+								<th scope="col">{props.t("code")}</th>
 								<th scope="col">{props.t("stats.statuses.prefetchNumber")}</th>
 								<th scope="col">{props.t("stats.statuses.decodeNumber")}</th>
 								<th scope="col">{props.t("stats.statuses.issueNumber")}</th>

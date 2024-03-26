@@ -97,7 +97,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Integer+')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.intAdd')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -126,7 +126,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Integerx')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.intMult')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -155,7 +155,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Floating+')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.floatAdd')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -184,7 +184,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Floatingx')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.floatMult')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -213,7 +213,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Memory')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.memory')}</legend>
                             </div>
                             <div className='col-sm-4'>
                                 <input
@@ -242,7 +242,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
                     <div className='form-group'>
                         <fieldset>
                             <div className='col-sm-4'>
-                                <legend className='control-label'>{this.props.t('vliwModal.Jump')}</legend>
+                                <legend className='control-label'>{this.props.t('functionalUnits.jump')}</legend>
                             </div>
                             <div className='col-sm-4 col-sm-offset-4'>
                                 <input

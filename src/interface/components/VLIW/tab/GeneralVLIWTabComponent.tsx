@@ -35,7 +35,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                     <div className="smd-general_tab-simulation_left--expanded">
                         <div className="smd-general_tab-simulation_planificator">
                             <TableComponent
-                                title="Instrucciones VLIW"
+                                title="VLIWInstructions"
                                 header={this.props.vliwExecutionHeaderTable}
                                 data={this.props.vliwExecutionTable}
                                 pc={this.props.pc}
@@ -43,9 +43,8 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                             />
                         </div>  
                         <div className="smd-general_tab-simulation_nat_predicate">
-                                {/* TODO: i18n this */}
                                 <RegisterComponent 
-                                    title='Predicado'
+                                    title='predicate'
                                     data={this.props.predicate.data}
                                     visibleRange={this.props.predicate.visibleRangeValues} 
                                     addInterval={this.props.actions.addPredicateInterval}
@@ -75,7 +74,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                             <div className="panel-heading">{this.props.t('UF')}</div>
                             <div className="panel-body">
                                 <FunctionalUnitComponent
-                                    title="+Entera"
+                                    title="intAdd"
                                     header={
                                         this.props.functionalUnitIntAdd.header
                                     }
@@ -84,7 +83,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                     }
                                 />
                                 <FunctionalUnitComponent
-                                    title="xEntera"
+                                    title="intMult"
                                     header={
                                         this.props.functionalUnitIntSub.header
                                     }
@@ -93,7 +92,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                     }
                                 />
                                 <FunctionalUnitComponent
-                                    title="+Flotante"
+                                    title="floatAdd"
                                     header={
                                         this.props.functionalUnitFloAdd.header
                                     }
@@ -102,7 +101,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                     }
                                 />
                                 <FunctionalUnitComponent
-                                    title="xFlotante"
+                                    title="floatMult"
                                     header={
                                         this.props.functionalUnitFloSub.header
                                     }
@@ -111,7 +110,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                     }
                                 />
                                 <FunctionalUnitComponent
-                                    title="Mem"
+                                    title="memory"
                                     header={
                                         this.props.functionalUnitMemory.header
                                     }
@@ -120,7 +119,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                                     }
                                 />
                                 <FunctionalUnitComponent
-                                    title="JumpUF"
+                                    title="jump"
                                     header={
                                         this.props.functionalUnitJump.header
                                     }

@@ -24,7 +24,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
             <div className='smd-register-tab'>
                 <div className='smd-register-tab_register'>
                     <RegisterComponent 
-                        title='Memoria'
+                        title='memory'
                         data={this.props.memory.data}
                         visibleRange={this.props.memory.visibleRangeValues} 
                         addInterval={this.props.actions.addMemoryInterval}
@@ -34,7 +34,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
                 </div>
                 <div className='smd-register-tab_register'>
                     <RegisterComponent
-                        title='Registros generales'
+                        title='generalRegisters'
                         data={this.props.generalRegisters.data}
                         visibleRange={this.props.generalRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addGeneralRegistersInterval}
@@ -44,7 +44,7 @@ export class RegisterVLIWTabComponent extends React.Component<any, any> {
                </div>
                <div className='smd-register-tab_register'>
                    <RegisterComponent 
-                        title='Registros de punto flotante'
+                        title='floatRegisters'
                         data={this.props.floatingRegisters.data}
                         visibleRange={this.props.floatingRegisters.visibleRangeValues} 
                         addInterval={this.props.actions.addFloatingRegistersInterval}
