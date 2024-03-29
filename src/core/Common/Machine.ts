@@ -143,7 +143,7 @@ export class Machine {
     type: FunctionalUnitType,
     latency: number
   ) {
-    if (latency == 0) {
+    if (latency === 0) {
       return;
     }
 

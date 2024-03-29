@@ -94,7 +94,7 @@ export class FunctionalUnit {
 
     if (!this.isEmpty() && !this._hasExectutedInstBeforeTick) {
       //decrement blank time units of the next instruction to be executed
-      if (this._instructions[0].blankTimeUnitsAhead == 0) {
+      if (this._instructions[0].blankTimeUnitsAhead === 0) {
         // If an instruction has 0 blank time units ahead, it means it was behind another
         // or it wasnt executed and should be dropped
         // If no instruction was executed in this cycle,
@@ -126,7 +126,7 @@ export class FunctionalUnit {
   }
 
   public isEmpty(): boolean {
-    return this._instructions.length == 0;
+    return this._instructions.length === 0;
   }
 
   public isStalled(): boolean {
@@ -135,7 +135,7 @@ export class FunctionalUnit {
 
   public getReadyInstructionUid(): number {
     return this._instructions.length > 0 &&
-      this._instructions[0].blankTimeUnitsAhead == 0
+      this._instructions[0].blankTimeUnitsAhead === 0
       ? this._instructions[0].instruction.uid
       : -1;
   }
@@ -146,7 +146,7 @@ export class FunctionalUnit {
     secondValue = 0
   ): FunctionalUnitResult {
     if (
-      this._instructions.length == 0 ||
+      this._instructions.length === 0 ||
       this._instructions[0].blankTimeUnitsAhead > 0
     ) {
       return null;

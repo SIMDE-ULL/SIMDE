@@ -102,8 +102,7 @@ export class ReorderBuffer {
   public canCommitStoreInstruction(): boolean {
     const entry = this._queue[0];
     return (
-      entry != undefined &&
-      entry.ready &&
+      entry?.ready &&
       entry.instruction.isStoreInstruction()
     );
   }
@@ -114,7 +113,7 @@ export class ReorderBuffer {
   public canCommitJumpInstruction(): boolean {
     const entry = this._queue[0];
     return (
-      entry != undefined && entry.ready && entry.instruction.isJumpInstruction()
+      entry?.ready && entry.instruction.isJumpInstruction()
     );
   }
 
@@ -124,8 +123,7 @@ export class ReorderBuffer {
   public canCommitRegisterInstruction(): boolean {
     const entry = this._queue[0];
     return (
-      entry != undefined &&
-      entry.ready &&
+      entry?.ready &&
       entry.instruction.isRegisterInstruction()
     );
   }
@@ -272,20 +270,20 @@ export class ReorderBuffer {
         const aux = {
           instruction: { id: "", uid: -1, value: "" },
           destinyRegister:
-            entry.destinyRegister !== -1 ? "" + entry.destinyRegister : "-",
-          value: "" + entry.value,
-          address: entry.address !== -1 ? "@" + entry.address : "-",
+            entry.destinyRegister !== -1 ?  `${entry.destinyRegister}` : "-",
+          value: `${entry.value}`,
+          address: entry.address !== -1 ? `@${entry.address}` : "-",
           superStage: stageToString(entry.superStage),
         };
         if (entry.instruction != null) {
           if (entry.destinyRegister !== -1) {
             if (entry.instruction.isDestinyRegisterFloat()) {
-              aux.destinyRegister = "F" + aux.destinyRegister;
+              aux.destinyRegister = `F${aux.destinyRegister}`;
             } else {
-              aux.destinyRegister = "R" + aux.destinyRegister;
+              aux.destinyRegister = `R${aux.destinyRegister}`;
             }
           }
-          aux.instruction.id = "" + entry.instruction.id;
+          aux.instruction.id = `${entry.instruction.id}`;
           aux.instruction.uid = entry.instruction.uid;
           aux.instruction.value = entry.instruction.toString();
         }

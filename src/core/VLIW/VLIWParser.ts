@@ -38,9 +38,9 @@ interface IndexParsed {
 }
 
 
-export class VLIWParser {
 
-    public static Parse(input: string, code: Code): LargeInstruction[] {
+
+    export function Parse(input: string, code: Code): LargeInstruction[] {
 
         // This parses depends on the code, so we moved it here
         const indexParser = apply(
@@ -119,15 +119,15 @@ export class VLIWParser {
             const operationsAmount = +instructionsLines[i][0].text; // This is also a retrocompatibility thing, we don't really use it
 
             // Iterate over the operations
-            instructionsLines[i][1].forEach(operation => {
+            for (const operation of instructionsLines[i][1]) {
                 instructions[i].addOperation(operation);
-            });
+            }
         }
 
         return instructions;
     }
 
-    public static ExportAsString(_instructionNumber: number, _instructions: LargeInstruction[]): string {
+    export function ExportAsString(_instructionNumber: number, _instructions: LargeInstruction[]): string {
 
         let outputString: string;
         outputString += _instructionNumber;
@@ -161,4 +161,3 @@ export class VLIWParser {
         }
         return outputString;
     }
-}

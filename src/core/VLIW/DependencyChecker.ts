@@ -7,9 +7,8 @@ export interface Check {
     register: number;
 }
 
-export class DependencyChecker {
 
-    public static checkTargetOperation(operation: VLIWOperation, checkGPR: Check[], checkFPR: Check[], functionalUnitLatencies: number[]) {
+    export function checkTargetOperation(operation: VLIWOperation, checkGPR: Check[], checkFPR: Check[], functionalUnitLatencies: number[]) {
         switch (operation.opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI:
@@ -55,11 +54,11 @@ export class DependencyChecker {
             case Opcodes.BGT:
                 break;
             default:
-                throw new Error("Error at checkTargetOperation, unknown opcode: " + Opcodes[operation.opcode]);
+                throw new Error(`Error at checkTargetOperation, unknown opcode: ${Opcodes[operation.opcode]}`);
         }
     }
 
-    public static checkSourceOperands(operation: VLIWOperation, checkGPR: Check[], checkFPR: Check[]): boolean {
+    export function checkSourceOperands(operation: VLIWOperation, checkGPR: Check[], checkFPR: Check[]): boolean {
         let result = true;
         switch (operation.opcode) {
             case Opcodes.ADD:
@@ -108,14 +107,14 @@ export class DependencyChecker {
                 }
                 break;
             default:
-                throw new Error("Error at checkSourceOperands, unknown opcode: " + Opcodes[operation.opcode]);
+                throw new Error(`Error at checkSourceOperands, unknown opcode: ${Opcodes[operation.opcode]}`);
         }
         return result;
     }
 
-    public static checkNat(operation: VLIWOperation, NaTGP: boolean[], NaTFP: boolean[]): boolean {
+    export function checkNat(operation: VLIWOperation, NaTGP: boolean[], NaTFP: boolean[]): boolean {
 
-        let result;
+        let result: boolean;
         switch (operation.opcode) {
             case Opcodes.ADD:
             case Opcodes.MULT:
@@ -144,9 +143,7 @@ export class DependencyChecker {
                 result = NaTGP[operation.getOperand(0)] || NaTGP[operation.getOperand(1)];
                 break;
             default:
-                throw new Error("Error at checkNat, unknown opcode: " + Opcodes[operation.opcode]);
+                throw new Error(`Error at checkNat, unknown opcode: ${Opcodes[operation.opcode]}`);
         }
         return result;
     }
-
-}

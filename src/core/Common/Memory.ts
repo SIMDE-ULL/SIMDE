@@ -7,7 +7,7 @@ export interface Datum {
  * Returns an Error when target method is called with
  * a non-positive `address: number` argument.
  */
-export const forcePositiveAddresses = (address: number): void | Error => {
+export const forcePositiveAddresses = (address: number): undefined | Error => {
   if (address < 0) {
     return Error("Negative numbers are invalid as addresses");
   }
@@ -54,7 +54,7 @@ export class Memory implements Iterable<Datum> {
     return { ...datum };
   }
 
-  public setDatum(address: number, value: number): void | Error {
+  public setDatum(address: number, value: number): undefined | Error {
     const error = forcePositiveAddresses(address);
     if (error) return error;
 

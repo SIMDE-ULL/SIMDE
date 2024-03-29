@@ -24,7 +24,7 @@ export class PrefetchUnit {
   }
 
   public isEmpty() {
-    return this._entries.length == 0;
+    return this._entries.length === 0;
   }
 
   public hasBreakpoint() {

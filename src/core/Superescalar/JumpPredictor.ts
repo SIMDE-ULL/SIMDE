@@ -15,22 +15,22 @@ export class JumpPredictor {
   }
 
   public updatePrediction(address: number, taken: boolean) {
-    address = address % this._size;
-    switch (this._table[address]) {
+    const tableAddress = address % this._size;
+    switch (this._table[tableAddress]) {
       case 0:
-        this._table[address] = taken ? 1 : 0;
+        this._table[tableAddress] = taken ? 1 : 0;
         break;
       case 1:
-        this._table[address] = taken ? 3 : 0;
+        this._table[tableAddress] = taken ? 3 : 0;
         break;
       case 2:
-        this._table[address] = taken ? 3 : 0;
+        this._table[tableAddress] = taken ? 3 : 0;
         break;
       case 3:
-        this._table[address] = taken ? 3 : 2;
+        this._table[tableAddress] = taken ? 3 : 2;
         break;
       default:
-        this._table[address] = 0;
+        this._table[tableAddress] = 0;
         break;
     }
   }

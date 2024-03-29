@@ -71,15 +71,15 @@ export class Code {
    * save
    */
   public save(): string {
-    let result = this.lines + "\n";
+    let result = `${this.lines}\n`;
 
     for (let i = 0; i < this.instructions.length; i++) {
       // Check if there is a label at line i
       if (this.instructions[i].label !== "") {
-        result += this.instructions[i].label + ":\n";
+        result += `${this.instructions[i].label}:\n`;
       }
 
-      result += "\t" + this.instructions[i].toString() + "\n";
+      result += `\t${this.instructions[i].toString()}\n`;
     }
 
     return result;

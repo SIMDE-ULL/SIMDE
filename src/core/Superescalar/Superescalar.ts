@@ -475,7 +475,7 @@ export class Superescalar extends Machine {
   }
 
   writeInstruction(type: FunctionalUnitType, num: number) {
-    let resul;
+    let resul: number;
     const instUid = this.functionalUnit[type][num].getReadyInstructionUid();
     if (instUid !== -1) {
       const inst = this._reorderBuffer.getInstruction(instUid);

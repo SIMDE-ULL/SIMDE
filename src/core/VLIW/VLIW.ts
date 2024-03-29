@@ -2,7 +2,7 @@ import { Machine } from '../Common/Machine';
 import { Opcodes } from '../Common/Opcodes';
 import { VLIWCode } from './VLIWCode';
 import { type FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
-import { DependencyChecker, type Check } from './DependencyChecker';
+import { checkTargetOperation, checkSourceOperands, checkNat, type Check } from './DependencyChecker';
 import { VLIWError } from './VLIWError';
 import { Datum } from '../Common/Memory';
 import type { VLIWOperation } from './VLIWOperation';
@@ -85,10 +85,9 @@ export class VLIW extends Machine {
             this.checkDependencies(row, id);
         } catch (error) {
             if (error !== VLIWError.ERRNO) {
-                throw new Error('Dependencies Error: ' + error);
-            } else {
-                return VLIWError.ERRNO;
+                throw new Error(`Dependencies Error: ${error}`);
             }
+            return VLIWError.ERRNO;
         }
     }
 
@@ -97,17 +96,16 @@ export class VLIW extends Machine {
             this.checkPredicate(row, id);
         } catch (error) {
             if (error !== VLIWError.ERRNO) {
-                throw new Error('Predicate Error: ' + error);;
-            } else {
-                return VLIWError.ERRNO;
+                throw new Error(`Predicate Error: ${error}`);
             }
+            return VLIWError.ERRNO;
         }
     }
 
     public tic() {
 
-        let i;
-        let j;
+        let i: number;
+        let j: number;
         let pending = false;
         this.status.cycle++;
 
@@ -118,7 +116,7 @@ export class VLIW extends Machine {
         if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isStalled()) {
 
             const execution = this.functionalUnit[FunctionalUnitType.JUMP][0].executeReadyInstruction();
-            const operation: any = (execution != null) ? execution.instruction : null;
+            const operation: VLIWOperation = (execution != null) ? execution.instruction as VLIWOperation : null;
             if (operation != null) {
                 if (this._predR[operation.getPred()]) {
                     this.pc = this.runJump(operation);
@@ -153,7 +151,7 @@ export class VLIW extends Machine {
 
 
                 const execution = this.functionalUnit[i][j].executeReadyInstruction();
-                const operation: any = (execution != null) ? execution.instruction : null;
+                const operation: VLIWOperation = (execution != null) ? execution.instruction as VLIWOperation : null;
 
                 if (operation != null) {
                     if (this._predR[operation.getPred()]) {
@@ -188,7 +186,7 @@ export class VLIW extends Machine {
             }
 
             if (!this.functionalUnit[type][index].isFree() ||
-                DependencyChecker.checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
+                checkNat(instruction.getOperation(i), this._NaTGP, this._NaTFP)) {
                 //TODO: This really fails when there is a RAW dependency?
                 return VLIWError.ERRRAW; // VLIW_ERRRA;
             }
@@ -257,7 +255,7 @@ export class VLIW extends Machine {
             case Opcodes.SF:
                 this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
                 break;
-            case Opcodes.LW:
+            case Opcodes.LW: {
                 const datumInteger = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
 
                 //hack: as we dont have a well made error handling, intercept the error and just throw it
@@ -272,7 +270,8 @@ export class VLIW extends Machine {
                 this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
                 this._NaTGP[operation.getOperand(0)] = false;
                 break;
-            case Opcodes.LF:
+            }
+            case Opcodes.LF: {
                 const datumFloat = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
 
                 //hack: as we dont have a well made error handling, intercept the error and just throw it
@@ -287,6 +286,7 @@ export class VLIW extends Machine {
                 this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
                 this._NaTFP[operation.getOperand(0)] = false;
                 break;
+            }
             default:
                 break;
         }
@@ -325,12 +325,12 @@ export class VLIW extends Machine {
                 this._predR[operation.getPredFalse()] = true;
             }
         } else {
-            throw new Error("Invalid jump operation: " + operation.opcode);
+            throw new Error(`Invalid jump operatio: ${operation.opcode}`);
         }
         return newPC;
     }
 
-    private checkDependencies(row: number, id: number) {
+    private checkDependencies(_row: number, _id: number) {
         const checkGPR: Check[] = new Array(Machine.NGP);
         const checkFPR: Check[] = new Array(Machine.NFP);
 
@@ -342,15 +342,15 @@ export class VLIW extends Machine {
             checkFPR[i].latency = 0;
         }
 
-        for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
+        for (let row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             const instruction = this._code.getLargeInstruction(row);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 //TODO
                 //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
             }
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
-                if (!DependencyChecker.checkSourceOperands(instruction.getOperation(j), checkGPR, checkFPR)) {
-                    id = instruction.getOperation(j).id;
+                if (!checkSourceOperands(instruction.getOperation(j), checkGPR, checkFPR)) {
+                    const id = instruction.getOperation(j).id;
                     throw VLIWError.ERRRAW; // VLIW_ERRRA;
                 }
             }
@@ -368,9 +368,9 @@ export class VLIW extends Machine {
         throw VLIWError.ERRNO; // VLIW_ERRNO;
     }
 
-    private checkPredicate(row: number, id: number) {
+    private checkPredicate(_row: number, _id: number) {
         let controlCheckList: Check[]; // list<TChequeo> checkPredicate;
-        for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
+        for (let row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             let index = 0;
             while (index < controlCheckList.length) {
                 if (controlCheckList[index].latency === 1) {
@@ -401,14 +401,15 @@ export class VLIW extends Machine {
                         }
                     }
                     if (index === controlCheckList.length) {
-                        id = instruction.getOperation(j).id;
+                        const id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;
                             controlCheckList[i].register = 0;
                         }
                         throw VLIWError.ERRPRED; // VLIW_ERRPRED;
-                    } else if (this.functionalUnit[instruction.getOperation(j).getFunctionalUnitType()].length < controlCheckList[index].latency) {
-                        id = instruction.getOperation(j).id;
+                    }
+                    if (this.functionalUnit[instruction.getOperation(j).getFunctionalUnitType()].length < controlCheckList[index].latency) {
+                        const id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;
                             controlCheckList[i].register = 0;

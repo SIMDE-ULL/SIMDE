@@ -47,14 +47,7 @@ export class Instruction {
   }
 
   toString(): string {
-    let aux = "";
-    if (this._operandsString[1]) {
-      aux += " " + this._operandsString[1];
-    }
-    if (this._operandsString[2]) {
-      aux += " " + this._operandsString[2];
-    }
-    return `${OpcodesNames[this.opcode]} ${this._operandsString[0]} ${aux}`;
+    return `${OpcodesNames[this.opcode]} ${this._operandsString[0]} ${this._operandsString[1]? this._operandsString[1]: ""} ${this._operandsString[2]? this._operandsString[2]: ""}`;
   }
 
   setOperand(index: number, value: number, valueString: string) {

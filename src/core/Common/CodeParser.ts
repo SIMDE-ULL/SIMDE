@@ -81,7 +81,7 @@ const regParser = apply(
   alt_sc(tok(Tokens.RegFP), tok(Tokens.RegGP)),
   (reg: Token<Tokens.RegFP> | Token<Tokens.RegGP>) => {
     let type = RegType.GP;
-    if (reg.kind == Tokens.RegFP) {
+    if (reg.kind === Tokens.RegFP) {
       type = RegType.FP;
     }
     return {
@@ -108,7 +108,7 @@ const addressParser = apply(
       Token<Tokens.BraketClose>
     ]
   ) => {
-    if (address[2].type == RegType.FP) {
+    if (address[2].type === RegType.FP) {
       throw new TokenError(
         address[2].pos,
         "Address register cannot be FP register"
@@ -124,9 +124,8 @@ const opcodeParser = apply(
     const opcode: number = OpcodesNames.indexOf(opcodeTok.text);
     if (opcode !== -1) {
       return { opcode: opcode, pos: opcodeTok.pos };
-    } else {
-      throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
     }
+      throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
   }
 );
 
@@ -164,7 +163,7 @@ export class CodeParser {
     let pos = 0;
     for (let i = 0; i < result[1].length; i++) {
       const line = result[1][i];
-      if ("kind" in line && line.kind == Tokens.Label) {
+      if ("kind" in line && line.kind === Tokens.Label) {
         const name = line.text.slice(0, -1);
         if (name in this._labels) {
           throw new Error(
@@ -208,12 +207,12 @@ export class CodeParser {
           | [OpcodeToken, Reg, Address]
           | [OpcodeToken, Reg, Reg, Token<Tokens.Id>]
       ) => {
-        var type: Formats;
-        var instruction: Instruction = new Instruction();
-        var pos: TokenPosition;
+        let type: Formats;
+        const instruction: Instruction = new Instruction();
+        let pos: TokenPosition;
 
         // set the opcode and get the current position
-        if (operation instanceof Array) {
+        if (Array.isArray(operation)) {
           instruction.opcode = operation[0].opcode;
           pos = operation[0].pos;
         } else {
@@ -222,9 +221,9 @@ export class CodeParser {
         }
 
         // Check the recived instruction format and set the operands
-        if (!(operation instanceof Array)) {
+        if (!Array.isArray(operation)) {
           type = Formats.Noop;
-        } else if ("num" in operation[2] && operation.length == 4) {
+        } else if ("num" in operation[2] && operation.length === 4) {
           if (operation[2].type !== operation[1].type) {
             throw new TokenError(
               operation[2].pos,
@@ -234,19 +233,20 @@ export class CodeParser {
             );
           }
 
-          if (typeof operation[3] == "number") {
+          if (typeof operation[3] === "number") {
             type = Formats.GeneralRegisterAndInmediate;
 
             // Check that the registers are in bounds
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                `Destiny register number out of bounds`
+                "Destiny register number out of bounds"
               );
-            } else if (operation[2].num > this._generalRegisters) {
+            }
+            if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                `Operand 1 register number out of bounds`
+                "Operand 1 register number out of bounds"
               );
             }
 
@@ -255,12 +255,12 @@ export class CodeParser {
             instruction.setOperand(
               2,
               operation[3],
-              "#" + operation[3].toString()
+              `#${operation[3].toString()}`
             );
-            if (operation[1].type == RegType.FP) {
+            if (operation[1].type === RegType.FP) {
               throw new TokenError(
                 operation[1].pos,
-                `Inmediate operand not allowed for floating point registers`
+                "Inmediate operand not allowed for floating point registers"
               );
             }
           } else if ("num" in operation[3]) {
@@ -273,7 +273,7 @@ export class CodeParser {
               );
             }
 
-            if (operation[1].type == RegType.FP) {
+            if (operation[1].type === RegType.FP) {
               type = Formats.TwoFloatingRegisters;
             } else {
               type = Formats.TwoGeneralRegisters;
@@ -283,17 +283,19 @@ export class CodeParser {
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                `Destiny register number out of bounds`
+                "Destiny register number out of bounds"
               );
-            } else if (operation[2].num > this._generalRegisters) {
+            } 
+            if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                `Operand 1 register number out of bounds`
+                "Operand 1 register number out of bounds"
               );
-            } else if (operation[3].num > this._generalRegisters) {
+            }
+            if (operation[3].num > this._generalRegisters) {
               throw new TokenError(
                 operation[3].pos,
-                `Operand 2 register number out of bounds`
+                "Operand 2 register number out of bounds"
               );
             }
 
@@ -307,12 +309,13 @@ export class CodeParser {
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                `Operand 1 register number out of bounds`
+                "Operand 1 register number out of bounds"
               );
-            } else if (operation[2].num > this._generalRegisters) {
+            }
+            if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                `Operand 2 register number out of bounds`
+                "Operand 2 register number out of bounds"
               );
             }
 
@@ -320,8 +323,8 @@ export class CodeParser {
             instruction.setOperand(1, operation[2].num, operation[2].text);
             instruction.setOperand(2, undefined, operation[3].text);
           }
-        } else if (operation.length == 3) {
-          if (operation[1].type == RegType.FP) {
+        } else if (operation.length === 3) {
+          if (operation[1].type === RegType.FP) {
             type = Formats.FloatingLoadStore;
           } else {
             type = Formats.GeneralLoadStore;
@@ -331,17 +334,19 @@ export class CodeParser {
           if (operation[1].num > this._generalRegisters) {
             throw new TokenError(
               operation[1].pos,
-              `Destiny register number out of bounds`
+              "Destiny register number out of bounds"
             );
-          } else if (operation[2].reg.num > this._generalRegisters) {
+          }
+          if (operation[2].reg.num > this._generalRegisters) {
             throw new TokenError(
               operation[2].reg.pos,
-              `Adress register number out of bounds`
+              "Address register number out of bounds"
             );
-          } else if (operation[2].address > this._memorySize) {
+          }
+          if (operation[2].address > this._memorySize) {
             throw new TokenError(
               operation[2].reg.pos,
-              `Memory address out of bounds`
+              "Memory address out of bounds"
             );
           }
 
@@ -354,7 +359,7 @@ export class CodeParser {
           instruction.setOperand(
             2,
             operation[2].reg.num,
-            "(" + operation[2].reg.text + ")"
+            `(${operation[2].reg.text})`
           );
         }
 

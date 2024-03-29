@@ -218,15 +218,15 @@ export class ReserveStation {
       if (entry != null) {
         toReturn = {
           instruction: { id: "", uid: -1, value: "" },
-          Qj: entry.Qj !== -1 ? "[" + robMap[entry.Qj] + "]" : "-",
-          Vj: entry.Vj !== -1 ? "" + entry.Vj : "-",
-          Qk: entry.Qk !== -1 ? "[" + robMap[entry.Qk] + "]" : "-",
-          Vk: entry.Vk !== -1 ? "" + entry.Vk : "-",
-          A: entry.A !== -1 ? "@" + entry.A : "-",
-          ROB: "[" + robMap[entry.instruction.uid] + "]",
+          Qj: entry.Qj !== -1 ? `[${robMap[entry.Qj]}]` : "-",
+          Vj: entry.Vj !== -1 ? `${entry.Vj}` : "-",
+          Qk: entry.Qk !== -1 ? `[${robMap[entry.Qk]}]` : "-",
+          Vk: entry.Vk !== -1 ? `${entry.Vk}` : "-",
+          A: entry.A !== -1 ? `@${entry.A}` : "-",
+          ROB: `[${robMap[entry.instruction.uid]}]`,
         };
         if (entry.instruction != null) {
-          toReturn.instruction.id = "" + entry.instruction.id;
+          toReturn.instruction.id = `${entry.instruction.id}`;
           toReturn.instruction.uid = entry.instruction.uid;
           toReturn.instruction.value = entry.instruction.toString();
         }

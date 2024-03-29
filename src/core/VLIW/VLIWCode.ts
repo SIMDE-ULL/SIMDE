@@ -1,7 +1,7 @@
 import { LargeInstruction } from './LargeInstructions';
 import type { VLIWOperation } from './VLIWOperation';
 import type { Code } from '../Common/Code';
-import { VLIWParser } from './VLIWParser';
+import { Parse, ExportAsString } from './VLIWParser';
 
 export class VLIWCode {
     public instructions: LargeInstruction[];
@@ -63,11 +63,11 @@ export class VLIWCode {
     }
 
     public save(): string {
-        return VLIWParser.ExportAsString(this._largeInstructionNumber, this.instructions);
+        return ExportAsString(this._largeInstructionNumber, this.instructions);
     }
 
     public load(input: string, code: Code): void {
-        this.instructions = VLIWParser.Parse(input, code);
+        this.instructions = Parse(input, code);
         this._largeInstructionNumber = this.instructions.length;
         this._superescalarCode = code;
     }
