@@ -350,27 +350,27 @@ export class SuperescalarIntegration extends MachineIntegration {
 		if (this.superescalar.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.superescalar.memory.setDatum(+key, data[key]);
-		});
+		}
 	};
 
 	setFpr = (data: { [k: number]: number }) => {
 		if (this.superescalar.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.superescalar.fpr.setContent(+key, data[key], false);
-		});
+		}
 	};
 
 	setGpr = (data: { [k: number]: number }) => {
 		if (this.superescalar.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.superescalar.gpr.setContent(+key, data[key], false);
-		});
+		}
 	};
 
 	executionLoop = (speed) => {

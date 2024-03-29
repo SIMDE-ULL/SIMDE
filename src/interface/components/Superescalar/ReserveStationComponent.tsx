@@ -20,25 +20,24 @@ export function ReserveStationComponent(props) {
 						<div className="smd-table-header_title">ROB</div>
 					</div>
 					<div className="smd-table-body">
-						{props.data &&
-							props.data.map((row, i) => (
-								<div
-									className="smd-table_row"
-									title={row.instruction.value}
-									key={`${props.title + i}`}
-									style={{
-										background: props.colors.uidColors[row.instruction.uid],
-									}}
-								>
-									<div className="smd-table_cell">{row.instruction.id}</div>
-									<div className="smd-table_cell">{row.Qj}</div>
-									<div className="smd-table_cell">{row.Vj}</div>
-									<div className="smd-table_cell">{row.Qk}</div>
-									<div className="smd-table_cell">{row.Vk}</div>
-									<div className="smd-table_cell">{row.A}</div>
-									<div className="smd-table_cell">{row.ROB}</div>
-								</div>
-							))}
+						{props.data?.map((row, i) => (
+							<div
+								className="smd-table_row"
+								title={row.instruction.value}
+								key={`${props.title + i}`}
+								style={{
+									background: props.colors.uidColors[row.instruction.uid],
+								}}
+							>
+								<div className="smd-table_cell">{row.instruction.id}</div>
+								<div className="smd-table_cell">{row.Qj}</div>
+								<div className="smd-table_cell">{row.Vj}</div>
+								<div className="smd-table_cell">{row.Qk}</div>
+								<div className="smd-table_cell">{row.Vk}</div>
+								<div className="smd-table_cell">{row.A}</div>
+								<div className="smd-table_cell">{row.ROB}</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>

@@ -62,10 +62,7 @@ const numberParser = apply(
 		if (num[1] && num[3]) {
 			throw new TokenError(
 				num[3].pos,
-				"Hexadecimal number can not be float: " +
-					num[1].text +
-					num[2].text +
-					num[3].text,
+				`Hexadecimal number can not be float: ${num[1].text}${num[2].text}${num[3].text}`,
 			);
 		}
 
@@ -73,8 +70,7 @@ const numberParser = apply(
 		if (!num[1] && /[A-Fa-f]/g.test(num[2].text)) {
 			throw new TokenError(
 				num[2].pos,
-				"Decimal number can not have hexadecimal characters(ABCDEF): " +
-					num[2].text,
+				`Decimal number can not have hexadecimal characters(ABCDEF): ${num[2].text}`,
 			);
 		}
 
@@ -84,9 +80,8 @@ const numberParser = apply(
 			return Number.parseFloat(
 				(num[0] ? num[0].text : "") + num[2].text + num[3].text,
 			);
-		} else {
-			return Number.parseInt((num[0] ? num[0].text : "") + num[2].text, base);
 		}
+		return Number.parseInt((num[0] ? num[0].text : "") + num[2].text, base);
 	},
 );
 
@@ -95,11 +90,11 @@ const contentParser = apply(
 	(content: [Token<Tokens.Pos>, number[]][]) => {
 		const result: { [k: number]: number } = {};
 		for (let i = 0; i < content.length; i++) {
-			var j = 0;
-			content[i][1].forEach((num) => {
+			let j = 0;
+			for (const num of content[i][1]) {
 				result[+content[i][0].text.slice(1, -1) + j] = num;
 				j++;
-			});
+			}
 		}
 		return result;
 	},
@@ -144,24 +139,23 @@ export class ContentIntegration {
 		content: { [k: number]: number },
 	): string {
 		// Add header
-		let result = "\n" + headerName;
+		let result = `\n${headerName}`;
 		// Iterate over Content
 		let lastPosition = -1;
-		Object.keys(content).forEach((key) => {
+		for (const key in content) {
 			const i = +key;
-			console.log("[" + i + "] " + content[i]);
 
 			// Check if is the next position after the last one
 			const isContinuos = lastPosition !== -1 && i === lastPosition + 1;
 			// Add position
 			if (!isContinuos) {
-				result += "\n[" + i + "] ";
+				result += `\n[${i}] `;
 			}
 			// Add value
-			result += content[i] + " ";
+			result += `${content[i]} `;
 			// Update last position
 			lastPosition = i;
-		});
+		}
 
 		return result;
 	}
@@ -183,7 +177,8 @@ export class ContentIntegration {
 		const result = expectSingleResult(
 			expectEOF(fileParser.parse(tokenizer.parse(input))),
 		);
-		result.forEach((section) => {
+
+		for (const section of result) {
 			switch (section[0].text) {
 				case "#FPR":
 					this.FPRContent = section[1];
@@ -198,9 +193,8 @@ export class ContentIntegration {
 					this.checkBounds("#MEM", this.MEMContent, Machine.MEMORY_SIZE);
 					break;
 				default:
-					throw new Error("Invalid header: " + section[0].text);
-					break;
+					throw new Error(`Invalid header: ${section[0].text}`);
 			}
-		});
+		}
 	}
 }

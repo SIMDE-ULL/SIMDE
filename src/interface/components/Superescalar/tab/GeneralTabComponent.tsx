@@ -15,10 +15,6 @@ import { bindActionCreators } from "redux";
 import { superescalarLoad } from "../../../actions";
 
 class GeneralTabComponent extends React.Component<any, any> {
-	constructor(props: any) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<div className="smd-general_tab">
@@ -52,16 +48,12 @@ class GeneralTabComponent extends React.Component<any, any> {
 								<ROBMapperComponent
 									title="ROB<->GPR"
 									data={this.props.ROBGpr.data}
-									addInterval={this.props.actions.addRobGprInterval}
-									removeInterval={this.props.actions.removeRobGprInterval}
 								/>
 							</div>
 							<div className="smd-general_tab-simulation_register_mapper">
 								<ROBMapperComponent
 									title="ROB<->FPR"
 									data={this.props.ROBFpr.data}
-									addInterval={this.props.actions.addRobFprInterval}
-									removeInterval={this.props.actions.removeRobFprInterval}
 								/>
 							</div>
 							<div className="smd-general_tab-simulation_register_mapper">

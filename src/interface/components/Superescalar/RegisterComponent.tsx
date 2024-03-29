@@ -2,9 +2,21 @@ import * as React from "react";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
 
 import { withTranslation } from "react-i18next";
+import type { t } from "i18next";
 
-class RegisterComponent extends React.Component<any, any> {
-	constructor(props: any) {
+class RegisterComponent extends React.Component<
+	{
+		title: string;
+		visibleRange: number[];
+		data: number[];
+		max: number;
+		addInterval: () => void;
+		removeInterval: () => void;
+		t: typeof t;
+	},
+	{ isAddModalOpen: boolean; isRemoveModalOpen: boolean }
+> {
+	constructor(props) {
 		super(props);
 		this.state = {
 			isAddModalOpen: false,
@@ -77,7 +89,7 @@ class RegisterComponent extends React.Component<any, any> {
 											className="smd-table_cell"
 											key={`${this.props.title + index + 131}`}
 										>
-											{"" + this.props.data[index]}
+											{`${this.props.data[index]}`}
 										</div>
 									</div>
 								))}
@@ -89,14 +101,20 @@ class RegisterComponent extends React.Component<any, any> {
 							className="btn smd-register_button"
 							onClick={this.openWithAddInterval}
 						>
-							<i className="fa fa-plus" aria-hidden="true"></i>
+							<i
+								className="fa fa-plus"
+								aria-label={this.props.t("commonButtons.add")}
+							/>
 						</button>
 						<button
 							type="button"
 							className="btn smd-register_button"
 							onClick={this.openWithRemoveInterval}
 						>
-							<i className="fa fa-minus" aria-hidden="true"></i>
+							<i
+								className="fa fa-minus"
+								aria-label={this.props.t("commonButtons.add")}
+							/>
 						</button>
 						{/* 
                                     <button type='button' className='btn smd-register_button'><i className='fa fa-check' aria-hidden='true'></i></button>

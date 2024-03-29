@@ -1,8 +1,11 @@
 import * as React from "react";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
 
-export class ROBMapperComponent extends React.Component<any, any> {
-	constructor(props: any) {
+export class ROBMapperComponent extends React.Component<
+	{ title: string; data: string[] },
+	object
+> {
+	constructor(props) {
 		super(props);
 
 		this.state = {};

@@ -9,19 +9,18 @@ export function PrefetchDecoderComponent(props) {
 			<div className="panel-heading">{t(props.title)}</div>
 			<div className="panel-body">
 				<div className="smd-table">
-					{props.data &&
-						props.data.map((element, i) => (
-							<div className="smd-table_row" key={props.title + "row" + i}>
-								<div
-									className="smd-table_cell"
-									title={element.value}
-									key={props.title + i}
-									style={{ background: props.colors.uidColors[element.uid] }}
-								>
-									{element != null ? element.id : `&nbsp;`}
-								</div>
+					{props.data?.map((element, i) => (
+						<div className="smd-table_row" key={`${props.title}row${i}`}>
+							<div
+								className="smd-table_cell"
+								title={element.value}
+								key={props.title + element.uid}
+								style={{ background: props.colors.uidColors[element.uid] }}
+							>
+								{element != null ? element.id : "&nbsp;"}
 							</div>
-						))}
+						</div>
+					))}
 				</div>
 			</div>
 		</div>

@@ -12,11 +12,11 @@ type Props = {
 export default class FileReaderInput extends React.Component<Props> {
 	_reactFileReaderInput: any;
 
-	constructor(props: Props) {
+	/*constructor(props: Props) {
 		// FileReader compatibility warning.
 		super(props);
 
-		/*
+		
     const win = window;
     if (!win.File || !win.FileReader || !win.FileList || !win.Blob) {
       console.warn(
@@ -24,8 +24,8 @@ export default class FileReaderInput extends React.Component<Props> {
         ' File reader functionality may not fully work.'
       );
     }
-    */
-	}
+
+	}*/
 
 	handleChange = (e: any) => {
 		const files = Array.prototype.slice.call(e.target.files); // Convert into Array
@@ -89,6 +89,7 @@ export default class FileReaderInput extends React.Component<Props> {
 			<div
 				className="_react-file-reader-input"
 				onClick={this.triggerInput}
+				onKeyPress={this.triggerInput}
 				style={style}
 			>
 				<input

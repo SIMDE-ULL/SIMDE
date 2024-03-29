@@ -14,10 +14,6 @@ import {
 import { Machine } from "../../../../core/Common/Machine";
 
 export class RegisterTabComponent extends React.Component<any, any> {
-	constructor(props: any) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<div className="smd-register-tab">

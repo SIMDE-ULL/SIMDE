@@ -1,3 +1,5 @@
+import type { VisualReserveStationEntry } from "../../core/Superescalar/ReserveStation";
+
 export const NEXT_RESERVE_STATION_CYCLE = "NEXT_RESERVE_STATION_CYCLE";
 
 export function nextReserveStationCycle(data) {
@@ -7,8 +9,11 @@ export function nextReserveStationCycle(data) {
 	};
 }
 
-function mapReserveStationEntry(content: { data: any; size: number }): Array<{
-	instruction: { id: string; value: string; uid: string };
+function mapReserveStationEntry(content: {
+	data: VisualReserveStationEntry[];
+	size: number;
+}): Array<{
+	instruction: { id: string; value: string; uid: number };
 	Qj: string;
 	Vj: string;
 	Qk: string;
@@ -21,7 +26,7 @@ function mapReserveStationEntry(content: { data: any; size: number }): Array<{
 	let i: number;
 
 	const defaultObject = {
-		instruction: { id: "", value: "", uid: "" },
+		instruction: { id: "", value: "", uid: -1 },
 		Qj: "",
 		Vj: "",
 		Qk: "",
@@ -33,7 +38,7 @@ function mapReserveStationEntry(content: { data: any; size: number }): Array<{
 		let aux = { ...defaultObject };
 		if (data[i] != null) {
 			aux = {
-				instruction: { id: "", value: "", uid: "" },
+				instruction: { id: "", value: "", uid: -1 },
 				Qj: data[i].Qj,
 				Vj: data[i].Vj,
 				Qk: data[i].Qk,

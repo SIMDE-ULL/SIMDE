@@ -15,12 +15,12 @@ export function generateIntervalFromImput(
 			let num1 = Number.parseInt(range[0]);
 			let num2 = Number.parseInt(range[1]);
 
-			if (isNaN(num1) || isNaN(num2)) {
+			if (Number.isNaN(num1) || Number.isNaN(num2)) {
 				throw new Error("noInputNumber");
 			}
 
 			if (num1 >= max || num2 >= max) {
-				throw new Error(`inputOutOfRange`);
+				throw new Error("inputOutOfRange");
 			}
 
 			if (num1 >= max) {
@@ -41,12 +41,12 @@ export function generateIntervalFromImput(
 		} else {
 			const num = Number.parseInt(value);
 
-			if (isNaN(num)) {
+			if (Number.isNaN(num)) {
 				throw new Error("noInputNumber");
 			}
 
 			if (num >= max) {
-				throw new Error(`inputOutOfRange`);
+				throw new Error("inputOutOfRange");
 			}
 
 			newInterval.add(num);

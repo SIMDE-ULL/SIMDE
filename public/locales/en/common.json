@@ -94,6 +94,8 @@
     "commonButtons": {
         "close": "Close",
         "save": "Save",
+        "add": "Add",
+        "remove": "Remove",
         "accept": "Accept",
         "launch": "Launch",
         "loadFromFile": "Load from file"

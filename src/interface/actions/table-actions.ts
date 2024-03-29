@@ -24,7 +24,9 @@ export function nextVLIWExecutionTableCycle(
 	};
 }
 
-function mapVLIWHeaderTable(functionalUnitNumbers: number[]): Array<object> {
+function mapVLIWHeaderTable(
+	functionalUnitNumbers: number[],
+): Array<{ extraValue: string; translateKey?: string }> {
 	const functionalUnitAmount = functionalUnitNumbers.reduce(
 		(accumulator, current) => accumulator + current,
 	);

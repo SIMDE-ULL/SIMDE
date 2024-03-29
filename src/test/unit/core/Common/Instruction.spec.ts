@@ -1,7 +1,7 @@
 import { expect, beforeEach, test } from "vitest";
 import { Instruction } from "../../../../core/Common/Instruction";
 
-let originalInstruction;
+let originalInstruction: Instruction;
 
 beforeEach(() => {
 	originalInstruction = new Instruction();

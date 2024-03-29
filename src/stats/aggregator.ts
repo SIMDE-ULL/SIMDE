@@ -8,8 +8,6 @@ export interface StatEntry {
 export class StatsAgregator {
 	private _stats: Array<Stats> = new Array();
 
-	constructor() {}
-
 	public agragate(stats: Stats) {
 		this._stats.push(stats);
 	}

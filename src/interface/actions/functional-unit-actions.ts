@@ -8,7 +8,10 @@ export function nextFunctionalUnitCycle(data) {
 		value: data.map((element) => mapFunctionalUnitData(element)),
 	};
 }
-function mapFunctionalUnitData(data): any {
+function mapFunctionalUnitData(data): {
+	content: { id: string; value: string; uid: number; color: string }[];
+	header: string[];
+} {
 	const toReturnObject = {
 		content: [],
 		header: [],

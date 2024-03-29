@@ -25,11 +25,11 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 	}
 
 	handleInputFileChange = (e, results) => {
-		results.forEach((result) => {
+		for (const result of results) {
 			const [e, file] = result;
 			const a = document.getElementById("contentInput") as HTMLInputElement;
 			a.value = e.target.result;
-		});
+		}
 	};
 
 	loadContent() {
@@ -49,13 +49,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 			// Check if error has the property position. Checking instance of TokenError not working
 			if (error.pos) {
 				this.setState({
-					error:
-						"[" +
-						error.pos?.rowBegin +
-						":" +
-						error.pos?.columnBegin +
-						"]: " +
-						error.errorMessage,
+					error: `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`,
 				});
 			} else {
 				this.setState({ error: error.message });
@@ -74,7 +68,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 					<Modal.Title>{this.props.t("loadContentModal.title")}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<textarea id="contentInput" defaultValue={``}></textarea>
+					<textarea id="contentInput" defaultValue={""} />
 					<div className="smd-load_content_modal-errors">
 						{this.state.error && (
 							<div className="smd-forms_error">{this.state.error}</div>

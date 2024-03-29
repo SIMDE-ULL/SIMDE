@@ -25,11 +25,11 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
 	}
 
 	handleInputFileChange = (e, results) => {
-		results.forEach((result) => {
+		for (const result of results) {
 			const [e, file] = result;
 			const a = document.getElementById("contentInput") as HTMLInputElement;
 			a.value = e.target.result;
-		});
+		}
 	};
 
 	loadContent() {
@@ -62,7 +62,7 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
 					<Modal.Title>{this.props.t("loadContentModal.title")}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<textarea id="contentInput" defaultValue={``}></textarea>
+					<textarea id="contentInput" defaultValue={""} />
 					<div className="smd-load_content_modal-errors">
 						{this.state.error && (
 							<div className="smd-forms_error">{this.state.error}</div>

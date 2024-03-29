@@ -93,7 +93,7 @@ export const StatsTabComponent: React.FC = (
 								Array.from(props.statusesCount.keys()).map(
 									(statusName: string) => {
 										return {
-											name: props.t("stats.statuses." + statusName),
+											name: props.t(`stats.statuses.${statusName}`),
 											type: "bar",
 											stack: "statuses",
 											data: props.statusesCount.get(statusName),
@@ -170,7 +170,7 @@ export const StatsTabComponent: React.FC = (
 								props.unitsUsage &&
 								Array.from(props.unitsUsage.keys()).map((unitName: string) => {
 									return {
-										name: props.t("stats.units." + unitName),
+										name: props.t(`stats.units.${unitName}`),
 										type: "line",
 										data: props.unitsUsage
 											.get(unitName)
@@ -287,41 +287,40 @@ export const StatsTabComponent: React.FC = (
 							</tr>
 						</thead>
 						<tbody>
-							{props.instrCommitPercentage &&
-								props.instrCommitPercentage.map(
-									(d: { name: string; value: number }) => (
-										<tr key={d.name}>
-											<th scope="row">{d.name}</th>
-											<td>{props.code[d.name].toString()}</td>
-											<td>
-												{formatTableNumber(
-													props.instrStatuses.get(d.name).prefetchCycles,
-												)}
-											</td>
-											<td>
-												{formatTableNumber(
-													props.instrStatuses.get(d.name).decodeCycles,
-												)}
-											</td>
-											<td>
-												{formatTableNumber(
-													props.instrStatuses.get(d.name).issueCycles,
-												)}
-											</td>
-											<td>
-												{formatTableNumber(
-													props.instrStatuses.get(d.name).executeCycles,
-												)}
-											</td>
-											<td>
-												{formatTableNumber(
-													props.instrStatuses.get(d.name).writeBackCycles,
-												)}
-											</td>
-											<td>{formatTableNumber(d.value * 100)}%</td>
-										</tr>
-									),
-								)}
+							{props.instrCommitPercentage?.map(
+								(d: { name: string; value: number }) => (
+									<tr key={d.name}>
+										<th scope="row">{d.name}</th>
+										<td>{props.code[d.name].toString()}</td>
+										<td>
+											{formatTableNumber(
+												props.instrStatuses.get(d.name).prefetchCycles,
+											)}
+										</td>
+										<td>
+											{formatTableNumber(
+												props.instrStatuses.get(d.name).decodeCycles,
+											)}
+										</td>
+										<td>
+											{formatTableNumber(
+												props.instrStatuses.get(d.name).issueCycles,
+											)}
+										</td>
+										<td>
+											{formatTableNumber(
+												props.instrStatuses.get(d.name).executeCycles,
+											)}
+										</td>
+										<td>
+											{formatTableNumber(
+												props.instrStatuses.get(d.name).writeBackCycles,
+											)}
+										</td>
+										<td>{formatTableNumber(d.value * 100)}%</td>
+									</tr>
+								),
+							)}
 						</tbody>
 					</table>
 				</div>

@@ -1,9 +1,11 @@
+import type { Code } from "../core/Common/Code";
+import type { VLIWCode } from "../core/VLIW/VLIWCode";
 import type { ContentIntegration } from "./content-integration";
 
 export abstract class MachineIntegration {
 	public contentIntegration: ContentIntegration;
 
-	abstract loadCode: (code: any) => void;
+	abstract loadCode: (code: Code | VLIWCode) => void;
 
 	abstract makeBatchExecution: () => void;
 

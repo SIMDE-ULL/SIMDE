@@ -36,7 +36,7 @@ class CodeComponent extends React.Component<any, any> {
 							{this.props.code?.map((row: Instruction, i) => (
 								<InstructionComponent
 									instruction={row}
-									key={i}
+									key={row.id}
 									loc={i}
 									color={this.setColor(row)}
 								/>

@@ -2,18 +2,48 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { PhotoshopPicker } from "react-color";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import { colorCell } from "../../actions/reorder-buffer-actions";
+import type { VisualReorderBufferEntry } from "../../../core/Superescalar/ReorderBuffer";
 
-class ReorderBufferComponent extends React.Component<any, any> {
-	constructor(props: any) {
+const mapStateToProps = (state) => {
+	return {
+		colors: state.Colors,
+	};
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		actions: bindActionCreators(
+			{
+				colorCell,
+			},
+			dispatch,
+		),
+	};
+}
+
+class ReorderBufferComponent extends React.Component<
+	WithTranslation &
+		ReturnType<typeof mapStateToProps> &
+		ReturnType<typeof mapDispatchToProps> & {
+			content: VisualReorderBufferEntry[];
+		},
+	{
+		displayColorPicker: boolean;
+		instructionId: number;
+		instructionUid: number;
+		selectedColor: { hex: string };
+	}
+> {
+	constructor(props) {
 		super(props);
 		this.state = {
 			displayColorPicker: false,
-			currentInstruction: null,
 			instructionId: null,
-			selectedColor: "",
+			instructionUid: null,
+			selectedColor: { hex: "" },
 		};
 		this.handleClick = this.handleClick.bind(this);
 		this.onColorAccept = this.onColorAccept.bind(this);
@@ -21,12 +51,11 @@ class ReorderBufferComponent extends React.Component<any, any> {
 		this.handleChangeComplete = this.handleChangeComplete.bind(this);
 	}
 
-	handleClick(instructionId, instructionColor) {
+	handleClick(instructionId) {
 		this.setState({
 			...this.state,
 			displayColorPicker: true,
 			instructionUid: instructionId,
-			selectedColor: instructionColor,
 		});
 	}
 
@@ -38,7 +67,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
 		this.setState({
 			...this.state,
 			displayColorPicker: false,
-			selectedColor: "",
+			selectedColor: { hex: "" },
 			instructionUid: null,
 		});
 	}
@@ -47,7 +76,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
 		this.setState({
 			...this.state,
 			displayColorPicker: false,
-			selectedColor: "",
+			selectedColor: { hex: "" },
 			instructionUid: null,
 		});
 	}
@@ -57,7 +86,7 @@ class ReorderBufferComponent extends React.Component<any, any> {
 	}
 
 	render() {
-		const popover: any = {
+		const popover: object = {
 			position: "absolute",
 			zIndex: "2",
 			top: "50%",
@@ -97,61 +126,47 @@ class ReorderBufferComponent extends React.Component<any, any> {
 							</div>
 						</div>
 						<div className="smd-table-body">
-							{this.props.content &&
-								this.props.content
-									.map((row, i) => ({ row, i }))
-									.filter((e) => e.row.instruction.id != "")
-									.map((e) => (
-										<div
-											className="smd-table_row smd-reorder_buffer_entry"
-											style={{
-												background:
-													this.props.colors.uidColors[e.row.instruction.uid],
-											}}
-											onClick={() =>
-												this.handleClick(
-													e.row.instruction.uid,
-													e.row.instruction.color,
-												) as any
-											}
-											title={e.row.instruction.value}
-											key={"ReorderBuffer" + e.i}
-										>
-											<div className="smd-table_cell">{"[" + e.i + "]"}</div>
-											<div className="smd-table_cell">
-												{e.row.instruction.id}
-											</div>
-											<div className="smd-table_cell">
-												{e.row.destinyRegister}
-											</div>
-											<div className="smd-table_cell">{e.row.value}</div>
-											<div className="smd-table_cell">{e.row.address}</div>
-											<div className="smd-table_cell">{e.row.superStage}</div>
+							{this.props.content
+								?.map((row, i) => ({ row, i }))
+								.filter((e) => e.row.instruction.id !== "")
+								.map((e) => (
+									<div
+										className="smd-table_row smd-reorder_buffer_entry"
+										style={{
+											background:
+												this.props.colors.uidColors[e.row.instruction.uid],
+										}}
+										onClick={() =>
+											this.handleClick(
+												e.row.instruction.uid,
+												//e.row.instruction.color,
+											)
+										}
+										onKeyPress={() =>
+											this.handleClick(
+												e.row.instruction.uid,
+												//e.row.instruction.color,
+											)
+										}
+										title={e.row.instruction.value}
+										key={`ReorderBuffer${e.i}`}
+									>
+										<div className="smd-table_cell">{`[${e.i}]`}</div>
+										<div className="smd-table_cell">{e.row.instruction.id}</div>
+										<div className="smd-table_cell">
+											{e.row.destinyRegister}
 										</div>
-									))}
+										<div className="smd-table_cell">{e.row.value}</div>
+										<div className="smd-table_cell">{e.row.address}</div>
+										<div className="smd-table_cell">{e.row.superStage}</div>
+									</div>
+								))}
 						</div>
 					</div>
 				</div>
 			</div>
 		);
 	}
-}
-
-const mapStateToProps = (state) => {
-	return {
-		colors: state.Colors,
-	};
-};
-
-function mapDispatchToProps(dispatch) {
-	return {
-		actions: bindActionCreators(
-			{
-				colorCell,
-			},
-			dispatch,
-		),
-	};
 }
 
 export default connect(

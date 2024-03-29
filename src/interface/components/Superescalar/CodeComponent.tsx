@@ -7,8 +7,18 @@ import SuperescalarIntegration from "../../../integration/superescalar-integrati
 
 import { withTranslation } from "react-i18next";
 
-class CodeComponent extends React.Component<any, any> {
-	constructor(props: any) {
+import type { t } from "i18next";
+
+class CodeComponent extends React.Component<
+	{
+		toggleBreakPoint: (a: Instruction[]) => void;
+		t: typeof t;
+		code: Instruction[];
+		colorBasicBlocks: boolean;
+	},
+	{ colorPalette: string[] }
+> {
+	constructor(props) {
 		super(props);
 		this.state = {
 			colorPalette: ["blue", "green", "yellow", "pink"],
@@ -37,68 +47,70 @@ class CodeComponent extends React.Component<any, any> {
 							<div className="smd-table-header_title">OP3</div>
 						</div>
 						<div className="smd-table-body">
-							{this.props.code &&
-								this.props.code.map((row: Instruction, i) => (
+							{this.props.code?.map((row: Instruction, i) => (
+								<div
+									className="smd-table_row"
+									key={`${`Code${i}`}`}
+									onClick={(e) => {
+										this.setBreakpoint(i);
+									}}
+									onKeyPress={(e) => {
+										this.setBreakpoint(i);
+									}}
+								>
 									<div
-										className="smd-table_row"
-										key={`${"Code" + i}`}
-										onClick={(e) => {
-											this.setBreakpoint(i);
-										}}
+										className={`smd-table_cell ${
+											row.breakPoint ? "smd-breakpoint" : ""
+										}`}
 									>
-										<div
-											className={`smd-table_cell ${
-												row.breakPoint ? "smd-breakpoint" : ""
-											}`}
-										>
-											{row.label} {i}
-										</div>
-										<div
-											className={`smd-table_cell ${
-												this.props.colorBasicBlocks
-													? this.state.colorPalette[
-															row.basicBlock % this.state.colorPalette.length
-														]
-													: ""
-											}`}
-										>
-											{OpcodesNames[row.opcode]}
-										</div>
-										<div
-											className={`smd-table_cell ${
-												this.props.colorBasicBlocks
-													? this.state.colorPalette[
-															row.basicBlock % this.state.colorPalette.length
-														]
-													: ""
-											}`}
-										>
-											{row.operandsString[0]}
-										</div>
-										<div
-											className={`smd-table_cell ${
-												this.props.colorBasicBlocks
-													? this.state.colorPalette[
-															row.basicBlock % this.state.colorPalette.length
-														]
-													: ""
-											}`}
-										>
-											{row.operandsString[1]}
-										</div>
-										<div
-											className={`smd-table_cell ${
-												this.props.colorBasicBlocks
-													? this.state.colorPalette[
-															row.basicBlock % this.state.colorPalette.length
-														]
-													: ""
-											}`}
-										>
-											{row.operandsString[2]}
-										</div>
+										{row.label} {i}
 									</div>
-								))}
+									<div
+										className={`smd-table_cell ${
+											this.props.colorBasicBlocks
+												? this.state.colorPalette[
+														row.basicBlock % this.state.colorPalette.length
+													]
+												: ""
+										}`}
+									>
+										{OpcodesNames[row.opcode]}
+									</div>
+									<div
+										className={`smd-table_cell ${
+											this.props.colorBasicBlocks
+												? this.state.colorPalette[
+														row.basicBlock % this.state.colorPalette.length
+													]
+												: ""
+										}`}
+									>
+										{row.operandsString[0]}
+									</div>
+									<div
+										className={`smd-table_cell ${
+											this.props.colorBasicBlocks
+												? this.state.colorPalette[
+														row.basicBlock % this.state.colorPalette.length
+													]
+												: ""
+										}`}
+									>
+										{row.operandsString[1]}
+									</div>
+									<div
+										className={`smd-table_cell ${
+											this.props.colorBasicBlocks
+												? this.state.colorPalette[
+														row.basicBlock % this.state.colorPalette.length
+													]
+												: ""
+										}`}
+									>
+										{row.operandsString[2]}
+									</div>
+								</div>
+							))}
 						</div>
 					</div>
 				</div>

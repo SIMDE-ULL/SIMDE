@@ -51,5 +51,5 @@ export function removeInterval(state, field, interval) {
 		),
 	};
 
-	return (state = newState);
+	return newState;
 }

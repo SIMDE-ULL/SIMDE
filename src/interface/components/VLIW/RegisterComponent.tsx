@@ -89,14 +89,20 @@ class RegisterComponent extends React.Component<any, any> {
 							className="btn smd-register_button"
 							onClick={this.openWithAddInterval}
 						>
-							<i className="fa fa-plus" aria-hidden="true"></i>
+							<i
+								className="fa fa-plus"
+								aria-label={this.props.t("commonButtons.add")}
+							/>
 						</button>
 						<button
 							type="button"
 							className="btn smd-register_button"
 							onClick={this.openWithRemoveInterval}
 						>
-							<i className="fa fa-minus" aria-hidden="true"></i>
+							<i
+								className="fa fa-minus"
+								aria-label={this.props.t("commonButtons.add")}
+							/>
 						</button>
 						{/* 
                                     <button type='button' className='btn smd-register_button'><i className='fa fa-check' aria-hidden='true'></i></button>

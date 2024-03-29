@@ -68,7 +68,7 @@ export const StatsTabComponent: React.FC = (
 								props.unitsUsage &&
 								Array.from(props.unitsUsage.keys()).map((unitName) => {
 									return {
-										name: props.t("stats.units." + unitName),
+										name: props.t(`stats.units.${unitName}`),
 										type: "line",
 										data: props.unitsUsage
 											.get(unitName)

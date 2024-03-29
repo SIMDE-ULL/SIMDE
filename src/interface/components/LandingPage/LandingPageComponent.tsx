@@ -14,7 +14,7 @@ const LandingPageComponent = () => {
 						<img
 							alt="icon"
 							src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"
-						></img>
+						/>
 					</b>
 					<li className="pagetitle">
 						<p>{t("landingPage.pagetitle")}</p>
@@ -42,7 +42,7 @@ const LandingPageComponent = () => {
 							</div>
 						</div>
 						<div className="thumbnail">
-							<img src="" alt=""></img>
+							<img src="" alt="" />
 							<div className="caption">
 								<h3>{t("landingPage.superescalar")}</h3>
 								<p>{t("landingPage.superescalar_description")}</p>
@@ -60,7 +60,7 @@ const LandingPageComponent = () => {
 							</div>
 						</div>
 						<div className="thumbnail">
-							<img src="" alt=""></img>
+							<img src="" alt="" />
 							<div className="caption">
 								<h3>{t("landingPage.vliw")}</h3>
 								<p>{t("landingPage.vliw_description")}</p>
@@ -82,7 +82,7 @@ const LandingPageComponent = () => {
 			</div>
 			<nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
 				<div className="licence text-light">
-					<a>{t("landingPage.licency")}</a>
+					<p>{t("landingPage.licency")}</p>
 				</div>
 			</nav>
 		</div>

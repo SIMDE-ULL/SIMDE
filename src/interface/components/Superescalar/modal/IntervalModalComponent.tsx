@@ -61,7 +61,7 @@ class IntervalModalComponent extends React.Component<any, any> {
 							{this.props.t(`intervalModal.errors.${this.state.error}`)}
 						</div>
 					) : (
-						<div></div>
+						<div />
 					)}
 				</Modal.Body>
 				<Modal.Footer>

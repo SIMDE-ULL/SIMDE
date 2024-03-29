@@ -45,6 +45,11 @@ import {
 	NEXT_NAT_GPR_CYCLE,
 	NEXT_PREDICATE_CYCLE,
 } from "../actions/predicate-nat-actions";
+import type { UnknownAction } from "redux";
+import type { PrefetchUnitVisualEntry } from "../../core/Superescalar/PrefetchUnit";
+import type { VisualReorderBufferEntry } from "../../core/Superescalar/ReorderBuffer";
+import type { InstructionStatsEntry } from "../../stats/stats";
+import type { Instruction } from "../../core/Common/Instruction";
 
 export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
@@ -117,17 +122,20 @@ export const initialState = {
 
 export function MachineReducers(
 	state = initialState,
-	action,
+	action: UnknownAction = { type: "" },
 ): typeof initialState {
 	switch (action.type) {
 		case NEXT_PREFETCH_CYCLE:
-			return (state = { ...state, prefetchUnit: action.value });
+			return {
+				...state,
+				prefetchUnit: action.value as PrefetchUnitVisualEntry[],
+			};
 		case NEXT_DECODER_CYCLE:
-			return (state = { ...state, decoder: action.value });
+			return { ...state, decoder: action.value as PrefetchUnitVisualEntry[] };
 		case NEXT_JUMP_TABLE_CYCLE:
-			return (state = { ...state, jumpPrediction: action.value });
+			return { ...state, jumpPrediction: action.value as string[] };
 		case FUNCTIONAL_UNIT_CYCLE:
-			return (state = {
+			return {
 				...state,
 				functionalUnitIntAdd: action.value[0],
 				functionalUnitIntSub: action.value[1],
@@ -136,19 +144,19 @@ export function MachineReducers(
 				functionalUnitMemory: action.value[4],
 				functionalUnitJump: action.value[5],
 				functionalUnitAluMem: action.value[6],
-			});
+			};
 		case HEADER_TABLE_CYCLE:
-			return (state = {
+			return {
 				...state,
-				vliwExecutionHeaderTable: action.value,
-			});
+				vliwExecutionHeaderTable: action.value as object[],
+			};
 		case TABLE_CYCLE:
-			return (state = {
+			return {
 				...state,
-				vliwExecutionTable: action.value,
-			});
+				vliwExecutionTable: action.value as string[],
+			};
 		case NEXT_RESERVE_STATION_CYCLE:
-			return (state = {
+			return {
 				...state,
 				reserveStationIntAdd: action.value[0],
 				reserveStationIntSub: action.value[1],
@@ -156,20 +164,20 @@ export function MachineReducers(
 				reserveStationFloSub: action.value[3],
 				reserveStationMemory: action.value[4],
 				reserveStationJump: action.value[5],
-			});
+			};
 		case NEXT_REORDER_BUFFER_MAPPER_CYCLE:
-			return (state = {
+			return {
 				...state,
 				ROBGpr: { ...state.ROBGpr, data: action.value[0] },
 				ROBFpr: { ...state.ROBFpr, data: action.value[1] },
-			});
+			};
 		case NEXT_REORDER_BUFFER_CYCLE:
-			return (state = {
+			return {
 				...state,
-				reorderBuffer: action.value,
-			});
+				reorderBuffer: action.value as VisualReorderBufferEntry[],
+			};
 		case NEXT_REGISTERS_CYCLE:
-			return (state = {
+			return {
 				...state,
 				generalRegisters: {
 					...state.generalRegisters,
@@ -179,79 +187,85 @@ export function MachineReducers(
 					...state.floatingRegisters,
 					data: [...action.value[1]],
 				},
-			});
+			};
 		case NEXT_MEMORY_CYCLE:
-			return (state = {
+			return {
 				...state,
 				memory: {
 					...state.memory,
-					data: action.value,
+					data: action.value as number[],
 				},
-			});
+			};
 		case NEXT_CYCLE:
-			return (state = {
+			return {
 				...state,
-				cycle: action.value,
-			});
+				cycle: action.value as number,
+			};
 		case CURRENT_PC:
-			return (state = {
+			return {
 				...state,
-				pc: action.value,
-			});
+				pc: action.value as number,
+			};
 		case NEXT_INSTRUCTIONS_COMMITED:
-			return (state = {
+			return {
 				...state,
 				stats: {
 					...state.stats,
-					commitedPerInstr: Array.from(action.value, ([name, value]) => ({
-						name,
-						value,
-					})),
+					commitedPerInstr: Array.from(
+						action.value as Map<number, number>,
+						([name, value]) => ({
+							name,
+							value,
+						}),
+					),
 				},
-			});
+			};
 		case NEXT_TOTAL_COMMITED:
-			return (state = {
+			return {
 				...state,
 				stats: {
 					...state.stats,
-					commited: action.value.commited,
-					discarded: action.value.discarded,
+					commited: (action.value as { commited: number }).commited,
+					discarded: (action.value as { discarded: number }).discarded,
 				},
-			});
+			};
 		case NEXT_UNITS_OCUPATION:
-			return (state = {
+			return {
 				...state,
 				stats: {
 					...state.stats,
-					unitsUsage: action.value,
+					unitsUsage: action.value as Map<string, number[]>,
 				},
-			});
+			};
 		case NEXT_STATUSES_COUNT:
-			return (state = {
+			return {
 				...state,
 				stats: {
 					...state.stats,
-					statusesCount: action.value,
+					statusesCount: action.value as Map<string, number>,
 				},
-			});
+			};
 		case NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES:
-			return (state = {
+			return {
 				...state,
 				stats: {
 					...state.stats,
-					instructionsStatusesAverageCycles: action.value,
+					instructionsStatusesAverageCycles: action.value as Map<
+						string,
+						InstructionStatsEntry
+					>,
 				},
-			});
+			};
 		case SUPERESCALAR_LOAD:
-			return (state = {
+			return {
 				...state,
-				code: action.value,
-			});
+				code: action.value as Instruction[],
+			};
 		case VIEW_BASIC_BLOCKS:
-			return (state = {
+			return {
 				...state,
-				colorBasicBlocks: action.value,
-			});
+				colorBasicBlocks: action.value as boolean,
+			};
 		case ADD_MEMORY_INTERVAL:
 			return addInterval(state, "memory", action.value);
 		case REMOVE_MEMORY_INTERVAL:
@@ -265,7 +279,7 @@ export function MachineReducers(
 		case REMOVE_FLOATING_REGISTERS_INTERVAL:
 			return addInterval(state, "floatingRegisters", action.value);
 		case PUSH_HISTORY:
-			return (state = {
+			return {
 				...state,
 				history: [
 					...state.history,
@@ -298,23 +312,23 @@ export function MachineReducers(
 						cycle: state.cycle,
 					},
 				].slice(-MAX_HISTORY_SIZE),
-			});
+			};
 		case TAKE_HISTORY:
-			return (state = {
+			return {
 				...state,
-				...state.history[state.history.length - 1 - action.value],
-			});
+				...state.history[state.history.length - 1 - (action.value as number)],
+			};
 		case RESET_HISTORY:
-			return (state = {
+			return {
 				...state,
 				history: [],
-			});
+			};
 		case NEXT_NAT_FPR_CYCLE:
 			return {
 				...state,
 				natFpr: {
 					...state.natFpr,
-					data: [...action.value],
+					data: [...(action.value as boolean[])],
 				},
 			};
 		case NEXT_NAT_GPR_CYCLE:
@@ -322,7 +336,7 @@ export function MachineReducers(
 				...state,
 				natGpr: {
 					...state.natGpr,
-					data: [...action.value],
+					data: [...(action.value as boolean[])],
 				},
 			};
 		case NEXT_PREDICATE_CYCLE:
@@ -330,7 +344,7 @@ export function MachineReducers(
 				...state,
 				predicate: {
 					...state.predicate,
-					data: [...action.value],
+					data: [...(action.value as boolean[])],
 				},
 			};
 		case ADD_NAT_FPR_INTERVAL:

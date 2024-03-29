@@ -158,7 +158,7 @@ export class VLIWIntegration extends MachineIntegration {
 			if (functionalUnitIdx >= operationIdx) {
 				// Reset functional unit number index to previous in order to check
 				// if the functional unit type corresponds to the VLIW operand
-				if (functionalUnitIdx != operationIdx) {
+				if (functionalUnitIdx !== operationIdx) {
 					i -= 1;
 				}
 
@@ -239,7 +239,7 @@ export class VLIWIntegration extends MachineIntegration {
 					err !== VLIWError.ENDEXE &&
 					err !== VLIWError.PCOUTOFRANGE
 				) {
-					alert(t("execution.error") + ": " + VLIWError[err]);
+					alert(`${t("execution.error")}: ${VLIWError[err]}`);
 					err = VLIWError.ENDEXE;
 				}
 			}
@@ -281,7 +281,7 @@ export class VLIWIntegration extends MachineIntegration {
 					err !== VLIWError.ENDEXE &&
 					err !== VLIWError.PCOUTOFRANGE
 				) {
-					alert(t("execution.error") + ": " + VLIWError[err]);
+					alert(`${t("execution.error")}: ${VLIWError[err]}`);
 					err = VLIWError.ENDEXE;
 				}
 			}
@@ -335,27 +335,27 @@ export class VLIWIntegration extends MachineIntegration {
 		if (this.vliw.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.vliw.memory.setDatum(+key, data[key]);
-		});
+		}
 	};
 
 	setFpr = (data: { [k: number]: number }) => {
 		if (this.vliw.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.vliw.fpr.setContent(+key, data[key], false);
-		});
+		}
 	};
 
 	setGpr = (data: { [k: number]: number }) => {
 		if (this.vliw.status.cycle > 0) {
 			return;
 		}
-		Object.keys(data).forEach((key) => {
+		for (const key in data) {
 			this.vliw.gpr.setContent(+key, data[key], false);
-		});
+		}
 	};
 
 	executionLoop = (speed) => {
@@ -376,7 +376,7 @@ export class VLIWIntegration extends MachineIntegration {
 						alert(t("execution.finished"));
 						break;
 					default:
-						alert(t("execution.error") + ": " + VLIWError[machineStatus]);
+						alert(`${t("execution.error")}: ${VLIWError[machineStatus]}`);
 						break;
 				}
 

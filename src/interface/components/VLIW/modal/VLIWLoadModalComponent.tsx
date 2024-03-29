@@ -30,21 +30,21 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
 	}
 
 	handleSuperescalarInputFileChange = (e, results) => {
-		results.forEach((result) => {
+		for (const result of results) {
 			const [e, file] = result;
 			const a = document.getElementById(
 				"superescalarCodeInput",
 			) as HTMLInputElement;
 			a.value = e.target.result;
-		});
+		}
 	};
 
 	handleVliwInputFileChange = (e, results) => {
-		results.forEach((result) => {
+		for (const result of results) {
 			const [e, file] = result;
 			const a = document.getElementById("vliwCodeInput") as HTMLInputElement;
 			a.value = e.target.result;
-		});
+		}
 	};
 
 	loadCode() {
@@ -74,13 +74,7 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
 			// Check if error has the property position. Checking instance of TokenError not working
 			if (error.pos) {
 				this.setState({
-					vliwCodeError:
-						"[" +
-						error.pos?.rowBegin +
-						":" +
-						error.pos?.columnBegin +
-						"]: " +
-						error.errorMessage,
+					vliwCodeError: `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`,
 				});
 			} else {
 				this.setState({ vliwCodeError: error.message });
@@ -115,7 +109,7 @@ LOOP:
 	ADDI 	R2 R2 #1
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`}
-					></textarea>
+					/>
 					<div className="smd-load_modal-errors">
 						{this.state.superescalarCodeError && (
 							<div className="smd-forms_error">
@@ -141,7 +135,7 @@ LOOP:
     0
     1	10 5 0 0 2 1 2
     1	9 0 1 0`}
-					></textarea>
+					/>
 					<div className="smd-load_modal-errors">
 						{this.state.vliwCodeError && (
 							<div className="smd-forms_error">{this.state.vliwCodeError}</div>

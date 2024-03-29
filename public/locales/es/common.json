@@ -96,6 +96,8 @@
         "save": "Guardar",
         "accept": "Aceptar",
         "launch": "Lanzar",
+        "add": "Añadir",
+        "remove": "Quitar",
         "loadFromFile": "Cargar desde fichero"
     },
     "functionalUnits": {

@@ -13,7 +13,7 @@ const ProjectPage = () => {
 						<img
 							alt="icon"
 							src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"
-						></img>
+						/>
 					</b>
 					<li className="pagetitle">
 						<p>{t("landingPage.pagetitle")}</p>
@@ -33,7 +33,7 @@ const ProjectPage = () => {
 						className="img-responsive"
 						alt="simdegif"
 						src="https://i.imgur.com/50m9kzv.gif"
-					></img>
+					/>
 				</div>
 				<h2>{t("projectPage.watsimde")}</h2>
 				<p>{t("projectPage.simdedescription1")}</p>
@@ -52,7 +52,7 @@ const ProjectPage = () => {
 			</div>
 			<nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
 				<div className="licence text-light">
-					<a>{t("projectPage.licency")}</a>
+					<p>{t("projectPage.licency")}</p>
 				</div>
 			</nav>
 		</div>

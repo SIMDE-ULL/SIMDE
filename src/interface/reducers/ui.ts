@@ -1,3 +1,4 @@
+import type { UnknownAction } from "redux";
 import {
 	TOGGLE_LOAD_MODAL,
 	TOGGLE_AUTHOR_MODAL,
@@ -27,65 +28,68 @@ export const initialState = {
 	batchStatsResults: {},
 };
 
-export function UiReducers(state = initialState, action) {
+export function UiReducers(
+	state = initialState,
+	action: UnknownAction = { type: "" },
+) {
 	switch (action.type) {
 		case TOGGLE_LOAD_MODAL:
-			return (state = {
+			return {
 				...state,
 				isLoadModalOpen: action.value,
-			});
+			};
 		case TOGGLE_AUTHOR_MODAL:
-			return (state = {
+			return {
 				...state,
 				isAuthorModalOpen: action.value,
-			});
+			};
 		case TOGGLE_OPTIONS_MODAL:
-			return (state = {
+			return {
 				...state,
 				isOptionsModalOpen: action.value,
-			});
+			};
 		case TOGGLE_SUPER_CONFIG_MODAL:
-			return (state = {
+			return {
 				...state,
 				isSuperConfigModalOpen: action.value,
-			});
+			};
 		case TOGGLE_VLIW_CONFIG_MODAL:
-			return (state = {
+			return {
 				...state,
 				isVliwConfigModalOpen: action.value,
-			});
+			};
 		case TOGGLE_BATCH_MODAL:
-			return (state = {
+			return {
 				...state,
 				isBatchModalOpen: action.value,
-			});
+			};
 		case TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL:
-			return (state = {
+			return {
 				...state,
 				isSuperescalarLoadContentModalOpen: action.value,
-			});
+			};
 		case TOGGLE_VLIW_LOAD_CONTENT_MODAL:
-			return (state = {
+			return {
 				...state,
 				isVliwLoadContentModalOpen: action.value,
-			});
+			};
 		case SET_CYCLES_PER_REPLICATION:
-			return (state = {
+			return {
 				...state,
 				batchResults: action.value,
-			});
+			};
 		case DISPLAY_BATCH_RESULTS:
-			return (state = {
+			return {
 				...state,
 				isBatchResultsModalOpen: true,
 				batchStatsResults: action.value,
-			});
+			};
 		case CLOSE_BATCH_RESULTS:
-			return (state = {
+			return {
 				...state,
 				isBatchResultsModalOpen: false,
 				batchStatsResults: {},
-			});
+			};
 
 		default:
 			return state;
