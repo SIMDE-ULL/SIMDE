@@ -1,8 +1,7 @@
-"use strict";
-import * as React from "react";
-import { WithTranslation, withTranslation } from "react-i18next";
+import type * as React from "react";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { AnyAction, Dispatch, bindActionCreators } from "redux";
+import { type AnyAction, type Dispatch, bindActionCreators } from "redux";
 
 import ReactECharts from "echarts-for-react";
 

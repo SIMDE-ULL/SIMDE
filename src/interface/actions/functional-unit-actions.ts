@@ -1,4 +1,4 @@
-import { FunctionalUntitVisualEntry } from "../../core/Common/FunctionalUnit";
+import type { FunctionalUntitVisualEntry } from "../../core/Common/FunctionalUnit";
 
 export const FUNCTIONAL_UNIT_CYCLE = 'FUNCTIONAL_UNIT_CYCLE';
 
@@ -9,17 +9,17 @@ export function nextFunctionalUnitCycle(data) {
     };
 }
 function mapFunctionalUnitData(data): any {
-    let toReturnObject = {
+    const toReturnObject = {
         content: [],
         header: []
     };
-    let content = new Array();
+    const content = new Array();
     if (data != null && data[0] != null) {
-        let aux = [];
+        const aux = [];
         for (let j = 0; j < data.length; j++) {
-            let instrsEntries: FunctionalUntitVisualEntry[] = data[j].getVisualData();
+            const instrsEntries: FunctionalUntitVisualEntry[] = data[j].getVisualData();
 
-            for (let entry of instrsEntries) {
+            for (const entry of instrsEntries) {
                 if (entry.id !== -1) {
                     aux.push({
                         id: entry.id,
@@ -46,7 +46,7 @@ function mapFunctionalUnitData(data): any {
 }
 
 function generateFunctionalUnitHeader(data): string[] {
-    let toReturn = [];
+    const toReturn = [];
     if (data != null) {
         for (let i = 0; i < data.length; i++) {
             toReturn.push(`#${i}`);

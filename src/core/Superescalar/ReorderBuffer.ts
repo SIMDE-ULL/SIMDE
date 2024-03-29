@@ -1,5 +1,5 @@
 import { SuperStage, stageToString } from "./SuperescalarEnums";
-import { Instruction } from "../Common/Instruction";
+import type { Instruction } from "../Common/Instruction";
 
 export interface VisualReorderBufferEntry {
   instruction: {
@@ -59,12 +59,12 @@ export class ReorderBuffer {
     register: number,
     isFloatRegister: boolean
   ): boolean {
-    let mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
+    const mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
     if (mapping[register] === undefined) {
       // error
       throw new Error("Register not found in mapping");
     }
-    let entry = this._queue[this.getInstructionPos(mapping[register])];
+    const entry = this._queue[this.getInstructionPos(mapping[register])];
     return entry.ready;
   }
 
@@ -72,12 +72,12 @@ export class ReorderBuffer {
    * getRegisterValue - this method returns the new value of a register wich still has not been written to the register file
    */
   public getRegisterValue(register: number, isFloatRegister: boolean): number {
-    let mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
+    const mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
     if (mapping[register] === undefined) {
       // error
       throw new Error("Register not found in mapping");
     }
-    let entry = this._queue[this.getInstructionPos(mapping[register])];
+    const entry = this._queue[this.getInstructionPos(mapping[register])];
     return entry.value;
   }
 
@@ -88,7 +88,7 @@ export class ReorderBuffer {
     register: number,
     isFloatRegister: boolean
   ): number {
-    let mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
+    const mapping = isFloatRegister ? this._FprMapping : this._GprMapping;
     if (mapping[register] === undefined) {
       // error
       throw new Error("Register not found in mapping");
@@ -100,7 +100,7 @@ export class ReorderBuffer {
    * canCommitStoreInstruction - this checks that the next instruction is an instruction that writes to a memory region and if it is ready to be commited
    */
   public canCommitStoreInstruction(): boolean {
-    let entry = this._queue[0];
+    const entry = this._queue[0];
     return (
       entry != undefined &&
       entry.ready &&
@@ -112,7 +112,7 @@ export class ReorderBuffer {
    * canCommitJumpInstruction - this checks that the next instruction to be commited is a jump instruction and if it is ready to be commited
    */
   public canCommitJumpInstruction(): boolean {
-    let entry = this._queue[0];
+    const entry = this._queue[0];
     return (
       entry != undefined && entry.ready && entry.instruction.isJumpInstruction()
     );
@@ -122,7 +122,7 @@ export class ReorderBuffer {
    * canCommitRegisterInstruction - this checks that the next instruction to be commited is an instruction that writes to a register and if it is ready to be commited
    */
   public canCommitRegisterInstruction(): boolean {
-    let entry = this._queue[0];
+    const entry = this._queue[0];
     return (
       entry != undefined &&
       entry.ready &&
@@ -142,11 +142,11 @@ export class ReorderBuffer {
    * purgeCommitMapping - this method removes the mapping of the register of the instruction that is going to be commited. Returns true if no more instructions have a mapping to that register
    */
   public purgeCommitMapping(): boolean {
-    let mapping = this._queue[0].instruction.isDestinyRegisterFloat()
+    const mapping = this._queue[0].instruction.isDestinyRegisterFloat()
       ? this._FprMapping
       : this._GprMapping;
-    let register = this._queue[0].destinyRegister;
-    let uid = this._queue[0].instruction.uid;
+    const register = this._queue[0].destinyRegister;
+    const uid = this._queue[0].instruction.uid;
 
     if (mapping[register] === uid) {
       delete mapping[register];
@@ -159,7 +159,7 @@ export class ReorderBuffer {
    * issueInstruction - this method issues an instruction to the reorder buffer
    */
   public issueInstruction(instruction: Instruction) {
-    let newEntry = {
+    const newEntry = {
       instruction: instruction,
       ready: false,
       value: 0.0,
@@ -199,14 +199,14 @@ export class ReorderBuffer {
    * writeResultValue - this method writes the result value of an instruction to the reorder buffer
    */
   public writeResultValue(uid: number, value: number) {
-    let pos = this.getInstructionPos(uid);
+    const pos = this.getInstructionPos(uid);
     this._queue[pos].value = value;
     this._queue[pos].ready = true;
     this._queue[pos].superStage = SuperStage.SUPER_WRITERESULT;
   }
 
-  public getInstruction(uid: number = -1): Instruction {
-    let pos = uid === -1 ? 0 : this.getInstructionPos(uid);
+  public getInstruction(uid = -1): Instruction {
+    const pos = uid === -1 ? 0 : this.getInstructionPos(uid);
     return this._queue[pos].instruction;
   }
 
@@ -214,7 +214,7 @@ export class ReorderBuffer {
    * writeResultAddress - this method writes the result address of an instruction to the reorder buffer
    */
   public writeResultAddress(uid: number, address: number) {
-    let pos = this.getInstructionPos(uid);
+    const pos = this.getInstructionPos(uid);
     this._queue[pos].address = address;
   }
 
@@ -222,7 +222,7 @@ export class ReorderBuffer {
    * hasResultValue - this method checks if an instruction has already the result value
    */
   public hasResultValue(uid: number): boolean {
-    let pos = this.getInstructionPos(uid);
+    const pos = this.getInstructionPos(uid);
     return this._queue[pos].ready;
   }
 
@@ -237,7 +237,7 @@ export class ReorderBuffer {
    * hasResultAddress - this method checks if an instruction has already the result address
    */
   public hasResultAddress(uid: number): boolean {
-    let pos = this.getInstructionPos(uid);
+    const pos = this.getInstructionPos(uid);
     return this._queue[pos].address !== -1;
   }
 
@@ -252,8 +252,8 @@ export class ReorderBuffer {
    * hasPreviousStores - this method checks if there are previous store instructions that write to the same address
    */
   public hasPreviousStores(uid: number): boolean {
-    let pos = this.getInstructionPos(uid);
-    let address = this._queue[pos].address;
+    const pos = this.getInstructionPos(uid);
+    const address = this._queue[pos].address;
     for (let i = 0; i < pos; i++) {
       // check if it is a store instruction and if it the address is the same or if it doesn't have a result address yet
       if (
@@ -269,7 +269,7 @@ export class ReorderBuffer {
   public getVisualData(): VisualReorderBufferEntry[] {
     return this._queue.map((entry) => {
       if (entry != null) {
-        let aux = {
+        const aux = {
           instruction: { id: "", uid: -1, value: "" },
           destinyRegister:
             entry.destinyRegister !== -1 ? "" + entry.destinyRegister : "-",
@@ -302,10 +302,10 @@ export class ReorderBuffer {
   }
 
   public getVisualRegisterMap(isFloat: boolean): { [reg: string]: number } {
-    let mapping = isFloat ? this._FprMapping : this._GprMapping;
+    const mapping = isFloat ? this._FprMapping : this._GprMapping;
 
-    let visualMap: { [reg: string]: number } = {};
-    for (let key in mapping) {
+    const visualMap: { [reg: string]: number } = {};
+    for (const key in mapping) {
       visualMap[(isFloat ? "F" : "R") + key] = this.getInstructionPos(
         mapping[key]
       );
@@ -314,7 +314,7 @@ export class ReorderBuffer {
   }
 
   public getVisualInstructionMap(): { [uid: number]: number } {
-    let visualMap: { [uid: string]: number } = {};
+    const visualMap: { [uid: string]: number } = {};
     for (let i = 0; i < this._queue.length; i++) {
       visualMap[this._queue[i].instruction.uid] = i;
     }

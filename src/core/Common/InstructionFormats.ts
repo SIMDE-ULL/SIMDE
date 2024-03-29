@@ -2,15 +2,15 @@ import { Opcodes } from "./Opcodes";
 
 export enum Formats {
   TwoGeneralRegisters = 0, // OP R1, R2, R3
-  TwoFloatingRegisters, // OP F1, F2, F3
-  GeneralRegisterAndInmediate, // OP R1, R2, #X
-  GeneralLoadStore, // OP R1, X(R2)
-  FloatingLoadStore, // OP F1, X(R2)
-  Jump, // OP R1, R2, label
-  Noop, // NOP
+  TwoFloatingRegisters = 1, // OP F1, F2, F3
+  GeneralRegisterAndInmediate = 2, // OP R1, R2, #X
+  GeneralLoadStore = 3, // OP R1, X(R2)
+  FloatingLoadStore = 4, // OP F1, X(R2)
+  Jump = 5, // OP R1, R2, label
+  Noop = 6, // NOP
 }
 
-export let FormatsNames: string[] = [
+export const FormatsNames: string[] = [
   "TwoGeneralRegisters",
   "TwoFloatingRegisters",
   "GeneralRegisterAndInmediate",

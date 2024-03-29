@@ -45,7 +45,7 @@ class VliwConfigModalComponent extends React.Component<any, any> {
     }
 
     handleChange(event) {
-        let newState = Object.assign({}, this.state);
+        const newState = Object.assign({}, this.state);
         newState.vliwConfig[event.target.name] = event.target.value;
         this.setState(newState);
     }

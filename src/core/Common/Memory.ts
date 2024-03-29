@@ -16,7 +16,7 @@ export const forcePositiveAddresses = (address: number): void | Error => {
 export class Memory implements Iterable<Datum> {
   private readonly data: Datum[];
 
-  constructor(size: number, public faultChance: number = 0.0) {
+  constructor(size: number, public faultChance = 0.0) {
     // Initialize clean data array with `size` Datum slots.
     this.data = Array.from(Array(size).keys()).map((n) => ({
       value: 0,
@@ -38,7 +38,7 @@ export class Memory implements Iterable<Datum> {
   }
 
   public getFaultyDatum(address: number): Datum | Error {
-    let error = forcePositiveAddresses(address);
+    const error = forcePositiveAddresses(address);
     if (error) return error;
 
     const datum = this.data[address];
@@ -55,7 +55,7 @@ export class Memory implements Iterable<Datum> {
   }
 
   public setDatum(address: number, value: number): void | Error {
-    let error = forcePositiveAddresses(address);
+    const error = forcePositiveAddresses(address);
     if (error) return error;
 
     this.data[address] = { ...this.data[address], value };

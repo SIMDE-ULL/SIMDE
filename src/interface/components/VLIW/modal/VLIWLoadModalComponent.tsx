@@ -30,7 +30,7 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
     handleSuperescalarInputFileChange = (e, results) => {
         results.forEach(result => {
             const [e, file] = result;
-            let a = document.getElementById('superescalarCodeInput') as HTMLInputElement;
+            const a = document.getElementById('superescalarCodeInput') as HTMLInputElement;
             a.value = e.target.result;
         });
     }
@@ -38,14 +38,14 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
     handleVliwInputFileChange = (e, results) => {
         results.forEach(result => {
             const [e, file] = result;
-            let a = document.getElementById('vliwCodeInput') as HTMLInputElement;
+            const a = document.getElementById('vliwCodeInput') as HTMLInputElement;
             a.value = e.target.result;
         });
     }
 
     loadCode() {
-        let code = new Code();
-        let vliwCode = new VLIWCode();
+        const code = new Code();
+        const vliwCode = new VLIWCode();
         
         try {
             code.load((document.getElementById('superescalarCodeInput') as HTMLInputElement).value);
@@ -55,7 +55,7 @@ export class VLIWLoadModalComponent extends React.Component<any, any> {
         }
 
         try {
-            let inputVliwCode = (document.getElementById('vliwCodeInput') as HTMLInputElement).value;
+            const inputVliwCode = (document.getElementById('vliwCodeInput') as HTMLInputElement).value;
             vliwCode.load(inputVliwCode, code);
             VLIWIntegration.loadCode(vliwCode);
             

@@ -95,7 +95,7 @@ export class VLIWIntegration extends MachineIntegration {
         } else {
             if (this.finishedExecution) {
                 this.finishedExecution = false;
-                let code = Object.assign(new VLIWCode(), this.vliw.code);
+                const code = Object.assign(new VLIWCode(), this.vliw.code);
                 this.vliwExe();
                 this.vliw.code = code;
 
@@ -106,7 +106,7 @@ export class VLIWIntegration extends MachineIntegration {
                     this.setMemory(this.contentIntegration.MEMContent);
                 }
             }
-            let machineStatus = this.vliw.tic();
+            const machineStatus = this.vliw.tic();
             this.collectStats();
             this.dispatchAllVLIWActions();
 
@@ -131,9 +131,9 @@ export class VLIWIntegration extends MachineIntegration {
             throw new Error('Cannot set operations in the middle of an execution');
         }
 
-        let { loc } = codeInstructionIdx;
-        let [instructionIdx, operationIdx] = position;
-        let functionalUnitType = this.vliw.code.superescalarCode.getFunctionalUnitType(loc);
+        const { loc } = codeInstructionIdx;
+        const [instructionIdx, operationIdx] = position;
+        const functionalUnitType = this.vliw.code.superescalarCode.getFunctionalUnitType(loc);
         let functionalUnitIdx = 0;
 
         for (let i = 0; i < this.vliw.functionalUnitNumbers.length; i++) {
@@ -155,13 +155,13 @@ export class VLIWIntegration extends MachineIntegration {
             functionalUnitIdx += this.vliw.functionalUnitNumbers[i];
         }
 
-        let operation = new VLIWOperation(null,
+        const operation = new VLIWOperation(null,
             this.vliw.code.superescalarCode.instructions[loc],
             functionalUnitType, functionalUnitIdx
         );
 
         // Pop out any former operations in the same slot
-        let popIdx = this.vliw.code.instructions[instructionIdx].operations
+        const popIdx = this.vliw.code.instructions[instructionIdx].operations
             .findIndex(op => op.getFunctionalUnitType() === functionalUnitType &&
                 op.getFunctionalUnitIndex() === functionalUnitIdx);
         if (popIdx >= 0) {
@@ -182,11 +182,11 @@ export class VLIWIntegration extends MachineIntegration {
         this.stopCondition = ExecutionStatus.EXECUTABLE;
         this.backStep = 0;
         this.executing = true;
-        let speed = this.calculateSpeed();
+        const speed = this.calculateSpeed();
 
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            let code = Object.assign(new VLIWCode(), this.vliw.code); // asignar tambien el codigo superescalar?
+            const code = Object.assign(new VLIWCode(), this.vliw.code); // asignar tambien el codigo superescalar?
             this.vliwExe();
             this.vliw.code = code;
 
@@ -226,7 +226,7 @@ export class VLIWIntegration extends MachineIntegration {
 
         const results = [];
         for (let i = 0; i < this.replications; i++) {
-            let code = Object.assign(new VLIWCode(), this.vliw.code);
+            const code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
             this.vliw.memory.faultChance = this.cacheFailPercentage / 100;
@@ -322,8 +322,8 @@ export class VLIWIntegration extends MachineIntegration {
     executionLoop = (speed) => {
         if (!this.stopCondition) {
             setTimeout(() => {
-                let machineStatus = this.stepForward();
-                let stop: boolean = true;
+                const machineStatus = this.stepForward();
+                let stop = true;
                 switch (machineStatus) {
                     case VLIWError.OK:
                     case VLIWError.PCOUTOFRANGE: //TODO: is this really an error? We always go out of range when we finish the execution or there is a branch at the end
@@ -371,7 +371,7 @@ export class VLIWIntegration extends MachineIntegration {
     }
 
     private resetMachine() {
-        let code = Object.assign(new VLIWCode(), this.vliw.code);
+        const code = Object.assign(new VLIWCode(), this.vliw.code);
         this.vliwExe();
         this.vliw.code = code;
 

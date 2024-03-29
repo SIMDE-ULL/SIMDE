@@ -4,7 +4,7 @@ export function addInterval(state, field, interval) {
         new Set([...state[field].visibleRangeValues, ...interval])
     ).sort((a, b) => +a - +b);
 
-    let newState = {
+    const newState = {
         ...state,
         history : state.history.map(historyEntry => {
             const newHistoryEntry = {
@@ -31,7 +31,7 @@ export function removeInterval(state, field, interval) {
     const newVisibleRangeValues = state[field].visibleRangeValues.filter(
         x => !interval.has(x)
     );
-    let newState = {
+    const newState = {
         ...state,
         history : state.history.map(historyEntry => {
             const newHistoryEntry = {

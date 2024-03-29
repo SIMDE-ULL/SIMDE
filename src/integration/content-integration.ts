@@ -1,16 +1,16 @@
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, Token, TokenError } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, seq, tok, opt_sc, type Token, TokenError } from 'typescript-parsec';
 import { Machine } from '../core/Common/Machine';
 
 enum Tokens {
-    Header,
-    Pos,
-    NumberSign,
-    NumberHex,
-    Number,
-    NumberDecimal,
-    Comma,
-    Space,
-    NewLine
+    Header = 0,
+    Pos = 1,
+    NumberSign = 2,
+    NumberHex = 3,
+    Number = 4,
+    NumberDecimal = 5,
+    Comma = 6,
+    Space = 7,
+    NewLine = 8
 }
 
 const tokenizer = buildLexer([
@@ -48,9 +48,9 @@ const numberParser = apply(
         // Check if float or int
         if (num[3]) {
             // Parse float number
-            return parseFloat(((num[0]) ? num[0].text : "") + num[2].text + num[3].text);
+            return Number.parseFloat(((num[0]) ? num[0].text : "") + num[2].text + num[3].text);
         } else {
-            return parseInt(((num[0]) ? num[0].text : "") + num[2].text, base);
+            return Number.parseInt(((num[0]) ? num[0].text : "") + num[2].text, base);
         }
     }
 );
@@ -58,7 +58,7 @@ const numberParser = apply(
 const contentParser = apply(
     rep_sc(seq(tok(Tokens.Pos), rep_sc(numberParser))),
     (content: [Token<Tokens.Pos>, number[]][]) => {
-        let result: { [k: number]: number } = {};
+        const result: { [k: number]: number } = {};
         for (let i = 0; i < content.length; i++) {
             var j = 0;
             content[i][1].forEach(num => {
@@ -111,11 +111,11 @@ export class ContentIntegration {
         // Iterate over Content
         let lastPosition = -1;
         Object.keys(content).forEach(key => {
-            let i = +key;
+            const i = +key;
             console.log("[" + i + "] " + content[i]);
 
             // Check if is the next position after the last one
-            let isContinuos = lastPosition !== -1 && i === lastPosition + 1;
+            const isContinuos = lastPosition !== -1 && i === lastPosition + 1;
             // Add position
             if (!isContinuos) {
                 result += '\n[' + i + '] ';
@@ -130,14 +130,14 @@ export class ContentIntegration {
     }
 
     private checkBounds(name: string, content: { [k: number]: number }, max: number) {
-        let actualMax = Math.max(...Object.keys(content).map(key => +key));
+        const actualMax = Math.max(...Object.keys(content).map(key => +key));
         if (actualMax >= max) {
             throw new Error(`${name} content exceeds bound: ${actualMax} exceeds ${max}`);
         }
     }
 
     private parseContent(input: string) {
-        let result = expectSingleResult(expectEOF(fileParser.parse(tokenizer.parse(input))));
+        const result = expectSingleResult(expectEOF(fileParser.parse(tokenizer.parse(input))));
         result.forEach(section => {
             switch (section[0].text) {
                 case '#FPR':

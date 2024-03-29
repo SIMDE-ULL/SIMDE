@@ -33,7 +33,7 @@ export default class FileReaderInput extends React.Component<Props> {
 
     // Build Promise List, each promise resolved by FileReader.onload.
     Promise.all(files.map(file => new Promise((resolve, reject) => {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = result => {
         // Resolve both the FileReader result and its original file.

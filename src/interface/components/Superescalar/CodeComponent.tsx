@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { OpcodesNames } from '../../../core/Common/Opcodes';
 
-import { Instruction } from '../../../core/Common/Instruction';
+import type { Instruction } from '../../../core/Common/Instruction';
 
 import SuperescalarIntegration from '../../../integration/superescalar-integration';
 

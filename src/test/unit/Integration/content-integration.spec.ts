@@ -39,7 +39,7 @@ const input6 = `
 
 
 test('Current content is selected properly', t => {
-    let contentIntegration = new ContentIntegration(input);
+    const contentIntegration = new ContentIntegration(input);
     expect(contentIntegration.FPRContent[40]).toBe( 1);
     expect(contentIntegration.FPRContent[41]).toBe( 1);
 });
@@ -50,7 +50,7 @@ test('Throws error if no content is selected', t => {
 
 
 test('Fills proper data', t => {
-    let contentIntegration = new ContentIntegration(input3);
+    const contentIntegration = new ContentIntegration(input3);
     expect(contentIntegration.GPRContent[1]).toBe( 5);
     expect(contentIntegration.GPRContent[2]).toBe( 1);
     expect(contentIntegration.GPRContent[3]).toBe( 2);
@@ -71,14 +71,14 @@ test('Throws error when exceeding bounds', t => {
 });
 
 test('Can parse float numbers', t => {
-    let contentIntegration = new ContentIntegration(input5);
+    const contentIntegration = new ContentIntegration(input5);
     expect(contentIntegration.FPRContent[0]).toBe( 2.2);
     expect(contentIntegration.FPRContent[1]).toBe( 6.1);
     expect(contentIntegration.FPRContent[2]).toBe( 7.7);
 });
 
 test('Can parse hexadecimal numbers', t => {
-    let contentIntegration = new ContentIntegration(input6);
+    const contentIntegration = new ContentIntegration(input6);
     expect(contentIntegration.GPRContent[0]).toBe( 10);
 });
 

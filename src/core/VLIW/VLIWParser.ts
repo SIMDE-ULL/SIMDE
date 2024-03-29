@@ -1,15 +1,15 @@
-import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, rep_n, seq, tok, combine, opt_sc, Token, TokenError, list_sc } from 'typescript-parsec';
+import { apply, buildLexer, expectEOF, expectSingleResult, rep_sc, rep_n, seq, tok, combine, opt_sc, type Token, TokenError, list_sc } from 'typescript-parsec';
 import { LargeInstruction } from './LargeInstructions';
-import { Code } from '../Common/Code';
+import type { Code } from '../Common/Code';
 import { VLIWOperation } from './VLIWOperation';
-import { FunctionalUnitType, FunctionalUnitTypeNames, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
+import { type FunctionalUnitType, FunctionalUnitTypeNames, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
 
 enum Tokens {
-    Number,
-    Comma,
-    Space,
-    NewLine,
-    Comment
+    Number = 0,
+    Comma = 1,
+    Space = 2,
+    NewLine = 3,
+    Comment = 4
 }
 
 const tokenizer = buildLexer([
@@ -23,7 +23,7 @@ const tokenizer = buildLexer([
 const functionalUnitTypeParser = apply(
     tok(Tokens.Number),
     (num: Token<Tokens.Number>): FunctionalUnitType => {
-        let type = +num.text;
+        const type = +num.text;
         if (type > FUNCTIONALUNITTYPESQUANTITY - 1) {
             throw new TokenError(num.pos, `Invalid functional unit type ${type}`);
         }
@@ -46,7 +46,7 @@ export class VLIWParser {
         const indexParser = apply(
             tok(Tokens.Number),
             (num: Token<Tokens.Number>): IndexParsed => {
-                let index = +num.text;
+                const index = +num.text;
                 // Check if index is not out of bounds
                 if (index >= code.instructions.length) {
                     throw new TokenError(num.pos, `Invalid index ${index}`);
@@ -60,7 +60,7 @@ export class VLIWParser {
         let currentIndex: IndexParsed = null; // This is a ugly hack, but unfortunately combine consumes the index that we need in operationParser
         const operationCombiner = combine(indexParser, (indexParsed: IndexParsed) => {
             currentIndex = indexParsed;
-            let numOfElements = indexParsed.isJump ? 5 : 2;
+            const numOfElements = indexParsed.isJump ? 5 : 2;
             return seq(functionalUnitTypeParser, rep_n(tok(Tokens.Number), numOfElements));
         });
 
@@ -72,10 +72,10 @@ export class VLIWParser {
                     throw new TokenError(componets[1][0].pos, `Expected at least 2 operands, received ${componets[1].length}`);
                 }
 
-                let index = +currentIndex.index;
-                let functionalUnitType = componets[0];
-                let functionalUnitIndex = +componets[1][0].text; //TODO: Check if this is out of bounds
-                let predicate = +componets[1][1].text; //TODO: Check if this is out of bounds
+                const index = +currentIndex.index;
+                const functionalUnitType = componets[0];
+                const functionalUnitIndex = +componets[1][0].text; //TODO: Check if this is out of bounds
+                const predicate = +componets[1][1].text; //TODO: Check if this is out of bounds
 
                 // Check if the recived functional unit type is the same as the one in the code
                 if (functionalUnitType !== currentIndex.functionalUnitType) {
@@ -83,7 +83,7 @@ export class VLIWParser {
                 }
 
 
-                let operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
+                const operation = new VLIWOperation(null, code.instructions[index], functionalUnitType, functionalUnitIndex);
                 operation.setPred(predicate);
 
                 if (currentIndex.isJump) {
@@ -91,9 +91,9 @@ export class VLIWParser {
                     if (componets[1].length !== 5) {
                         throw new TokenError(componets[1][componets[1].length - 1].pos, `Expected 5 operands(Jump operation), received ${componets[1].length}`);
                     }
-                    let destiny = +componets[1][2].text;
-                    let predTrue = +componets[1][3].text;
-                    let predFalse = +componets[1][4].text;
+                    const destiny = +componets[1][2].text;
+                    const predTrue = +componets[1][3].text;
+                    const predFalse = +componets[1][4].text;
 
                     operation.setOperand(2, destiny, '');
                     operation.setPredTrue(predTrue);
@@ -107,16 +107,16 @@ export class VLIWParser {
         const programParser = seq(tok(Tokens.Number), tok(Tokens.NewLine), list_sc(lineParser, tok(Tokens.NewLine)), opt_sc(tok(Tokens.NewLine)));
 
         // Lets parse the input
-        let result = expectSingleResult(expectEOF(programParser.parse(tokenizer.parse(input))));
+        const result = expectSingleResult(expectEOF(programParser.parse(tokenizer.parse(input))));
 
-        let linesNumber: number = +result[0].text; // Let's extract the amount of lines, this is a retrocompatibility thing, we don't really use it
-        let instructions: LargeInstruction[] = new Array<LargeInstruction>(result[2].length);
-        let instructionsLines: [Token<Tokens>, VLIWOperation[]][] = result[2];
+        const linesNumber = +result[0].text; // Let's extract the amount of lines, this is a retrocompatibility thing, we don't really use it
+        const instructions: LargeInstruction[] = new Array<LargeInstruction>(result[2].length);
+        const instructionsLines: [Token<Tokens>, VLIWOperation[]][] = result[2];
 
         for (let i = 0; i < instructionsLines.length; i++) {
             instructions[i] = new LargeInstruction();
 
-            let operationsAmount = +instructionsLines[i][0].text; // This is also a retrocompatibility thing, we don't really use it
+            const operationsAmount = +instructionsLines[i][0].text; // This is also a retrocompatibility thing, we don't really use it
 
             // Iterate over the operations
             instructionsLines[i][1].forEach(operation => {
@@ -133,12 +133,12 @@ export class VLIWParser {
         outputString += _instructionNumber;
 
         for (let i = 0; i < _instructionNumber; i++) {
-            let operationAmount = _instructions[i].getVLIWOperationsNumber();
+            const operationAmount = _instructions[i].getVLIWOperationsNumber();
             outputString += operationAmount;
 
             for (let j = 0; j < operationAmount; j++) {
 
-                let operation = _instructions[i].getOperation(j);
+                const operation = _instructions[i].getOperation(j);
                 outputString += '\t';
                 outputString += operation.id;
                 outputString += ' ';

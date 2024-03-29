@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Instruction } from '../../../core/Common/Instruction';
+import type { Instruction } from '../../../core/Common/Instruction';
 import InstructionComponent from './InstructionComponent';
 
 import { withTranslation } from 'react-i18next';
@@ -41,7 +41,7 @@ class CodeComponent extends React.Component<any, any> {
                         </div>
                         <div className='smd-table-body'>
                             {
-                                this.props.code && this.props.code.map((row: Instruction, i) =>
+                                this.props.code?.map((row: Instruction, i) =>
                                     <InstructionComponent instruction={row} key={i} loc={i}
                                         color={this.setColor(row)}
                                     />

@@ -23,7 +23,7 @@ function VLIWOperationComponent(props) {
     return (
         <div ref={drop}
             className={ isOver ? "smd-table_cell smd-table_cell_isover" : "smd-table_cell" }
-            key={`${'VliwCode' + props.pos[0] + '' + props.pos[1]}`}>
+            key={`VliwCode ${props.pos[0]}${props.pos[1]}`}>
             { props.op }
         </div>
     )

@@ -7,10 +7,18 @@ export function nextReserveStationCycle(data) {
     };
 }
 
-function mapReserveStationEntry(content: { data: any, size: number }): any {
-    let data = content.data;
-    let toReturn = [];
-    let i;
+function mapReserveStationEntry(content: { data: any, size: number }): Array<{
+    instruction: { id: string, value: string, uid: string },
+    Qj: string,
+    Vj: string,
+    Qk: string,
+    Vk: string,
+    A: string,
+    ROB: string
+}> {
+    const data = content.data;
+    const toReturn = [];
+    let i: number;
 
     const defaultObject = {
         instruction: { id: '', value: '', uid: '' },

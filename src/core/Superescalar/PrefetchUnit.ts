@@ -1,4 +1,4 @@
-import { Instruction } from "../Common/Instruction";
+import type { Instruction } from "../Common/Instruction";
 
 export interface PrefetchUnitVisualEntry {
   id: number;

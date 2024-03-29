@@ -44,13 +44,13 @@ test('Lines counter is ignored', t => {
         ADDF F1 F1 F0
         BNE	R2 R5 LOOP
         `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	code.load(input);
 	expect(3).toBe(code.lines);
 });
 
 test('Commentaries on top should not affect the parsing', t => {
-	let code: Code = new Code();
+	const code: Code = new Code();
 	code.load(inputWithComments);
 	expect(2).toBe(code.lines);
 });
@@ -62,7 +62,7 @@ test('Parsing operand errors are being thrown', t => {
         ADDF F1 F1 H0
         BNE	R2 R5 LOOP
         `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).toThrowError('{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got Jump format or similar');
 });
 
@@ -74,7 +74,7 @@ test('Parsing addresses errors are being throw', t => {
     BNE	R2 R5 LOOP
     `;
 
-	let code = new Code();
+	const code = new Code();
 	expect(() => code.load(input)).toThrowError('{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got Noop format or similar');
 });
 
@@ -85,7 +85,7 @@ test('Parsing opcodes errors are being thrown', t => {
     ADF F1 F1 F0
     BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).toThrowError('{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode ADF');
 });
 
@@ -97,7 +97,7 @@ test('Repeated labels errors are being thrown', t => {
     LOOP:
     BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).toThrowError('Error at instruction 2, label LOOP already exists');
 });
 
@@ -110,7 +110,7 @@ test('Parsing strange inmediates throws errors', t => {
 	ADDI R0 R0 #(0)`;
 	const inpu4 = `1
 	ADDI R0 R0 #R0`;
-	let code: Code = new Code();
+	const code: Code = new Code();
 
 	expect(() => code.load(input)).toThrowError('{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":17}: Unknown opcode x0');
 	expect(() => code.load(inpu2)).toThrowError('{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":15}: Unable to tokenize the rest of the input: .0');
@@ -125,7 +125,7 @@ test('Parsing strange registers throws errors', t => {
 	ADDI R0x0 R0 #0`;
 	const inpu3 = `1
 	ADDI R(0) R0 #0`;
-	let code: Code = new Code();
+	const code: Code = new Code();
 
 	expect(() => code.load(input)).toThrowError('{"index":10,"rowBegin":2,"columnBegin":9,"rowEnd":2,"columnEnd":9}: Unable to tokenize the rest of the input: .0 R0 #0');
 	expect(() => code.load(inpu2)).toThrowError('{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar');
@@ -139,7 +139,7 @@ test('Parser check bounds', t => {
 	ADDF F128 F0 F0`;
 	const inpu3 = `1
 	SF R0 1025(F0)`;
-	let code: Code = new Code();
+	const code: Code = new Code();
 
 	expect(() => code.load(input)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
 	expect(() => code.load(inpu2)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
@@ -161,7 +161,7 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -183,7 +183,7 @@ LOOP:
 	ADDI	R3 R3 #2
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -211,7 +211,7 @@ LOOP:
 	ADDI	R3 R3 #4
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -251,7 +251,7 @@ LOOP:
 	ADDI	R3 R3 #8
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -278,7 +278,7 @@ LOOP2:
 	ADDI	R3 R3 #1
 	BNE	R3 R5 LOOP2
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -294,7 +294,7 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R3 R4 LOOP
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -322,7 +322,7 @@ LOOP:
 	ADDF	F2 F1 F0
 	SF	F2 1(R3)
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -359,7 +359,7 @@ LOOP:
 	SF	F2 2(R3)
 	SF	F4 3(R3)
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -383,7 +383,7 @@ B:
 FIN:
 	SF		F3, 2(R10)
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -399,7 +399,7 @@ SUB R5 R2 R3
 ET2:
 SUB R6 R2 R3
     `;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });
 
@@ -449,6 +449,6 @@ FIN:
 	// Operación nula: Es necesaria porque el simulador exige que todas las etiquetas
 	// vayan asociadas a una operación.
 	ADDI	R0 R0 #0`;
-	let code: Code = new Code();
+	const code: Code = new Code();
 	expect(() => code.load(input)).not.toThrowError();
 });

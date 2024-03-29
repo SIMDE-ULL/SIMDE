@@ -62,7 +62,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     */
     dispatchAllSuperescalarActions = (step?: number) => {
         // Code should only be setted on the first iteration
-        let robMap = this.superescalar.reorderBuffer.getVisualInstructionMap();
+        const robMap = this.superescalar.reorderBuffer.getVisualInstructionMap();
         store.dispatch(
                 batchActions(
                     nextJumpTableCycle(this.superescalar.jumpPrediction.getVisualTable()),
@@ -111,7 +111,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     collectStats = () => {
-        let prefetchInstrs = this.superescalar.prefetchUnit.getVisualData();
+        const prefetchInstrs = this.superescalar.prefetchUnit.getVisualData();
         this.stats.collectPrefetchUids(prefetchInstrs.map((data) => data.uid));
         this.stats.collectDecodeUids(this.superescalar.decoder.getVisualData().map((data) => data.uid));
         this.stats.collectIssuedUids(this.superescalar.reorderBuffer.getVisualData().filter((data) => data.superStage === "ISSUE").map((data) => data.instruction.uid));
@@ -130,14 +130,14 @@ export class SuperescalarIntegration extends MachineIntegration {
         }
 
 
-        for (let instr of prefetchInstrs) {
+        for (const instr of prefetchInstrs) {
             this.stats.associateUidWithInstruction(instr.uid, instr.id);
         }
 
         this.stats.advanceCycle();
     }
 
-    superExe = (reset: boolean = true) => {
+    superExe = (reset = true) => {
         this.superescalar.init(reset);
     }
 
@@ -153,7 +153,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         } else {
             if (this.finishedExecution) {
                 this.finishedExecution = false;
-                let code = Object.assign(new Code(), this.superescalar.code);
+                const code = Object.assign(new Code(), this.superescalar.code);
                 this.superExe();
                 this.superescalar.code = code;
 
@@ -166,7 +166,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
                 this.stats = new Stats();
             }
-            let machineStatus = this.superescalar.tic();
+            const machineStatus = this.superescalar.tic();
             this.collectStats();
             this.dispatchAllSuperescalarActions();
 
@@ -191,11 +191,11 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.stopCondition = ExecutionStatus.EXECUTABLE;
         this.backStep = 0;
         this.executing = true;
-        let speed = this.calculateSpeed();
+        const speed = this.calculateSpeed();
 
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            let code = Object.assign(new Code(), this.superescalar.code);
+            const code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
 
@@ -231,7 +231,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         const results = [];
         this.batchStats = new StatsAgregator();
         for (let i = 0; i < this.replications; i++) {
-            let code = Object.assign(new Code(), this.superescalar.code);
+            const code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
             //TODO: check this data, seems to be inverted
@@ -327,7 +327,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     executionLoop = (speed) => {
         if (!this.stopCondition) {
             setTimeout(() => {
-                let machineStatus = this.stepForward();
+                const machineStatus = this.stepForward();
                 if (!(machineStatus === SuperescalarStatus.SUPER_BREAKPOINT || machineStatus === SuperescalarStatus.SUPER_ENDEXE)) {
                     this.executionLoop(speed);
                 } else {
@@ -379,7 +379,7 @@ export class SuperescalarIntegration extends MachineIntegration {
     }
 
     private resetMachine() {
-        let code = Object.assign(new Code(), this.superescalar.code);
+        const code = Object.assign(new Code(), this.superescalar.code);
         this.superExe(true);
         this.superescalar.code = code;
 

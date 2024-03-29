@@ -33,7 +33,7 @@ class BatchModalComponent extends React.Component<any, any> {
     }
 
     handleChange(event) {
-        let newState = { ...this.state };
+        const newState = { ...this.state };
         newState.replications = event.target.value;
         this.setState(newState);
     }
@@ -50,13 +50,13 @@ class BatchModalComponent extends React.Component<any, any> {
     }
 
     handleCachePercentageChange(event) {
-        let newState = { ...this.state };
+        const newState = { ...this.state };
         newState.cacheFailPercentage = event.target.value;
         this.setState(newState);
     }
 
     handleCacheFailLatencyChange(event) {
-        let newState = { ...this.state };
+        const newState = { ...this.state };
         newState.cacheFailLatency = event.target.value;
         this.setState(newState);
     }

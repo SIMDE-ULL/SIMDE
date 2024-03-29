@@ -13,7 +13,7 @@ export class Register {
 
   constructor(
     private _numberOfRegs: number,
-    private _zeroWritable: boolean = false
+    private _zeroWritable = false
   ) {
     this._busy = new Array(_numberOfRegs);
     this._content = new Array(_numberOfRegs);

@@ -24,14 +24,14 @@ export class LoadModalComponent extends React.Component<any, any> {
     handleInputFileChange = (e, results) => {
         results.forEach(result => {
             const [e, file] = result;
-            let a = document.getElementById('codeInput') as HTMLInputElement;
+            const a = document.getElementById('codeInput') as HTMLInputElement;
             a.value = e.target.result;
         });
     }
 
     loadCode() {
         try {
-            let code = new Code();
+            const code = new Code();
             code.load((document.getElementById('codeInput') as HTMLInputElement).value);
             this.setState({error: ''})
             SuperescalarIntegration.loadCode(code);

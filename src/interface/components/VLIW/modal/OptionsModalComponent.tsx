@@ -24,7 +24,7 @@ class OptionsModalComponent extends React.Component<any, any> {
     };
 
     handleChange(event) {
-        let newState = {...this.state};
+        const newState = {...this.state};
         newState.cacheFailPercentage = event.target.value;
         this.setState(newState);
     }

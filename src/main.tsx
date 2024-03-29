@@ -8,7 +8,7 @@ import { store } from './store.ts';
 import i18n from './i18n.ts'; // Initialize i18next instance
 import './main.scss';
 
-ReactDOM.createRoot(document.getElementById('app')!).render(
+ReactDOM.createRoot(document.getElementById('app')).render(
     <React.StrictMode>
         <Provider store={store}>
             <I18nextProvider i18n={i18n}>

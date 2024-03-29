@@ -1,15 +1,15 @@
 export enum CommitStatus {
   SUPER_COMMITOK = 0,
-  SUPER_COMMITEND,
-  SUPER_COMMITMISS,
-  SUPER_COMMITNO,
+  SUPER_COMMITEND = 1,
+  SUPER_COMMITMISS = 2,
+  SUPER_COMMITNO = 3,
 }
 
 export enum SuperStage {
   SUPER_ISSUE = 0,
-  SUPER_EXECUTE,
-  SUPER_WRITERESULT,
-  SUPER_COMMIT,
+  SUPER_EXECUTE = 1,
+  SUPER_WRITERESULT = 2,
+  SUPER_COMMIT = 3,
 }
 
 export enum SuperescalarStatus {

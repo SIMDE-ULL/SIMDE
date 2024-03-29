@@ -7,36 +7,36 @@ import {
   seq,
   tok,
   opt_sc,
-  Token,
+  type Token,
   TokenError,
   alt_sc,
   fail,
-  TokenPosition,
+  type TokenPosition,
 } from "typescript-parsec";
 import { OpcodesNames, opcodeToFormat } from "./Opcodes";
 import { Formats, FormatsNames } from "./InstructionFormats";
 import { Instruction } from "./Instruction";
 
 enum Tokens {
-  Inmediate,
-  RegFP,
-  RegGP,
-  Id,
-  Label,
-  BraketOpen,
-  BraketClose,
-  Number,
-  Comma,
-  Space,
-  NewLine,
-  Comment,
+  Inmediate = 0,
+  RegFP = 1,
+  RegGP = 2,
+  Id = 3,
+  Label = 4,
+  BraketOpen = 5,
+  BraketClose = 6,
+  Number = 7,
+  Comma = 8,
+  Space = 9,
+  NewLine = 10,
+  Comment = 11,
 }
 
 enum RegType {
-  FP,
-  GP,
+  FP = 0,
+  GP = 1,
 }
-let RegTypeNames: string[] = ["FP", "GP"];
+const RegTypeNames: string[] = ["FP", "GP"];
 
 interface Reg {
   type: RegType;
@@ -121,7 +121,7 @@ const addressParser = apply(
 const opcodeParser = apply(
   tok(Tokens.Id),
   (opcodeTok: Token<Tokens.Id>): OpcodeToken => {
-    let opcode: number = OpcodesNames.indexOf(opcodeTok.text);
+    const opcode: number = OpcodesNames.indexOf(opcodeTok.text);
     if (opcode !== -1) {
       return { opcode: opcode, pos: opcodeTok.pos };
     } else {
@@ -156,16 +156,16 @@ export class CodeParser {
   }
 
   private parse(code: string) {
-    let result = expectSingleResult(
+    const result = expectSingleResult(
       expectEOF(this.genCodeParser().parse(tokenizer.parse(code)))
     );
 
     // Create labels and instructions
     let pos = 0;
     for (let i = 0; i < result[1].length; i++) {
-      let line = result[1][i];
+      const line = result[1][i];
       if ("kind" in line && line.kind == Tokens.Label) {
-        let name = line.text.slice(0, -1);
+        const name = line.text.slice(0, -1);
         if (name in this._labels) {
           throw new Error(
             `Error at instruction ${pos}, label ${line.text.slice(
@@ -358,7 +358,7 @@ export class CodeParser {
           );
         }
 
-        let expectedType = opcodeToFormat(instruction.opcode);
+        const expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
           //return fail(`Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
           throw new TokenError(

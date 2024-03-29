@@ -1,5 +1,5 @@
 import { Opcodes } from '../Common/Opcodes';
-import { VLIWOperation } from './VLIWOperation';
+import type { VLIWOperation } from './VLIWOperation';
 import { FunctionalUnitType } from '../Common/FunctionalUnit';
 
 export interface Check {

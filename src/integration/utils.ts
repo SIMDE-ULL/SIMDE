@@ -1,5 +1,5 @@
 export enum ExecutionStatus {
-    EXECUTABLE,
-    PAUSE,
-    STOP
+    EXECUTABLE = 0,
+    PAUSE = 1,
+    STOP = 2
 } 

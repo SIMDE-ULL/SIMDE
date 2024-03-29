@@ -1,5 +1,4 @@
-"use strict";
-import { Stats, InstructionStatsEntry } from "./stats";
+import type { Stats, InstructionStatsEntry } from "./stats";
 
 export interface StatEntry {
   replication: number;
@@ -16,7 +15,7 @@ export class StatsAgregator {
   }
 
   public export(): Array<StatEntry> {
-    let result = [];
+    const result = [];
 
     for (let i = 0; i < this._stats.length; i++) {
       result.push({
@@ -29,11 +28,11 @@ export class StatsAgregator {
   }
 
   public getAvgUnitsUsage(): Map<string, number[]> {
-    let result = new Map();
+    const result = new Map();
 
-    for (let stat of this._stats) {
-      let usages = stat.getUnitsUsage();
-      for (let key of usages.keys()) {
+    for (const stat of this._stats) {
+      const usages = stat.getUnitsUsage();
+      for (const key of usages.keys()) {
         if (!result.has(key)) {
           result.set(key, []);
         }
@@ -41,7 +40,7 @@ export class StatsAgregator {
       }
     }
 
-    for (let key of result.keys()) {
+    for (const key of result.keys()) {
       result.set(key, this.avgOfArrays(result.get(key)));
     }
 
@@ -52,8 +51,8 @@ export class StatsAgregator {
     let commited = 0;
     let discarded = 0;
 
-    for (let stat of this._stats) {
-      let stats = stat.getCommitedAndDiscarded();
+    for (const stat of this._stats) {
+      const stats = stat.getCommitedAndDiscarded();
       commited += stats.commited;
       discarded += stats.discarded;
     }
@@ -65,11 +64,11 @@ export class StatsAgregator {
   }
 
   public getAvgCommitedPercentagePerInstruction(): Map<number, number> {
-    let result = new Map<number, number>();
+    const result = new Map<number, number>();
 
-    for (let stat of this._stats) {
-      let stats = stat.getCommitedPercentagePerInstruction();
-      for (let [key, value] of stats) {
+    for (const stat of this._stats) {
+      const stats = stat.getCommitedPercentagePerInstruction();
+      for (const [key, value] of stats) {
         if (!result.has(key)) {
           result.set(key, 0);
         }
@@ -77,7 +76,7 @@ export class StatsAgregator {
       }
     }
 
-    for (let [key, value] of result) {
+    for (const [key, value] of result) {
       result.set(key, value / this._stats.length);
     }
 
@@ -88,16 +87,16 @@ export class StatsAgregator {
     number,
     InstructionStatsEntry
   > {
-    let result = new Map<number, InstructionStatsEntry>();
+    const result = new Map<number, InstructionStatsEntry>();
 
-    for (let stat of this._stats) {
-      let stats = stat.getInstructionsStatusesAverage();
-      for (let [key, value] of stats) {
+    for (const stat of this._stats) {
+      const stats = stat.getInstructionsStatusesAverage();
+      for (const [key, value] of stats) {
         if (!result.has(key)) {
           result.set(key, value);
         } else {
           //iterate over the properties of the object
-          for (let prop in value) {
+          for (const prop in value) {
             if (value.hasOwnProperty(prop)) {
               result.get(key)[prop] += value[prop];
             }
@@ -106,8 +105,8 @@ export class StatsAgregator {
       }
     }
 
-    for (let [, value] of result) {
-      for (let prop in value) {
+    for (const [, value] of result) {
+      for (const prop in value) {
         if (value.hasOwnProperty(prop)) {
           value[prop] = value[prop] / this._stats.length;
         }
@@ -118,11 +117,11 @@ export class StatsAgregator {
   }
 
   public getPerStatusCountAtCycle(): Map<string, number[]> {
-    let result = new Map();
+    const result = new Map();
 
-    for (let stat of this._stats) {
-      let stats = stat.getPerStatusCountAtCycle();
-      for (let key of stats.keys()) {
+    for (const stat of this._stats) {
+      const stats = stat.getPerStatusCountAtCycle();
+      for (const key of stats.keys()) {
         if (!result.has(key)) {
           result.set(key, []);
         }
@@ -130,7 +129,7 @@ export class StatsAgregator {
       }
     }
 
-    for (let key of result.keys()) {
+    for (const key of result.keys()) {
       result.set(key, this.avgOfArrays(result.get(key)));
     }
 
@@ -138,8 +137,8 @@ export class StatsAgregator {
   }
 
   private avgOfArrays(arr: number[][]): number[] {
-    let result = [];
-    let maxlen = arr.reduce((max, arr) => Math.max(max, arr.length), 0);
+    const result = [];
+    const maxlen = arr.reduce((max, arr) => Math.max(max, arr.length), 0);
     for (let i = 0; i < maxlen; i++) {
       let sum = 0;
       for (let j = 0; j < arr.length; j++) {

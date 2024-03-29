@@ -26,7 +26,7 @@ i18n
     interpolation: {
         escapeValue: false,
         formatSeparator: ',',
-        format: function (value, format) {
+        format: (value, format) => {
             if (format === 'uppercase') {
                 return value.toUpperCase();
             }

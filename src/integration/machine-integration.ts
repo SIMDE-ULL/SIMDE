@@ -1,4 +1,4 @@
-import { ContentIntegration } from './content-integration';
+import type { ContentIntegration } from './content-integration';
 
 export abstract class MachineIntegration {
 
@@ -25,7 +25,7 @@ export abstract class MachineIntegration {
     abstract setGpr: (data: number[]) => void;
 
     calculateSpeed() {
-        let speed = parseInt((document.getElementById('velocidad')as HTMLInputElement).value, 10);
+        const speed = Number.parseInt((document.getElementById('velocidad')as HTMLInputElement).value, 10);
 
         const defaultStep = 2000;
         return speed ? defaultStep / speed : 0;

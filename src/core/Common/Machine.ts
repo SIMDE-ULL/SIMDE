@@ -2,7 +2,7 @@ import { Register } from "./Register";
 import {
   FunctionalUnit,
   FUNCTIONALUNITTYPESQUANTITY,
-  FunctionalUnitType,
+  type FunctionalUnitType,
   FunctionalUnitNumbers,
 } from "./FunctionalUnit";
 import { Memory } from "./Memory";

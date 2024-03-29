@@ -1,5 +1,5 @@
 import { OpcodesNames, Opcodes } from "./Opcodes";
-import { FunctionalUnitType } from "./FunctionalUnit";
+import type { FunctionalUnitType } from "./FunctionalUnit";
 import { opcodeToFunctionalUnit } from "./Opcodes";
 
 export class Instruction {
@@ -9,7 +9,7 @@ export class Instruction {
   protected _operands: number[] = new Array(3);
   protected _operandsString: string[] = new Array(3);
   protected _label: string;
-  protected _breakPoint: boolean = false;
+  protected _breakPoint = false;
 
   public get uid(): number {
     return this._uid;
@@ -47,7 +47,7 @@ export class Instruction {
   }
 
   toString(): string {
-    let aux: string = "";
+    let aux = "";
     if (this._operandsString[1]) {
       aux += " " + this._operandsString[1];
     }

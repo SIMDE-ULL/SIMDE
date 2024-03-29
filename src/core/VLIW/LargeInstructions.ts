@@ -1,4 +1,4 @@
-import { VLIWOperation } from './VLIWOperation';
+import type { VLIWOperation } from './VLIWOperation';
 
 export class LargeInstruction {
 

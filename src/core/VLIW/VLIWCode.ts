@@ -1,6 +1,6 @@
 import { LargeInstruction } from './LargeInstructions';
-import { VLIWOperation } from './VLIWOperation';
-import { Code } from '../Common/Code';
+import type { VLIWOperation } from './VLIWOperation';
+import type { Code } from '../Common/Code';
 import { VLIWParser } from './VLIWParser';
 
 export class VLIWCode {

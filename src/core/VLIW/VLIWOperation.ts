@@ -1,5 +1,5 @@
 import { Instruction } from '../Common/Instruction';
-import { FunctionalUnitType } from '../Common/FunctionalUnit';
+import type { FunctionalUnitType } from '../Common/FunctionalUnit';
 import { Opcodes } from '../Common/Opcodes';
 
 export class VLIWOperation extends Instruction {

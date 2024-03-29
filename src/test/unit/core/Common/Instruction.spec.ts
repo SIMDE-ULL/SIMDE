@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 
 test('Copied instructions should not keep the same reference', t => {
-    let newInstruction = new Instruction(originalInstruction);
+    const newInstruction = new Instruction(originalInstruction);
     originalInstruction.id = 1;
     expect(newInstruction.operands).not.toBe(100);
 });

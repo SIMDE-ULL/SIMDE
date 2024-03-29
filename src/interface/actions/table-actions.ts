@@ -16,9 +16,9 @@ export function nextVLIWExecutionTableCycle(data, functionalUnitNumbers: number[
     };
 }
 
-function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
+function mapVLIWHeaderTable(functionalUnitNumbers: number[]): Array<object> {
     const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
-    let headers = new Array();
+    const headers = new Array();
 
     headers.push({
         extraValue: '#'
@@ -35,11 +35,11 @@ function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
     return headers;
 }
 
-function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
+function mapVLIWTableData(data, functionalUnitNumbers: number[]): Array<string> {
 
     const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
 
-    let cols = new Array(functionalUnitAmount);
+    const cols = new Array(functionalUnitAmount);
     cols.fill(null);
 
     for (let i = 0; i < data.getVLIWOperationsNumber(); i++) { // numero de instrucciones cortas en la instrucción larga

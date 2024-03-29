@@ -25,7 +25,7 @@ class VLIWLoadContentModalComponent extends React.Component<any, any> {
       handleInputFileChange = (e, results) => {
             results.forEach(result => {
                 const [e, file] = result;
-                let a = document.getElementById('contentInput') as HTMLInputElement;
+                const a = document.getElementById('contentInput') as HTMLInputElement;
                 a.value = e.target.result;
             });
         }
