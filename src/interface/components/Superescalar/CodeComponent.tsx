@@ -10,113 +10,113 @@ import { withTranslation } from "react-i18next";
 import type { t } from "i18next";
 
 class CodeComponent extends React.Component<
-	{
-		toggleBreakPoint: (a: Instruction[]) => void;
-		t: typeof t;
-		code: Instruction[];
-		colorBasicBlocks: boolean;
-	},
-	{ colorPalette: string[] }
+  {
+    toggleBreakPoint: (a: Instruction[]) => void;
+    t: typeof t;
+    code: Instruction[];
+    colorBasicBlocks: boolean;
+  },
+  { colorPalette: string[] }
 > {
-	constructor(props) {
-		super(props);
-		this.state = {
-			colorPalette: ["blue", "green", "yellow", "pink"],
-		};
-		this.setBreakpoint = this.setBreakpoint.bind(this);
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      colorPalette: ["blue", "green", "yellow", "pink"],
+    };
+    this.setBreakpoint = this.setBreakpoint.bind(this);
+  }
 
-	setBreakpoint(index) {
-		SuperescalarIntegration.superescalar.code.toggleBreakpoint(index);
-		this.props.toggleBreakPoint(
-			SuperescalarIntegration.superescalar.code.instructions,
-		);
-	}
+  setBreakpoint(index) {
+    SuperescalarIntegration.superescalar.code.toggleBreakpoint(index);
+    this.props.toggleBreakPoint(
+      SuperescalarIntegration.superescalar.code.instructions,
+    );
+  }
 
-	render() {
-		return (
-			<div className="smd-code panel panel-default">
-				<div className="panel-heading">{this.props.t("code")}</div>
-				<div className="panel-body">
-					<div className="smd-table">
-						<div className="smd-table-header">
-							<div className="smd-table-header_title">#</div>
-							<div className="smd-table-header_title">OPCODE</div>
-							<div className="smd-table-header_title">OP1</div>
-							<div className="smd-table-header_title">OP2</div>
-							<div className="smd-table-header_title">OP3</div>
-						</div>
-						<div className="smd-table-body">
-							{this.props.code?.map((row: Instruction, i) => (
-								<div
-									className="smd-table_row"
-									key={`${`Code${i}`}`}
-									onClick={(e) => {
-										this.setBreakpoint(i);
-									}}
-									onKeyPress={(e) => {
-										this.setBreakpoint(i);
-									}}
-								>
-									<div
-										className={`smd-table_cell ${
-											row.breakPoint ? "smd-breakpoint" : ""
-										}`}
-									>
-										{row.label} {i}
-									</div>
-									<div
-										className={`smd-table_cell ${
-											this.props.colorBasicBlocks
-												? this.state.colorPalette[
-														row.basicBlock % this.state.colorPalette.length
-													]
-												: ""
-										}`}
-									>
-										{OpcodesNames[row.opcode]}
-									</div>
-									<div
-										className={`smd-table_cell ${
-											this.props.colorBasicBlocks
-												? this.state.colorPalette[
-														row.basicBlock % this.state.colorPalette.length
-													]
-												: ""
-										}`}
-									>
-										{row.operandsString[0]}
-									</div>
-									<div
-										className={`smd-table_cell ${
-											this.props.colorBasicBlocks
-												? this.state.colorPalette[
-														row.basicBlock % this.state.colorPalette.length
-													]
-												: ""
-										}`}
-									>
-										{row.operandsString[1]}
-									</div>
-									<div
-										className={`smd-table_cell ${
-											this.props.colorBasicBlocks
-												? this.state.colorPalette[
-														row.basicBlock % this.state.colorPalette.length
-													]
-												: ""
-										}`}
-									>
-										{row.operandsString[2]}
-									</div>
-								</div>
-							))}
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="smd-code panel panel-default">
+        <div className="panel-heading">{this.props.t("code")}</div>
+        <div className="panel-body">
+          <div className="smd-table">
+            <div className="smd-table-header">
+              <div className="smd-table-header_title">#</div>
+              <div className="smd-table-header_title">OPCODE</div>
+              <div className="smd-table-header_title">OP1</div>
+              <div className="smd-table-header_title">OP2</div>
+              <div className="smd-table-header_title">OP3</div>
+            </div>
+            <div className="smd-table-body">
+              {this.props.code?.map((row: Instruction, i) => (
+                <div
+                  className="smd-table_row"
+                  key={`${`Code${i}`}`}
+                  onClick={(e) => {
+                    this.setBreakpoint(i);
+                  }}
+                  onKeyPress={(e) => {
+                    this.setBreakpoint(i);
+                  }}
+                >
+                  <div
+                    className={`smd-table_cell ${
+                      row.breakPoint ? "smd-breakpoint" : ""
+                    }`}
+                  >
+                    {row.label} {i}
+                  </div>
+                  <div
+                    className={`smd-table_cell ${
+                      this.props.colorBasicBlocks
+                        ? this.state.colorPalette[
+                            row.basicBlock % this.state.colorPalette.length
+                          ]
+                        : ""
+                    }`}
+                  >
+                    {OpcodesNames[row.opcode]}
+                  </div>
+                  <div
+                    className={`smd-table_cell ${
+                      this.props.colorBasicBlocks
+                        ? this.state.colorPalette[
+                            row.basicBlock % this.state.colorPalette.length
+                          ]
+                        : ""
+                    }`}
+                  >
+                    {row.operandsString[0]}
+                  </div>
+                  <div
+                    className={`smd-table_cell ${
+                      this.props.colorBasicBlocks
+                        ? this.state.colorPalette[
+                            row.basicBlock % this.state.colorPalette.length
+                          ]
+                        : ""
+                    }`}
+                  >
+                    {row.operandsString[1]}
+                  </div>
+                  <div
+                    className={`smd-table_cell ${
+                      this.props.colorBasicBlocks
+                        ? this.state.colorPalette[
+                            row.basicBlock % this.state.colorPalette.length
+                          ]
+                        : ""
+                    }`}
+                  >
+                    {row.operandsString[2]}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default withTranslation()(CodeComponent);

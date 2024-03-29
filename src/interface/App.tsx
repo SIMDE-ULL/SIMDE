@@ -7,20 +7,20 @@ import SuperescalarComponent from "./components/Superescalar/SuperescalarCompone
 import VLIWComponent from "./components/VLIW/VLIWComponent";
 
 const App = () => {
-	return (
-		<BrowserRouter basename={import.meta.env.BASE_URL}>
-			<div className="pagebody">
-				<React.Suspense fallback={<div>Loading... </div>}>
-					<Routes>
-						<Route path="/" element={<LandingPageComponent />} />
-						<Route path="/superescalar" element={<SuperescalarComponent />} />
-						<Route path="/vliw" element={<VLIWComponent />} />
-						<Route path="/project" element={<ProjectPage />} />
-					</Routes>
-				</React.Suspense>
-			</div>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <div className="pagebody">
+        <React.Suspense fallback={<div>Loading... </div>}>
+          <Routes>
+            <Route path="/" element={<LandingPageComponent />} />
+            <Route path="/superescalar" element={<SuperescalarComponent />} />
+            <Route path="/vliw" element={<VLIWComponent />} />
+            <Route path="/project" element={<ProjectPage />} />
+          </Routes>
+        </React.Suspense>
+      </div>
+    </BrowserRouter>
+  );
 };
 
 export default App;

@@ -3,45 +3,45 @@ import type { VLIWCode } from "../core/VLIW/VLIWCode";
 import type { ContentIntegration } from "./content-integration";
 
 export abstract class MachineIntegration {
-	public contentIntegration: ContentIntegration;
+  public contentIntegration: ContentIntegration;
 
-	abstract loadCode: (code: Code | VLIWCode) => void;
+  abstract loadCode: (code: Code | VLIWCode) => void;
 
-	abstract makeBatchExecution: () => void;
+  abstract makeBatchExecution: () => void;
 
-	abstract play: () => void;
+  abstract play: () => void;
 
-	abstract pause: () => void;
+  abstract pause: () => void;
 
-	abstract stop: () => void;
+  abstract stop: () => void;
 
-	abstract stepBack: () => void;
+  abstract stepBack: () => void;
 
-	abstract stepForward: () => void;
+  abstract stepForward: () => void;
 
-	abstract setBatchMode: (...config) => void;
+  abstract setBatchMode: (...config) => void;
 
-	abstract setMemory: (data: number[]) => void;
-	abstract setFpr: (data: number[]) => void;
-	abstract setGpr: (data: number[]) => void;
+  abstract setMemory: (data: number[]) => void;
+  abstract setFpr: (data: number[]) => void;
+  abstract setGpr: (data: number[]) => void;
 
-	calculateSpeed() {
-		const speed = Number.parseInt(
-			(document.getElementById("velocidad") as HTMLInputElement).value,
-			10,
-		);
+  calculateSpeed() {
+    const speed = Number.parseInt(
+      (document.getElementById("velocidad") as HTMLInputElement).value,
+      10,
+    );
 
-		const defaultStep = 2000;
-		return speed ? defaultStep / speed : 0;
-	}
+    const defaultStep = 2000;
+    return speed ? defaultStep / speed : 0;
+  }
 
-	calculateStandardDeviation(average, values): number {
-		const diffs = values.map((value) => value - average);
-		const squareDiffs = diffs.map((diff) => diff * diff);
+  calculateStandardDeviation(average, values): number {
+    const diffs = values.map((value) => value - average);
+    const squareDiffs = diffs.map((diff) => diff * diff);
 
-		const averageSquareDiff =
-			squareDiffs.reduce((a, b) => a + b) / squareDiffs.length;
+    const averageSquareDiff =
+      squareDiffs.reduce((a, b) => a + b) / squareDiffs.length;
 
-		return Math.sqrt(averageSquareDiff);
-	}
+    return Math.sqrt(averageSquareDiff);
+  }
 }

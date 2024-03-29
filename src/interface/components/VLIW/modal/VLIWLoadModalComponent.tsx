@@ -11,92 +11,92 @@ import { Code } from "../../../../core/Common/Code";
 import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
 
 export class VLIWLoadModalComponent extends React.Component<any, any> {
-	constructor(
-		public props: any,
-		public state: any,
-	) {
-		super(props);
+  constructor(
+    public props: any,
+    public state: any,
+  ) {
+    super(props);
 
-		this.close = this.close.bind(this);
-		this.loadCode = this.loadCode.bind(this);
-		this.state = {
-			superescalarCodeError: "",
-			vliwCodeError: "",
-		};
-	}
+    this.close = this.close.bind(this);
+    this.loadCode = this.loadCode.bind(this);
+    this.state = {
+      superescalarCodeError: "",
+      vliwCodeError: "",
+    };
+  }
 
-	close() {
-		this.props.actions.toggleLoadModal(false);
-	}
+  close() {
+    this.props.actions.toggleLoadModal(false);
+  }
 
-	handleSuperescalarInputFileChange = (e, results) => {
-		for (const result of results) {
-			const [e, file] = result;
-			const a = document.getElementById(
-				"superescalarCodeInput",
-			) as HTMLInputElement;
-			a.value = e.target.result;
-		}
-	};
+  handleSuperescalarInputFileChange = (e, results) => {
+    for (const result of results) {
+      const [e, file] = result;
+      const a = document.getElementById(
+        "superescalarCodeInput",
+      ) as HTMLInputElement;
+      a.value = e.target.result;
+    }
+  };
 
-	handleVliwInputFileChange = (e, results) => {
-		for (const result of results) {
-			const [e, file] = result;
-			const a = document.getElementById("vliwCodeInput") as HTMLInputElement;
-			a.value = e.target.result;
-		}
-	};
+  handleVliwInputFileChange = (e, results) => {
+    for (const result of results) {
+      const [e, file] = result;
+      const a = document.getElementById("vliwCodeInput") as HTMLInputElement;
+      a.value = e.target.result;
+    }
+  };
 
-	loadCode() {
-		const code = new Code();
-		const vliwCode = new VLIWCode();
+  loadCode() {
+    const code = new Code();
+    const vliwCode = new VLIWCode();
 
-		try {
-			code.load(
-				(document.getElementById("superescalarCodeInput") as HTMLInputElement)
-					.value,
-			);
-			this.setState({ superescalarCodeError: "" });
-		} catch (error) {
-			this.setState({ superescalarCodeError: error.message });
-		}
+    try {
+      code.load(
+        (document.getElementById("superescalarCodeInput") as HTMLInputElement)
+          .value,
+      );
+      this.setState({ superescalarCodeError: "" });
+    } catch (error) {
+      this.setState({ superescalarCodeError: error.message });
+    }
 
-		try {
-			const inputVliwCode = (
-				document.getElementById("vliwCodeInput") as HTMLInputElement
-			).value;
-			vliwCode.load(inputVliwCode, code);
-			VLIWIntegration.loadCode(vliwCode);
+    try {
+      const inputVliwCode = (
+        document.getElementById("vliwCodeInput") as HTMLInputElement
+      ).value;
+      vliwCode.load(inputVliwCode, code);
+      VLIWIntegration.loadCode(vliwCode);
 
-			this.setState({ vliwCodeError: "" });
-			this.close();
-		} catch (error) {
-			// Check if error has the property position. Checking instance of TokenError not working
-			if (error.pos) {
-				this.setState({
-					vliwCodeError: `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`,
-				});
-			} else {
-				this.setState({ vliwCodeError: error.message });
-			}
-		}
-	}
+      this.setState({ vliwCodeError: "" });
+      this.close();
+    } catch (error) {
+      // Check if error has the property position. Checking instance of TokenError not working
+      if (error.pos) {
+        this.setState({
+          vliwCodeError: `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`,
+        });
+      } else {
+        this.setState({ vliwCodeError: error.message });
+      }
+    }
+  }
 
-	render() {
-		return (
-			<Modal
-				size="xl"
-				className="smd-load_modal"
-				show={this.props.isLoadModalOpen}
-				onHide={this.close}
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>{this.props.t("loadModal.title")}</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<textarea
-						id="superescalarCodeInput"
-						defaultValue={`11
+  render() {
+    return (
+      <Modal
+        size="xl"
+        className="smd-load_modal"
+        show={this.props.isLoadModalOpen}
+        onHide={this.close}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{this.props.t("loadModal.title")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <textarea
+            id="superescalarCodeInput"
+            defaultValue={`11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -109,17 +109,17 @@ LOOP:
 	ADDI 	R2 R2 #1
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`}
-					/>
-					<div className="smd-load_modal-errors">
-						{this.state.superescalarCodeError && (
-							<div className="smd-forms_error">
-								{this.state.superescalarCodeError}
-							</div>
-						)}
-					</div>
-					<textarea
-						id="vliwCodeInput"
-						defaultValue={`15
+          />
+          <div className="smd-load_modal-errors">
+            {this.state.superescalarCodeError && (
+              <div className="smd-forms_error">
+                {this.state.superescalarCodeError}
+              </div>
+            )}
+          </div>
+          <textarea
+            id="vliwCodeInput"
+            defaultValue={`15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
     1	5 4 0 0
@@ -135,62 +135,62 @@ LOOP:
     0
     1	10 5 0 0 2 1 2
     1	9 0 1 0`}
-					/>
-					<div className="smd-load_modal-errors">
-						{this.state.vliwCodeError && (
-							<div className="smd-forms_error">{this.state.vliwCodeError}</div>
-						)}
-					</div>
-				</Modal.Body>
+          />
+          <div className="smd-load_modal-errors">
+            {this.state.vliwCodeError && (
+              <div className="smd-forms_error">{this.state.vliwCodeError}</div>
+            )}
+          </div>
+        </Modal.Body>
 
-				<Modal.Footer className="smd-load_modal-footer">
-					<div className="smd-load_modal-file_input">
-						<FileReaderInput
-							as="text"
-							onChange={this.handleSuperescalarInputFileChange}
-							accept=".pla"
-						>
-							<Button className="btn btn-primary">
-								{this.props.t("commonButtons.loadFromFile")}
-							</Button>
-						</FileReaderInput>
-					</div>
-					<div className="smd-load_modal-file_input">
-						<FileReaderInput
-							as="text"
-							onChange={this.handleVliwInputFileChange}
-							accept=".vliw"
-						>
-							<Button className="btn btn-primary">
-								{this.props.t("commonButtons.loadFromFile")}
-							</Button>
-						</FileReaderInput>
-					</div>
-					<div className="smd-load_modal-actions">
-						<Button onClick={this.close}>
-							{this.props.t("commonButtons.close")}
-						</Button>
-						<Button className="btn btn-primary" onClick={this.loadCode}>
-							{this.props.t("loadModal.load")}
-						</Button>
-					</div>
-				</Modal.Footer>
-			</Modal>
-		);
-	}
+        <Modal.Footer className="smd-load_modal-footer">
+          <div className="smd-load_modal-file_input">
+            <FileReaderInput
+              as="text"
+              onChange={this.handleSuperescalarInputFileChange}
+              accept=".pla"
+            >
+              <Button className="btn btn-primary">
+                {this.props.t("commonButtons.loadFromFile")}
+              </Button>
+            </FileReaderInput>
+          </div>
+          <div className="smd-load_modal-file_input">
+            <FileReaderInput
+              as="text"
+              onChange={this.handleVliwInputFileChange}
+              accept=".vliw"
+            >
+              <Button className="btn btn-primary">
+                {this.props.t("commonButtons.loadFromFile")}
+              </Button>
+            </FileReaderInput>
+          </div>
+          <div className="smd-load_modal-actions">
+            <Button onClick={this.close}>
+              {this.props.t("commonButtons.close")}
+            </Button>
+            <Button className="btn btn-primary" onClick={this.loadCode}>
+              {this.props.t("loadModal.load")}
+            </Button>
+          </div>
+        </Modal.Footer>
+      </Modal>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-	return {
-		isLoadModalOpen: state.Ui.isLoadModalOpen,
-	};
+  return {
+    isLoadModalOpen: state.Ui.isLoadModalOpen,
+  };
 };
 
 function mapDispatchToProps(dispatch) {
-	return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
+  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
 }
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withTranslation()(VLIWLoadModalComponent));

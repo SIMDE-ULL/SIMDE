@@ -3,6 +3,6 @@ import { createStore, type Store } from "redux";
 import reducers from "./interface/reducers";
 
 export const store: Store<any> = createStore(
-	enableBatching(reducers),
-	//window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  enableBatching(reducers),
+  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );

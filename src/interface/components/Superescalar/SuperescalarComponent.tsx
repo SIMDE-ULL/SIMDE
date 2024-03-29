@@ -20,32 +20,32 @@ import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
 const SuperescalarComponent = () => {
-	return (
-		<div className="smd">
-			<div className="navigation-bars">
-				<FileBarComponent />
-				<AccessBarComponent />
-			</div>
-			<Tabs defaultActiveKey={1} id="working-area-tabs">
-				<Tab eventKey={1} title={t("accessBar.superescalar")}>
-					<GeneralTabComponent />
-				</Tab>
-				<Tab eventKey={2} title={t("accessBar.memReg")}>
-					<RegisterTabComponent />
-				</Tab>
-				<Tab eventKey={3} title={t("accessBar.stats")}>
-					<StatsTabComponent />
-				</Tab>
-			</Tabs>
-			<LoadModalComponent />
-			<SuperescalarLoadContentModalComponent />
-			<SuperescalarConfigModalComponent />
-			<OptionsModalComponent />
-			<AutorModalComponent />
-			<BatchModalComponent />
-			<BatchResultsModalComponent />
-		</div>
-	);
+  return (
+    <div className="smd">
+      <div className="navigation-bars">
+        <FileBarComponent />
+        <AccessBarComponent />
+      </div>
+      <Tabs defaultActiveKey={1} id="working-area-tabs">
+        <Tab eventKey={1} title={t("accessBar.superescalar")}>
+          <GeneralTabComponent />
+        </Tab>
+        <Tab eventKey={2} title={t("accessBar.memReg")}>
+          <RegisterTabComponent />
+        </Tab>
+        <Tab eventKey={3} title={t("accessBar.stats")}>
+          <StatsTabComponent />
+        </Tab>
+      </Tabs>
+      <LoadModalComponent />
+      <SuperescalarLoadContentModalComponent />
+      <SuperescalarConfigModalComponent />
+      <OptionsModalComponent />
+      <AutorModalComponent />
+      <BatchModalComponent />
+      <BatchResultsModalComponent />
+    </div>
+  );
 };
 
 export default SuperescalarComponent;
