@@ -1,15 +1,29 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
-import { t } from "i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { bindActionCreators } from "redux";
 import { toggleOptionsModal } from "../../../actions/modals";
 import { connect } from "react-redux";
 
-class OptionsModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isOptionsModalOpen: state.Ui.isOptionsModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleOptionsModal }, dispatch) };
+}
+
+class OptionsModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   constructor(
-    public props: any,
-    public state: any,
+    public props,
+    public state,
   ) {
     super(props);
 
@@ -74,16 +88,6 @@ class OptionsModalComponent extends React.Component<any, any> {
       </Modal>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isOptionsModalOpen: state.Ui.isOptionsModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleOptionsModal }, dispatch) };
 }
 
 export default connect(

@@ -4,13 +4,13 @@ import ReactDOM from "react-dom";
 type Props = {
   as?: "binary" | "buffer" | "text" | "url";
   children?: React.ReactNode;
-  onChange: Function;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, results: object[]) => void;
   accept: string;
-  style?: Object;
+  style?: object;
 };
 
 export default class FileReaderInput extends React.Component<Props> {
-  _reactFileReaderInput: any;
+  _reactFileReaderInput;
 
   /*constructor(props: Props) {
 		// FileReader compatibility warning.
@@ -27,7 +27,7 @@ export default class FileReaderInput extends React.Component<Props> {
 
 	}*/
 
-  handleChange = (e: any) => {
+  handleChange = (e) => {
     const files = Array.prototype.slice.call(e.target.files); // Convert into Array
     const readAs = (this.props.as || "url").toLowerCase();
 

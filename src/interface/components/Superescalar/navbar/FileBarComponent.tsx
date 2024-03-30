@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import {
   toggleLoadModal,
@@ -17,10 +17,34 @@ import { viewBasicBlocks } from "../../../actions";
 import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
 import SuperescalarIntegration from "../../../../integration/superescalar-integration";
 
-class FileBarComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isLoadModalOpen: state.isLoadModalOpen,
+    memory: state.Machine.memory,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        toggleLoadModal,
+        toggleAuthorModal,
+        toggleOptionsModal,
+        toggleSuperConfigModal,
+        toggleSuperescalarLoadContentModal,
+        toggleBatchModal,
+        viewBasicBlocks,
+      },
+      dispatch,
+    ),
+  };
+}
+
+class FileBarComponent extends React.Component<WithTranslation, object> {
   private color: boolean;
 
-  constructor(public props: any) {
+  constructor(public props) {
     super(props);
     this.color = false;
 
@@ -177,30 +201,6 @@ class FileBarComponent extends React.Component<any, any> {
       </Dropdown>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.isLoadModalOpen,
-    memory: state.Machine.memory,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        toggleLoadModal,
-        toggleAuthorModal,
-        toggleOptionsModal,
-        toggleSuperConfigModal,
-        toggleSuperescalarLoadContentModal,
-        toggleBatchModal,
-        viewBasicBlocks,
-      },
-      dispatch,
-    ),
-  };
 }
 
 export default connect(

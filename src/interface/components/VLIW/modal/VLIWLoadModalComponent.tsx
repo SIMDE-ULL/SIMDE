@@ -1,7 +1,7 @@
 import * as React from "react";
 import FileReaderInput from "../../Common/FileReaderInput";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { toggleLoadModal } from "../../../actions/modals";
 import { bindActionCreators } from "redux";
@@ -10,10 +10,25 @@ import VLIWIntegration from "../../../../integration/vliw-integration";
 import { Code } from "../../../../core/Common/Code";
 import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
 
-export class VLIWLoadModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isLoadModalOpen: state.Ui.isLoadModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
+}
+
+export class VLIWLoadModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   constructor(
-    public props: any,
-    public state: any,
+    public props,
+    public state,
   ) {
     super(props);
 
@@ -178,16 +193,6 @@ LOOP:
       </Modal>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.Ui.isLoadModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
 }
 
 export default connect(

@@ -13,7 +13,34 @@ import {
 //TODO: dont import from core, expose this data with integrators instead
 import { Machine } from "../../../../core/Common/Machine";
 
-export class RegisterTabComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    memory: state.Machine.memory,
+    generalRegisters: state.Machine.generalRegisters,
+    floatingRegisters: state.Machine.floatingRegisters,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(
+      {
+        addFloatingRegistersInterval,
+        removeFloatingRegistersInterval,
+        addGeneralRegistersInterval,
+        removeGeneralRegistersInterval,
+        addMemoryInterval,
+        removeMemoryInterval,
+      },
+      dispatch,
+    ),
+  };
+};
+
+export class RegisterTabComponent extends React.Component<
+  ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   render() {
     return (
       <div className="smd-register-tab">
@@ -51,30 +78,6 @@ export class RegisterTabComponent extends React.Component<any, any> {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    memory: state.Machine.memory,
-    generalRegisters: state.Machine.generalRegisters,
-    floatingRegisters: state.Machine.floatingRegisters,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      {
-        addFloatingRegistersInterval,
-        removeFloatingRegistersInterval,
-        addGeneralRegistersInterval,
-        removeGeneralRegistersInterval,
-        addMemoryInterval,
-        removeMemoryInterval,
-      },
-      dispatch,
-    ),
-  };
-};
 
 export default connect(
   mapStateToProps,

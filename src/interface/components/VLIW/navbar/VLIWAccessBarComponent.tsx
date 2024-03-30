@@ -1,10 +1,20 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import VliwIntegration from "../../../../integration/vliw-integration";
 
-class VLIWAccessBarComponent extends React.Component<any, any> {
-  constructor(props: any) {
+const mapStateToProps = (state) => {
+  return {
+    cycle: state.Machine.cycle,
+  };
+};
+
+class VLIWAccessBarComponent extends React.Component<
+  WithTranslation & ReturnType<typeof mapStateToProps>,
+  object
+> {
+  constructor(props) {
     super(props);
     this.stepForward = this.stepForward.bind(this);
     this.stepBack = this.stepBack.bind(this);
@@ -40,21 +50,38 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
   render() {
     return (
       <div className="smd-access_bar">
-        <a onClick={this.play}>
-          <i className="fa fa-play" aria-hidden="true" />
-        </a>
-        <a onClick={this.pause}>
-          <i className="fa fa-pause" aria-hidden="true" />
-        </a>
-        <a onClick={this.stop}>
-          <i className="fa fa-stop" aria-hidden="true" />
-        </a>
-        <a onClick={this.stepBack}>
-          <i className="fa fa-step-backward" aria-hidden="true" />
-        </a>
-        <a onClick={this.stepForward}>
-          <i className="fa fa-step-forward" aria-hidden="true" />
-        </a>
+        <ButtonGroup>
+          <Button variant="light" onClick={this.play}>
+            <i
+              className="fa fa-play"
+              aria-label={this.props.t("accessBar.play")}
+            />
+          </Button>
+          <Button variant="light" onClick={this.pause}>
+            <i
+              className="fa fa-pause"
+              aria-label={this.props.t("accessBar.pause")}
+            />
+          </Button>
+          <Button variant="light" onClick={this.stop}>
+            <i
+              className="fa fa-stop"
+              aria-label={this.props.t("accessBar.stop")}
+            />
+          </Button>
+          <Button variant="light" onClick={this.stepBack}>
+            <i
+              className="fa fa-step-backward"
+              aria-label={this.props.t("accessBar.stepBack")}
+            />
+          </Button>
+          <Button variant="light" onClick={this.stepForward}>
+            <i
+              className="fa fa-step-forward"
+              aria-label={this.props.t("accessBar.stepForward")}
+            />
+          </Button>
+        </ButtonGroup>
         <div className="smd-cycle">
           <label htmlFor="cycle" className="smd-cycle_label">
             {this.props.t("accessBar.cycle")}
@@ -78,11 +105,7 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    cycle: state.Machine.cycle,
-  };
-};
+
 export default connect(mapStateToProps)(
   withTranslation()(VLIWAccessBarComponent),
 );

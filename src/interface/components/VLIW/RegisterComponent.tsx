@@ -1,10 +1,20 @@
 import * as React from "react";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
 
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-class RegisterComponent extends React.Component<any, any> {
-  constructor(props: any) {
+class RegisterComponent extends React.Component<
+  WithTranslation & {
+    title: string;
+    visibleRange: number[];
+    data: number[];
+    max: number;
+    addInterval: () => void;
+    removeInterval: () => void;
+  },
+  { isAddModalOpen: boolean; isRemoveModalOpen: boolean }
+> {
+  constructor(props) {
     super(props);
     this.state = {
       isAddModalOpen: false,

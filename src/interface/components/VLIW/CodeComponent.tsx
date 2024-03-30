@@ -3,10 +3,17 @@ import * as React from "react";
 import type { Instruction } from "../../../core/Common/Instruction";
 import InstructionComponent from "./InstructionComponent";
 
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
-class CodeComponent extends React.Component<any, any> {
-  constructor(props: any) {
+class CodeComponent extends React.Component<
+  WithTranslation & {
+    toggleBreakPoint: (a: Instruction[]) => void;
+    code: Instruction[];
+    colorBasicBlocks: boolean;
+  },
+  { colorPalette: string[] }
+> {
+  constructor(props) {
     super(props);
     this.state = {
       colorPalette: ["blue", "green", "yellow", "pink"],

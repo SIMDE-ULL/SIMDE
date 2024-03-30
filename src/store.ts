@@ -2,7 +2,7 @@ import { enableBatching } from "./interface/reducers/batching";
 import { createStore, type Store } from "redux";
 import reducers from "./interface/reducers";
 
-export const store: Store<any> = createStore(
+export const store: Store = createStore(
   enableBatching(reducers),
   //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );

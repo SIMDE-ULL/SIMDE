@@ -38,6 +38,11 @@
         }
     },
     "accessBar": {
+        "play": "Start",
+        "pause": "Pause",
+        "stop": "Stop",
+        "stepBack": "Back",
+        "stepForward": "Forward",
         "cycle": "Cycle",
         "speed": "Speed",
         "superescalar": "Superescalar",

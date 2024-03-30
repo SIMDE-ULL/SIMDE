@@ -1,7 +1,7 @@
 import * as React from "react";
 import FileReaderInput from "../../Common/FileReaderInput";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 import { bindActionCreators } from "redux";
@@ -9,10 +9,31 @@ import { toggleSuperescalarLoadContentModal } from "../../../actions/modals";
 import SuperescalarIntegration from "../../../../integration/superescalar-integration";
 import { ContentIntegration } from "../../../../integration/content-integration";
 
-class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isSuperescalarLoadContentModalOpen:
+      state.Ui.isSuperescalarLoadContentModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      { toggleSuperescalarLoadContentModal },
+      dispatch,
+    ),
+  };
+}
+
+class SuperescalarLoadContentModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   constructor(
-    public props: any,
-    public state: any,
+    public props,
+    public state,
   ) {
     super(props);
 
@@ -102,21 +123,6 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isSuperescalarLoadContentModalOpen:
-      state.Ui.isSuperescalarLoadContentModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      { toggleSuperescalarLoadContentModal },
-      dispatch,
-    ),
-  };
-}
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

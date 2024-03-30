@@ -1,17 +1,20 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import { generateIntervalFromImput } from "../../../utils/interval";
 
-class IntervalModalComponent extends React.Component<any, any> {
-  constructor(public props: any) {
+class IntervalModalComponent extends React.Component<
+  WithTranslation,
+  { showModal: boolean; value: string; error: string }
+> {
+  constructor(public props) {
     super(props);
     this.close = this.close.bind(this);
     this.accept = this.accept.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
-    this.state = { showModal: false };
+    this.state = { showModal: false, value: "", error: "" };
   }
 
   handleChange(event) {

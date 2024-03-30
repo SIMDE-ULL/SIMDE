@@ -1,5 +1,5 @@
 import * as React from "react";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import {
   toggleLoadModal,
@@ -16,10 +16,39 @@ import { viewBasicBlocks } from "../../../actions";
 import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
 import vliwIntegration from "../../../../integration/vliw-integration";
 
-class VLIWFileBarComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isLoadModalOpen: state.isLoadModalOpen,
+    memory: state.Machine.memory,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        toggleLoadModal,
+        toggleAuthorModal,
+        toggleOptionsModal,
+        toggleVliwConfigModal,
+        toggleVliwLoadContentModal,
+        toggleBatchModal,
+        viewBasicBlocks,
+      },
+      dispatch,
+    ),
+  };
+}
+
+class VLIWFileBarComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   private color: boolean;
 
-  constructor(public props: any) {
+  constructor(public props) {
     super(props);
     this.color = false;
 
@@ -173,30 +202,6 @@ class VLIWFileBarComponent extends React.Component<any, any> {
       </Dropdown>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.isLoadModalOpen,
-    memory: state.Machine.memory,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        toggleLoadModal,
-        toggleAuthorModal,
-        toggleOptionsModal,
-        toggleVliwConfigModal,
-        toggleVliwLoadContentModal,
-        toggleBatchModal,
-        viewBasicBlocks,
-      },
-      dispatch,
-    ),
-  };
 }
 
 export default connect(

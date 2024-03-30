@@ -1,13 +1,28 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 import { bindActionCreators } from "redux";
 import { toggleAuthorModal } from "../../../actions/modals";
 
-class AutorModalComponent extends React.Component<any, any> {
-  constructor(public props: any) {
+const mapStateToProps = (state) => {
+  return {
+    isAuthorModalOpen: state.Ui.isAuthorModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleAuthorModal }, dispatch) };
+}
+
+class AutorModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
+  constructor(public props) {
     super(props);
 
     this.close = this.close.bind(this);
@@ -53,15 +68,6 @@ class AutorModalComponent extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isAuthorModalOpen: state.Ui.isAuthorModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleAuthorModal }, dispatch) };
-}
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

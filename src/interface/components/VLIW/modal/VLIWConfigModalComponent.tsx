@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { toggleVliwConfigModal } from "../../../actions/modals";
 import { bindActionCreators } from "redux";
 
@@ -9,10 +9,25 @@ import { VLIW_CONFIG } from "../../../utils/constants";
 
 import { connect } from "react-redux";
 
-class VliwConfigModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isVliwConfigModalOpen: state.Ui.isVliwConfigModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleVliwConfigModal }, dispatch) };
+}
+
+class VliwConfigModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   constructor(
-    public props: any,
-    public state: any,
+    public props,
+    public state,
   ) {
     super(props);
 
@@ -289,15 +304,6 @@ class VliwConfigModalComponent extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isVliwConfigModalOpen: state.Ui.isVliwConfigModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleVliwConfigModal }, dispatch) };
-}
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

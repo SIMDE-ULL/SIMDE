@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
-import { t } from "i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { bindActionCreators } from "redux";
 import {
   toggleOptionsModal,
@@ -11,15 +10,31 @@ import {
 import { connect } from "react-redux";
 import VLIWIntegration from "../../../../integration/vliw-integration";
 
-class BatchResultsModalComponent extends React.Component<any, any> {
-  constructor(props: any, state: any) {
+const mapStateToProps = (state) => {
+  return {
+    isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
+    results: state.UI.batchResults,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
+}
+
+class BatchResultsModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
+  constructor(props, state) {
     super(props);
 
     this.close = this.close.bind(this);
   }
 
   close() {
-    this.props.actions.closeBatchResults(false);
+    this.props.actions.closeBatchResults();
   }
 
   render() {
@@ -80,17 +95,6 @@ class BatchResultsModalComponent extends React.Component<any, any> {
       </Modal>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
-    results: state.UI.batchResults,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
 }
 
 export default connect(

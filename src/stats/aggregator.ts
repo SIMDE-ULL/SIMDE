@@ -95,9 +95,7 @@ export class StatsAgregator {
         } else {
           //iterate over the properties of the object
           for (const prop in value) {
-            if (value.hasOwnProperty(prop)) {
-              result.get(key)[prop] += value[prop];
-            }
+            result.get(key)[prop] += value[prop];
           }
         }
       }
@@ -105,9 +103,7 @@ export class StatsAgregator {
 
     for (const [, value] of result) {
       for (const prop in value) {
-        if (value.hasOwnProperty(prop)) {
-          value[prop] = value[prop] / this._stats.length;
-        }
+        value[prop] = value[prop] / this._stats.length;
       }
     }
 

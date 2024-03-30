@@ -8,13 +8,55 @@ import { ROBMapperComponent } from "../ROBMapperComponent";
 import ReorderBufferComponent from "../ReorderBufferComponent";
 import JumpPredictionComponent from "../JumpPredictionComponent";
 
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { superescalarLoad } from "../../../actions";
 
-class GeneralTabComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    prefetchUnit: state.Machine.prefetchUnit,
+    decoder: state.Machine.decoder,
+    jumpPrediction: state.Machine.jumpPrediction,
+    functionalUnitIntAdd: state.Machine.functionalUnitIntAdd,
+    functionalUnitIntSub: state.Machine.functionalUnitIntSub,
+    functionalUnitFloAdd: state.Machine.functionalUnitFloAdd,
+    functionalUnitFloSub: state.Machine.functionalUnitFloSub,
+    functionalUnitMemory: state.Machine.functionalUnitMemory,
+    functionalUnitJump: state.Machine.functionalUnitJump,
+    functionalUnitAluMem: state.Machine.functionalUnitAluMem,
+    reserveStationIntAdd: state.Machine.reserveStationIntAdd,
+    reserveStationIntSub: state.Machine.reserveStationIntSub,
+    reserveStationFloAdd: state.Machine.reserveStationFloAdd,
+    reserveStationFloSub: state.Machine.reserveStationFloSub,
+    reserveStationMemory: state.Machine.reserveStationMemory,
+    reserveStationJump: state.Machine.reserveStationJump,
+    ROBGpr: state.Machine.ROBGpr,
+    ROBFpr: state.Machine.ROBFpr,
+    reorderBuffer: state.Machine.reorderBuffer,
+    code: state.Machine.code,
+    colors: state.Colors,
+    colorBasicBlocks: state.Machine.colorBasicBlocks,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(
+      {
+        superescalarLoad,
+      },
+      dispatch,
+    ),
+  };
+};
+class GeneralTabComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   render() {
     return (
       <div className="smd-general_tab">
@@ -163,44 +205,6 @@ class GeneralTabComponent extends React.Component<any, any> {
     );
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    prefetchUnit: state.Machine.prefetchUnit,
-    decoder: state.Machine.decoder,
-    jumpPrediction: state.Machine.jumpPrediction,
-    functionalUnitIntAdd: state.Machine.functionalUnitIntAdd,
-    functionalUnitIntSub: state.Machine.functionalUnitIntSub,
-    functionalUnitFloAdd: state.Machine.functionalUnitFloAdd,
-    functionalUnitFloSub: state.Machine.functionalUnitFloSub,
-    functionalUnitMemory: state.Machine.functionalUnitMemory,
-    functionalUnitJump: state.Machine.functionalUnitJump,
-    functionalUnitAluMem: state.Machine.functionalUnitAluMem,
-    reserveStationIntAdd: state.Machine.reserveStationIntAdd,
-    reserveStationIntSub: state.Machine.reserveStationIntSub,
-    reserveStationFloAdd: state.Machine.reserveStationFloAdd,
-    reserveStationFloSub: state.Machine.reserveStationFloSub,
-    reserveStationMemory: state.Machine.reserveStationMemory,
-    reserveStationJump: state.Machine.reserveStationJump,
-    ROBGpr: state.Machine.ROBGpr,
-    ROBFpr: state.Machine.ROBFpr,
-    reorderBuffer: state.Machine.reorderBuffer,
-    code: state.Machine.code,
-    colors: state.Colors,
-    colorBasicBlocks: state.Machine.colorBasicBlocks,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      {
-        superescalarLoad,
-      },
-      dispatch,
-    ),
-  };
-};
 
 export default connect(
   mapStateToProps,

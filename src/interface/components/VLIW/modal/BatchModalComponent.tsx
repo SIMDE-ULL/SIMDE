@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Modal, Button } from "react-bootstrap";
-import { withTranslation } from "react-i18next";
+import { type WithTranslation, withTranslation } from "react-i18next";
 import { t } from "i18next";
 import { bindActionCreators } from "redux";
 import { toggleOptionsModal, toggleBatchModal } from "../../../actions/modals";
@@ -8,10 +8,25 @@ import { connect } from "react-redux";
 import VLIWIntegration from "../../../../integration/vliw-integration";
 import { VLIW_CONFIG, BATCH_CONFIG } from "../../../utils/constants";
 
-class BatchModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+  return {
+    isBatchModalOpen: state.Ui.isBatchModalOpen,
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleBatchModal }, dispatch) };
+}
+
+class BatchModalComponent extends React.Component<
+  WithTranslation &
+    ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps>,
+  object
+> {
   constructor(
-    public props: any,
-    public state: any,
+    public props,
+    public state,
   ) {
     super(props);
     this.state = {
@@ -135,16 +150,6 @@ class BatchModalComponent extends React.Component<any, any> {
       </Modal>
     );
   }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    isBatchModalOpen: state.Ui.isBatchModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleBatchModal }, dispatch) };
 }
 
 export default connect(
