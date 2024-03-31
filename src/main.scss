@@ -1,7 +1,11 @@
 @import 'interface/styles/main';
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..700&display=swap');
 
-body, html {
+
+// TODO: set variables for primary font and color
+body,
+html {
     font-family: 'Montserrat', Helvetica, Arial, sans-serif;
     font-size: $font-size-base;
 }
@@ -11,8 +15,54 @@ body {
     overflow-y: hidden;
 }
 
+@mixin font-primary {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.font-primary {
+    @include font-primary;
+}
+
+@mixin color-primary {
+    color: #737575;
+}
+
+.color-primary {
+    @include color-primary;
+}
+
+@mixin color-light {
+    color: #e3e3e3 !important;
+}
+
+.color-light {
+    @include color-light;
+}
+
+@mixin logo-text {
+    @include font-primary;
+    @include color-primary;
+}
+
+.logo-text {
+    @include logo-text;
+}
+
+.logo-text-bold {
+    @include logo-text;
+    font-weight: 700;
+}
+
+#simde-robot {
+    position: absolute;
+    top: 170px;
+    left: 90px;
+}
+
 @media (max-width: 1280px) {
-    body, html {
+
+    body,
+    html {
         font-size: $font-size-base-sm;
     }
 }

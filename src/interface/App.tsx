@@ -1,7 +1,7 @@
 import * as React from "react";
 import {BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPageComponent from "./components/LandingPage/LandingPageComponent";
-import ProjectPage from "./components/LandingPage/ProjectPageComponent";
+import LandingPageComponent from "./components/LandingPage/LandingPage";
+import ProjectPage from "./components/LandingPage/ProjectModal";
 
 import SuperescalarComponent from "./components/Superescalar/SuperescalarComponent";
 import VLIWComponent from "./components/VLIW/VLIWComponent";
