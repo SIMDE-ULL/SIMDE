@@ -1,6 +1,6 @@
 {
   "name": "simde",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Educational superescalar and VLIW simulator",
   "homepage": "https://github.com/SIMDE-ULL/SIMDE",
   "bugs": {
@@ -30,7 +30,7 @@
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
     "i18next": "^23.0.0",
-    "i18next-browser-languagedetector": "7.2.0",
+    "i18next-browser-languagedetector": "7.2.1",
     "i18next-http-backend": "^2.2.0",
     "i18next-localstorage-cache": "1.1.1",
     "react": "^18.2.0",
