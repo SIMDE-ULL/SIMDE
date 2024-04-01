@@ -186,7 +186,7 @@ export class CodeParser {
 
   private genCodeParser() {
     return seq(
-      tok(Tokens.Number),
+      opt_sc(tok(Tokens.Number)),
       rep_sc(alt_sc(this.genOperationParser(), tok(Tokens.Label)))
     );
   }

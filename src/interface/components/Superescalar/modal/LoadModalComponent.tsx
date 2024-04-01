@@ -53,8 +53,7 @@ export class LoadModalComponent extends React.Component<any, any> {
                 <Modal.Title>{this.props.t('loadModal.title')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <textarea id='codeInput' defaultValue={`18
-   ADDI	R2 R0 #50
+                <textarea id='codeInput' defaultValue={`   ADDI	R2 R0 #50
    ADDI	R3 R0 #70
    ADDI	R4 R0 #40
    LF	F0 (R4)
