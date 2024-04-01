@@ -24,6 +24,10 @@
     /* Types */
     "types": ["vite/client", "vitest/importMeta"],
     // "exactOptionalPropertyTypes": true
+    /* Paths */
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src"]
 }
