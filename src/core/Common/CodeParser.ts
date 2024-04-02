@@ -1,21 +1,20 @@
 import {
+  type Token,
+  TokenError,
+  type TokenPosition,
+  alt_sc,
   apply,
   buildLexer,
   expectEOF,
   expectSingleResult,
+  opt_sc,
   rep_sc,
   seq,
   tok,
-  opt_sc,
-  type Token,
-  TokenError,
-  alt_sc,
-  fail,
-  type TokenPosition,
 } from "typescript-parsec";
-import { OpcodesNames, opcodeToFormat } from "./Opcodes";
-import { Formats, FormatsNames } from "./InstructionFormats";
 import { Instruction } from "./Instruction";
+import { Formats, FormatsNames } from "./InstructionFormats";
+import { OpcodesNames, opcodeToFormat } from "./Opcodes";
 
 enum Tokens {
   Inmediate = 0,
@@ -74,7 +73,7 @@ const inmParser = apply(
   tok(Tokens.Inmediate),
   (num: Token<Tokens.Inmediate>) => {
     return +num.text.slice(1);
-  }
+  },
 );
 
 const regParser = apply(
@@ -90,7 +89,7 @@ const regParser = apply(
       num: +reg.text.slice(1),
       text: reg.text,
     };
-  }
+  },
 );
 
 const addressParser = apply(
@@ -98,24 +97,24 @@ const addressParser = apply(
     opt_sc(tok(Tokens.Number)),
     tok(Tokens.BraketOpen),
     regParser,
-    tok(Tokens.BraketClose)
+    tok(Tokens.BraketClose),
   ),
   (
     address: [
       Token<Tokens.Number>,
       Token<Tokens.BraketOpen>,
       Reg,
-      Token<Tokens.BraketClose>
-    ]
+      Token<Tokens.BraketClose>,
+    ],
   ) => {
     if (address[2].type === RegType.FP) {
       throw new TokenError(
         address[2].pos,
-        "Address register cannot be FP register"
+        "Address register cannot be FP register",
       );
     }
     return { address: address[0] ? +address[0].text : 0, reg: address[2] };
-  }
+  },
 );
 
 const opcodeParser = apply(
@@ -126,7 +125,7 @@ const opcodeParser = apply(
       return { opcode: opcode, pos: opcodeTok.pos };
     }
     throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
-  }
+  },
 );
 
 export class CodeParser {
@@ -156,7 +155,7 @@ export class CodeParser {
 
   private parse(code: string) {
     const result = expectSingleResult(
-      expectEOF(this.genCodeParser().parse(tokenizer.parse(code)))
+      expectEOF(this.genCodeParser().parse(tokenizer.parse(code))),
     );
 
     // Create labels and instructions
@@ -169,8 +168,8 @@ export class CodeParser {
           throw new Error(
             `Error at instruction ${pos}, label ${line.text.slice(
               0,
-              -1
-            )} already exists`
+              -1,
+            )} already exists`,
           );
         }
         this._labels[name] = pos;
@@ -186,7 +185,7 @@ export class CodeParser {
   private genCodeParser() {
     return seq(
       opt_sc(tok(Tokens.Number)),
-      rep_sc(alt_sc(this.genOperationParser(), tok(Tokens.Label)))
+      rep_sc(alt_sc(this.genOperationParser(), tok(Tokens.Label))),
     );
   }
 
@@ -197,7 +196,7 @@ export class CodeParser {
         seq(opcodeParser, regParser, regParser, inmParser),
         seq(opcodeParser, regParser, regParser, tok(Tokens.Id)),
         seq(opcodeParser, regParser, addressParser),
-        opcodeParser
+        opcodeParser,
       ), // The order is important, the first succesfull match is the one that is returned
       (
         operation:
@@ -205,7 +204,7 @@ export class CodeParser {
           | [OpcodeToken, Reg, Reg, Reg]
           | [OpcodeToken, Reg, Reg, number]
           | [OpcodeToken, Reg, Address]
-          | [OpcodeToken, Reg, Reg, Token<Tokens.Id>]
+          | [OpcodeToken, Reg, Reg, Token<Tokens.Id>],
       ) => {
         let type: Formats;
         const instruction: Instruction = new Instruction();
@@ -229,7 +228,7 @@ export class CodeParser {
               operation[2].pos,
               `Second operand register type(${
                 RegTypeNames[operation[2].type]
-              }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`
+              }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`,
             );
           }
 
@@ -240,13 +239,13 @@ export class CodeParser {
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                "Destiny register number out of bounds"
+                "Destiny register number out of bounds",
               );
             }
             if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                "Operand 1 register number out of bounds"
+                "Operand 1 register number out of bounds",
               );
             }
 
@@ -255,12 +254,12 @@ export class CodeParser {
             instruction.setOperand(
               2,
               operation[3],
-              `#${operation[3].toString()}`
+              `#${operation[3].toString()}`,
             );
             if (operation[1].type === RegType.FP) {
               throw new TokenError(
                 operation[1].pos,
-                "Inmediate operand not allowed for floating point registers"
+                "Inmediate operand not allowed for floating point registers",
               );
             }
           } else if ("num" in operation[3]) {
@@ -269,7 +268,7 @@ export class CodeParser {
                 operation[3].pos,
                 `Third operand register type(${
                   RegTypeNames[operation[3].type]
-                }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`
+                }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`,
               );
             }
 
@@ -283,19 +282,19 @@ export class CodeParser {
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                "Destiny register number out of bounds"
+                "Destiny register number out of bounds",
               );
             }
             if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                "Operand 1 register number out of bounds"
+                "Operand 1 register number out of bounds",
               );
             }
             if (operation[3].num > this._generalRegisters) {
               throw new TokenError(
                 operation[3].pos,
-                "Operand 2 register number out of bounds"
+                "Operand 2 register number out of bounds",
               );
             }
 
@@ -309,13 +308,13 @@ export class CodeParser {
             if (operation[1].num > this._generalRegisters) {
               throw new TokenError(
                 operation[1].pos,
-                "Operand 1 register number out of bounds"
+                "Operand 1 register number out of bounds",
               );
             }
             if (operation[2].num > this._generalRegisters) {
               throw new TokenError(
                 operation[2].pos,
-                "Operand 2 register number out of bounds"
+                "Operand 2 register number out of bounds",
               );
             }
 
@@ -334,19 +333,19 @@ export class CodeParser {
           if (operation[1].num > this._generalRegisters) {
             throw new TokenError(
               operation[1].pos,
-              "Destiny register number out of bounds"
+              "Destiny register number out of bounds",
             );
           }
           if (operation[2].reg.num > this._generalRegisters) {
             throw new TokenError(
               operation[2].reg.pos,
-              "Adress register number out of bounds"
+              "Adress register number out of bounds",
             );
           }
           if (operation[2].address > this._memorySize) {
             throw new TokenError(
               operation[2].reg.pos,
-              "Memory address out of bounds"
+              "Memory address out of bounds",
             );
           }
 
@@ -354,30 +353,29 @@ export class CodeParser {
           instruction.setOperand(
             1,
             operation[2].address,
-            operation[2].address.toString()
+            operation[2].address.toString(),
           );
           instruction.setOperand(
             2,
             operation[2].reg.num,
-            `(${operation[2].reg.text})`
+            `(${operation[2].reg.text})`,
           );
         }
 
         const expectedType = opcodeToFormat(instruction.opcode);
         if (type !== expectedType) {
-          //return fail(`Invalid instruction format for ${OpcodesNames[instruction.opcode]}. Expected ${FormatsNames[expectedType]} format, got ${FormatsNames[type]} format or similar`);
           throw new TokenError(
             pos,
             `Invalid instruction format for ${
               OpcodesNames[instruction.opcode]
             }. Expected ${FormatsNames[expectedType]} format, got ${
               FormatsNames[type]
-            } format or similar`
+            } format or similar`,
           );
         }
 
         return instruction;
-      }
+      },
     );
   }
 }

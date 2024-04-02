@@ -1,26 +1,26 @@
+import type { Code } from "@/core/Common/Code";
 import {
-  apply,
-  buildLexer,
-  expectEOF,
-  expectSingleResult,
-  rep_sc,
-  rep_n,
-  seq,
-  tok,
-  combine,
-  opt_sc,
   type Token,
   TokenError,
+  apply,
+  buildLexer,
+  combine,
+  expectEOF,
+  expectSingleResult,
   list_sc,
+  opt_sc,
+  rep_n,
+  rep_sc,
+  seq,
+  tok,
 } from "typescript-parsec";
-import { LargeInstruction } from "./LargeInstructions";
-import type { Code } from "../Common/Code";
-import { VLIWOperation } from "./VLIWOperation";
 import {
+  FUNCTIONALUNITTYPESQUANTITY,
   type FunctionalUnitType,
   FunctionalUnitTypeNames,
-  FUNCTIONALUNITTYPESQUANTITY,
 } from "../Common/FunctionalUnit";
+import { LargeInstruction } from "./LargeInstructions";
+import { VLIWOperation } from "./VLIWOperation";
 
 enum Tokens {
   Number = 0,
@@ -46,7 +46,7 @@ const functionalUnitTypeParser = apply(
       throw new TokenError(num.pos, `Invalid functional unit type ${type}`);
     }
     return type;
-  }
+  },
 );
 
 interface IndexParsed {
@@ -70,7 +70,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
         isJump: code.instructions[index].isJumpInstruction(),
         functionalUnitType: code.instructions[index].getFunctionalUnitType(),
       };
-    }
+    },
   );
 
   // This other parsers depends on the previous one, so we need to declare it here also
@@ -81,7 +81,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
     const numOfElements = indexParsed.isJump ? 5 : 2;
     return seq(
       functionalUnitTypeParser,
-      rep_n(tok(Tokens.Number), numOfElements)
+      rep_n(tok(Tokens.Number), numOfElements),
     );
   });
 
@@ -92,7 +92,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
       if (componets[1].length < 2) {
         throw new TokenError(
           componets[1][0].pos,
-          `Expected at least 2 operands, received ${componets[1].length}`
+          `Expected at least 2 operands, received ${componets[1].length}`,
         );
       }
 
@@ -109,7 +109,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
             FunctionalUnitTypeNames[functionalUnitType]
           } for instruction ${index}(expected ${
             FunctionalUnitTypeNames[currentIndex.functionalUnitType]
-          })`
+          })`,
         );
       }
 
@@ -117,7 +117,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
         null,
         code.instructions[index],
         functionalUnitType,
-        functionalUnitIndex
+        functionalUnitIndex,
       );
       operation.setPred(predicate);
 
@@ -126,7 +126,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
         if (componets[1].length !== 5) {
           throw new TokenError(
             componets[1][componets[1].length - 1].pos,
-            `Expected 5 operands(Jump operation), received ${componets[1].length}`
+            `Expected 5 operands(Jump operation), received ${componets[1].length}`,
           );
         }
         const destiny = +componets[1][2].text;
@@ -138,24 +138,24 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
         operation.setPredFalse(predFalse);
       }
       return operation;
-    }
+    },
   );
 
   const lineParser = seq(tok(Tokens.Number), rep_sc(operationParser));
   const programParser = seq(
     opt_sc(seq(tok(Tokens.Number), tok(Tokens.NewLine))),
     list_sc(lineParser, tok(Tokens.NewLine)),
-    opt_sc(tok(Tokens.NewLine))
+    opt_sc(tok(Tokens.NewLine)),
   );
 
   // Lets parse the input
   const result = expectSingleResult(
-    expectEOF(programParser.parse(tokenizer.parse(input)))
+    expectEOF(programParser.parse(tokenizer.parse(input))),
   );
 
   //let linesNumber: number = +result[0].text; // Let's extract the amount of lines, this is a retrocompatibility thing, we don't really use it
   const instructions: LargeInstruction[] = new Array<LargeInstruction>(
-    result[1].length
+    result[1].length,
   );
   const instructionsLines: [Token<Tokens>, VLIWOperation[]][] = result[1];
 
@@ -173,7 +173,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
 
 export function ExportAsString(
   _instructionNumber: number,
-  _instructions: LargeInstruction[]
+  _instructions: LargeInstruction[],
 ): string {
   let outputString: string;
   outputString += _instructionNumber;
