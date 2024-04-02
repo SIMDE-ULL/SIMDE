@@ -49,6 +49,17 @@ test('Lines counter is ignored', t => {
 	expect(3).toBe(code.lines);
 });
 
+test('Lines counter can be ommited', t => {
+	const input = `LF F1 (R2)
+        LOOP:
+        ADDF F1 F1 F0
+        BNE	R2 R5 LOOP
+        `;
+	let code: Code = new Code();
+	code.load(input);
+	expect(3).toBe(code.lines);
+});
+
 test('Commentaries on top should not affect the parsing', t => {
 	let code: Code = new Code();
 	code.load(inputWithComments);
