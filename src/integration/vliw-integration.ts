@@ -24,6 +24,7 @@ import { VLIW } from '../core/VLIW/VLIW';
 import { VLIWCode } from '../core/VLIW/VLIWCode';
 import { VLIWError } from '../core/VLIW/VLIWError';
 import { VLIWOperation } from '../core/VLIW/VLIWOperation';
+import { NoCache, RandomCache } from '../core/Common/Cache';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 import { displayBatchResults } from '../interface/actions/modals';
 
@@ -59,7 +60,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
                 nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
-                nextMemoryCycle(Array.from(this.vliw.memory).map(d => d.value)),
+                nextMemoryCycle(this.vliw.cache.memory),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),
@@ -229,7 +230,8 @@ export class VLIWIntegration extends MachineIntegration {
             let code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
-            this.vliw.memory.faultChance = this.cacheFailPercentage / 100;
+
+            this.vliw.cache = new RandomCache(this.vliw.cache.memory, this.cacheFailPercentage / 100);
             this.vliw.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
@@ -296,9 +298,9 @@ export class VLIWIntegration extends MachineIntegration {
         if (this.vliw.status.cycle > 0) {
             return;
         }
-        Object.keys(data).forEach(key => {
-            this.vliw.memory.setDatum(+key, data[key]);
-        });
+        for (const key in data) {
+            this.vliw.cache.memory.setData(+key, data[key]);
+        }
     }
 
     setFpr = (data: { [k: number]: number }) => {
@@ -387,7 +389,7 @@ export class VLIWIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.vliw.memory.faultChance = 0;
+        this.vliw.cache = new NoCache(this.vliw.cache.memory);
         this.vliw.memoryFailLatency = 0;
         this.resetMachine();
     }

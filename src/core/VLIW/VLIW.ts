@@ -252,13 +252,13 @@ export class VLIW extends Machine {
                 this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] * this._fpr.content[operation.getOperand(2)], true);
                 break;
             case Opcodes.SW:
-                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._gpr.content[operation.getOperand(0)]);
+                this._cache.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._gpr.content[operation.getOperand(0)]);
                 break;
             case Opcodes.SF:
-                this._memory.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
+                this._cache.setDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
                 break;
-            case Opcodes.LW:
-                let datumInteger = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+            case Opcodes.LW: {
+                const datumInteger = this._cache.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
 
                 //hack: as we dont have a well made error handling, intercept the error and just throw it
                 if (datumInteger instanceof Error) {
@@ -272,8 +272,9 @@ export class VLIW extends Machine {
                 this._gpr.setContent(operation.getOperand(0), datumInteger.value, true);
                 this._NaTGP[operation.getOperand(0)] = false;
                 break;
-            case Opcodes.LF:
-                let datumFloat = this._memory.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+            }
+            case Opcodes.LF: {
+                const datumFloat = this._cache.getFaultyDatum(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
 
                 //hack: as we dont have a well made error handling, intercept the error and just throw it
                 if (datumFloat instanceof Error) {
@@ -287,6 +288,7 @@ export class VLIW extends Machine {
                 this._fpr.setContent(operation.getOperand(0), datumFloat.value, true);
                 this._NaTFP[operation.getOperand(0)] = false;
                 break;
+            }
             default:
                 break;
         }

@@ -492,7 +492,7 @@ export class Superescalar extends Machine {
 
       // load and stores are a special cases, because they need to access the memory
       if (inst.isLoadInstruction()) {
-        let a = this.memory.getFaultyDatum(
+        let a = this.cache.getFaultyDatum(
           this._reserveStations[type].getAddressOperand(instUid)
         );
 
@@ -582,7 +582,7 @@ export class Superescalar extends Machine {
     this._currentCommitedInstrs = new Array<number>();
     for (let i = 0; i < this.issue; i++) {
       if (this._reorderBuffer.canCommitStoreInstruction()) {
-        this.memory.setDatum(
+        this.cache.setDatum(
           this._reorderBuffer.getResultAddress(),
           this._reorderBuffer.getResultValue()
         );

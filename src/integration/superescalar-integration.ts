@@ -32,6 +32,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
+import { NoCache, RandomCache } from '../core/Common/Cache';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 
 
@@ -98,7 +99,7 @@ export class SuperescalarIntegration extends MachineIntegration {
                     nextReorderBufferMapperCycle([this.superescalar.reorderBuffer.getVisualRegisterMap(false), this.superescalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superescalar.reorderBuffer),
                     nextRegistersCycle([this.superescalar.gpr.content, this.superescalar.fpr.content]),
-                    nextMemoryCycle(Array.from(this.superescalar.memory).map(d => d.value)),
+                    nextMemoryCycle(this.superescalar.cache.memory),
                     nextCycle(this.superescalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
@@ -234,8 +235,8 @@ export class SuperescalarIntegration extends MachineIntegration {
             let code = Object.assign(new Code(), this.superescalar.code);
             this.superExe();
             this.superescalar.code = code;
-            //TODO: check this data, seems to be inverted
-            this.superescalar.memory.faultChance = this.cacheFailPercentage / 100;
+
+            this.superescalar.cache = new RandomCache(this.superescalar.cache.memory, this.cacheFailPercentage / 100);
             this.superescalar.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
@@ -301,9 +302,9 @@ export class SuperescalarIntegration extends MachineIntegration {
         if (this.superescalar.status.cycle > 0) {
             return;
         }
-        Object.keys(data).forEach(key => {
-            this.superescalar.memory.setDatum(+key, data[key]);
-        });
+        for (const key in data) {
+            this.superescalar.cache.memory.setData(+key, data[key]);
+        }
     }
 
     setFpr = (data: { [k: number]: number }) => {
@@ -399,7 +400,7 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.superescalar.memory.faultChance = 0;
+        this.superescalar.cache = new NoCache(this.superescalar.cache.memory);
         this.superescalar.memoryFailLatency = 0;
         this.resetMachine();
     }

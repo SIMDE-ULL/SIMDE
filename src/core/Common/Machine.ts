@@ -5,6 +5,7 @@ import {
   FunctionalUnitType,
   FunctionalUnitNumbers,
 } from "./FunctionalUnit";
+import { NoCache } from "./Cache";
 import { Memory } from "./Memory";
 
 const MACHINE_REGISTER_SIZE = 64;
@@ -30,7 +31,7 @@ export class Machine {
   protected _fpr: Register;
 
   protected _functionalUnit: FunctionalUnit[][];
-  protected _memory: Memory;
+  protected _cache: NoCache;
   protected _pc: number;
   protected _status: MachineStatus;
 
@@ -50,12 +51,12 @@ export class Machine {
     this._functionalUnit = value;
   }
 
-  public get memory(): Memory {
-    return this._memory;
+  public get cache(): NoCache {
+    return this._cache;
   }
 
-  public set memory(value: Memory) {
-    this._memory = value;
+  public set cache(value: NoCache) {
+    this._cache = value;
   }
 
   public get pc(): number {
@@ -91,7 +92,7 @@ export class Machine {
       executing: false,
       breakPoint: false,
     };
-    this.memory = new Memory(Machine.MEMORY_SIZE);
+    this.cache = new NoCache(new Memory(Machine.MEMORY_SIZE));
 
     this._gpr = new Register(Machine.NGP);
     this._fpr = new Register(Machine.NFP, true); // F0 is writable, not always 0
@@ -136,7 +137,7 @@ export class Machine {
   public resetContent() {
     this._gpr.setAllContent(0);
     this._fpr.setAllContent(0);
-    this.memory = new Memory(this.memory.size, this.memory.faultChance);
+    this.cache.memory = new Memory(Machine.MEMORY_SIZE);
   }
 
   public changeFunctionalUnitLatency(
