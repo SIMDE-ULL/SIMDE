@@ -8,11 +8,29 @@ import { bindActionCreators } from "redux";
 import { Code } from "@/core/Common/Code";
 import SuperescalarIntegration from "@/integration/superescalar-integration";
 
-export const LoadModalComponent = ({ props, state }) => {
+const mapStateToProps = (state) => {
+  return {
+    isLoadModalOpen: state.Ui.isLoadModalOpen,
+    error: "",
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
+}
+
+export type LoadModalComponentProps = ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
+
+export const LoadModalComponent = ({
+  isLoadModalOpen,
+  error: modalError,
+  actions,
+}: LoadModalComponentProps) => {
   const [t] = useTranslation();
 
   const close = () => {
-    props.actions.toggleLoadModal(false);
+    actions.toggleLoadModal(false);
   };
 
   const handleInputFileChange = (_, results) => {
@@ -29,25 +47,19 @@ export const LoadModalComponent = ({ props, state }) => {
       code.load(
         (document.getElementById("codeInput") as HTMLInputElement).value,
       );
-      state = { error: "" };
+      modalError = "";
       SuperescalarIntegration.loadCode(code);
       close();
     } catch (error) {
       // Check if error has the property position. Checking instance of TokenError not working
-      state = {
-        error: error.pos
-          ? `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`
-          : error.message,
-      };
+      modalError = error.pos
+        ? `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`
+        : error.message;
     }
   };
 
   return (
-    <Modal
-      className="smd-load_modal"
-      show={props.isLoadModalOpen}
-      onHide={close}
-    >
+    <Modal className="smd-load_modal" show={isLoadModalOpen} onHide={close}>
       <Modal.Header closeButton>
         <Modal.Title>{t("loadModal.title")}</Modal.Title>
       </Modal.Header>
@@ -77,7 +89,7 @@ LOOP:
    SF	F2 1(R3)`}
         />
         <div className="smd-load_modal-errors">
-          {state.error && <div className="smd-forms_error">{state.error}</div>}
+          {modalError && <div className="smd-forms_error">{modalError}</div>}
         </div>
       </Modal.Body>
 
@@ -103,15 +115,5 @@ LOOP:
     </Modal>
   );
 };
-
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.Ui.isLoadModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
-}
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoadModalComponent);
