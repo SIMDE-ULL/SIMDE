@@ -124,7 +124,7 @@ const opcodeParser = apply(
     if (opcode !== -1) {
       return { opcode: opcode, pos: opcodeTok.pos };
     }
-    throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
+    throw new TokenError(opcodeTok.pos, `Unknown opcode "${opcodeTok.text}".`);
   },
 );
 
