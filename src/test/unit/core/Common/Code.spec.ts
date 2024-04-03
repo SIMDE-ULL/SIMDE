@@ -100,7 +100,7 @@ test("Parsing opcodes errors are being thrown", (t) => {
     `;
   const code: Code = new Code();
   expect(() => code.load(input)).toThrowError(
-    '{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode ADF',
+    '{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode "ADF"',
   );
 });
 
@@ -130,7 +130,7 @@ test("Parsing strange inmediates throws errors", (t) => {
   const code: Code = new Code();
 
   expect(() => code.load(input)).toThrowError(
-    '{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":17}: Unknown opcode x0',
+    '{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":17}: Unknown opcode "x0"',
   );
   expect(() => code.load(inpu2)).toThrowError(
     '{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":15}: Unable to tokenize the rest of the input: .0',
