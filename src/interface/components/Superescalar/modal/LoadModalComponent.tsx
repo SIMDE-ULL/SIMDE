@@ -7,11 +7,11 @@ import { bindActionCreators } from "redux";
 
 import { Code } from "@/core/Common/Code";
 import SuperescalarIntegration from "@/integration/superescalar-integration";
+import { useState } from "react";
 
 const mapStateToProps = (state) => {
   return {
     isLoadModalOpen: state.Ui.isLoadModalOpen,
-    error: "",
   };
 };
 
@@ -24,9 +24,9 @@ export type LoadModalComponentProps = ReturnType<typeof mapStateToProps> &
 
 export const LoadModalComponent = ({
   isLoadModalOpen,
-  error: modalError,
   actions,
 }: LoadModalComponentProps) => {
+  const [modalError, setModalError] = useState("");
   const [t] = useTranslation();
 
   const close = () => {
@@ -47,14 +47,16 @@ export const LoadModalComponent = ({
       code.load(
         (document.getElementById("codeInput") as HTMLInputElement).value,
       );
-      modalError = "";
+      setModalError("");
       SuperescalarIntegration.loadCode(code);
       close();
     } catch (error) {
       // Check if error has the property position. Checking instance of TokenError not working
-      modalError = error.pos
-        ? `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`
-        : error.message;
+      setModalError(
+        error.pos
+          ? `[${error.pos?.rowBegin}:${error.pos?.columnBegin}]: ${error.errorMessage}`
+          : error.message,
+      );
     }
   };
 
