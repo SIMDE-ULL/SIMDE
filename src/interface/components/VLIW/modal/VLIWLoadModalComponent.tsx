@@ -1,16 +1,17 @@
+import { Code } from "@/core/Common/Code";
+import { VLIWCode } from "@/core/VLIW/VLIWCode";
+import FileReaderInput from "@/interface/components/Common/FileReaderInput";
 import * as React from "react";
+import { useState } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { toggleLoadModal } from "../../../actions/modals";
-import VLIWIntegration from "../../../../integration/vliw-integration";
-import { Code } from "@/core/Common/Code";
-import { VLIWCode } from "@/core/VLIW/VLIWCode";
-import { useState } from "react";
 import { bindActionCreators } from "redux";
-import FileReaderInput from "../../Common/FileReaderInput";
+import VLIWIntegration from "../../../../integration/vliw-integration";
+import { toggleLoadModal } from "../../../actions/modals";
 
-const DEFAULT_MODAL_CODE = `ADDI	R2 R0 #50
+const DEFAULT_MODAL_CODE = `
+ADDI	R2 R0 #50
 ADDI	R3 R0 #70
 ADDI	R4 R0 #40
 LF	F0 (R4)
@@ -22,7 +23,7 @@ SF	F1 (R3)
 ADDI 	R2 R2 #1
 ADDI	R3 R3 #1
 BNE	R2 R5 LOOP
-`;
+`.trim();
 
 const DEFAULT_MODAL_VLIW_CODE = `2	0 0 0 0	2 0 1 0
 3	1 0 0 0	4 0 1 0	3 4 0 0
@@ -80,9 +81,7 @@ export const VLIWLoadModalComponent = ({
   const loadCode = () => {
     const code = new Code();
     const vliwCode = new VLIWCode();
-
-    let generalError = modalError.general;
-    let vliwError = modalError.vliw;
+    let { general: generalError, vliw: vliwError } = modalError;
 
     try {
       code.load(modalCode.general);
