@@ -18,7 +18,7 @@ export function TableComponent(props) {
                         {props.header &&
                             props.header.map((header, i) => (
                                 <div className="smd-table_cell smd-table_cell--title" key={`'VLIWHeader'${i}`}> 
-                                        { t(header.translateKey) + header.extraValue } 
+                                        { `${t(header.translateKey)} ${header.extraValue}` } 
                                 </div>
                             ))}
                         </div>

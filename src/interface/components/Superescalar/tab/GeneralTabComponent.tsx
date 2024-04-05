@@ -93,32 +93,32 @@ class GeneralTabComponent extends React.Component<any, any> {
                             </div>
                             <div className="panel-body">
                                 <ReserveStationComponent
-                                    title="Integer +"
+                                    title="intAdd"
                                     data={this.props.reserveStationIntAdd}
                                     colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
-                                    title="Integer x"
+                                    title="intMult"
                                     data={this.props.reserveStationIntSub}
                                     colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
-                                    title="Floating +"
+                                    title="floatAdd"
                                     data={this.props.reserveStationFloAdd}
                                     colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
-                                    title="Floating x"
+                                    title="floatMult"
                                     data={this.props.reserveStationFloSub}
                                     colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
-                                    title="Memory"
+                                    title="memory"
                                     data={this.props.reserveStationMemory}
                                     colors={this.props.colors}
                                 />
                                 <ReserveStationComponent
-                                    title="Jump"
+                                    title="jump"
                                     data={this.props.reserveStationJump}
                                     colors={this.props.colors}
                                 />
@@ -130,7 +130,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                             <div className="panel-heading">{this.props.t('UF')}</div>
                             <div className="panel-body">
                                 <FunctionalUnitComponent
-                                    title="+Entera"
+                                    title="intAdd"
                                     header={
                                         this.props.functionalUnitIntAdd.header
                                     }
@@ -140,7 +140,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="xEntera"
+                                    title="intMult"
                                     header={
                                         this.props.functionalUnitIntSub.header
                                     }
@@ -150,7 +150,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="+Flotante"
+                                    title="floatAdd"
                                     header={
                                         this.props.functionalUnitFloAdd.header
                                     }
@@ -160,7 +160,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="xFlotante"
+                                    title="floatMult"
                                     header={
                                         this.props.functionalUnitFloSub.header
                                     }
@@ -170,7 +170,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="Mem"
+                                    title="memory"
                                     header={
                                         this.props.functionalUnitMemory.header
                                     }
@@ -180,7 +180,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="JumpUF"
+                                    title="jump"
                                     header={
                                         this.props.functionalUnitJump.header
                                     }
@@ -190,7 +190,7 @@ class GeneralTabComponent extends React.Component<any, any> {
                                     colors={this.props.colors}
                                 />
                                 <FunctionalUnitComponent
-                                    title="AluMem"
+                                    title="aluMem"
                                     header={
                                         this.props.functionalUnitAluMem.header
                                     }

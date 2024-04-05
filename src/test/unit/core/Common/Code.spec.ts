@@ -1,19 +1,17 @@
-import { expect, beforeEach, test } from 'vitest'
-import { Code } from '../../../../core/Common/Code';
+import { beforeEach, expect, test } from "vitest";
+import { Code } from "../../../../core/Common/Code";
 
 const input = `2
 ADDI	R2 R0 #50
 ADD     R3 R0 R2
 `;
 
-const inputWithComments =
-	`// This is a comment
+const inputWithComments = `// This is a comment
 // And just another comment
 2
 ADDI	R2 R0 #50
 ADD     R3 R0 R2
 `;
-
 
 const input2 = `1
 LF F0 (R4)
@@ -28,126 +26,165 @@ BNE	R2 R5 LOOP
 // =============================
 // PARSING ERRORS
 // =============================
-test('Lines are being parsed properly', t => {
-	let code: Code = new Code();
-	code.load(input);
-	expect(2).toBe(code.lines);
-	code = new Code();
-	code.load(input2);
-	expect(1).toBe(code.lines);
+test("Lines are being parsed properly", (t) => {
+  let code: Code = new Code();
+  code.load(input);
+  expect(2).toBe(code.lines);
+  code = new Code();
+  code.load(input2);
+  expect(1).toBe(code.lines);
 });
 
-test('Lines counter is ignored', t => {
-	const input = `1
+test("Lines counter is ignored", (t) => {
+  const input = `1
         LF F1 (R2)
         LOOP:
         ADDF F1 F1 F0
         BNE	R2 R5 LOOP
         `;
-	let code: Code = new Code();
-	code.load(input);
-	expect(3).toBe(code.lines);
+  const code: Code = new Code();
+  code.load(input);
+  expect(3).toBe(code.lines);
 });
 
-test('Commentaries on top should not affect the parsing', t => {
-	let code: Code = new Code();
-	code.load(inputWithComments);
-	expect(2).toBe(code.lines);
+test("Lines counter can be ommited", (t) => {
+  const input = `LF F1 (R2)
+        LOOP:
+        ADDF F1 F1 F0
+        BNE	R2 R5 LOOP
+        `;
+  const code: Code = new Code();
+  code.load(input);
+  expect(3).toBe(code.lines);
 });
 
-test('Parsing operand errors are being thrown', t => {
-	const input = `3
+test("Commentaries on top should not affect the parsing", (t) => {
+  const code: Code = new Code();
+  code.load(inputWithComments);
+  expect(2).toBe(code.lines);
+});
+
+test("Parsing operand errors are being thrown", (t) => {
+  const input = `3
         LF F1 (R2)
         LOOP:
         ADDF F1 F1 H0
         BNE	R2 R5 LOOP
         `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).toThrowError('{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got Jump format or similar');
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    '{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got Jump format or similar',
+  );
 });
 
-test('Parsing addresses errors are being throw', t => {
-	const input = `3
+test("Parsing addresses errors are being throw", (t) => {
+  const input = `3
     LF F1 (R-2)
     LOOP:
     ADDF F1 F1 F0
     BNE	R2 R5 LOOP
     `;
 
-	let code = new Code();
-	expect(() => code.load(input)).toThrowError('{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got Noop format or similar');
+  const code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    '{"index":6,"rowBegin":2,"columnBegin":5,"rowEnd":2,"columnEnd":7}: Invalid instruction format for LF. Expected FloatingLoadStore format, got Noop format or similar',
+  );
 });
 
-test('Parsing opcodes errors are being thrown', t => {
-	const input = `3
+test("Parsing opcodes errors are being thrown", (t) => {
+  const input = `3
     LF F1 (R2)
     LOOP:
     ADF F1 F1 F0
     BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).toThrowError('{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode ADF');
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    '{"index":31,"rowBegin":4,"columnBegin":5,"rowEnd":4,"columnEnd":8}: Unknown opcode "ADF"',
+  );
 });
 
-test('Repeated labels errors are being thrown', t => {
-	const input = `3
+test("Repeated labels errors are being thrown", (t) => {
+  const input = `3
     LF F1 (R2)
     LOOP:
     ADDF F1 F1 F0
     LOOP:
     BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).toThrowError('Error at instruction 2, label LOOP already exists');
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    "Error at instruction 2, label LOOP already exists",
+  );
 });
 
-test('Parsing strange inmediates throws errors', t => {
-	const input = `1
+test("Parsing strange inmediates throws errors", (t) => {
+  const input = `1
 	ADDI R0 R0 #0x0`;
-	const inpu2 = `1
+  const inpu2 = `1
 	ADDI R0 R0 #0.0`;
-	const inpu3 = `1
+  const inpu3 = `1
 	ADDI R0 R0 #(0)`;
-	const inpu4 = `1
+  const inpu4 = `1
 	ADDI R0 R0 #R0`;
-	let code: Code = new Code();
+  const code: Code = new Code();
 
-	expect(() => code.load(input)).toThrowError('{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":17}: Unknown opcode x0');
-	expect(() => code.load(inpu2)).toThrowError('{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":15}: Unable to tokenize the rest of the input: .0');
-	expect(() => code.load(inpu3)).toThrowError('{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":13}: Unable to tokenize the rest of the input: #(0)');
-	expect(() => code.load(inpu4)).toThrowError('{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":13}: Unable to tokenize the rest of the input: #R0');
+  expect(() => code.load(input)).toThrowError(
+    '{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":17}: Unknown opcode "x0"',
+  );
+  expect(() => code.load(inpu2)).toThrowError(
+    '{"index":16,"rowBegin":2,"columnBegin":15,"rowEnd":2,"columnEnd":15}: Unable to tokenize the rest of the input: .0',
+  );
+  expect(() => code.load(inpu3)).toThrowError(
+    '{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":13}: Unable to tokenize the rest of the input: #(0)',
+  );
+  expect(() => code.load(inpu4)).toThrowError(
+    '{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":13}: Unable to tokenize the rest of the input: #R0',
+  );
 });
 
-test('Parsing strange registers throws errors', t => {
-	const input = `1
+test("Parsing strange registers throws errors", (t) => {
+  const input = `1
 	ADDI R0.0 R0 #0`;
-	const inpu2 = `1
+  const inpu2 = `1
 	ADDI R0x0 R0 #0`;
-	const inpu3 = `1
+  const inpu3 = `1
 	ADDI R(0) R0 #0`;
-	let code: Code = new Code();
+  const code: Code = new Code();
 
-	expect(() => code.load(input)).toThrowError('{"index":10,"rowBegin":2,"columnBegin":9,"rowEnd":2,"columnEnd":9}: Unable to tokenize the rest of the input: .0 R0 #0');
-	expect(() => code.load(inpu2)).toThrowError('{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar');
-	expect(() => code.load(inpu3)).toThrowError('{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar');
+  expect(() => code.load(input)).toThrowError(
+    '{"index":10,"rowBegin":2,"columnBegin":9,"rowEnd":2,"columnEnd":9}: Unable to tokenize the rest of the input: .0 R0 #0',
+  );
+  expect(() => code.load(inpu2)).toThrowError(
+    '{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar',
+  );
+  expect(() => code.load(inpu3)).toThrowError(
+    '{"index":3,"rowBegin":2,"columnBegin":2,"rowEnd":2,"columnEnd":6}: Invalid instruction format for ADDI. Expected GeneralRegisterAndInmediate format, got Noop format or similar',
+  );
 });
 
-test('Parser check bounds', t => {
-	const input = `1
+test("Parser check bounds", (t) => {
+  const input = `1
 	ADDI R128 R0 #0`;
-	const inpu2 = `1
+  const inpu2 = `1
 	ADDF F128 F0 F0`;
-	const inpu3 = `1
+  const inpu3 = `1
 	SF R0 1025(F0)`;
-	let code: Code = new Code();
+  const code: Code = new Code();
 
-	expect(() => code.load(input)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
-	expect(() => code.load(inpu2)).toThrowError('{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds');
-	expect(() => code.load(inpu3)).toThrowError('{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":15}: Address register cannot be FP register');
+  expect(() => code.load(input)).toThrowError(
+    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds',
+  );
+  expect(() => code.load(inpu2)).toThrowError(
+    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds',
+  );
+  expect(() => code.load(inpu3)).toThrowError(
+    '{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":15}: Address register cannot be FP register',
+  );
 });
 
-test('Example code 1 does not throws errors', t => {
-	const input = `11
+test("Example code 1 does not throws errors", (t) => {
+  const input = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -161,12 +198,12 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 2 does not throws errors', t => {
-	const input = `14
+test("Example code 2 does not throws errors", (t) => {
+  const input = `14
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -183,12 +220,12 @@ LOOP:
 	ADDI	R3 R3 #2
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 3 does not throws errors', t => {
-	const input = `20
+test("Example code 3 does not throws errors", (t) => {
+  const input = `20
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -211,12 +248,12 @@ LOOP:
 	ADDI	R3 R3 #4
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 4 does not throws errors', t => {
-	const input = `32
+test("Example code 4 does not throws errors", (t) => {
+  const input = `32
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -251,12 +288,12 @@ LOOP:
 	ADDI	R3 R3 #8
 	BNE	R2 R5 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 5 does not throws errors', t => {
-	const input = `18
+test("Example code 5 does not throws errors", (t) => {
+  const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -278,12 +315,12 @@ LOOP2:
 	ADDI	R3 R3 #1
 	BNE	R3 R5 LOOP2
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 6 does not throws errors', t => {
-	const input = `8
+test("Example code 6 does not throws errors", (t) => {
+  const input = `8
 	ADDI	R1 R0 #1
 	ADDI	R2 R0 #2
 	ADDI	R3 R0 #0
@@ -294,12 +331,12 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R3 R4 LOOP
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 7 does not throws errors', t => {
-	const input = `18
+test("Example code 7 does not throws errors", (t) => {
+  const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -322,12 +359,12 @@ LOOP:
 	ADDF	F2 F1 F0
 	SF	F2 1(R3)
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 8 does not throws errors', t => {
-	const input = `27
+test("Example code 8 does not throws errors", (t) => {
+  const input = `27
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -359,12 +396,12 @@ LOOP:
 	SF	F2 2(R3)
 	SF	F4 3(R3)
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 9 does not throws errors', t => {
-	const input = `13
+test("Example code 9 does not throws errors", (t) => {
+  const input = `13
 // CODIGO:
 	ADDI	R10, R0, #10
 	ADDI	R1, R0, #0
@@ -383,12 +420,12 @@ B:
 FIN:
 	SF		F3, 2(R10)
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 10 does not throws errors', t => {
-	const input = `7
+test("Example code 10 does not throws errors", (t) => {
+  const input = `7
 ADDI R2 R0 #3
 BGT R0 R2 ET1
 ADDI R3 R0 #2
@@ -399,12 +436,12 @@ SUB R5 R2 R3
 ET2:
 SUB R6 R2 R3
     `;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });
 
-test('Example code 11 does not throws errors', t => {
-	const input = `26
+test("Example code 11 does not throws errors", (t) => {
+  const input = `26
 	ADDI	R33 R0 #-1
 	ADDI	R34 R0 #400
 	ADDI	R1 R0 #-1
@@ -449,6 +486,6 @@ FIN:
 	// Operación nula: Es necesaria porque el simulador exige que todas las etiquetas
 	// vayan asociadas a una operación.
 	ADDI	R0 R0 #0`;
-	let code: Code = new Code();
-	expect(() => code.load(input)).not.toThrowError();
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
 });

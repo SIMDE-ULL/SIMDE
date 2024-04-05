@@ -68,16 +68,12 @@
         }
     },
     "superescalarModal": {
-        "name": "Configuración",
+        "name": "Configuración Superescalar",
+        "functionalUnits": "Unidades Funcionales",
+        "parameters": "Parámetros",
         "warning": "La ejecución será reiniciada tras modificar la configuración",
         "latency": "Latencia",
         "quantity": "Cantidad",
-        "Integer+": "Suma entera",
-        "Integerx": "Multiplicación entera",
-        "Floating+": "Suma flotante",
-        "Floatingx": "Multiplicación flotante",
-        "Memory": "Memoria",
-        "Jump": "Salto",
         "cacheFault": "Fallo de caché",
         "issue": "Emisión",
         "default": "Valores por defecto"
@@ -87,12 +83,6 @@
         "warning": "La ejecución será reiniciada tras modificar la configuración",
         "latency": "Latencia",
         "quantity": "Cantidad",
-        "Integer+": "Suma entera",
-        "Integerx": "Multiplicación entera",
-        "Floating+": "Suma flotante",
-        "Floatingx": "Multiplicación flotante",
-        "Memory": "Memoria",
-        "Jump": "Salto",
         "cacheFault": "Fallo de caché",
         "issue": "Emisión",
         "default": "Valores por defecto"
@@ -108,27 +98,27 @@
         "launch": "Lanzar",
         "loadFromFile": "Cargar desde fichero"
     },
-    "Code": "Código",
+    "functionalUnits": {
+        "intAdd": "Suma entera",
+        "intMult": "Mult entera",
+        "floatAdd": "Suma flotante",
+        "floatMult": "Mult flotante",
+        "memory": "Memoria",
+        "jump": "Salto",
+        "aluMem": "ALU Direcciones"
+    },
+    "code": "Código",
     "Jump table": "Tabla de saltos",
     "Prefetch": "Prefetch",
     "Decoder": "Decodificador",
     "Reserve Stations": "Estaciones de reserva",
-    "Integer +": "Suma entera",
-    "Integer x": "Multiplicación entera",
-    "Floating +": "Suma flotante",
-    "Floating x": "Multiplicación flotante",
-    "Memory": "Memoria",
-    "Jump": "Salto",
-    "UF": "U. F.",
-    "+Entera": "+Entera",
-    "xEntera": "xEntera",
-    "+Flotante": "+Flotante",
-    "xFlotante": "xFlotante",
-    "Mem": "Memoria",
-    "JumpUF": "Salto",
-    "AluMem": "Alu Dir.",
+    "UF": "Unidad Funcional",
+    "memory": "Memoria",
     "ROB<->GPR": "ROB<->GPR",
     "ROB<->FPR": "ROB<->FPR",
+    "predicate": "Predicado",
+    "generalRegisters": "Registros generales",
+    "floatRegisters": "Registros de punto flotante",
     "reorderBuffer": {
         "Inst": "Inst",
         "Destiny": "Destino",
@@ -136,9 +126,6 @@
         "A": "Dir",
         "Stage": "Etapa"
     },
-    "Memoria": "Memoria",
-    "Registros generales": "Registros generales",
-    "Registros de punto flotante": "Registros de punto flotante",
     "execution": {
         "stopped": "Ejecución detenida en breakpoint",
         "finished": "Ejecución finalizada",
@@ -186,15 +173,6 @@
         "licency": "@liberado bajo licencia GPLv3"
        
     },
-    "planificator": {
-        "IntegerAdd": "+Entera",
-        "IntegerMult": "xEntera",
-        "FloatAdd": "+Flotante",
-        "FloatMult": "xFlotante",
-        "Memory": "Memoria",
-        "Jump": "Salto"
-    },
-
     "stats": {
         "toolbox": {
             "dataView": "Ver datos",

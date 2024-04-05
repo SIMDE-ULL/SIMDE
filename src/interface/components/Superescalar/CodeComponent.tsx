@@ -5,6 +5,7 @@ import { Instruction } from '../../../core/Common/Instruction';
 
 import SuperescalarIntegration from '../../../integration/superescalar-integration';
 
+import { withTranslation } from 'react-i18next';
 
 class CodeComponent extends React.Component<any, any> {
 
@@ -30,7 +31,7 @@ class CodeComponent extends React.Component<any, any> {
        return (
             <div className='smd-code panel panel-default'>
                 <div className='panel-heading'>
-                    Code
+                    {this.props.t("code")}
             </div>
                 <div className='panel-body'>
                     <div className='smd-table'>
@@ -59,4 +60,4 @@ class CodeComponent extends React.Component<any, any> {
     }
 }
 
-export default CodeComponent;
+export default withTranslation()(CodeComponent);

@@ -1,82 +1,81 @@
-import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { withTranslation } from 'react-i18next';
-import { bindActionCreators } from 'redux';
-import { toggleOptionsModal } from '../../../actions/modals';
-import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import type * as React from "react";
+import { Alert, Button, Modal } from "react-bootstrap";
+import { type WithTranslation, withTranslation } from "react-i18next";
+import { type Dispatch, type UnknownAction, bindActionCreators } from "redux";
+import { toggleOptionsModal } from "../../../actions/modals";
+import { connect } from "react-redux";
 
-class OptionsModalComponent extends React.Component<any, any> {
+const mapStateToProps = (state) => {
+	return {
+		isOptionsModalOpen: state.Ui.isOptionsModalOpen,
+	};
+};
 
-    constructor(public props: any) {
-        super(props);
-
-        this.close = this.close.bind(this);
-        this.setOptions = this.setOptions.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {
-            cacheFailPercentage: 0
-        }
-    }
-
-    close() {
-        this.props.actions.toggleOptionsModal(false);
-    };
-
-    handleChange(event) {
-        let newState = {...this.state};
-        newState.cacheFailPercentage = event.target.value;
-        this.setState(newState);
-    }
-
-    setOptions() {
-        // SuperescalarIntegration.setOptions(this.state.cacheFailPercentage);
-        this.close();
-    }
-
-    render() {
-        return (
-            <Modal show={this.props.isOptionsModalOpen} onHide={this.close}>
-            <Modal.Header closeButton>
-                <Modal.Title>{this.props.t('optionsModal.title')}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form className='form form-horizontal'>
-                    <div className='form-group'>
-                        <div className='col-sm-4'>
-                            <label htmlFor='cacheFailPercentage' className='control-label'>{this.props.t('optionsModal.cacheFault')}
-                            </label>
-                        </div>
-                        <div className='col-sm-8'>
-                            <input
-                                className='form-control'
-                                name='cacheFailPercentage'
-                                type='number'
-                                min='0'
-                                max='100'
-                                value={this.state.cacheFailPercentage}
-                                onChange={this.handleChange}
-                            />
-                        </div>
-                    </div>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={this.close}>{this.props.t('commonButtons.close')}</Button>
-                <Button className='btn btn-primary' onClick={this.setOptions}>{this.props.t('commonButtons.save')}</Button>
-            </Modal.Footer>
-        </Modal>);
-    }
+function mapDispatchToProps(dispatch: Dispatch<UnknownAction>) {
+	return { actions: bindActionCreators({ toggleOptionsModal }, dispatch) };
 }
 
-const mapStateToProps = state => {
-    return {
-        isOptionsModalOpen: state.Ui.isOptionsModalOpen,
-    }
-}
+export type OptionsModalProps = WithTranslation &
+	ReturnType<typeof mapStateToProps> &
+	ReturnType<typeof mapDispatchToProps>;
 
-function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({toggleOptionsModal}, dispatch)};
-} 
+export const OptionsModalComponent: React.FC = ({
+	actions,
+	isOptionsModalOpen,
+	t,
+}: OptionsModalProps) => {
+	const cacheFailPercentage = 0;
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OptionsModalComponent));
+	const close = () => {
+		actions.toggleOptionsModal(false);
+	};
+
+	const handleChange = (event) => {
+		// setState({ ...state, cacheFailPercentage: event.target.value });
+	};
+
+	const setOptions = () => {
+		close();
+	};
+
+	return (
+		<Modal show={isOptionsModalOpen} onHide={close}>
+			<Modal.Header closeButton>
+				<Modal.Title>{t("optionsModal.title")}</Modal.Title>
+			</Modal.Header>
+			<Modal.Body>
+				<form className="form form-horizontal">
+					<div className="form-group">
+						<div className="col-sm-4">
+							<label htmlFor="cacheFailPercentage" className="control-label">
+								{t("optionsModal.cacheFault")}
+							</label>
+						</div>
+						<div className="col-sm-8">
+							<input
+								className="form-control"
+								name="cacheFailPercentage"
+								type="number"
+								min="0"
+								max="100"
+								value={cacheFailPercentage}
+								onChange={handleChange}
+							/>
+						</div>
+					</div>
+				</form>
+			</Modal.Body>
+			<Modal.Footer>
+				<Button onClick={close}>{t("commonButtons.close")}</Button>
+				<Button className="btn btn-primary" onClick={setOptions}>
+					{t("commonButtons.save")}
+				</Button>
+			</Modal.Footer>
+		</Modal>
+	);
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps,
+)(withTranslation()(OptionsModalComponent));

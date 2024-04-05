@@ -14,7 +14,7 @@
         },
         "config": {
             "name": "Options",
-            "superescalar": "Configure Superescalar Machine",
+            "superescalar": "Configure Superscalar Machine",
             "vliw": "Configure VLIW Machine",
             "options": "Options",
             "content": "Load content Memory - Registers"
@@ -68,16 +68,13 @@
         }
     },
     "superescalarModal": {
-        "name": "Configuration",
+        "name": "Superscalar Configuration",
+        "functionalUnits": "Functional Units",
+        "parameters": "Parameters",
         "warning": "Execution will restart once configuration changes",
         "latency": "Latency",
         "quantity": "Quantity",
-        "Integer+": "Integer Sum",
-        "Integerx": "Integer Mult",
-        "Floating+": "Floating Sum",
-        "Floatingx": "Floating Mult",
-        "Memory": "Memory",
-        "Jump": "Jump",
+        "cacheFault": "Cache fault",
         "issue": "Issue",
         "default": "Default values"
     },
@@ -86,12 +83,7 @@
         "warning": "Execution will restart once configuration changes",
         "latency": "Latency",
         "quantity": "Quantity",
-        "Integer+": "Integer Sum",
-        "Integerx": "Integer Mult",
-        "Floating+": "Floating Sum",
-        "Floatingx": "Floating Mult",
-        "Memory": "Memory",
-        "Jump": "Jump",
+        "cacheFault": "Cache fault",
         "issue": "Issue",
         "default": "Default values"
     },
@@ -106,27 +98,28 @@
         "launch": "Launch",
         "loadFromFile": "Load from file"
     },
-    "Code": "Code",
+    "functionalUnits": {
+        "intAdd": "Integer Add",
+        "intMult": "Integer Multiply",
+        "floatAdd": "Float Add",
+        "floatMult": "Float Multiply",
+        "memory": "Memory",
+        "jump": "Jump",
+        "aluMem": "Memory Address ALU"
+    },
+    "code": "Code",
     "Jump table": "Jump table",
     "Prefetch": "Prefetch",
     "Decoder": "Decoder",
     "Reserve Stations": "Reserve Stations",
-    "Integer +": "Integer Sum",
-    "Integer x": "Integer Mult",
-    "Floating +": "Floating Sum",
-    "Floating x": "Integer Mult",
-    "Memory": "Memory",
-    "Jump": "Jump",
-    "UF": "U. F.",
-    "+Entera": "Integer+",
-    "xEntera": "Integerx",
-    "+Flotante": "Floating+",
-    "xFlotante": "Floatingx",
-    "Mem": "Memory",
-    "JumpUF": "Jump",
-    "AluMem": "Alu Add.",
+    "UF": "Functional Units",
+    "memory": "Memory",
     "ROB<->GPR": "ROB<->GPR",
     "ROB<->FPR": "ROB<->FPR",
+    "VLIWInstructions": "VLIW Instructions",
+    "predicate": "Predicate",
+    "generalRegisters": "General Registers",
+    "floatRegisters": "Floating point Registers",
     "reorderBuffer": {
         "Inst": "Inst",
         "Destiny": "Destiny",
@@ -134,9 +127,6 @@
         "A": "A",
         "Stage": "Stage"
     },
-    "Memoria": "Memory",
-    "Registros generales": "General Registers",
-    "Registros de punto flotante": "Floating point Registers",
     "execution": {
         "stopped": "Execution stopped at breakpoint",
         "finished": "Execution finished",
@@ -159,7 +149,7 @@
         "read": "Read more",
         "home": "Home",
         "project": "Project",
-        "superescalar": "Superescalar",
+        "superescalar": "Superscalar",
         "superescalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
         "go": "Go",
         "vliw": "VLIW",
@@ -184,15 +174,6 @@
         "licency": "@Released under GPLv3 licency"
        
     },
-    "planificator": {
-        "IntegerAdd": "+Integer",
-        "IntegerMult": "xInteger",
-        "FloatAdd": "+Float",
-        "FloatMult": "xFloat",
-        "Memory": "Memory",
-        "Jump": "Jump"
-    },
-
     "stats": {
         "toolbox": {
             "dataView": "Data View",
