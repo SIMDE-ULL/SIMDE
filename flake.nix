@@ -38,6 +38,7 @@
       forAllSystems = f:
         nixpkgs.lib.genAttrs systems (system:
           f rec {
+            systemName = system;
             pkgs = nixpkgs.legacyPackages.${system};
             commonPackages = builtins.attrValues {
               inherit (pkgs) nodejs;
@@ -46,32 +47,34 @@
           });
     in
     {
-      pre-commit-check = pre-commit-hooks.run {
-        src = builtins.path { path = ./.; };
-        default_stages = [ "manual" "push" ];
-        hooks = {
-          nixpkgs-fmt.enable = true;
-          commitizen.enable = true;
-          biome = {
-            enable = true;
-            name = "Biome.js";
-            entry = "biome check --apply";
-            stages = [ "pre-push" ];
+      checks = forAllSystems ({ systemName, pkgs, ... }: {
+        pre-commit-check = pre-commit-hooks.lib.${systemName}.run {
+          src = builtins.path { path = ./.; };
+          default_stages = [ "manual" "push" ];
+          hooks = {
+            alejandra.settings.verbosity = "quiet";
+            nixpkgs-fmt.enable = true;
+            commitizen.enable = true;
+            biome = {
+              enable = true;
+              package = pkgs.biome;
+              name = "Biome.js";
+              entry = "biome check --no-errors-on-unmatched --apply";
+              stages = [ "pre-push" ];
+            };
           };
-        };
-        settings = {
-          alejandra.verbosity = "quiet";
-        };
-      };
-
-      # Development environment
-      devShells = forAllSystems ({ pkgs, commonPackages }: {
-        inherit (self.pre-commit-check) shellHook;
-        default = pkgs.mkShell {
-          packages = with pkgs; [ nixpkgs-fmt biome ] ++ commonPackages;
         };
       });
 
+      # Development environment
+      devShells = forAllSystems ({ systemName, pkgs, commonPackages, ... }: {
+        default = pkgs.mkShell {
+          inherit (self.checks.${systemName}.pre-commit-check) shellHook;
+          packages = commonPackages ++ self.checks.${systemName}.pre-commit-check.enabledPackages;
+        };
+      });
+
+      /*
       # Build package into `dist/` dir from `pnpm-lock.yaml`
       buildDist = pnpm2nix.mkPnpmPackage {
         src = ./.;
@@ -84,5 +87,6 @@
           ${pkgs.static-web-server}/bin/static-web-server --root .
         '';
       });
+      */
     };
 }
