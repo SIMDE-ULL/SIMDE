@@ -47,12 +47,12 @@
           });
     in
     {
+      # Pre-commit hooks
       checks = forAllSystems ({ systemName, pkgs, ... }: {
         pre-commit-check = pre-commit-hooks.lib.${systemName}.run {
           src = builtins.path { path = ./.; };
           default_stages = [ "manual" "push" ];
           hooks = {
-            alejandra.settings.verbosity = "quiet";
             nixpkgs-fmt.enable = true;
             commitizen.enable = true;
             biome = {
@@ -69,6 +69,7 @@
       # Development environment
       devShells = forAllSystems ({ systemName, pkgs, commonPackages, ... }: {
         default = pkgs.mkShell {
+          # Add pre-commit hooks
           inherit (self.checks.${systemName}.pre-commit-check) shellHook;
           packages = commonPackages ++ self.checks.${systemName}.pre-commit-check.enabledPackages;
         };
