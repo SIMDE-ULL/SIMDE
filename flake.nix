@@ -88,7 +88,7 @@
 
         # Build binary package with `static-web-server` running SIMDE dist
         sws = pkgs.pkgsStatic.writeShellScriptBin "simde-sws" ''
-          ${pkgs.pkgsStatic.static-web-server}/bin/static-web-server
+          ${pkgs.pkgsStatic.static-web-server}/bin/static-web-server --root ${dist}
         '';
 
         # Build a Docker image that runs `simde-sws`
