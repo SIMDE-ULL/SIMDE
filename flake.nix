@@ -60,8 +60,9 @@
             biome = {
               enable = true;
               package = pkgs.biome;
-              name = "Biome.js";
+              name = "biome";
               entry = "biome check --no-errors-on-unmatched";
+              types_or = [ "javascript" "jsx" "ts" "tsx" "json" ];
               stages = [ "pre-push" ];
             };
           };
