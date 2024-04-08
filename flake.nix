@@ -8,7 +8,7 @@
   description = "Educational computer architecture simulator";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,28 +38,30 @@
       forAllSystems = f:
         nixpkgs.lib.genAttrs systems (system:
           f rec {
-            systemName = system;
+            inherit system;
             pkgs = nixpkgs.legacyPackages.${system};
             commonPackages = builtins.attrValues {
               inherit (pkgs) nodejs;
               inherit (pkgs.nodePackages) pnpm;
             };
+            inherit (pnpm2nix.packages.${system}) mkPnpmPackage;
           });
     in
     {
       # Pre-commit hooks
-      checks = forAllSystems ({ systemName, pkgs, ... }: {
-        pre-commit-check = pre-commit-hooks.lib.${systemName}.run {
+      checks = forAllSystems ({ system, pkgs, ... }: {
+        pre-commit-check = pre-commit-hooks.lib.${system}.run {
           src = builtins.path { path = ./.; };
           default_stages = [ "manual" "push" ];
           hooks = {
-            nixpkgs-fmt.enable = true;
+            actionlint.enable = true;
             commitizen.enable = true;
+            nixpkgs-fmt.enable = true;
             biome = {
               enable = true;
               package = pkgs.biome;
               name = "Biome.js";
-              entry = "biome check --no-errors-on-unmatched --apply";
+              entry = "biome check --no-errors-on-unmatched";
               stages = [ "pre-push" ];
             };
           };
@@ -67,27 +69,47 @@
       });
 
       # Development environment
-      devShells = forAllSystems ({ systemName, pkgs, commonPackages, ... }: {
+      devShells = forAllSystems ({ system, pkgs, commonPackages, ... }: {
         default = pkgs.mkShell {
           # Add pre-commit hooks
-          inherit (self.checks.${systemName}.pre-commit-check) shellHook;
-          packages = commonPackages ++ self.checks.${systemName}.pre-commit-check.enabledPackages;
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          packages = commonPackages ++ self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
 
-      /*
-      # Build package into `dist/` dir from `pnpm-lock.yaml`
-      buildDist = pnpm2nix.mkPnpmPackage {
-        src = ./.;
-        noDevDependencies = true;
-      };
+      # Package derivations
+      packages = forAllSystems ({ system, pkgs, mkPnpmPackage, ... }: rec {
+        # Build package into `dist/` dir from `pnpm-lock.yaml`
+        dist = mkPnpmPackage {
+          src = ./.;
+          distDir = "dist";
+        };
 
-      # Create SIMDE `dist/` + `Static-Web-Server` bundle
-      packages = forAllSystems ({ pkgs, ... }: {
-        default = pkgs.writeShellScriptBin "default" ''
-          ${pkgs.static-web-server}/bin/static-web-server --root .
+        # Build binary package with `static-web-server` running SIMDE dist
+        sws = pkgs.pkgsStatic.writeShellScriptBin "simde-sws" ''
+          ${pkgs.pkgsStatic.static-web-server}/bin/static-web-server
         '';
+
+        # Build a Docker image that runs `simde-sws`
+        docker = pkgs.dockerTools.buildImage {
+          name = sws.name;
+          tag = "latest";
+
+          created = "now";
+
+          copyToRoot = pkgs.buildEnv {
+            name = "image-root";
+            paths = [ sws ];
+            pathsToLink = [ "/bin" ];
+          };
+
+          config = { Cmd = [ "/bin/simde-sws" ]; };
+
+          diskSize = 128;
+          buildVMMemorySize = 512;
+        };
+
+        default = dist;
       });
-      */
     };
 }
