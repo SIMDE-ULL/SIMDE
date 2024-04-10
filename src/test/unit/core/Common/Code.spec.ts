@@ -489,3 +489,9 @@ FIN:
   const code: Code = new Code();
   expect(() => code.load(input)).not.toThrowError();
 });
+
+test("should not error on CRLF newlines", (t) => {
+  const input = "LW R1, 10(R0)\r\nMULT R2, R1, R1\n";
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
+});
