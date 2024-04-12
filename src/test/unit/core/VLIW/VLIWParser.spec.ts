@@ -4,14 +4,14 @@ import { VLIW } from "../../../../core/VLIW/VLIW";
 import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
 import { VLIWError } from "../../../../core/VLIW/VLIWError";
 
-const context: { code: VLIWCode; superescalarCode: Code } = {
+const context: { code: VLIWCode; superscalarCode: Code } = {
   code: null,
-  superescalarCode: null,
+  superscalarCode: null,
 };
 
 beforeEach(() => {
   context.code = new VLIWCode();
-  context.superescalarCode = new Code();
+  context.superscalarCode = new Code();
 });
 
 test("Loop.pla is loaded properly", (t) => {
@@ -32,7 +32,7 @@ test("Loop.pla is loaded properly", (t) => {
     1	10 5 0 0 2 1 2
     1	9 0 1 0`;
 
-  const inputSuperescalar = `11
+  const inputSuperscalar = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -46,8 +46,8 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-  context.superescalarCode.load(inputSuperescalar);
-  context.code.load(inputVLIW, context.superescalarCode);
+  context.superscalarCode.load(inputSuperscalar);
+  context.code.load(inputVLIW, context.superscalarCode);
 
   const error = `Bad instruction number parsed, expected 15, got ${context.code.getLargeInstructionNumber()}`;
 
@@ -71,7 +71,7 @@ test("Loop.pla without lines number is loaded properly", (t) => {
     1	10 5 0 0 2 1 2
     1	9 0 1 0`;
 
-  const inputSuperescalar = `ADDI	R2 R0 #50
+  const inputSuperscalar = `ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
 	LF	F0 (R4)
@@ -84,8 +84,8 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-  context.superescalarCode.load(inputSuperescalar);
-  context.code.load(inputVLIW, context.superescalarCode);
+  context.superscalarCode.load(inputSuperscalar);
+  context.code.load(inputVLIW, context.superscalarCode);
 
   expect(context.code.getLargeInstructionNumber()).toBe(15);
 });
@@ -109,7 +109,7 @@ test("Loop.pla with extra \\n at the end does not throws error", (t) => {
     1	9 0 1 0
     `;
 
-  const inputSuperescalar = `11
+  const inputSuperscalar = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
 	ADDI	R4 R0 #40
@@ -123,9 +123,9 @@ LOOP:
 	ADDI	R3 R3 #1
 	BNE	R2 R5 LOOP`;
 
-  context.superescalarCode.load(inputSuperescalar);
+  context.superscalarCode.load(inputSuperscalar);
 
   expect(() =>
-    context.code.load(inputVLIW, context.superescalarCode),
+    context.code.load(inputVLIW, context.superscalarCode),
   ).not.toThrowError();
 });

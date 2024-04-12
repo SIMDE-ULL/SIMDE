@@ -4,8 +4,8 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
-import { SUPERESCALAR_CONFIG, BATCH_CONFIG } from '../../../utils/constants';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
+import { SUPERSCALAR_CONFIG, BATCH_CONFIG } from '../../../utils/constants';
 
 class BatchModalComponent extends React.Component<any, any> {
     constructor(public props: any) {
@@ -39,14 +39,14 @@ class BatchModalComponent extends React.Component<any, any> {
     }
 
     setOptions() {
-        SuperescalarIntegration.setBatchMode(
+        SuperscalarIntegration.setBatchMode(
             this.state.replications,
             this.state.cacheFailLatency,
             this.state.cacheFailPercentage
             
         );
         this.close();
-        SuperescalarIntegration.makeBatchExecution();
+        SuperscalarIntegration.makeBatchExecution();
     }
 
     handleCachePercentageChange(event) {

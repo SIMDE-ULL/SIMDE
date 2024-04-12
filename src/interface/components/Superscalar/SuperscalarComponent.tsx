@@ -10,8 +10,8 @@ import RegisterTabComponent from './tab/RegistersTabComponent';
 import StatsTabComponent from './tab/StatsTabComponent';
 
 import LoadModalComponent from "./modal/LoadModalComponent";
-import SuperescalarConfigModalComponent from "./modal/SuperescalarConfigModal";
-import SuperescalarLoadContentModalComponent from "./modal/SuperescalarLoadContentModalComponent";
+import SuperscalarConfigModalComponent from "./modal/SuperscalarConfigModal";
+import SuperscalarLoadContentModalComponent from "./modal/SuperscalarLoadContentModalComponent";
 
 import OptionsModalComponent from "./modal/OptionsModalComponent";
 import AutorModalComponent from "./modal/AutorModalComponent";
@@ -19,7 +19,7 @@ import AutorModalComponent from "./modal/AutorModalComponent";
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
-const SuperescalarComponent = () => {
+const SuperscalarComponent = () => {
     return (
         <div className='smd'>
             <div className='navigation-bars'>
@@ -27,7 +27,7 @@ const SuperescalarComponent = () => {
                 <AccessBarComponent />
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>
-                <Tab eventKey={1} title={t('accessBar.superescalar')}>
+                <Tab eventKey={1} title={t('accessBar.superscalar')}>
                     <GeneralTabComponent />
                 </Tab>
                 <Tab eventKey={2} title={t('accessBar.memReg')}>
@@ -38,8 +38,8 @@ const SuperescalarComponent = () => {
                 </Tab>
             </Tabs>
             <LoadModalComponent />
-            <SuperescalarLoadContentModalComponent />
-            <SuperescalarConfigModalComponent />
+            <SuperscalarLoadContentModalComponent />
+            <SuperscalarConfigModalComponent />
             <OptionsModalComponent />
             <AutorModalComponent />
             <BatchModalComponent />
@@ -48,4 +48,4 @@ const SuperescalarComponent = () => {
     )
 };
 
-export default SuperescalarComponent;
+export default SuperscalarComponent;

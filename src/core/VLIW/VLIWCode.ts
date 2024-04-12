@@ -7,7 +7,7 @@ export class VLIWCode {
   public instructions: LargeInstruction[];
 
   private _largeInstructionNumber: number;
-  private _superescalarCode: Code;
+  private _superscalarCode: Code;
 
   constructor(n?: number) {
     if (n) {
@@ -49,12 +49,12 @@ export class VLIWCode {
     this.instructions[index].addOperation(oper);
   }
 
-  public get superescalarCode(): Code {
-    return this._superescalarCode;
+  public get superscalarCode(): Code {
+    return this._superscalarCode;
   }
 
-  public set superescalarCode(code: Code) {
-    this._superescalarCode = code;
+  public set superscalarCode(code: Code) {
+    this._superscalarCode = code;
   }
 
   public clear() {
@@ -69,6 +69,6 @@ export class VLIWCode {
   public load(input: string, code: Code): void {
     this.instructions = Parse(input, code);
     this._largeInstructionNumber = this.instructions.length;
-    this._superescalarCode = code;
+    this._superscalarCode = code;
   }
 }

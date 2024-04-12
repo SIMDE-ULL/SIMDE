@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 
 class AccessBarComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -15,23 +15,23 @@ class AccessBarComponent extends React.Component<any, any> {
     }
 
     stepForward() {
-        SuperescalarIntegration.stepForward();
+        SuperscalarIntegration.stepForward();
     }
 
     stepBack() {
-        SuperescalarIntegration.stepBack();
+        SuperscalarIntegration.stepBack();
     }
 
     play() {
-        SuperescalarIntegration.play();
+        SuperscalarIntegration.play();
     }
 
     pause() {
-        SuperescalarIntegration.pause();
+        SuperscalarIntegration.pause();
     }
 
     stop() {
-        SuperescalarIntegration.stop();
+        SuperscalarIntegration.stop();
     }
 
     render() {

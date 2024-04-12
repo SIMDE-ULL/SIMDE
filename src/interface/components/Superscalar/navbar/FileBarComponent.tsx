@@ -2,14 +2,14 @@ import * as React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { toggleLoadModal, toggleAuthorModal, toggleOptionsModal, toggleSuperConfigModal,
-    toggleBatchModal, toggleSuperescalarLoadContentModal } from '../../../actions/modals';
+    toggleBatchModal, toggleSuperscalarLoadContentModal } from '../../../actions/modals';
 
 import { bindActionCreators } from 'redux';
 import { DropdownButton } from 'react-bootstrap';
 import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
 import { downloadJsonFile, downloadTextFile } from '../../../utils/Downloader';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 
 class FileBarComponent extends React.Component<any, any> {
     private color: boolean;
@@ -23,16 +23,16 @@ class FileBarComponent extends React.Component<any, any> {
     }
 
     downloadContentFile() {
-        if (SuperescalarIntegration.contentIntegration) {
-            downloadTextFile('content.txt', SuperescalarIntegration.contentIntegration.deparse());
+        if (SuperscalarIntegration.contentIntegration) {
+            downloadTextFile('content.txt', SuperscalarIntegration.contentIntegration.deparse());
         } else {
             downloadTextFile('content.txt', '');
         }
     }
 
     downloadCodeFile() {
-        if (SuperescalarIntegration.superescalar.code) {
-            downloadTextFile('code.txt', SuperescalarIntegration.superescalar.code.save());
+        if (SuperscalarIntegration.superscalar.code) {
+            downloadTextFile('code.txt', SuperscalarIntegration.superscalar.code.save());
         } else {
             downloadTextFile('code.txt', '');
         }
@@ -49,7 +49,7 @@ class FileBarComponent extends React.Component<any, any> {
                         <Dropdown.Item eventKey="2" onClick={() => { downloadJsonFile('memory.json', this.props.memory); }}>{this.props.t('fileBar.file.exportMemory')}</Dropdown.Item>
                         <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.exportContent')}</Dropdown.Item>
                         <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.exportCode')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', SuperescalarIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.exportStats')}</Dropdown.Item>
+                        <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', SuperscalarIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.exportStats')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}
@@ -67,9 +67,9 @@ class FileBarComponent extends React.Component<any, any> {
                         id={'dropdown-options'}
                     >
                         <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleSuperConfigModal(true)}}>
-                            {this.props.t('fileBar.config.superescalar')}
+                            {this.props.t('fileBar.config.superscalar')}
                         </Dropdown.Item>
-                        <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleSuperescalarLoadContentModal(true)}}>
+                        <Dropdown.Item eventKey="1" onClick={() => { this.props.actions.toggleSuperscalarLoadContentModal(true)}}>
                             {this.props.t('fileBar.config.content')}
                         </Dropdown.Item>
                     </DropdownButton>
@@ -110,7 +110,7 @@ function mapDispatchToProps(dispatch) {
         toggleAuthorModal,
         toggleOptionsModal,
         toggleSuperConfigModal,
-        toggleSuperescalarLoadContentModal,
+        toggleSuperscalarLoadContentModal: toggleSuperscalarLoadContentModal,
         toggleBatchModal,
         viewBasicBlocks
     }, dispatch) };

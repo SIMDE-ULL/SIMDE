@@ -1,8 +1,8 @@
-export const SUPERESCALAR_LOAD = 'SUPERESCALAR_LOAD';
+export const SUPERSCALAR_LOAD = 'SUPERSCALAR_LOAD';
 
-export function superescalarLoad(code) {
+export function superscalarLoad(code) {
     return {
-        type: SUPERESCALAR_LOAD,
+        type: SUPERSCALAR_LOAD,
         value: code
     };
 }
