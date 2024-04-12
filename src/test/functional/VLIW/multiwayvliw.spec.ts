@@ -5,19 +5,19 @@ import { Code } from '../../../core/Common/Code';
 import { VLIWError } from '../../../core/VLIW/VLIWError';
 import { codeInput, vliwCodeInput } from "../code/multiwayvliw1";
 
-const context: { code: VLIWCode, superescalarCode: Code, machine: VLIW } = { code: null, superescalarCode: null, machine: null };
+const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null, superscalarCode: null, machine: null };
 
 beforeEach(() => {
     context.code = new VLIWCode();
-    context.superescalarCode = new Code();
+    context.superscalarCode = new Code();
     context.machine = new VLIW();
     context.machine.init(true);
 });
 
 test('multiwayvliw.pla is executed properly with first parameter', t => {
     // Load code
-    context.superescalarCode.load(codeInput);
-    context.code.load(vliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(codeInput);
+    context.code.load(vliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -41,8 +41,8 @@ test('multiwayvliw.pla is executed properly with first parameter', t => {
 
 test('multiwayvliw.pla is executed properly with second parameter', t => {
     // Load code
-    context.superescalarCode.load(codeInput);
-    context.code.load(vliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(codeInput);
+    context.code.load(vliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -66,8 +66,8 @@ test('multiwayvliw.pla is executed properly with second parameter', t => {
 
 test('multiwayvliw.pla is executed properly with third parameter', t => {
     // Load code
-    context.superescalarCode.load(codeInput);
-    context.code.load(vliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(codeInput);
+    context.code.load(vliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory

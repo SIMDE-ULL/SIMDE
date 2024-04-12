@@ -5,11 +5,11 @@ import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
-import { toggleSuperescalarLoadContentModal } from '../../../actions/modals';
-import SuperescalarIntegration from '../../../../integration/superescalar-integration';
+import { toggleSuperscalarLoadContentModal } from '../../../actions/modals';
+import SuperscalarIntegration from '../../../../integration/superescalar-integration';
 import { ContentIntegration} from '../../../../integration/content-integration';
 
-class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
+class SuperscalarLoadContentModalComponent extends React.Component<any, any> {
 
       constructor(public props: any, public state: any) {
             super(props);
@@ -19,7 +19,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
       }
 
       close() {
-            this.props.actions.toggleSuperescalarLoadContentModal(false);
+            this.props.actions.toggleSuperscalarLoadContentModal(false);
       };
 
       handleInputFileChange = (e, results) => {
@@ -35,11 +35,11 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
                 const content = (document.getElementById('contentInput') as HTMLInputElement).value;
                 this.setState({error: ''});
                 const contentIntegration = new ContentIntegration(content);
-                SuperescalarIntegration.contentIntegration = contentIntegration;
-                SuperescalarIntegration.setFpr(contentIntegration.FPRContent);
-                SuperescalarIntegration.setGpr(contentIntegration.GPRContent);
-                SuperescalarIntegration.setMemory(contentIntegration.MEMContent);
-                SuperescalarIntegration.dispatchAllSuperescalarActions();
+                SuperscalarIntegration.contentIntegration = contentIntegration;
+                SuperscalarIntegration.setFpr(contentIntegration.FPRContent);
+                SuperscalarIntegration.setGpr(contentIntegration.GPRContent);
+                SuperscalarIntegration.setMemory(contentIntegration.MEMContent);
+                SuperscalarIntegration.dispatchAllSuperscalarActions();
                 this.close();
             } catch (error) {
                 // Check if error has the property position. Checking instance of TokenError not working
@@ -53,7 +53,7 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 
       render() {
             return (
-            <Modal className="smd-load_content_modal" show={this.props.isSuperescalarLoadContentModalOpen} onHide={this.close}>
+            <Modal className="smd-load_content_modal" show={this.props.isSuperscalarLoadContentModalOpen} onHide={this.close}>
             <Modal.Header closeButton>
                 <Modal.Title>{this.props.t('loadContentModal.title')}</Modal.Title>
             </Modal.Header>
@@ -82,11 +82,11 @@ class SuperescalarLoadContentModalComponent extends React.Component<any, any> {
 
 const mapStateToProps = state => {
       return {
-          isSuperescalarLoadContentModalOpen: state.Ui.isSuperescalarLoadContentModalOpen,
+          isSuperscalarLoadContentModalOpen: state.Ui.isSuperscalarLoadContentModalOpen,
       }
   }
   
 function mapDispatchToProps(dispatch) {
-      return { actions: bindActionCreators({toggleSuperescalarLoadContentModal}, dispatch)};
+      return { actions: bindActionCreators({toggleSuperscalarLoadContentModal: toggleSuperscalarLoadContentModal}, dispatch)};
 } 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(SuperescalarLoadContentModalComponent));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(SuperscalarLoadContentModalComponent));

@@ -17,7 +17,7 @@ import {
     NEXT_STATUSES_COUNT,
     NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES,
     CURRENT_PC,
-    SUPERESCALAR_LOAD,
+    SUPERSCALAR_LOAD,
     VIEW_BASIC_BLOCKS
 } from '../actions';
 
@@ -236,7 +236,7 @@ export function MachineReducers(state = initialState, action): typeof initialSta
                     instructionsStatusesAverageCycles: action.value
                 }
             });
-        case SUPERESCALAR_LOAD:
+        case SUPERSCALAR_LOAD:
             return (state = {
                 ...state,
                 code: action.value

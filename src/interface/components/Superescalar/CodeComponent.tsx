@@ -3,7 +3,7 @@ import { OpcodesNames } from '../../../core/Common/Opcodes';
 
 import { Instruction } from '../../../core/Common/Instruction';
 
-import SuperescalarIntegration from '../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../integration/superescalar-integration';
 
 import { withTranslation } from 'react-i18next';
 
@@ -23,8 +23,8 @@ class CodeComponent extends React.Component<any, any> {
     }
 
     setBreakpoint(index) {
-        SuperescalarIntegration.superescalar.code.toggleBreakpoint(index);
-        this.props.toggleBreakPoint(SuperescalarIntegration.superescalar.code.instructions);
+        SuperscalarIntegration.superscalar.code.toggleBreakpoint(index);
+        this.props.toggleBreakPoint(SuperscalarIntegration.superscalar.code.instructions);
     }
 
    render() {

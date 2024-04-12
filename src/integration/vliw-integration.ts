@@ -8,7 +8,7 @@ import {
     nextMemoryCycle,
     nextCycle,
     currentPC,
-    superescalarLoad,
+    superscalarLoad,
     batchActions,
     nextUnitsUsage,
     setCyclesPerReplication
@@ -122,7 +122,7 @@ export class VLIWIntegration extends MachineIntegration {
         store.dispatch(nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers));
         store.dispatch(nextVLIWExecutionTableCycle(this.vliw.code.instructions,
             this.vliw.functionalUnitNumbers));
-        store.dispatch(superescalarLoad(vliwCode.superescalarCode.instructions));
+        store.dispatch(superscalarLoad(vliwCode.superscalarCode.instructions));
     }
 
     setOperation = (codeInstructionIdx, position: [number, number]) => {
@@ -133,7 +133,7 @@ export class VLIWIntegration extends MachineIntegration {
 
         let { loc } = codeInstructionIdx;
         let [instructionIdx, operationIdx] = position;
-        let functionalUnitType = this.vliw.code.superescalarCode.getFunctionalUnitType(loc);
+        let functionalUnitType = this.vliw.code.superscalarCode.getFunctionalUnitType(loc);
         let functionalUnitIdx = 0;
 
         for (let i = 0; i < this.vliw.functionalUnitNumbers.length; i++) {
@@ -156,7 +156,7 @@ export class VLIWIntegration extends MachineIntegration {
         }
 
         let operation = new VLIWOperation(null,
-            this.vliw.code.superescalarCode.instructions[loc],
+            this.vliw.code.superscalarCode.instructions[loc],
             functionalUnitType, functionalUnitIdx
         );
 

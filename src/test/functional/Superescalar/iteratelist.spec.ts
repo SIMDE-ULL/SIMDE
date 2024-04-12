@@ -1,16 +1,16 @@
 import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
-import { Superescalar } from '../../../core/Superescalar/Superescalar';
-import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
+import { Superscalar } from '../../../core/Superescalar/Superscalar';
+import { SuperscalarStatus } from '../../../core/Superescalar/SuperscalarEnums';
 import { FunctionalUnitType } from '../../../core/Common/FunctionalUnit';
 import { codeInput, memContent } from "../code/recorrelista";
 
 
-const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
 
 beforeEach(() => {
     context.code = new Code();
-    context.machine = new Superescalar();
+    context.machine = new Superscalar();
     context.machine.init(true);
 });
 
@@ -26,7 +26,7 @@ test('recorrelista.pla is executed properly', t => {
     }
 
     // Execute code
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) {
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) {
         if (context.machine.status.cycle === 40) {
             // Check the jump prediction (should be 1 for the 2 branches)
             expect(context.machine.jumpPrediction.getPrediction(12)).toBe(false);// 'Jump prediction of BEQ R4 R0 NOOP should be 1 at cycle 40');

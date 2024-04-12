@@ -4,7 +4,7 @@ import {
     TOGGLE_OPTIONS_MODAL,
     TOGGLE_SUPER_CONFIG_MODAL,
     TOGGLE_VLIW_CONFIG_MODAL,
-    TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL,
+    TOGGLE_SUPERSCALAR_LOAD_CONTENT_MODAL,
     TOGGLE_VLIW_LOAD_CONTENT_MODAL,
     TOGGLE_BATCH_MODAL,
     CLOSE_BATCH_RESULTS,
@@ -21,7 +21,7 @@ export const initialState = {
     isOptionsModalOpen: false,
     isSuperConfigModalOpen: false,
     isVliwConfigModalOpen: false,
-    isSuperescalarLoadContentModalOpen: false,
+    isSuperscalarLoadContentModalOpen: false,
     isVliwLoadContentModalOpen: false,
     isBatchModalOpen: false,
     isBatchResultsModalOpen: false,
@@ -61,10 +61,10 @@ export function UiReducers(state = initialState, action) {
                 ...state,
                 isBatchModalOpen: action.value
             });
-        case TOGGLE_SUPERESCALAR_LOAD_CONTENT_MODAL:
+        case TOGGLE_SUPERSCALAR_LOAD_CONTENT_MODAL:
             return (state = {
                 ...state,
-                isSuperescalarLoadContentModalOpen: action.value
+                isSuperscalarLoadContentModalOpen: action.value
             });
         case TOGGLE_VLIW_LOAD_CONTENT_MODAL:
             return (state = {

@@ -1,17 +1,17 @@
 import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
-import { Superescalar } from '../../../core/Superescalar/Superescalar';
-import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
+import { Superscalar } from '../../../core/Superescalar/Superscalar';
+import { SuperscalarStatus } from '../../../core/Superescalar/SuperscalarEnums';
 import { codeInput, vecContent, sumContent, resultContent } from "../code/bucle";
 import { codeInput as doubleCodeInput } from "../code/bucledoble";
 import { codeInput as softCodeInput } from "../code/buclesoft";
 
 
-const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
 
 beforeEach(() => {
     context.code = new Code();
-    context.machine = new Superescalar();
+    context.machine = new Superscalar();
     context.machine.init(true);
 });
 
@@ -28,7 +28,7 @@ test('Bucle.pla is executed properly', t => {
     }
 
     // Execute code
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is
@@ -56,7 +56,7 @@ test('Buclesoft.pla is executed properly', t => {
     }
 
     // Execute code
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is
@@ -84,7 +84,7 @@ test('Bucledoble.pla is executed properly', t => {
     }
 
     // Execute code
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
 
     // Check where the program counter is

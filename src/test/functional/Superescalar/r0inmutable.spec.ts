@@ -1,15 +1,15 @@
 import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
-import { Superescalar } from '../../../core/Superescalar/Superescalar';
-import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
+import { Superscalar } from '../../../core/Superescalar/Superscalar';
+import { SuperscalarStatus } from '../../../core/Superescalar/SuperscalarEnums';
 import { code } from '../code/r0inmutable';
 
 
-const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
 
 beforeEach(() => {
     context.code = new Code();
-    context.machine = new Superescalar();
+    context.machine = new Superscalar();
     context.machine.init(true);
 });
 
@@ -17,7 +17,7 @@ test('Register R0 is inmutable', t => {
     // Execute code
     context.code.load(code);
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check R1 value
     expect(context.machine.getGpr(1)).toBe(0);

@@ -7,7 +7,7 @@ import { withTranslation } from 'react-i18next';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { superescalarLoad } from '../../../actions';
+import { superscalarLoad } from '../../../actions';
 
 import { TableComponent } from '../TableComponent';
 import RegisterComponent from '../../Superescalar/RegisterComponent';
@@ -27,7 +27,7 @@ class GeneralVLIWTabComponent extends React.Component<any, any> {
                 <div className="smd-general_tab-code">
                     <CodeComponent
                         code={this.props.code}
-                        toggleBreakPoint={this.props.actions.superescalarLoad}
+                        toggleBreakPoint={this.props.actions.superscalarLoad}
                         colorBasicBlocks={this.props.colorBasicBlocks}
                     />
                 </div>
@@ -160,7 +160,7 @@ const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators(
             {
-                superescalarLoad,
+                superscalarLoad: superscalarLoad,
             },
             dispatch
         )

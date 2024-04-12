@@ -14,8 +14,8 @@ import { connect } from "react-redux";
 import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
 
 import { toggleSuperConfigModal } from "../../../actions/modals";
-import SuperescalarIntegration from "../../../../integration/superescalar-integration";
-import { SUPERESCALAR_CONFIG } from "../../../utils/constants";
+import SuperscalarIntegration from "../../../../integration/superescalar-integration";
+import { SUPERSCALAR_CONFIG } from "../../../utils/constants";
 import type { GlobalState } from "../../../reducers";
 
 const mapStateToProps = (state: GlobalState) => {
@@ -56,7 +56,7 @@ export const SuperscalarConfigModal: React.FC = ({
 	const [config, setConfig] = React.useState(defaultConfig);
 
 	const saveConfig = () => {
-		SuperescalarIntegration.saveSuperConfig(config);
+		SuperscalarIntegration.saveSuperConfig(config);
 		closeModal();
 	};
 
@@ -75,23 +75,23 @@ export const SuperscalarConfigModal: React.FC = ({
 	return (
 		<Modal show={isSuperscalarConfigModalShown} onHide={closeModal}>
 			<Modal.Header closeButton>
-				<Modal.Title>{t("superescalarModal.name")}</Modal.Title>
+				<Modal.Title>{t("superscalarModal.name")}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Stack gap={1}>
-					<Alert variant="warning">{t("superescalarModal.warning")}</Alert>
+					<Alert variant="warning">{t("superscalarModal.warning")}</Alert>
 					<Container>
-						<h5>{t("superescalarModal.functionalUnits")}</h5>
+						<h5>{t("superscalarModal.functionalUnits")}</h5>
 						<Row>
 							<Col>
 								<Form>
 									<Stack gap={1}>
 										<Row>
 											<Form.Label column xs={{ offset: 4 }}>
-												{t("superescalarModal.quantity")}
+												{t("superscalarModal.quantity")}
 											</Form.Label>
 											<Form.Label column>
-												{t("superescalarModal.latency")}
+												{t("superscalarModal.latency")}
 											</Form.Label>
 										</Row>
 										<Row>
@@ -103,8 +103,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="integerSumQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.integerSumQuantity}
 														onChange={updateConfig}
 													/>
@@ -115,8 +115,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="integerSumLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.integerSumLatency}
 														onChange={updateConfig}
 													/>
@@ -132,8 +132,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="integerMultQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.integerMultQuantity}
 														onChange={updateConfig}
 													/>
@@ -144,8 +144,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="integerMultLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.integerMultLatency}
 														onChange={updateConfig}
 													/>
@@ -161,8 +161,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="floatingSumQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.floatingSumQuantity}
 														onChange={updateConfig}
 													/>
@@ -173,8 +173,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="floatingSumLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.floatingSumLatency}
 														onChange={updateConfig}
 													/>
@@ -190,8 +190,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="floatingMultQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.floatingMultQuantity}
 														onChange={updateConfig}
 													/>
@@ -202,8 +202,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="floatingMultLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.floatingMultLatency}
 														onChange={updateConfig}
 													/>
@@ -219,8 +219,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="memoryQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.memoryQuantity}
 														onChange={updateConfig}
 													/>
@@ -231,8 +231,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="memoryLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.memoryLatency}
 														onChange={updateConfig}
 													/>
@@ -248,8 +248,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="jumpQuantity"
 														type="number"
-														min={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERESCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.jumpQuantity}
 														onChange={updateConfig}
 													/>
@@ -260,8 +260,8 @@ export const SuperscalarConfigModal: React.FC = ({
 													<Form.Control
 														name="jumpLatency"
 														type="number"
-														min={SUPERESCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERESCALAR_CONFIG.LATENCY_MAX}
+														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.jumpLatency}
 														onChange={updateConfig}
 													/>
@@ -275,7 +275,7 @@ export const SuperscalarConfigModal: React.FC = ({
 					</Container>
 					<hr />
 					<Container>
-						<h5>{t("superescalarModal.parameters")}</h5>
+						<h5>{t("superscalarModal.parameters")}</h5>
 						<Row>
 							<Col>
 								<Form>
@@ -283,15 +283,15 @@ export const SuperscalarConfigModal: React.FC = ({
 										<Row>
 											<Col>
 												<Form.Label column>
-													{t("superescalarModal.issue")}
+													{t("superscalarModal.issue")}
 												</Form.Label>
 											</Col>
 											<Col>
 												<Form.Control
 													name="issueGrade"
 													type="number"
-													min={SUPERESCALAR_CONFIG.ISSUE_GRADE_MIN}
-													max={SUPERESCALAR_CONFIG.ISSUE_GRADE_MAX}
+													min={SUPERSCALAR_CONFIG.ISSUE_GRADE_MIN}
+													max={SUPERSCALAR_CONFIG.ISSUE_GRADE_MAX}
 													value={config.issueGrade}
 													onChange={updateConfig}
 												/>
@@ -306,7 +306,7 @@ export const SuperscalarConfigModal: React.FC = ({
 			</Modal.Body>
 			<Modal.Footer>
 				<Button className="me-auto" onClick={setDefaultConfig}>
-					{t("superescalarModal.default")}
+					{t("superscalarModal.default")}
 				</Button>
 				<Button onClick={closeModal}>{t("commonButtons.close")}</Button>
 				<Button onClick={saveConfig}>{t("commonButtons.save")}</Button>
