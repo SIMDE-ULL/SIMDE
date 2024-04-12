@@ -1,4 +1,4 @@
-import { Superscalar } from '../core/Superescalar/Superscalar';
+import { Superscalar } from '../core/Superscalar/Superscalar';
 import { ExecutionStatus } from './utils';
 import { store } from '../store';
 import {
@@ -32,7 +32,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
-import { SuperscalarStatus } from '../core/Superescalar/SuperscalarEnums';
+import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
 
 
 import { Stats } from '../stats/stats';

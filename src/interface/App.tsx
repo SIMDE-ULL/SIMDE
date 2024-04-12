@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPageComponent from "./components/LandingPage/LandingPageComponent";
 import ProjectPage from "./components/LandingPage/ProjectPageComponent";
 
-import SuperscalarComponent from "./components/Superescalar/SuperescalarComponent";
+import SuperscalarComponent from "./components/Superscalar/SuperscalarComponent";
 import VLIWComponent from "./components/VLIW/VLIWComponent";
 
 

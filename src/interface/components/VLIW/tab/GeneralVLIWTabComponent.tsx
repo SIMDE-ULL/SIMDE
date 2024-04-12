@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import { superscalarLoad } from '../../../actions';
 
 import { TableComponent } from '../TableComponent';
-import RegisterComponent from '../../Superescalar/RegisterComponent';
+import RegisterComponent from '../../Superscalar/RegisterComponent';
 import {PREDICATE_SIZE} from '../../../reducers/machine';
 
 import VLIWIntegration from '../../../../integration/vliw-integration';

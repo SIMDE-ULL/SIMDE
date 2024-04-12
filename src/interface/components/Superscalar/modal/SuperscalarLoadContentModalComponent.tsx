@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators } from 'redux';
 import { toggleSuperscalarLoadContentModal } from '../../../actions/modals';
-import SuperscalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 import { ContentIntegration} from '../../../../integration/content-integration';
 
 class SuperscalarLoadContentModalComponent extends React.Component<any, any> {

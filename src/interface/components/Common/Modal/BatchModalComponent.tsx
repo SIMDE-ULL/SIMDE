@@ -4,7 +4,7 @@ import { withTranslation } from 'react-i18next';
 import { bindActionCreators } from 'redux';
 import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
 import { connect } from 'react-redux';
-import SuperscalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 import { SUPERSCALAR_CONFIG, BATCH_CONFIG } from '../../../utils/constants';
 
 class BatchModalComponent extends React.Component<any, any> {

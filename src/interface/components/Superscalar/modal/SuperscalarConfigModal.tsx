@@ -14,7 +14,7 @@ import { connect } from "react-redux";
 import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
 
 import { toggleSuperConfigModal } from "../../../actions/modals";
-import SuperscalarIntegration from "../../../../integration/superescalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration";
 import { SUPERSCALAR_CONFIG } from "../../../utils/constants";
 import type { GlobalState } from "../../../reducers";
 

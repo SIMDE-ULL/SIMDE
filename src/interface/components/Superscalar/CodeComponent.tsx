@@ -3,7 +3,7 @@ import { OpcodesNames } from '../../../core/Common/Opcodes';
 
 import { Instruction } from '../../../core/Common/Instruction';
 
-import SuperscalarIntegration from '../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../integration/superscalar-integration';
 
 import { withTranslation } from 'react-i18next';
 

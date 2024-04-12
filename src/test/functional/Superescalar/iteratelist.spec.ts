@@ -1,7 +1,7 @@
 import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
-import { Superscalar } from '../../../core/Superescalar/Superscalar';
-import { SuperscalarStatus } from '../../../core/Superescalar/SuperscalarEnums';
+import { Superscalar } from '../../../core/Superscalar/Superscalar';
+import { SuperscalarStatus } from '../../../core/Superscalar/SuperscalarEnums';
 import { FunctionalUnitType } from '../../../core/Common/FunctionalUnit';
 import { codeInput, memContent } from "../code/recorrelista";
 

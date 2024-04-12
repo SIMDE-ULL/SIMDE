@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import SuperscalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 
 class AccessBarComponent extends React.Component<any, any> {
     constructor(props: any) {

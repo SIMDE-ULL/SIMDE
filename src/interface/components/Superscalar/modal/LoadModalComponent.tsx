@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { Code } from "@/core/Common/Code";
-import SuperscalarIntegration from "@/integration/superescalar-integration";
+import SuperscalarIntegration from "@/integration/superscalar-integration";
 import { useState } from "react";
 
 const DEFAULT_MODAL_CODE = `

@@ -9,7 +9,7 @@ import { DropdownButton } from 'react-bootstrap';
 import Dropdown from "react-bootstrap/Dropdown";
 import { viewBasicBlocks } from '../../../actions';
 import { downloadJsonFile, downloadTextFile } from '../../../utils/Downloader';
-import SuperscalarIntegration from '../../../../integration/superescalar-integration';
+import SuperscalarIntegration from '../../../../integration/superscalar-integration';
 
 class FileBarComponent extends React.Component<any, any> {
     private color: boolean;
