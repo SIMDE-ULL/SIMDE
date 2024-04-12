@@ -186,7 +186,7 @@ export class VLIWIntegration extends MachineIntegration {
 
         if (this.finishedExecution) {
             this.finishedExecution = false;
-            let code = Object.assign(new VLIWCode(), this.vliw.code); // asignar tambien el codigo superescalar?
+            let code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
 
