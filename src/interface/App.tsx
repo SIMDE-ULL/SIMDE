@@ -14,7 +14,7 @@ const App = () => {
             <React.Suspense fallback={<div>Loading... </div>}>
                 <Routes>
                     <Route path="/" element={<LandingPageComponent/>} />
-                    <Route path="/superescalar" element={<SuperscalarComponent />} />
+                    <Route path="/superscalar" element={<SuperscalarComponent />} />
                     <Route path="/vliw" element={<VLIWComponent />} />
                     <Route path="/project" element={<ProjectPage />} />
                 </Routes>

@@ -26,7 +26,7 @@ const ProjectPage = () => {
            <h2>{t('projectPage.tecnology')}</h2>
            <p>{t('projectPage.tecnologydescription')}</p>
            <h2>{t('projectPage.howtouse')}</h2>
-           <Link to="/superescalar"><p>{t('projectPage.howtousedescription')}</p></Link>
+           <Link to="/superscalar"><p>{t('projectPage.howtousedescription')}</p></Link>
            <h2>{t('projectPage.problems')}</h2>
            <a href="https://etsiiull.gitbooks.io/simde/"><p>{t('projectPage.problemsdescription')}</p></a>
          </div>
