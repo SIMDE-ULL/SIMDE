@@ -1,5 +1,11 @@
 import type { Memory } from "./Memory";
 
+export enum CacheType {
+  NO_CACHE = "NO_CACHE",
+  RANDOM_CACHE = "RANDOM_CACHE",
+  DIRECT_CACHE = "DIRECT_CACHE",
+}
+
 export interface Datum {
   value: number;
   got: boolean;
@@ -12,7 +18,7 @@ export class NoCache {
     const data = this.memory.getData(address);
     if (data instanceof Error) return data;
 
-    return { value: data, got: false };
+    return { value: data, got: true };
   }
 
   public setDatum(address: number, value: number): undefined | Error {

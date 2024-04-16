@@ -76,7 +76,13 @@
         "quantity": "Quantity",
         "cacheFault": "Cache fault",
         "issue": "Issue",
-        "default": "Default values"
+        "default": "Default values",
+        "cacheType": "Cache type",
+        "cacheLines": "Cache lines",
+        "cacheBlocks": "Cache blocks",
+        "noCache": "Without cache",
+        "directCache": "Direct-mapped",
+        "randomCache": "Random"
     },
     "vliwModal": {
         "name": "VLIW Configuration",

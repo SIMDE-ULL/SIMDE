@@ -32,7 +32,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
-import { NoCache, RandomCache } from '../core/Common/Cache';
+import { NoCache, RandomCache, DirectCache, CacheType } from '../core/Common/Cache';
 import { SuperescalarStatus } from '../core/Superescalar/SuperescalarEnums';
 
 
@@ -51,8 +51,6 @@ export class SuperescalarIntegration extends MachineIntegration {
     finishedExecution = false;
     executing = false;
     replications = 0;
-    cacheFailPercentage = 0;
-    cacheFailLatency = 0;
     stats = new Stats();
     batchStats = new StatsAgregator();
 
@@ -236,9 +234,6 @@ export class SuperescalarIntegration extends MachineIntegration {
             this.superExe();
             this.superescalar.code = code;
 
-            this.superescalar.cache = new RandomCache(this.superescalar.cache.memory, this.cacheFailPercentage / 100);
-            this.superescalar.memoryFailLatency = this.cacheFailLatency;
-
             // Load memory content
             if (this.contentIntegration) {
                 this.setFpr(this.contentIntegration.FPRContent);
@@ -370,13 +365,34 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.superescalar.changeFunctionalUnitLatency(FunctionalUnitType.MEMORY, +superConfig.memoryLatency);
         
         this.superescalar.issue = +superConfig.issueGrade;
+
+        switch (superConfig.cacheType) {
+          case CacheType.NO_CACHE:
+            this.superescalar.cache = new NoCache(
+              this.superescalar.cache.memory,
+            );
+            break;
+          case CacheType.RANDOM_CACHE:
+            this.superescalar.cache = new RandomCache(
+              this.superescalar.cache.memory,
+              +superConfig.cacheFailPercentage / 100,
+            );
+            break;
+          case CacheType.DIRECT_CACHE:
+            this.superescalar.cache = new DirectCache(
+              this.superescalar.cache.memory,
+              +superConfig.cacheBlocks,
+              +superConfig.cacheLines,
+            );
+            break;
+        }
+        this.superescalar.memoryFailLatency = +superConfig.cacheFailLatency;
+
         this.resetMachine();
     }
 
     setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
         this.replications = replications;
-        this.cacheFailLatency = cacheFailLatency;
-        this.cacheFailPercentage = cacheFailPercentage;
     }
 
     private resetMachine() {
@@ -400,8 +416,6 @@ export class SuperescalarIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.superescalar.cache = new NoCache(this.superescalar.cache.memory);
-        this.superescalar.memoryFailLatency = 0;
         this.resetMachine();
     }
 }
