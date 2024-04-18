@@ -391,7 +391,7 @@ export class SuperescalarIntegration extends MachineIntegration {
         this.resetMachine();
     }
 
-    setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
+    setBatchMode = (replications: number) => {
         this.replications = replications;
     }
 

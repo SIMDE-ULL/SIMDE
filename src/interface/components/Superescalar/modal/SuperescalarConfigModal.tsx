@@ -335,82 +335,90 @@ export const SuperscalarConfigModal: React.FC = ({
                         </Col>
                       </Row>
                     </Form.Group>
-                    <Form.Group>
-                      <Row>
-                        <Col>
-                          <Form.Label column>
-                            {t("batchModal.cacheFaultLatency")}
-                          </Form.Label>
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            name="cacheFailLatency"
-                            type="number"
-                            min={BATCH_CONFIG.LATENCY_MIN}
-                            max={BATCH_CONFIG.LATENCY_MAX}
-                            value={config.cacheFailLatency}
-                            onChange={updateNumConfig}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
-                    <Form.Group>
-                      <Row>
-                        <Col>
-                          <Form.Label column>
-                            {t("batchModal.cacheFaultPercentage")}
-                          </Form.Label>
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            name="cacheFailPercentage"
-                            type="number"
-                            min={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MIN}
-                            max={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MAX}
-                            value={config.cacheFailPercentage}
-                            onChange={updateNumConfig}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
-                    <Form.Group>
-                      <Row>
-                        <Col>
-                          <Form.Label column>
-                            {t("superescalarModal.cacheBlocks")}
-                          </Form.Label>
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            name="cacheBlocks"
-                            type="number"
-                            min={SUPERESCALAR_CONFIG.CACHE_BLOCKS_MIN}
-                            max={SUPERESCALAR_CONFIG.CACHE_BLOCKS_MAX}
-                            value={config.cacheBlocks}
-                            onChange={updateNumConfig}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
-                    <Form.Group>
-                      <Row>
-                        <Col>
-                          <Form.Label column>
-                            {t("superescalarModal.cacheLines")}
-                          </Form.Label>
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            name="cacheLines"
-                            type="number"
-                            min={SUPERESCALAR_CONFIG.CACHE_LINES_MIN}
-                            max={SUPERESCALAR_CONFIG.CACHE_LINES_MAX}
-                            value={config.cacheLines}
-                            onChange={updateNumConfig}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
+                    {config.cacheType !== CacheType.NO_CACHE && (
+                      <Form.Group>
+                        <Row>
+                          <Col>
+                            <Form.Label column>
+                              {t("batchModal.cacheFaultLatency")}
+                            </Form.Label>
+                          </Col>
+                          <Col>
+                            <Form.Control
+                              name="cacheFailLatency"
+                              type="number"
+                              min={BATCH_CONFIG.LATENCY_MIN}
+                              max={BATCH_CONFIG.LATENCY_MAX}
+                              value={config.cacheFailLatency}
+                              onChange={updateNumConfig}
+                            />
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                    )}
+                    {config.cacheType === CacheType.RANDOM_CACHE && (
+                      <Form.Group>
+                        <Row>
+                          <Col>
+                            <Form.Label column>
+                              {t("batchModal.cacheFaultPercentage")}
+                            </Form.Label>
+                          </Col>
+                          <Col>
+                            <Form.Control
+                              name="cacheFailPercentage"
+                              type="number"
+                              min={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MIN}
+                              max={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MAX}
+                              value={config.cacheFailPercentage}
+                              onChange={updateNumConfig}
+                            />
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                    )}
+                    {config.cacheType === CacheType.DIRECT_CACHE && (
+                      <>
+                        <Form.Group>
+                          <Row>
+                            <Col>
+                              <Form.Label column>
+                                {t("superescalarModal.cacheBlocks")}
+                              </Form.Label>
+                            </Col>
+                            <Col>
+                              <Form.Control
+                                name="cacheBlocks"
+                                type="number"
+                                min={SUPERESCALAR_CONFIG.CACHE_BLOCKS_MIN}
+                                max={SUPERESCALAR_CONFIG.CACHE_BLOCKS_MAX}
+                                value={config.cacheBlocks}
+                                onChange={updateNumConfig}
+                              />
+                            </Col>
+                          </Row>
+                        </Form.Group>
+                        <Form.Group>
+                          <Row>
+                            <Col>
+                              <Form.Label column>
+                                {t("superescalarModal.cacheLines")}
+                              </Form.Label>
+                            </Col>
+                            <Col>
+                              <Form.Control
+                                name="cacheLines"
+                                type="number"
+                                min={SUPERESCALAR_CONFIG.CACHE_LINES_MIN}
+                                max={SUPERESCALAR_CONFIG.CACHE_LINES_MAX}
+                                value={config.cacheLines}
+                                onChange={updateNumConfig}
+                              />
+                            </Col>
+                          </Row>
+                        </Form.Group>
+                      </>
+                    )}
                   </Stack>
                 </Form>
               </Col>
