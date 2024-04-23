@@ -4,7 +4,6 @@ import { VLIWCode } from './VLIWCode';
 import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
 import { DependencyChecker, Check } from './DependencyChecker';
 import { VLIWError } from './VLIWError';
-import { Datum } from '../Common/Memory';
 import { VLIWOperation } from './VLIWOperation';
 
 export class VLIW extends Machine {
