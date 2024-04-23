@@ -79,7 +79,7 @@ export class DirectCache extends NoCache {
     this.blocks_tags[tag % this._blocks] = tag;
 
     if (data instanceof Error) return data;
-    return { value: data, got: faultOccurred };
+    return { value: data, got: !faultOccurred };
   }
 
   public setDatum(address: number, value: number): undefined | Error {
