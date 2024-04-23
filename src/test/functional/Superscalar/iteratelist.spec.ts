@@ -22,7 +22,7 @@ test('recorrelista.pla is executed properly', t => {
     // Load memory
     const memContentBaseAddress = 10;
     for (let i = 0; i < memContent.length; i++) {
-        context.machine.memory.setDatum(memContentBaseAddress + i, memContent[i]);
+        context.machine.cache.setDatum(memContentBaseAddress + i, memContent[i]);
     }
 
     // Execute code
@@ -68,6 +68,6 @@ test('recorrelista.pla is executed properly', t => {
     expect(context.machine.pc).toBe(19);
 
     // Check the result
-    expect(Array.from(context.machine.memory)[9].value).toBe(12);
+    expect(Array.from(context.machine.cache.memory)[9]).toBe(12);
 
 })

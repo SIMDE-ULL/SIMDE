@@ -27,10 +27,10 @@ test('Bucle.pla is executed properly', () => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -41,7 +41,7 @@ test('Bucle.pla is executed properly', () => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);
@@ -58,10 +58,10 @@ test('Bucle2.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -73,7 +73,7 @@ test('Bucle2.pla is executed properly', t => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);
@@ -90,10 +90,10 @@ test('Bucle3.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -105,7 +105,7 @@ test('Bucle3.pla is executed properly', t => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);
@@ -122,10 +122,10 @@ test('Bucle4.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -137,7 +137,7 @@ test('Bucle4.pla is executed properly', t => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);
@@ -154,10 +154,10 @@ test('Buclesoft.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -169,7 +169,7 @@ test('Buclesoft.pla is executed properly', t => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);
@@ -186,10 +186,10 @@ test('Buclesoft2.pla is executed properly', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.memory.setDatum(40, sumContent);
+    context.machine.cache.setDatum(40, sumContent);
     const vecBaseAddress = 50;
     for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setDatum(vecBaseAddress + i, vecContent[i]);
+        context.machine.cache.setDatum(vecBaseAddress + i, vecContent[i]);
     }
 
     // Execute code
@@ -201,7 +201,7 @@ test('Buclesoft2.pla is executed properly', t => {
 
     // Check the result
     const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).map(d => d.value).slice(
+    const result = Array.from(context.machine.cache.memory).slice(
         resultBaseAddress, resultBaseAddress + resultContent.length
     );
     expect(result).toStrictEqual(resultContent);

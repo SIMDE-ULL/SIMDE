@@ -23,7 +23,7 @@ test('Speculative execution has no side effects', t => {
     expect(context.machine.getGpr(5)).toBe(0);
 
     // Check memory pos 5 value
-    expect(Array.from(context.machine.memory)[5].value).toBe(0);
+    expect(Array.from(context.machine.cache.memory)[5]).toBe(0);
 
     // Check F1 value
     expect(context.machine.getFpr(1)).toBe(0);
