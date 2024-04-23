@@ -59,7 +59,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
                 nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
-                nextMemoryCycle(this.vliw.cache.memory),
+                nextMemoryCycle(Array.from(this.vliw.cache.memory)),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),

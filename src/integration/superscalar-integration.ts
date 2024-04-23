@@ -97,7 +97,7 @@ export class SuperscalarIntegration extends MachineIntegration {
                     nextReorderBufferMapperCycle([this.superscalar.reorderBuffer.getVisualRegisterMap(false), this.superscalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superscalar.reorderBuffer),
                     nextRegistersCycle([this.superscalar.gpr.content, this.superscalar.fpr.content]),
-                    nextMemoryCycle(this.superscalar.cache.memory),
+                    nextMemoryCycle(Array.from(this.superscalar.cache.memory)),
                     nextCycle(this.superscalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
