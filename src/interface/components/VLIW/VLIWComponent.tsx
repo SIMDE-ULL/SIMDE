@@ -6,7 +6,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
-import OptionsModalComponent from "../Superescalar/modal/OptionsModalComponent";
+import OptionsModalComponent from "../Superscalar/modal/OptionsModalComponent";
 import AutorModalComponent from "./modal/AutorModalComponent";
 
 import BatchModalComponent from "../VLIW/modal/BatchModalComponent";

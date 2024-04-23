@@ -12,7 +12,7 @@ export enum SuperStage {
   SUPER_COMMIT,
 }
 
-export enum SuperescalarStatus {
+export enum SuperscalarStatus {
   SUPER_ENDEXE = -2,
   SUPER_BREAKPOINT = -1,
   SUPER_OK = 0,

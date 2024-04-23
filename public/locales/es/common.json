@@ -14,7 +14,7 @@
         },
         "config": {
             "name": "Opciones",
-            "superescalar": "Configurar Máquina Superescalar",
+            "superscalar": "Configurar Máquina Superescalar",
             "vliw": "Configurar Máquina VLIW",
             "options": "Opciones",
             "content": "Cargar contenido Memoria - Registros"
@@ -40,7 +40,7 @@
     "accessBar": {
         "cycle": "Ciclo",
         "speed": "Velocidad",
-        "superescalar": "Superescalar",
+        "superscalar": "Superescalar",
         "memReg": "Memoria - Registros",
         "stats": "Estadísticas",
         "vliw": "VLIW"
@@ -67,7 +67,7 @@
             "noInputNumber": "Introduzca solamente números para el rango"
         }
     },
-    "superescalarModal": {
+    "superscalarModal": {
         "name": "Configuración Superescalar",
         "functionalUnits": "Unidades Funcionales",
         "parameters": "Parámetros",
@@ -154,8 +154,8 @@
         "read": "Leer más",
         "home": "Home",
         "project": "Proyecto",
-        "superescalar": "Superescalar",
-        "superescalar_description": "Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!",
+        "superscalar": "Superescalar",
+        "superscalar_description": "Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!",
         "go": "Ir",
         "vliw": "VLIW",
         "vliw_description": "Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!",

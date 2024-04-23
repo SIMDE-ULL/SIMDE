@@ -1,13 +1,13 @@
 import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
-import { Superescalar } from '../../../core/Superescalar/Superescalar';
-import { SuperescalarStatus } from '../../../core/Superescalar/SuperescalarEnums';
+import { Superscalar } from '../../../core/Superscalar/Superscalar';
+import { SuperscalarStatus } from '../../../core/Superscalar/SuperscalarEnums';
 
-const context: { code: Code, machine: Superescalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
 
 beforeEach(() => {
     context.code = new Code();
-    context.machine = new Superescalar();
+    context.machine = new Superscalar();
     context.machine.init(true);
 });
 
@@ -16,7 +16,7 @@ test('Integer Sum has a correct latency', t => {
     // Execute code
     context.code.load("1\n ADDI R1 R0 #0");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);
@@ -30,7 +30,7 @@ test('Integer Multiply has a correct latency', t => {
     // Execute code
     context.code.load("1\n MULT R1 R0 R0");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);
@@ -44,7 +44,7 @@ test('Floating Sum has a correct latency', t => {
     // Execute code
     context.code.load("1\n ADDF F1 F0 F0");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);
@@ -58,7 +58,7 @@ test('Floating Multiply has a correct latency', t => {
     // Execute code
     context.code.load("1\n MULTF F1 F0 F0");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);
@@ -72,7 +72,7 @@ test('Memory has a correct latency', t => {
     // Execute code
     context.code.load("1\n LF F1 0(R0)");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);
@@ -86,7 +86,7 @@ test('Jump has a correct latency', t => {
     // Execute code
     context.code.load("1\n NOLOOP: BNE R0 R0 NOLOOP");
     context.machine.code = context.code;
-    while (context.machine.tic() !== SuperescalarStatus.SUPER_ENDEXE) { }
+    while (context.machine.tic() !== SuperscalarStatus.SUPER_ENDEXE) { }
 
     // Check where the program counter is
     expect(context.machine.pc).toBe(1);

@@ -19,7 +19,9 @@ When used in supporting educational practices, SIMDE shines both for reproducing
 
 ## This is how SIMDE looks in action
 
-![SIMDE in action](https://github.com/SIMDE-ULL/SIMDE/assets/25517190/32e20b09-ecf5-45a1-9057-6a708426a6be)
+<p align="center">
+    <img alt="SIMDE in action" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/32e20b09-ecf5-45a1-9057-6a708426a6be" />
+</p>
 
 ## Features
 

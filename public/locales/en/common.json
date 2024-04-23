@@ -14,7 +14,7 @@
         },
         "config": {
             "name": "Options",
-            "superescalar": "Configure Superscalar Machine",
+            "superscalar": "Configure Superscalar Machine",
             "vliw": "Configure VLIW Machine",
             "options": "Options",
             "content": "Load content Memory - Registers"
@@ -40,7 +40,7 @@
     "accessBar": {
         "cycle": "Cycle",
         "speed": "Speed",
-        "superescalar": "Superescalar",
+        "superscalar": "Superscalar",
         "memReg": "Memory - Registers",
         "stats": "Stats",
         "vliw": "VLIW"
@@ -67,7 +67,7 @@
             "noInputNumber": "Only number fields are accepted"
         }
     },
-    "superescalarModal": {
+    "superscalarModal": {
         "name": "Superscalar Configuration",
         "functionalUnits": "Functional Units",
         "parameters": "Parameters",
@@ -155,8 +155,8 @@
         "read": "Read more",
         "home": "Home",
         "project": "Project",
-        "superescalar": "Superscalar",
-        "superescalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
+        "superscalar": "Superscalar",
+        "superscalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
         "go": "Go",
         "vliw": "VLIW",
         "vliw_description": "Simulate the operation of a VLIW machine by executing your code step by step!",

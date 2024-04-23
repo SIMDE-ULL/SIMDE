@@ -1,4 +1,4 @@
-import { SuperStage, stageToString } from "./SuperescalarEnums";
+import { SuperStage, stageToString } from "./SuperscalarEnums";
 import { Instruction } from "../Common/Instruction";
 
 export interface VisualReorderBufferEntry {

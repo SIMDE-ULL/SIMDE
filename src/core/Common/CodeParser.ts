@@ -65,7 +65,7 @@ const tokenizer = buildLexer([
   [true, /^[+-]?[0-9]+/g, Tokens.Number],
   [false, /^\,/g, Tokens.Comma],
   [false, /^[ \t\v\f]+/g, Tokens.Space],
-  [false, /^\n/g, Tokens.NewLine],
+  [false, /^\r?\n/g, Tokens.NewLine],
   [false, /^\/\/.*\n/g, Tokens.Comment],
 ]);
 
@@ -124,7 +124,7 @@ const opcodeParser = apply(
     if (opcode !== -1) {
       return { opcode: opcode, pos: opcodeTok.pos };
     }
-    throw new TokenError(opcodeTok.pos, `Unknown opcode ${opcodeTok.text}`);
+    throw new TokenError(opcodeTok.pos, `Unknown opcode "${opcodeTok.text}".`);
   },
 );
 

@@ -11,19 +11,19 @@ import { codeInput as doubleCodeInput, vliwCodeInput as doubleVliwCodeInput } fr
 import { codeInput as softCodeInput, vliwCodeInput as softVliwCodeInput } from "../code/buclesoft";
 import { codeInput as softCodeInput2, vliwCodeInput as softVliwCodeInput2 } from "../code/buclesoft2";
 
-const context: { code: VLIWCode, superescalarCode: Code, machine: VLIW } = { code: null, superescalarCode: null, machine: null };
+const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null, superscalarCode: null, machine: null };
 
 beforeEach(() => {
     context.code = new VLIWCode();
-    context.superescalarCode = new Code();
+    context.superscalarCode = new Code();
     context.machine = new VLIW();
     context.machine.init(true);
 });
 
 test('Bucle.pla is executed properly', () => {
     // Load code
-    context.superescalarCode.load(codeInput);
-    context.code.load(vliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(codeInput);
+    context.code.load(vliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -53,8 +53,8 @@ test('Bucle.pla is executed properly', () => {
 
 test('Bucle2.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(codeInput2);
-    context.code.load(vliwCodeInput2, context.superescalarCode);
+    context.superscalarCode.load(codeInput2);
+    context.code.load(vliwCodeInput2, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -85,8 +85,8 @@ test('Bucle2.pla is executed properly', t => {
 
 test('Bucle3.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(codeInput3);
-    context.code.load(vliwCodeInput3, context.superescalarCode);
+    context.superscalarCode.load(codeInput3);
+    context.code.load(vliwCodeInput3, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -117,8 +117,8 @@ test('Bucle3.pla is executed properly', t => {
 
 test('Bucle4.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(codeInput4);
-    context.code.load(vliwCodeInput4, context.superescalarCode);
+    context.superscalarCode.load(codeInput4);
+    context.code.load(vliwCodeInput4, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -149,8 +149,8 @@ test('Bucle4.pla is executed properly', t => {
 
 test('Buclesoft.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(softCodeInput);
-    context.code.load(softVliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(softCodeInput);
+    context.code.load(softVliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -181,8 +181,8 @@ test('Buclesoft.pla is executed properly', t => {
 
 test('Buclesoft2.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(softCodeInput2);
-    context.code.load(softVliwCodeInput2, context.superescalarCode);
+    context.superscalarCode.load(softCodeInput2);
+    context.code.load(softVliwCodeInput2, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory
@@ -213,8 +213,8 @@ test('Buclesoft2.pla is executed properly', t => {
 // The double loop VLIW code is incorrect
 /*test('Bucledoble.pla is executed properly', t => {
     // Load code
-    context.superescalarCode.load(doubleCodeInput);
-    context.code.load(doubleVliwCodeInput, context.superescalarCode);
+    context.superscalarCode.load(doubleCodeInput);
+    context.code.load(doubleVliwCodeInput, context.superscalarCode);
     context.machine.code = context.code;
 
     // Load memory

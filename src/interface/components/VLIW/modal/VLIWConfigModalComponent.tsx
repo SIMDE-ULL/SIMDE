@@ -91,17 +91,17 @@ export const vliwConfigModal: React.FC = ({
         <Stack gap={1}>
           <Alert variant="warning">{t("vliwModal.warning")}</Alert>
           <Container>
-            <h5>{t("superescalarModal.functionalUnits")}</h5>
+            <h5>{t("superscalarModal.functionalUnits")}</h5>
             <Row>
               <Col>
                 <Form>
                   <Stack gap={1}>
                     <Row>
                       <Form.Label column xs={{ offset: 4 }}>
-                        {t("superescalarModal.quantity")}
+                        {t("superscalarModal.quantity")}
                       </Form.Label>
                       <Form.Label column>
-                        {t("superescalarModal.latency")}
+                        {t("superscalarModal.latency")}
                       </Form.Label>
                     </Row>
                     <Row>
@@ -285,7 +285,7 @@ export const vliwConfigModal: React.FC = ({
           </Container>
           <hr />
           <Container>
-            <h5>{t("superescalarModal.parameters")}</h5>
+            <h5>{t("superscalarModal.parameters")}</h5>
             <Row>
               <Col>
                 <Form>
@@ -294,7 +294,7 @@ export const vliwConfigModal: React.FC = ({
                       <Row>
                         <Col>
                           <Form.Label column>
-                            {t("superescalarModal.cacheType")}
+                            {t("superscalarModal.cacheType")}
                           </Form.Label>
                         </Col>
                         <Col>
@@ -304,13 +304,13 @@ export const vliwConfigModal: React.FC = ({
                             onChange={updateStrConfig}
                           >
                             <option value={CacheType.NO_CACHE}>
-                              {t("superescalarModal.noCache")}
+                              {t("superscalarModal.noCache")}
                             </option>
                             <option value={CacheType.RANDOM_CACHE}>
-                              {t("superescalarModal.randomCache")}
+                              {t("superscalarModal.randomCache")}
                             </option>
                             <option value={CacheType.DIRECT_CACHE}>
-                              {t("superescalarModal.directCache")}
+                              {t("superscalarModal.directCache")}
                             </option>
                           </Form.Select>
                         </Col>
@@ -364,7 +364,7 @@ export const vliwConfigModal: React.FC = ({
                           <Row>
                             <Col>
                               <Form.Label column>
-                                {t("superescalarModal.cacheBlocks")}
+                                {t("superscalarModal.cacheBlocks")}
                               </Form.Label>
                             </Col>
                             <Col>
@@ -383,7 +383,7 @@ export const vliwConfigModal: React.FC = ({
                           <Row>
                             <Col>
                               <Form.Label column>
-                                {t("superescalarModal.cacheLines")}
+                                {t("superscalarModal.cacheLines")}
                               </Form.Label>
                             </Col>
                             <Col>
@@ -409,7 +409,7 @@ export const vliwConfigModal: React.FC = ({
       </Modal.Body>
       <Modal.Footer>
         <Button className="me-auto" onClick={setDefaultConfig}>
-          {t("superescalarModal.default")}
+          {t("superscalarModal.default")}
         </Button>
         <Button onClick={closeModal}>{t("commonButtons.close")}</Button>
         <Button onClick={saveConfig}>{t("commonButtons.save")}</Button>

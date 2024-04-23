@@ -15,12 +15,12 @@ import { Instruction } from "../Common/Instruction";
 import {
   CommitStatus,
   SuperStage,
-  SuperescalarStatus,
-} from "./SuperescalarEnums";
+  SuperscalarStatus,
+} from "./SuperscalarEnums";
 
-export class Superescalar extends Machine {
+export class Superscalar extends Machine {
   private static PREDTABLEBITS = 4;
-  private static PREDTABLESIZE = 1 << Superescalar.PREDTABLEBITS;
+  private static PREDTABLESIZE = 1 << Superscalar.PREDTABLEBITS;
 
   private static ISSUE_DEF = 4;
 
@@ -80,9 +80,9 @@ export class Superescalar extends Machine {
 
   constructor() {
     super();
-    this.issue = Superescalar.ISSUE_DEF;
+    this.issue = Superscalar.ISSUE_DEF;
 
-    this._jumpPrediction = new JumpPredictor(Superescalar.PREDTABLESIZE);
+    this._jumpPrediction = new JumpPredictor(Superscalar.PREDTABLESIZE);
     this._reserveStations = new Map<FunctionalUnitType, ReserveStation>();
     let total = 0; //  total ROB size
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
@@ -638,7 +638,7 @@ export class Superescalar extends Machine {
     return CommitStatus.SUPER_COMMITOK;
   }
 
-  public tic(): SuperescalarStatus {
+  public tic(): SuperscalarStatus {
     this.status.cycle++;
 
     let commit = this.ticCommit();
@@ -660,13 +660,13 @@ export class Superescalar extends Machine {
       this.reorderBuffer.isEmpty() &&
       commit === CommitStatus.SUPER_COMMITEND
     ) {
-      return SuperescalarStatus.SUPER_ENDEXE;
+      return SuperscalarStatus.SUPER_ENDEXE;
     }
 
     if (this._prefetchUnit.hasBreakpoint()) {
       this.status.breakPoint = true;
-      return SuperescalarStatus.SUPER_BREAKPOINT;
+      return SuperscalarStatus.SUPER_BREAKPOINT;
     }
-    return SuperescalarStatus.SUPER_OK;
+    return SuperscalarStatus.SUPER_OK;
   }
 }
