@@ -55,7 +55,7 @@ export class DirectCache extends NoCache {
   constructor(
     memory: Memory,
     private _blocks: number, // number of blocks
-    private _size: number
+    private _size: number,
   ) {
     super(memory);
 
@@ -90,5 +90,22 @@ export class DirectCache extends NoCache {
     this.blocks_tags[tag % this._blocks] = tag;
 
     return this.memory.setData(address, value);
+  }
+}
+
+export function createCache(
+  memory: Memory,
+  cacheType: CacheType,
+  ...args: number[]
+): NoCache | RandomCache | DirectCache {
+  switch (cacheType) {
+    case CacheType.NO_CACHE:
+      return new NoCache(memory);
+    case CacheType.RANDOM_CACHE:
+      return new RandomCache(memory, args[2]);
+    case CacheType.DIRECT_CACHE:
+      return new DirectCache(memory, args[0], args[1]);
+    default:
+      throw new Error("Invalid cache type");
   }
 }

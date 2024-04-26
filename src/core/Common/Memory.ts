@@ -2,7 +2,7 @@
  * Returns an Error when target method is called with
  * a non-positive `address: number` argument.
  */
-export const forcePositiveAddresses = (address: number): undefined | Error => {
+export const forcePositiveAddresses = (address: number): Error | undefined => {
   if (address < 0) {
     return Error("Negative numbers are invalid as addresses");
   }
@@ -29,14 +29,14 @@ export class Memory implements Iterable<number> {
     return this.data.length;
   }
 
-  public getData(address: number): number | Error {
+  public getData(address: number): Error | number  {
     const error = forcePositiveAddresses(address);
     if (error) return error;
 
     return this.data[address];
   }
 
-  public setData(address: number, value: number): undefined | Error {
+  public setData(address: number, value: number): Error | undefined {
     const error = forcePositiveAddresses(address);
     if (error) return error;
 
