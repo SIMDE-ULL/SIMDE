@@ -492,7 +492,7 @@ export class Superscalar extends Machine {
 
       // load and stores are a special cases, because they need to access the memory
       if (inst.isLoadInstruction()) {
-        let a = this.cache.getFaultyDatum(
+        const a = this.memory.getData(
           this._reserveStations[type].getAddressOperand(instUid)
         );
 
@@ -501,8 +501,8 @@ export class Superscalar extends Machine {
           throw a;
         }
 
-        resul = a.value;
-        if (!a.got) {
+        resul = a;
+        if (this.cache && !this.cache.success) {
           this.functionalUnit[type][num].stall(
             this.memoryFailLatency - this.functionalUnit[type][num].latency
           );
@@ -582,7 +582,7 @@ export class Superscalar extends Machine {
     this._currentCommitedInstrs = new Array<number>();
     for (let i = 0; i < this.issue; i++) {
       if (this._reorderBuffer.canCommitStoreInstruction()) {
-        this.cache.setDatum(
+        this.memory.setData(
           this._reorderBuffer.getResultAddress(),
           this._reorderBuffer.getResultValue()
         );

@@ -1,3 +1,4 @@
+import { a } from "vitest/dist/suite-a18diDsI.js";
 import type { Memory } from "./Memory";
 
 export enum CacheType {
@@ -11,62 +12,82 @@ export interface Datum {
   got: boolean;
 }
 
-export class NoCache {
-  constructor(public memory: Memory) {}
+export abstract class Cache {
+  public abstract success: boolean;
+  public abstract handler: ProxyHandler<Memory>;
+}
 
-  public getFaultyDatum(address: number): Datum | Error {
-    const data = this.memory.getData(address);
-    if (data instanceof Error) return data;
+export class RandomCache extends Cache {
+  public success = true;
+  public handler: ProxyHandler<Memory>;
+  constructor(public faultChance: number) {
+    super();
 
-    return { value: data, got: true };
+    this.handler = {
+      get: this.get.bind(this),
+    };
   }
 
-  public setDatum(address: number, value: number): undefined | Error {
-    return this.memory.setData(address, value);
+  public get(target: Memory, prop: string | symbol, receiver: object) {
+    if (prop === "getData") {
+      this.success = this.faultChance < Math.random();
+    }
+
+    return Reflect.get(target, prop, receiver);
   }
 }
 
-export class RandomCache extends NoCache {
-  constructor(
-    memory: Memory,
-    public faultChance: number,
-  ) {
-    super(memory);
-  }
-
-  public getFaultyDatum(address: number): Datum | Error {
-    const data = this.memory.getData(address);
-    const faultOccurred = this.faultChance > Math.random();
-
-    if (data instanceof Error) return data;
-
-    return { value: data, got: faultOccurred };
-  }
-
-  public setDatum(address: number, value: number): undefined | Error {
-    return this.memory.setData(address, value);
-  }
-}
-
-export class DirectCache extends NoCache {
+export class DirectCache extends Cache {
+  public success = true;
+  public handler: ProxyHandler<Memory>;
   private readonly blocks_tags: number[];
   private block_size: number;
 
   constructor(
-    memory: Memory,
     private _blocks: number, // number of blocks
     private _size: number,
   ) {
-    super(memory);
+    super();
 
     // Calculate the block size
     this.block_size = Math.floor(_size / _blocks);
 
     // Initializa the blocks tags to -1
     this.blocks_tags = Array(_blocks).fill(-1);
+
+    this.handler = {
+      get: this.get.bind(this),
+    };
   }
 
-  public getFaultyDatum(address: number): Datum | Error {
+  public get(target: Memory, prop: string | symbol, receiver: object) {
+    if (prop === "getData") {
+      //this.success = this.faultChance < Math.random();
+      const funcHandler = {
+        apply: (target, thisArg: any, args: any[]) => {
+          const address = args[0];
+          const data = Reflect.apply(target, thisArg, args);
+
+          // get the tag of the address
+          const tag = Math.floor(address / this.block_size);
+
+          // check if the tag is in the cache
+          const faultOccurred = this.blocks_tags[tag % this._blocks] !== tag;
+          this.success = !faultOccurred;
+
+          // set the tag in the cache
+          this.blocks_tags[tag % this._blocks] = tag;
+
+          return data;
+        }
+      };
+      return new Proxy(Reflect.get(target, prop, receiver), funcHandler);
+    }
+
+    return Reflect.get(target, prop, receiver);
+  }
+
+  /*public getFaultyDatum(address: number): Datum | Error {
     const data = this.memory.getData(address);
 
     // get the tag of the address
@@ -90,21 +111,20 @@ export class DirectCache extends NoCache {
     this.blocks_tags[tag % this._blocks] = tag;
 
     return this.memory.setData(address, value);
-  }
+  }*/
 }
 
 export function createCache(
-  memory: Memory,
   cacheType: CacheType,
   ...args: number[]
-): NoCache | RandomCache | DirectCache {
+): RandomCache | DirectCache | null {
   switch (cacheType) {
     case CacheType.NO_CACHE:
-      return new NoCache(memory);
+    return null;
     case CacheType.RANDOM_CACHE:
-      return new RandomCache(memory, args[2]);
+      return new RandomCache(args[2]);
     case CacheType.DIRECT_CACHE:
-      return new DirectCache(memory, args[0], args[1]);
+      return new DirectCache(args[0], args[1]);
     default:
       throw new Error("Invalid cache type");
   }

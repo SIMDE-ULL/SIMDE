@@ -32,7 +32,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
-import { NoCache, RandomCache, DirectCache, CacheType, createCache } from '../core/Common/Cache';
+import { createCache } from '../core/Common/Cache';
 import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
 
 
@@ -97,7 +97,7 @@ export class SuperscalarIntegration extends MachineIntegration {
                     nextReorderBufferMapperCycle([this.superscalar.reorderBuffer.getVisualRegisterMap(false), this.superscalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superscalar.reorderBuffer),
                     nextRegistersCycle([this.superscalar.gpr.content, this.superscalar.fpr.content]),
-                    nextMemoryCycle(Array.from(this.superscalar.cache.memory)),
+                    nextMemoryCycle(Array.from(this.superscalar.memory)),
                     nextCycle(this.superscalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
@@ -300,7 +300,7 @@ export class SuperscalarIntegration extends MachineIntegration {
         }
 
         for (const key in data) {
-            this.superscalar.cache.memory.setData(+key, data[key]);
+            this.superscalar.memory.setData(+key, data[key]);
         }
     }
 
@@ -410,12 +410,17 @@ export class SuperscalarIntegration extends MachineIntegration {
         this.superscalar.issue = +superConfig.issueGrade;
 
         this.superscalar.cache = createCache(
-          this.superscalar.cache.memory,
           superConfig.cacheType,
           +superConfig.cacheBlocks,
           +superConfig.cacheLines,
           +superConfig.cacheFailPercentage / 100,
         );
+        if (this.superscalar.cache) {
+          this.superscalar.memory = new Proxy(
+            this.superscalar.memory,
+            this.superscalar.cache.handler,
+          );
+        }
         this.superscalar.memoryFailLatency = +superConfig.cacheFailLatency;
 
         this.resetMachine();
