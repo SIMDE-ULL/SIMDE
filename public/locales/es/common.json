@@ -76,7 +76,13 @@
         "quantity": "Cantidad",
         "cacheFault": "Fallo de caché",
         "issue": "Emisión",
-        "default": "Valores por defecto"
+        "default": "Valores por defecto",
+        "cacheType": "Tipo de caché",
+        "cacheLines": "Tamaño de caché",
+        "cacheBlocks": "Bloques de caché",
+        "noCache": "Sin caché",
+        "directCache": "Mapeado directo",
+        "randomCache": "Aleatoria"
     },
     "vliwModal": {
         "name": "Configuración VLIW",

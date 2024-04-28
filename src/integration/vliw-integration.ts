@@ -24,11 +24,13 @@ import { VLIW } from '../core/VLIW/VLIW';
 import { VLIWCode } from '../core/VLIW/VLIWCode';
 import { VLIWError } from '../core/VLIW/VLIWError';
 import { VLIWOperation } from '../core/VLIW/VLIWOperation';
+import { createCache } from '../core/Common/Cache';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 import { displayBatchResults } from '../interface/actions/modals';
 
 import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/aggregator';
+import { FunctionalUnitType } from '@/core/Common/FunctionalUnit';
 
 export class VLIWIntegration extends MachineIntegration {
     // Global objects for binding React to the View
@@ -40,8 +42,6 @@ export class VLIWIntegration extends MachineIntegration {
     finishedExecution = false;
     executing = false;
     replications = 0;
-    cacheFailPercentage = 0;
-    cacheFailLatency = 0;
     stats = new Stats();
     batchStats = new StatsAgregator();
 
@@ -59,7 +59,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
                 nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
-                nextMemoryCycle(Array.from(this.vliw.memory).map(d => d.value)),
+                nextMemoryCycle(Array.from(this.vliw.memory)),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),
@@ -229,8 +229,6 @@ export class VLIWIntegration extends MachineIntegration {
             let code = Object.assign(new VLIWCode(), this.vliw.code);
             this.vliwExe();
             this.vliw.code = code;
-            this.vliw.memory.faultChance = this.cacheFailPercentage / 100;
-            this.vliw.memoryFailLatency = this.cacheFailLatency;
 
             // Load memory content
             if (this.contentIntegration) {
@@ -296,9 +294,9 @@ export class VLIWIntegration extends MachineIntegration {
         if (this.vliw.status.cycle > 0) {
             return;
         }
-        Object.keys(data).forEach(key => {
-            this.vliw.memory.setDatum(+key, data[key]);
-        });
+        for (const key in data) {
+            this.vliw.memory.setData(+key, data[key]);
+        }
     }
 
     setFpr = (data: { [k: number]: number }) => {
@@ -351,23 +349,82 @@ export class VLIWIntegration extends MachineIntegration {
     }
 
     saveVliwConfig = (vliwConfig) => {
-        const vliwConfigKeys = Object.keys(vliwConfig);
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.INTEGERSUM,
+          +vliwConfig.integerSumQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.INTEGERSUM,
+          +vliwConfig.integerSumLatency,
+        );
 
-        for (let i = 0; i < vliwConfigKeys.length; i++) {
-            if (i % 2 === 0) {
-                this.vliw.changeFunctionalUnitNumber(i / 2,
-                    +vliwConfig[vliwConfigKeys[i]]);
-            } else {
-                this.vliw.changeFunctionalUnitLatency((i - 1) / 2,
-                    +vliwConfig[vliwConfigKeys[i]]);
-            }
-        }
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.INTEGERMULTIPLY,
+          +vliwConfig.integerMultQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.INTEGERMULTIPLY,
+          +vliwConfig.integerMultLatency,
+        );
+
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGSUM,
+          +vliwConfig.floatingSumQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGSUM,
+          +vliwConfig.floatingSumLatency,
+        );
+
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGSUM,
+          +vliwConfig.floatingSumQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGSUM,
+          +vliwConfig.floatingSumLatency,
+        );
+
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGMULTIPLY,
+          +vliwConfig.floatingMultQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGMULTIPLY,
+          +vliwConfig.floatingMultLatency,
+        );
+
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.JUMP,
+          +vliwConfig.jumpQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.JUMP,
+          +vliwConfig.jumpLatency,
+        );
+
+        this.vliw.changeFunctionalUnitNumber(
+          FunctionalUnitType.MEMORY,
+          +vliwConfig.memoryQuantity,
+        );
+        this.vliw.changeFunctionalUnitLatency(
+          FunctionalUnitType.MEMORY,
+          +vliwConfig.memoryLatency,
+        );
+
+        this.vliw.cache = createCache(
+          vliwConfig.cacheType,
+          +vliwConfig.cacheBlocks,
+          +vliwConfig.cacheLines,
+          +vliwConfig.cacheFailPercentage / 100,
+        );
+        this.vliw.memoryFailLatency = +vliwConfig.cacheFailLatency;
+
+        this.resetMachine();
     }
 
-    setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
+    setBatchMode = (replications: number) => {
         this.replications = replications;
-        this.cacheFailLatency = cacheFailLatency;
-        this.cacheFailPercentage = cacheFailPercentage;
     }
 
     private resetMachine() {
@@ -387,7 +444,6 @@ export class VLIWIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.vliw.memory.faultChance = 0;
         this.vliw.memoryFailLatency = 0;
         this.resetMachine();
     }

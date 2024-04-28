@@ -32,6 +32,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import { t } from 'i18next';
 import { Code } from '../core/Common/Code';
+import { createCache } from '../core/Common/Cache';
 import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
 
 
@@ -50,8 +51,6 @@ export class SuperscalarIntegration extends MachineIntegration {
     finishedExecution = false;
     executing = false;
     replications = 0;
-    cacheFailPercentage = 0;
-    cacheFailLatency = 0;
     stats = new Stats();
     batchStats = new StatsAgregator();
 
@@ -98,7 +97,7 @@ export class SuperscalarIntegration extends MachineIntegration {
                     nextReorderBufferMapperCycle([this.superscalar.reorderBuffer.getVisualRegisterMap(false), this.superscalar.reorderBuffer.getVisualRegisterMap(true)]),
                     nextReorderBufferCycle(this.superscalar.reorderBuffer),
                     nextRegistersCycle([this.superscalar.gpr.content, this.superscalar.fpr.content]),
-                    nextMemoryCycle(Array.from(this.superscalar.memory).map(d => d.value)),
+                    nextMemoryCycle(Array.from(this.superscalar.memory)),
                     nextCycle(this.superscalar.status.cycle),
                     nextTotalCommited(this.stats.getCommitedAndDiscarded()),
                     nextInstructionsCommited(this.stats.getCommitedPercentagePerInstruction()),
@@ -231,12 +230,10 @@ export class SuperscalarIntegration extends MachineIntegration {
         const results = [];
         this.batchStats = new StatsAgregator();
         for (let i = 0; i < this.replications; i++) {
-            let code = Object.assign(new Code(), this.superscalar.code);
+            const code = Object.assign(new Code(), this.superscalar.code);
             this.superExe();
             this.superscalar.code = code;
-            //TODO: check this data, seems to be inverted
-            this.superscalar.memory.faultChance = this.cacheFailPercentage / 100;
-            this.superscalar.memoryFailLatency = this.cacheFailLatency;
+
 
             // Load memory content
             if (this.contentIntegration) {
@@ -301,9 +298,10 @@ export class SuperscalarIntegration extends MachineIntegration {
         if (this.superscalar.status.cycle > 0) {
             return;
         }
-        Object.keys(data).forEach(key => {
-            this.superscalar.memory.setDatum(+key, data[key]);
-        });
+
+        for (const key in data) {
+            this.superscalar.memory.setData(+key, data[key]);
+        }
     }
 
     setFpr = (data: { [k: number]: number }) => {
@@ -346,36 +344,84 @@ export class SuperscalarIntegration extends MachineIntegration {
     }
 
     saveSuperConfig = (superConfig) => {
-        // TODO: enforce this through a unique map so that we can overwrite the config directly
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERSUM, +superConfig.integerSumLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.INTEGERSUM,
+          +superConfig.integerSumQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.INTEGERSUM,
+          +superConfig.integerSumLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.INTEGERMULTIPLY, +superConfig.integerMultLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.INTEGERMULTIPLY,
+          +superConfig.integerMultQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.INTEGERMULTIPLY,
+          +superConfig.integerMultLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGSUM,
+          +superConfig.floatingSumQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGSUM,
+          +superConfig.floatingSumLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGSUM, +superConfig.floatingSumLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGSUM,
+          +superConfig.floatingSumQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGSUM,
+          +superConfig.floatingSumLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.FLOATINGMULTIPLY, +superConfig.floatingMultLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.FLOATINGMULTIPLY,
+          +superConfig.floatingMultQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.FLOATINGMULTIPLY,
+          +superConfig.floatingMultLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.JUMP, +superConfig.jumpQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.JUMP, +superConfig.jumpLatency);
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.JUMP,
+          +superConfig.jumpQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.JUMP,
+          +superConfig.jumpLatency,
+        );
 
-        this.superscalar.changeFunctionalUnitNumber(FunctionalUnitType.MEMORY, +superConfig.memoryQuantity);
-        this.superscalar.changeFunctionalUnitLatency(FunctionalUnitType.MEMORY, +superConfig.memoryLatency);
-        
+        this.superscalar.changeFunctionalUnitNumber(
+          FunctionalUnitType.MEMORY,
+          +superConfig.memoryQuantity,
+        );
+        this.superscalar.changeFunctionalUnitLatency(
+          FunctionalUnitType.MEMORY,
+          +superConfig.memoryLatency,
+        );
+
         this.superscalar.issue = +superConfig.issueGrade;
+
+        this.superscalar.cache = createCache(
+          superConfig.cacheType,
+          +superConfig.cacheBlocks,
+          +superConfig.cacheLines,
+          +superConfig.cacheFailPercentage / 100,
+        );
+        this.superscalar.memoryFailLatency = +superConfig.cacheFailLatency;
+
         this.resetMachine();
     }
 
-    setBatchMode = (replications: number, cacheFailLatency, cacheFailPercentage) => {
+    setBatchMode = (replications: number) => {
         this.replications = replications;
-        this.cacheFailLatency = cacheFailLatency;
-        this.cacheFailPercentage = cacheFailPercentage;
     }
 
     private resetMachine() {
@@ -399,8 +445,6 @@ export class SuperscalarIntegration extends MachineIntegration {
 
     private clearBatchStateEffects() {
         // Post launch machine clean
-        this.superscalar.memory.faultChance = 0;
-        this.superscalar.memoryFailLatency = 0;
         this.resetMachine();
     }
 }

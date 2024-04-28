@@ -5,6 +5,7 @@ import {
   FunctionalUnitType,
   FunctionalUnitNumbers,
 } from "./FunctionalUnit";
+import { Cache } from "./Cache";
 import { Memory } from "./Memory";
 
 const MACHINE_REGISTER_SIZE = 64;
@@ -31,6 +32,7 @@ export class Machine {
 
   protected _functionalUnit: FunctionalUnit[][];
   protected _memory: Memory;
+  protected _cache: Cache;
   protected _pc: number;
   protected _status: MachineStatus;
 
@@ -56,6 +58,16 @@ export class Machine {
 
   public set memory(value: Memory) {
     this._memory = value;
+  }
+
+  public get cache(): Cache {
+    return this._cache;
+  }
+
+  public set cache(value: Cache) {
+    this._cache = value;
+    // Proxy the memory access to the cache
+    this.resetContent();
   }
 
   public get pc(): number {
@@ -136,7 +148,11 @@ export class Machine {
   public resetContent() {
     this._gpr.setAllContent(0);
     this._fpr.setAllContent(0);
-    this.memory = new Memory(this.memory.size, this.memory.faultChance);
+    this.memory = new Memory(Machine.MEMORY_SIZE);
+    if (this.cache) {
+      this.memory.getData = new Proxy(this.memory.getData, this.cache.getHandler);
+      this.memory.setData = new Proxy(this.memory.setData, this.cache.setHandler);
+    }
   }
 
   public changeFunctionalUnitLatency(

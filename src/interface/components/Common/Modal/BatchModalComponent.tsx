@@ -12,18 +12,10 @@ class BatchModalComponent extends React.Component<any, any> {
         super(props);
         this.state = {
             replications: 10,
-            cacheFailPercentage: 30,
-            cacheFailLatency: 9
         };
         this.close = this.close.bind(this);
         this.setOptions = this.setOptions.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleCachePercentageChange = this.handleCachePercentageChange.bind(
-            this
-        );
-        this.handleCacheFailLatencyChange = this.handleCacheFailLatencyChange.bind(
-            this
-        );
 
 
     }
@@ -33,32 +25,15 @@ class BatchModalComponent extends React.Component<any, any> {
     }
 
     handleChange(event) {
-        let newState = { ...this.state };
+        const newState = { ...this.state };
         newState.replications = event.target.value;
         this.setState(newState);
     }
 
     setOptions() {
-        SuperscalarIntegration.setBatchMode(
-            this.state.replications,
-            this.state.cacheFailLatency,
-            this.state.cacheFailPercentage
-            
-        );
+        SuperscalarIntegration.setBatchMode(this.state.replications);
         this.close();
         SuperscalarIntegration.makeBatchExecution();
-    }
-
-    handleCachePercentageChange(event) {
-        let newState = { ...this.state };
-        newState.cacheFailPercentage = event.target.value;
-        this.setState(newState);
-    }
-
-    handleCacheFailLatencyChange(event) {
-        let newState = { ...this.state };
-        newState.cacheFailLatency = event.target.value;
-        this.setState(newState);
     }
 
     render() {
@@ -85,44 +60,6 @@ class BatchModalComponent extends React.Component<any, any> {
                                     max="100"
                                     value={this.state.replications}
                                     onChange={this.handleChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label
-                                htmlFor="cacheFailPercentage"
-                                className="control-label col-sm-4"
-                            >
-                                {this.props.t('batchModal.cacheFaultPercentage')}
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    className="form-control"
-                                    name="cacheFailPercentage"
-                                    type="number"
-                                    min={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MIN}
-                                    max={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MAX}
-                                    value={this.state.cacheFailPercentage}
-                                    onChange={this.handleCachePercentageChange}
-                                />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label
-                                htmlFor="cacheFailLatency"
-                                className="control-label col-sm-4"
-                            >
-                                {this.props.t('batchModal.cacheFaultLatency')}
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    className="form-control"
-                                    name="cacheFailLatency"
-                                    type="number"
-                                    min={BATCH_CONFIG.LATENCY_MIN}
-                                    max={BATCH_CONFIG.LATENCY_MAX}
-                                    value={this.state.cacheFailLatency}
-                                    onChange={this.handleCacheFailLatencyChange}
                                 />
                             </div>
                         </div>

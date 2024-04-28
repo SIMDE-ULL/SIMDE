@@ -1,13 +1,13 @@
 import * as React from "react";
 import {
-	Alert,
-	Button,
-	Col,
-	Container,
-	Form,
-	Modal,
-	Row,
-	Stack,
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Modal,
+  Row,
+  Stack,
 } from "react-bootstrap";
 import { type WithTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -15,62 +15,72 @@ import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
 
 import { toggleSuperConfigModal } from "../../../actions/modals";
 import SuperscalarIntegration from "../../../../integration/superscalar-integration";
-import { SUPERSCALAR_CONFIG } from "../../../utils/constants";
+import { BATCH_CONFIG, SUPERSCALAR_CONFIG } from "../../../utils/constants";
+import { CacheType } from "@/core/Common/Cache";
 import type { GlobalState } from "../../../reducers";
 
 const mapStateToProps = (state: GlobalState) => {
-	return {
-		isSuperscalarConfigModalShown: state.Ui.isSuperConfigModalOpen,
-	};
+  return {
+    isSuperscalarConfigModalShown: state.Ui.isSuperConfigModalOpen,
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => {
-	return { actions: bindActionCreators({ toggleSuperConfigModal }, dispatch) };
+  return { actions: bindActionCreators({ toggleSuperConfigModal }, dispatch) };
 };
 
 export type SuperscalarConfigModalProps = WithTranslation &
-	ReturnType<typeof mapStateToProps> &
-	ReturnType<typeof mapDispatchToProps>;
+  ReturnType<typeof mapStateToProps> &
+  ReturnType<typeof mapDispatchToProps>;
 
 export const SuperscalarConfigModal: React.FC = ({
-	isSuperscalarConfigModalShown,
-	actions,
-	t,
+  isSuperscalarConfigModalShown,
+  actions,
+  t,
 }: SuperscalarConfigModalProps) => {
-	const defaultConfig = {
-		integerSumQuantity: 2,
-		integerSumLatency: 1,
-		integerMultQuantity: 2,
-		integerMultLatency: 2,
-		floatingSumQuantity: 2,
-		floatingSumLatency: 4,
-		floatingMultQuantity: 2,
-		floatingMultLatency: 6,
-		memoryQuantity: 2,
-		memoryLatency: 4,
-		jumpQuantity: 1,
-		jumpLatency: 2,
-		issueGrade: 4,
-	};
+  const defaultConfig = {
+    integerSumQuantity: 2,
+    integerSumLatency: 1,
+    integerMultQuantity: 2,
+    integerMultLatency: 2,
+    floatingSumQuantity: 2,
+    floatingSumLatency: 4,
+    floatingMultQuantity: 2,
+    floatingMultLatency: 6,
+    memoryQuantity: 2,
+    memoryLatency: 4,
+    jumpQuantity: 1,
+    jumpLatency: 2,
+    issueGrade: 4,
+    cacheType: CacheType.NO_CACHE,
+    cacheFailPercentage: 30,
+    cacheFailLatency: 9,
+    cacheBlocks: 4,
+    cacheLines: 16,
+  };
 
-	const [config, setConfig] = React.useState(defaultConfig);
+  const [config, setConfig] = React.useState(defaultConfig);
 
 	const saveConfig = () => {
 		SuperscalarIntegration.saveSuperConfig(config);
 		closeModal();
 	};
 
-	const updateConfig = (event) => {
-		setConfig({ ...config, [event.target.name]: Number(event.target.value) });
-	};
+  const updateNumConfig = (event) => {
+    setConfig({ ...config, [event.target.name]: Number(event.target.value) });
+  };
 
-	const setDefaultConfig = () => {
-		setConfig(defaultConfig);
-	};
+  const updateStrConfig = (event) => {
+    setConfig({ ...config, [event.target.name]: event.target.value });
+  };
 
-	const closeModal = () => {
-		actions.toggleSuperConfigModal(false);
-	};
+  const setDefaultConfig = () => {
+    setConfig(defaultConfig);
+  };
+
+  const closeModal = () => {
+    actions.toggleSuperConfigModal(false);
+  };
 
 	return (
 		<Modal show={isSuperscalarConfigModalShown} onHide={closeModal}>
@@ -106,7 +116,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.integerSumQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -118,7 +128,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.integerSumLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -135,7 +145,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.integerMultQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -147,7 +157,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.integerMultLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -164,7 +174,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.floatingSumQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -176,7 +186,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.floatingSumLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -193,7 +203,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.floatingMultQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -205,7 +215,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.floatingMultLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -222,7 +232,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.memoryQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -234,7 +244,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.memoryLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -251,7 +261,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
 														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
 														value={config.jumpQuantity}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -263,7 +273,7 @@ export const SuperscalarConfigModal: React.FC = ({
 														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
 														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
 														value={config.jumpLatency}
-														onChange={updateConfig}
+														onChange={updateNumConfig}
 													/>
 												</Form.Group>
 											</Col>
@@ -275,33 +285,145 @@ export const SuperscalarConfigModal: React.FC = ({
 					</Container>
 					<hr />
 					<Container>
-						<h5>{t("superscalarModal.parameters")}</h5>
-						<Row>
-							<Col>
-								<Form>
-									<Form.Group>
-										<Row>
-											<Col>
-												<Form.Label column>
-													{t("superscalarModal.issue")}
-												</Form.Label>
-											</Col>
-											<Col>
-												<Form.Control
-													name="issueGrade"
-													type="number"
-													min={SUPERSCALAR_CONFIG.ISSUE_GRADE_MIN}
-													max={SUPERSCALAR_CONFIG.ISSUE_GRADE_MAX}
-													value={config.issueGrade}
-													onChange={updateConfig}
-												/>
-											</Col>
-										</Row>
-									</Form.Group>
-								</Form>
-							</Col>
-						</Row>
-					</Container>
+            <h5>{t("superscalarModal.parameters")}</h5>
+            <Row>
+              <Col>
+                <Form>
+                  <Stack gap={1}>
+                    <Form.Group>
+                      <Row>
+                        <Col>
+                          <Form.Label column>
+                            {t("superscalarModal.issue")}
+                          </Form.Label>
+                        </Col>
+                        <Col>
+                          <Form.Control
+                            name="issueGrade"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.ISSUE_GRADE_MIN}
+                            max={SUPERSCALAR_CONFIG.ISSUE_GRADE_MAX}
+                            value={config.issueGrade}
+                            onChange={updateNumConfig}
+                          />
+                        </Col>
+                      </Row>
+                    </Form.Group>
+                    <Form.Group>
+                      <Row>
+                        <Col>
+                          <Form.Label column>
+                            {t("superscalarModal.cacheType")}
+                          </Form.Label>
+                        </Col>
+                        <Col>
+                          <Form.Select
+                            name="cacheType"
+                            value={config.cacheType}
+                            onChange={updateStrConfig}
+                          >
+                            <option value={CacheType.NO_CACHE}>
+                              {t("superscalarModal.noCache")}
+                            </option>
+                            <option value={CacheType.RANDOM_CACHE}>
+                              {t("superscalarModal.randomCache")}
+                            </option>
+                            <option value={CacheType.DIRECT_CACHE}>
+                              {t("superscalarModal.directCache")}
+                            </option>
+                          </Form.Select>
+                        </Col>
+                      </Row>
+                    </Form.Group>
+                    {config.cacheType !== CacheType.NO_CACHE && (
+                      <Form.Group>
+                        <Row>
+                          <Col>
+                            <Form.Label column>
+                              {t("batchModal.cacheFaultLatency")}
+                            </Form.Label>
+                          </Col>
+                          <Col>
+                            <Form.Control
+                              name="cacheFailLatency"
+                              type="number"
+                              min={BATCH_CONFIG.LATENCY_MIN}
+                              max={BATCH_CONFIG.LATENCY_MAX}
+                              value={config.cacheFailLatency}
+                              onChange={updateNumConfig}
+                            />
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                    )}
+                    {config.cacheType === CacheType.RANDOM_CACHE && (
+                      <Form.Group>
+                        <Row>
+                          <Col>
+                            <Form.Label column>
+                              {t("batchModal.cacheFaultPercentage")}
+                            </Form.Label>
+                          </Col>
+                          <Col>
+                            <Form.Control
+                              name="cacheFailPercentage"
+                              type="number"
+                              min={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MIN}
+                              max={BATCH_CONFIG.CACHE_FAIL_PERCENTAGE_MAX}
+                              value={config.cacheFailPercentage}
+                              onChange={updateNumConfig}
+                            />
+                          </Col>
+                        </Row>
+                      </Form.Group>
+                    )}
+                    {config.cacheType === CacheType.DIRECT_CACHE && (
+                      <>
+                        <Form.Group>
+                          <Row>
+                            <Col>
+                              <Form.Label column>
+                                {t("superscalarModal.cacheBlocks")}
+                              </Form.Label>
+                            </Col>
+                            <Col>
+                              <Form.Control
+                                name="cacheBlocks"
+                                type="number"
+                                min={SUPERSCALAR_CONFIG.CACHE_BLOCKS_MIN}
+                                max={SUPERSCALAR_CONFIG.CACHE_BLOCKS_MAX}
+                                value={config.cacheBlocks}
+                                onChange={updateNumConfig}
+                              />
+                            </Col>
+                          </Row>
+                        </Form.Group>
+                        <Form.Group>
+                          <Row>
+                            <Col>
+                              <Form.Label column>
+                                {t("superscalarModal.cacheLines")}
+                              </Form.Label>
+                            </Col>
+                            <Col>
+                              <Form.Control
+                                name="cacheLines"
+                                type="number"
+                                min={SUPERSCALAR_CONFIG.CACHE_LINES_MIN}
+                                max={SUPERSCALAR_CONFIG.CACHE_LINES_MAX}
+                                value={config.cacheLines}
+                                onChange={updateNumConfig}
+                              />
+                            </Col>
+                          </Row>
+                        </Form.Group>
+                      </>
+                    )}
+                  </Stack>
+                </Form>
+              </Col>
+            </Row>
+          </Container>
 				</Stack>
 			</Modal.Body>
 			<Modal.Footer>
@@ -316,6 +438,6 @@ export const SuperscalarConfigModal: React.FC = ({
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps,
+  mapStateToProps,
+  mapDispatchToProps,
 )(withTranslation()(SuperscalarConfigModal));
