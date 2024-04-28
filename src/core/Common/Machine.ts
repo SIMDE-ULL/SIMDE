@@ -32,7 +32,7 @@ export class Machine {
 
   protected _functionalUnit: FunctionalUnit[][];
   protected _memory: Memory;
-  public cache: Cache;
+  protected _cache: Cache;
   protected _pc: number;
   protected _status: MachineStatus;
 
@@ -58,6 +58,16 @@ export class Machine {
 
   public set memory(value: Memory) {
     this._memory = value;
+  }
+
+  public get cache(): Cache {
+    return this._cache;
+  }
+
+  public set cache(value: Cache) {
+    this._cache = value;
+    // Proxy the memory access to the cache
+    this.resetContent();
   }
 
   public get pc(): number {
@@ -140,7 +150,8 @@ export class Machine {
     this._fpr.setAllContent(0);
     this.memory = new Memory(Machine.MEMORY_SIZE);
     if (this.cache) {
-      this.memory = new Proxy(this.memory, this.cache.handler);
+      this.memory.getData = new Proxy(this.memory.getData, this.cache.getHandler);
+      this.memory.setData = new Proxy(this.memory.setData, this.cache.setHandler);
     }
   }
 

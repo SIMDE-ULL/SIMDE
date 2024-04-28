@@ -415,12 +415,6 @@ export class SuperscalarIntegration extends MachineIntegration {
           +superConfig.cacheLines,
           +superConfig.cacheFailPercentage / 100,
         );
-        if (this.superscalar.cache) {
-          this.superscalar.memory = new Proxy(
-            this.superscalar.memory,
-            this.superscalar.cache.handler,
-          );
-        }
         this.superscalar.memoryFailLatency = +superConfig.cacheFailLatency;
 
         this.resetMachine();

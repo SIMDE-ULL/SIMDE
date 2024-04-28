@@ -21,8 +21,8 @@ test('multiwayvliw.pla is executed properly with first parameter', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.cache.setDatum(10, 1.1);
-    context.machine.cache.setDatum(11, 2.2);
+    context.machine.memory.setData(10, 1.1);
+    context.machine.memory.setData(11, 2.2);
     context.machine.setGpr(32, 0);
 
     // Execute code
@@ -32,7 +32,7 @@ test('multiwayvliw.pla is executed properly with first parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(Array.from(context.machine.cache.memory)[12]).toBe(1.1);
+    expect(Array.from(context.machine.memory)[12]).toBe(1.1);
 
     // Check the cycles
     // 6 + 5 + 1 + 3 (last inst latency) = 15 + 1
@@ -46,8 +46,8 @@ test('multiwayvliw.pla is executed properly with second parameter', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.cache.setDatum(10, 1.1);
-    context.machine.cache.setDatum(11, 2.2);
+    context.machine.memory.setData(10, 1.1);
+    context.machine.memory.setData(11, 2.2);
     context.machine.setGpr(32, 1);
 
     // Execute code
@@ -57,7 +57,7 @@ test('multiwayvliw.pla is executed properly with second parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(Array.from(context.machine.cache.memory)[12]).toBe(2.2);
+    expect(Array.from(context.machine.memory)[12]).toBe(2.2);
 
     // Check the cycles
     // 6 + 5 + 1 + 3 (last inst latency) = 15 + 1
@@ -71,8 +71,8 @@ test('multiwayvliw.pla is executed properly with third parameter', t => {
     context.machine.code = context.code;
 
     // Load memory
-    context.machine.cache.setDatum(10, 1.1);
-    context.machine.cache.setDatum(11, 2.2);
+    context.machine.memory.setData(10, 1.1);
+    context.machine.memory.setData(11, 2.2);
     context.machine.setGpr(32, 2);
 
     // Execute code
@@ -82,7 +82,7 @@ test('multiwayvliw.pla is executed properly with third parameter', t => {
     expect(context.machine.pc).toBe(11);
 
     // Check the result
-    expect(Array.from(context.machine.cache.memory)[12]).toBeCloseTo(3.3, 5);
+    expect(Array.from(context.machine.memory)[12]).toBeCloseTo(3.3, 5);
 
     // Check the cycles
     // 6 + 5 + 3 (last inst latency) = 14 + 1

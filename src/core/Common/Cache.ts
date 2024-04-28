@@ -14,38 +14,43 @@ export interface Datum {
 
 export abstract class Cache {
   public abstract success: boolean;
-  public abstract handler: ProxyHandler<Memory>;
+  public abstract getHandler: ProxyHandler<typeof Memory.prototype.getData>;
+  public abstract setHandler: ProxyHandler<typeof Memory.prototype.setData>;
 }
 
 export class RandomCache extends Cache {
   public success = true;
-  public handler: ProxyHandler<Memory>;
+  public getHandler: ProxyHandler<typeof Memory.prototype.getData>;
+  public setHandler: ProxyHandler<typeof Memory.prototype.setData> = {};
   constructor(public faultChance: number) {
     super();
 
-    this.handler = {
-      get: this.get.bind(this),
+    this.getHandler = {
+      apply: this.applyToGetData.bind(this),
     };
   }
 
-  public get(target: Memory, prop: string | symbol, receiver: object) {
-    if (prop === "getData") {
-      this.success = this.faultChance < Math.random();
-    }
+  public applyToGetData(
+    target: typeof Memory.prototype.getData,
+    thisArg: any,
+    args: any[],
+  ) {
+    this.success = this.faultChance < Math.random();
 
-    return Reflect.get(target, prop, receiver);
+    return Reflect.apply(target, thisArg, args);
   }
 }
 
 export class DirectCache extends Cache {
   public success = true;
-  public handler: ProxyHandler<Memory>;
+  public getHandler: ProxyHandler<typeof Memory.prototype.getData>;
+  public setHandler: ProxyHandler<typeof Memory.prototype.setData>;
   private readonly blocks_tags: number[];
   private block_size: number;
 
   constructor(
     private _blocks: number, // number of blocks
-    private _size: number,
+    _size: number,
   ) {
     super();
 
@@ -55,63 +60,50 @@ export class DirectCache extends Cache {
     // Initializa the blocks tags to -1
     this.blocks_tags = Array(_blocks).fill(-1);
 
-    this.handler = {
-      get: this.get.bind(this),
+    this.getHandler = {
+      apply: this.applyToGetData.bind(this),
+    };
+
+    this.setHandler = {
+      apply: this.applyToSetData.bind(this),
     };
   }
 
-  public get(target: Memory, prop: string | symbol, receiver: object) {
-    if (prop === "getData") {
-      //this.success = this.faultChance < Math.random();
-      const funcHandler = {
-        apply: (target, thisArg: any, args: any[]) => {
-          const address = args[0];
-          const data = Reflect.apply(target, thisArg, args);
-
-          // get the tag of the address
-          const tag = Math.floor(address / this.block_size);
-
-          // check if the tag is in the cache
-          const faultOccurred = this.blocks_tags[tag % this._blocks] !== tag;
-          this.success = !faultOccurred;
-
-          // set the tag in the cache
-          this.blocks_tags[tag % this._blocks] = tag;
-
-          return data;
-        }
-      };
-      return new Proxy(Reflect.get(target, prop, receiver), funcHandler);
-    }
-
-    return Reflect.get(target, prop, receiver);
-  }
-
-  /*public getFaultyDatum(address: number): Datum | Error {
-    const data = this.memory.getData(address);
+  public applyToGetData(
+    target: typeof Memory.prototype.getData,
+    thisArg: any,
+    args: any[],
+  ) {
+    const address = args[0];
 
     // get the tag of the address
     const tag = Math.floor(address / this.block_size);
 
     // check if the tag is in the cache
     const faultOccurred = this.blocks_tags[tag % this._blocks] !== tag;
+    this.success = !faultOccurred;
 
     // set the tag in the cache
     this.blocks_tags[tag % this._blocks] = tag;
 
-    if (data instanceof Error) return data;
-    return { value: data, got: !faultOccurred };
+    return Reflect.apply(target, thisArg, args);
   }
 
-  public setDatum(address: number, value: number): undefined | Error {
+  public applyToSetData(
+    target: typeof Memory.prototype.getData,
+    thisArg: any,
+    args: any[],
+  ) {
+    const address = args[0];
+
     // get the tag of the address
     const tag = Math.floor(address / this.block_size);
 
     // set the tag in the cache
     this.blocks_tags[tag % this._blocks] = tag;
 
-    return this.memory.setData(address, value);
-  }*/
+    return Reflect.apply(target, thisArg, args);
+  }
 }
 
 export function createCache(
@@ -120,7 +112,7 @@ export function createCache(
 ): RandomCache | DirectCache | null {
   switch (cacheType) {
     case CacheType.NO_CACHE:
-    return null;
+      return null;
     case CacheType.RANDOM_CACHE:
       return new RandomCache(args[2]);
     case CacheType.DIRECT_CACHE:

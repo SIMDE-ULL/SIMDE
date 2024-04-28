@@ -24,7 +24,7 @@ import { VLIW } from '../core/VLIW/VLIW';
 import { VLIWCode } from '../core/VLIW/VLIWCode';
 import { VLIWError } from '../core/VLIW/VLIWError';
 import { VLIWOperation } from '../core/VLIW/VLIWOperation';
-import { CacheType, DirectCache, NoCache, RandomCache, createCache } from '../core/Common/Cache';
+import { createCache } from '../core/Common/Cache';
 import { nextNatFprCycle, nextNatGprCycle, nextPredicateCycle } from '../interface/actions/predicate-nat-actions';
 import { displayBatchResults } from '../interface/actions/modals';
 
@@ -59,7 +59,7 @@ export class VLIWIntegration extends MachineIntegration {
                 nextVLIWHeaderTableCycle(this.vliw.functionalUnitNumbers),
                 nextVLIWExecutionTableCycle(this.vliw.code.instructions, this.vliw.functionalUnitNumbers),
                 nextRegistersCycle([this.vliw.gpr.content, this.vliw.fpr.content]),
-                nextMemoryCycle(Array.from(this.vliw.cache.memory)),
+                nextMemoryCycle(Array.from(this.vliw.memory)),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
                 nextNatFprCycle(this.vliw.getNaTFP()),
@@ -295,7 +295,7 @@ export class VLIWIntegration extends MachineIntegration {
             return;
         }
         for (const key in data) {
-            this.vliw.cache.memory.setData(+key, data[key]);
+            this.vliw.memory.setData(+key, data[key]);
         }
     }
 
@@ -413,7 +413,6 @@ export class VLIWIntegration extends MachineIntegration {
         );
 
         this.vliw.cache = createCache(
-          this.vliw.cache.memory,
           vliwConfig.cacheType,
           +vliwConfig.cacheBlocks,
           +vliwConfig.cacheLines,
