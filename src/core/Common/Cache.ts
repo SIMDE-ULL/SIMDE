@@ -1,4 +1,3 @@
-import { a } from "vitest/dist/suite-a18diDsI.js";
 import type { Memory } from "./Memory";
 
 export enum CacheType {
