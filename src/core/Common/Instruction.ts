@@ -1,90 +1,65 @@
-import { OpcodesNames, Opcodes } from "./Opcodes";
-import { FunctionalUnitType } from "./FunctionalUnit";
-import { opcodeToFunctionalUnit } from "./Opcodes";
+import { Opcode, OpcodeMnemonic } from "./Opcode";
+
+
+export enum InstructionFormat {
+  TwoGeneralRegisters = 0, // OP R1, R2, R3
+  TwoFloatingRegisters = 1, // OP F1, F2, F3
+  GeneralRegisterAndInmediate = 2, // OP R1, R2, #X
+  GeneralLoadStore = 3, // OP R1, X(R2)
+  FloatingLoadStore = 4, // OP F1, X(R2)
+  Jump = 5, // OP R1, R2, label
+  Noop = 6, // NOP
+}
+
+interface Operand {
+  a: string;
+}
+
+export interface Instruction {
+
+}
 
 export class Instruction {
-  public id: number;
-  public basicBlock: number;
-  public opcode: number;
-  protected _operands: number[] = new Array(3);
-  protected _operandsString: string[] = new Array(3);
-  protected _label: string;
-  protected _breakPoint: boolean = false;
-
-  public get uid(): number {
-    return this._uid;
-  }
-
-  public get breakPoint(): boolean {
-    return this._breakPoint;
-  }
-
-  public get operands(): number[] {
-    return this._operands;
-  }
-
-  public get label(): string {
-    return this._label;
-  }
-
-  public set label(value: string) {
-    this._label = value;
-  }
-
-  public get operandsString(): string[] {
-    return this._operandsString;
-  }
+  readonly id: number;
+  readonly basicBlock: number;
+  readonly opcode: Opcode;
+  readonly operands: Operand[];
+  readonly label: string;
+  readonly breakpoint = false;
 
   constructor(from?: Instruction, protected _uid?: number) {
     if (from) {
       this.id = from.id;
       this.basicBlock = from.basicBlock;
       this.opcode = from.opcode;
-      this._operands = from.operands.slice();
-      this._operandsString = from.operandsString.slice();
-      this._breakPoint = from.breakPoint;
+      this.operands = from.operands.slice();
+      this.breakpoint = from.breakpoint;
     }
   }
 
   toString(): string {
-    let aux: string = "";
-    if (this._operandsString[1]) {
-      aux += " " + this._operandsString[1];
-    }
-    if (this._operandsString[2]) {
-      aux += " " + this._operandsString[2];
-    }
-    return `${OpcodesNames[this.opcode]} ${this._operandsString[0]} ${aux}`;
-  }
-
-  setOperand(index: number, value: number, valueString: string) {
-    this._operands[index] = value;
-    this.operandsString[index] = valueString;
-  }
-
-  getOperand(index: number): number {
-    return this._operands[index];
+    return `${this.opcode.mnemonic} ${this.operands}`;
   }
 
   /**
    * isJumpInstruction - this method checks if the instruction is a jump instruction
    */
   public isJumpInstruction(): boolean {
-    return [Opcodes.BNE, Opcodes.BEQ, Opcodes.BGT].includes(this.opcode);
+    return [OpcodeMnemonic.BNE, OpcodeMnemonic.BEQ, OpcodeMnemonic.BGT].includes(this.opcode);
   }
 
   /**
    * isLoadInstruction - this method checks if the instruction that loads from memory
    */
   public isLoadInstruction() {
-    return [Opcodes.LW, Opcodes.LF].includes(this.opcode);
+    return [OpcodeMnemonic.LW, OpcodeMnemonic.LF].includes(this.opcode);
   }
 
   /**
    * isStoreInstruction - this method checks if the instruction that stores from memory
    */
   public isStoreInstruction(): boolean {
-    return [Opcodes.SF, Opcodes.SW].includes(this.opcode);
+    return [OpcodeMnemonic.SF, OpcodeMnemonic.SW].includes(this.opcode);
   }
 
   /**
@@ -94,7 +69,7 @@ export class Instruction {
     return (
       !this.isJumpInstruction() &&
       !this.isStoreInstruction() &&
-      ![Opcodes.NOP, Opcodes.OPERROR].includes(this.opcode)
+      ![OpcodeMnemonic.NOP, OpcodeMnemonic.OPERROR].includes(this.opcode)
     );
   }
 
@@ -103,11 +78,11 @@ export class Instruction {
    */
   public isDestinyRegisterFloat(): boolean {
     return [
-      Opcodes.ADDF,
-      Opcodes.SUBF,
-      Opcodes.MULTF,
-      Opcodes.LF,
-      Opcodes.SF,
+      OpcodeMnemonic.ADDF,
+      OpcodeMnemonic.SUBF,
+      OpcodeMnemonic.MULTF,
+      OpcodeMnemonic.LF,
+      OpcodeMnemonic.SF,
     ].includes(this.opcode);
   }
 
@@ -116,21 +91,21 @@ export class Instruction {
    */
   public getDestinyRegister(): number {
     switch (this.opcode) {
-      case Opcodes.ADD:
-      case Opcodes.SUB:
-      case Opcodes.MULT:
-      case Opcodes.OR:
-      case Opcodes.AND:
-      case Opcodes.NOR:
-      case Opcodes.XOR:
-      case Opcodes.SLLV:
-      case Opcodes.SRLV:
-      case Opcodes.ADDI:
-      case Opcodes.ADDF:
-      case Opcodes.SUBF:
-      case Opcodes.MULTF:
-      case Opcodes.LW:
-      case Opcodes.LF:
+      case OpcodeMnemonic.ADD:
+      case OpcodeMnemonic.SUB:
+      case OpcodeMnemonic.MULT:
+      case OpcodeMnemonic.OR:
+      case OpcodeMnemonic.AND:
+      case OpcodeMnemonic.NOR:
+      case OpcodeMnemonic.XOR:
+      case OpcodeMnemonic.SLLV:
+      case OpcodeMnemonic.SRLV:
+      case OpcodeMnemonic.ADDI:
+      case OpcodeMnemonic.ADDF:
+      case OpcodeMnemonic.SUBF:
+      case OpcodeMnemonic.MULTF:
+      case OpcodeMnemonic.LW:
+      case OpcodeMnemonic.LF:
         return this.operands[0];
       default:
         return -1;
@@ -141,7 +116,7 @@ export class Instruction {
    * isFirstOperandFloat
    */
   public isFirstOperandFloat(): boolean {
-    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.SF].includes(
+    return [OpcodeMnemonic.ADDF, OpcodeMnemonic.SUBF, OpcodeMnemonic.MULTF, OpcodeMnemonic.SF].includes(
       this.opcode
     );
   }
@@ -151,25 +126,25 @@ export class Instruction {
    */
   public getFirstOperandRegister(): number {
     switch (this.opcode) {
-      case Opcodes.ADD:
-      case Opcodes.SUB:
-      case Opcodes.MULT:
-      case Opcodes.OR:
-      case Opcodes.AND:
-      case Opcodes.NOR:
-      case Opcodes.XOR:
-      case Opcodes.SLLV:
-      case Opcodes.SRLV:
-      case Opcodes.ADDI:
-      case Opcodes.ADDF:
-      case Opcodes.SUBF:
-      case Opcodes.MULTF:
+      case OpcodeMnemonic.ADD:
+      case OpcodeMnemonic.SUB:
+      case OpcodeMnemonic.MULT:
+      case OpcodeMnemonic.OR:
+      case OpcodeMnemonic.AND:
+      case OpcodeMnemonic.NOR:
+      case OpcodeMnemonic.XOR:
+      case OpcodeMnemonic.SLLV:
+      case OpcodeMnemonic.SRLV:
+      case OpcodeMnemonic.ADDI:
+      case OpcodeMnemonic.ADDF:
+      case OpcodeMnemonic.SUBF:
+      case OpcodeMnemonic.MULTF:
         return this.operands[1];
-      case Opcodes.SW:
-      case Opcodes.SF:
-      case Opcodes.BEQ:
-      case Opcodes.BNE:
-      case Opcodes.BGT:
+      case OpcodeMnemonic.SW:
+      case OpcodeMnemonic.SF:
+      case OpcodeMnemonic.BEQ:
+      case OpcodeMnemonic.BNE:
+      case OpcodeMnemonic.BGT:
         return this.operands[0];
       default:
         return -1;
@@ -180,7 +155,7 @@ export class Instruction {
    * isSecondOperandFloat
    */
   public isSecondOperandFloat(): boolean {
-    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF].includes(this.opcode);
+    return [OpcodeMnemonic.ADDF, OpcodeMnemonic.SUBF, OpcodeMnemonic.MULTF].includes(this.opcode);
   }
 
   /**
@@ -188,26 +163,26 @@ export class Instruction {
    */
   public getSecondOperandRegister(): number {
     switch (this.opcode) {
-      case Opcodes.ADD:
-      case Opcodes.SUB:
-      case Opcodes.MULT:
-      case Opcodes.OR:
-      case Opcodes.AND:
-      case Opcodes.NOR:
-      case Opcodes.XOR:
-      case Opcodes.SLLV:
-      case Opcodes.SRLV:
-      case Opcodes.ADDF:
-      case Opcodes.SUBF:
-      case Opcodes.MULTF:
-      case Opcodes.SW:
-      case Opcodes.SF:
-      case Opcodes.LW:
-      case Opcodes.LF:
+      case OpcodeMnemonic.ADD:
+      case OpcodeMnemonic.SUB:
+      case OpcodeMnemonic.MULT:
+      case OpcodeMnemonic.OR:
+      case OpcodeMnemonic.AND:
+      case OpcodeMnemonic.NOR:
+      case OpcodeMnemonic.XOR:
+      case OpcodeMnemonic.SLLV:
+      case OpcodeMnemonic.SRLV:
+      case OpcodeMnemonic.ADDF:
+      case OpcodeMnemonic.SUBF:
+      case OpcodeMnemonic.MULTF:
+      case OpcodeMnemonic.SW:
+      case OpcodeMnemonic.SF:
+      case OpcodeMnemonic.LW:
+      case OpcodeMnemonic.LF:
         return this.operands[2];
-      case Opcodes.BEQ:
-      case Opcodes.BNE:
-      case Opcodes.BGT:
+      case OpcodeMnemonic.BEQ:
+      case OpcodeMnemonic.BNE:
+      case OpcodeMnemonic.BGT:
         return this.operands[1];
 
       default:
@@ -220,14 +195,14 @@ export class Instruction {
    */
   public getAddressOperand(): number {
     switch (this.opcode) {
-      case Opcodes.SW:
-      case Opcodes.SF:
-      case Opcodes.LW:
-      case Opcodes.LF:
+      case OpcodeMnemonic.SW:
+      case OpcodeMnemonic.SF:
+      case OpcodeMnemonic.LW:
+      case OpcodeMnemonic.LF:
         return this.operands[1];
-      case Opcodes.BEQ:
-      case Opcodes.BNE:
-      case Opcodes.BGT:
+      case OpcodeMnemonic.BEQ:
+      case OpcodeMnemonic.BNE:
+      case OpcodeMnemonic.BGT:
         return this.operands[2];
       default:
         return -1;
@@ -238,21 +213,21 @@ export class Instruction {
    * hasImmediateOperand - this method checks if the instruction has an immediate operand
    */
   public hasImmediateOperand(): boolean {
-    return this.opcode === Opcodes.ADDI;
+    return this.opcode === OpcodeMnemonic.ADDI;
   }
 
   /**
    * getImmediateOperand - this method returns the immediate operand of the instruction or -1 if it doesn't have one
    */
   public getImmediateOperand(): number {
-    return this.opcode === Opcodes.ADDI ? this.operands[2] : -1;
+    return this.opcode === OpcodeMnemonic.ADDI ? this.operands[2] : -1;
   }
 
   public toggleBreakPoint() {
-    this._breakPoint = !this._breakPoint;
+    this.breakpoint = !this.breakpoint;
   }
 
-  public getFunctionalUnitType(): FunctionalUnitType {
+  public getFunctionalUnitType(): FunctionalUnitKind {
     return opcodeToFunctionalUnit(this.opcode);
   }
 }

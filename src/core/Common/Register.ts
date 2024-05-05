@@ -1,3 +1,10 @@
+export enum RegisterKind {
+  GeneralPurpose = "GeneralPurpose",
+  FloatingPoint = "FloatingPoint"
+}
+
+export type RegisterType = `${RegisterKind}`;
+
 export class Register {
   private _content: number[];
   private _bufferIn: number[];
@@ -13,7 +20,7 @@ export class Register {
 
   constructor(
     private _numberOfRegs: number,
-    private _zeroWritable: boolean = false
+    private _zeroWritable = false
   ) {
     this._busy = new Array(_numberOfRegs);
     this._content = new Array(_numberOfRegs);

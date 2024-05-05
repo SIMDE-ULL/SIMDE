@@ -16,7 +16,7 @@ import {
 } from "typescript-parsec";
 import {
   FUNCTIONALUNITTYPESQUANTITY,
-  type FunctionalUnitType,
+  type FunctionalUnitKind,
   FunctionalUnitTypeNames,
 } from "../Common/FunctionalUnit";
 import { LargeInstruction } from "./LargeInstructions";
@@ -40,7 +40,7 @@ const tokenizer = buildLexer([
 
 const functionalUnitTypeParser = apply(
   tok(Tokens.Number),
-  (num: Token<Tokens.Number>): FunctionalUnitType => {
+  (num: Token<Tokens.Number>): FunctionalUnitKind => {
     const type = +num.text;
     if (type > FUNCTIONALUNITTYPESQUANTITY - 1) {
       throw new TokenError(num.pos, `Invalid functional unit type ${type}`);
@@ -52,7 +52,7 @@ const functionalUnitTypeParser = apply(
 interface IndexParsed {
   index: number;
   isJump: boolean;
-  functionalUnitType: FunctionalUnitType;
+  functionalUnitType: FunctionalUnitKind;
 }
 
 export function Parse(input: string, code: Code): LargeInstruction[] {
@@ -87,7 +87,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
 
   const operationParser = apply(
     operationCombiner,
-    (componets: [FunctionalUnitType, Token<Tokens>[]]) => {
+    (componets: [FunctionalUnitKind, Token<Tokens>[]]) => {
       // Check if we received the right amount of operands
       if (componets[1].length < 2) {
         throw new TokenError(

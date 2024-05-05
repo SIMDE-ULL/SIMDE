@@ -1,16 +1,16 @@
-import { Instruction } from "./Instruction";
-import { Opcodes } from "./Opcodes";
+import type { Instruction } from "./Instruction";
+import type { Opcode } from "./Opcode";
 
-export enum FunctionalUnitType {
+export enum FunctionalUnitKind {
   INTEGERSUM = 0,
-  INTEGERMULTIPLY,
-  FLOATINGSUM,
-  FLOATINGMULTIPLY,
-  MEMORY,
-  JUMP,
+  INTEGERMULTIPLY = 1,
+  FLOATINGSUM = 2,
+  FLOATINGMULTIPLY = 3,
+  MEMORY = 4,
+  JUMP = 5,
 }
 
-export let FunctionalUnitTypeNames: string[] = [
+export const FunctionalUnitTypeNames: string[] = [
   "Integer Sum",
   "Integer Multiply",
   "Floating Sum",
@@ -20,7 +20,7 @@ export let FunctionalUnitTypeNames: string[] = [
 ];
 
 export const FUNCTIONALUNITTYPESQUANTITY =
-  FunctionalUnitType.JUMP - FunctionalUnitType.INTEGERSUM + 1;
+  FunctionalUnitKind.JUMP - FunctionalUnitKind.INTEGERSUM + 1;
 
 export interface FunctionalUntitVisualEntry {
   id: number;
@@ -28,22 +28,22 @@ export interface FunctionalUntitVisualEntry {
   uid: number;
 }
 
-const FunctionalUnitLantencies: Record<FunctionalUnitType, number> = {
-  [FunctionalUnitType.INTEGERSUM]: 1,
-  [FunctionalUnitType.INTEGERMULTIPLY]: 2,
-  [FunctionalUnitType.FLOATINGSUM]: 4,
-  [FunctionalUnitType.FLOATINGMULTIPLY]: 6,
-  [FunctionalUnitType.MEMORY]: 4,
-  [FunctionalUnitType.JUMP]: 2,
+const FunctionalUnitLantencies: Record<FunctionalUnitKind, number> = {
+  [FunctionalUnitKind.INTEGERSUM]: 1,
+  [FunctionalUnitKind.INTEGERMULTIPLY]: 2,
+  [FunctionalUnitKind.FLOATINGSUM]: 4,
+  [FunctionalUnitKind.FLOATINGMULTIPLY]: 6,
+  [FunctionalUnitKind.MEMORY]: 4,
+  [FunctionalUnitKind.JUMP]: 2,
 };
 
-export const FunctionalUnitNumbers: Record<FunctionalUnitType, number> = {
-  [FunctionalUnitType.INTEGERSUM]: 2,
-  [FunctionalUnitType.INTEGERMULTIPLY]: 2,
-  [FunctionalUnitType.FLOATINGSUM]: 2,
-  [FunctionalUnitType.FLOATINGMULTIPLY]: 2,
-  [FunctionalUnitType.MEMORY]: 2,
-  [FunctionalUnitType.JUMP]: 1,
+export const FunctionalUnitNumbers: Record<FunctionalUnitKind, number> = {
+  [FunctionalUnitKind.INTEGERSUM]: 2,
+  [FunctionalUnitKind.INTEGERMULTIPLY]: 2,
+  [FunctionalUnitKind.FLOATINGSUM]: 2,
+  [FunctionalUnitKind.FLOATINGMULTIPLY]: 2,
+  [FunctionalUnitKind.MEMORY]: 2,
+  [FunctionalUnitKind.JUMP]: 1,
 };
 
 export interface FunctionalUnitResult {
@@ -59,14 +59,14 @@ interface FunctionalUnitInstruction {
 }
 
 export class FunctionalUnit {
-  private _stalled: number = 0; // if >0, it is stalling (for ex because a memory fail) for that many cycles
+  private _stalled = 0; // if >0, it is stalling (for ex because a memory fail) for that many cycles
   private _instructions: FunctionalUnitInstruction[] = [];
 
-  private _nextRef: number = 0; //TODO: use instruction uid
+  private _nextRef = 0; //TODO: use instruction uid
   private _currentBlankTimeUnits: number;
-  private _hasExectutedInstBeforeTick: boolean = false;
+  private _hasExectutedInstBeforeTick = false;
 
-  public get type(): FunctionalUnitType {
+  public get type(): FunctionalUnitKind {
     return this._type;
   }
 
@@ -79,7 +79,7 @@ export class FunctionalUnit {
   }
 
   constructor(
-    private _type: FunctionalUnitType,
+    private _type: FunctionalUnitKind,
     private _latency: number = FunctionalUnitLantencies[_type]
   ) {
     this._currentBlankTimeUnits = this._latency - 1;
@@ -160,44 +160,44 @@ export class FunctionalUnit {
     // execute it
     let resul: number;
     switch (opcode) {
-      case Opcodes.ADD:
-      case Opcodes.ADDI:
-      case Opcodes.ADDF:
+      case OpcodeMnemonic.ADD:
+      case OpcodeMnemonic.ADDI:
+      case OpcodeMnemonic.ADDF:
         resul = firstValue + secondValue;
         break;
-      case Opcodes.SUB:
-      case Opcodes.SUBF:
+      case OpcodeMnemonic.SUB:
+      case OpcodeMnemonic.SUBF:
         resul = firstValue - secondValue;
         break;
-      case Opcodes.OR:
+      case OpcodeMnemonic.OR:
         resul = firstValue | secondValue;
         break;
-      case Opcodes.AND:
+      case OpcodeMnemonic.AND:
         resul = firstValue & secondValue;
         break;
-      case Opcodes.XOR:
+      case OpcodeMnemonic.XOR:
         resul = firstValue ^ secondValue;
         break;
-      case Opcodes.NOR:
+      case OpcodeMnemonic.NOR:
         resul = ~(firstValue | secondValue);
         break;
-      case Opcodes.SRLV:
+      case OpcodeMnemonic.SRLV:
         resul = firstValue >> secondValue;
         break;
-      case Opcodes.SLLV:
+      case OpcodeMnemonic.SLLV:
         resul = firstValue << secondValue;
         break;
-      case Opcodes.MULT:
-      case Opcodes.MULTF:
+      case OpcodeMnemonic.MULT:
+      case OpcodeMnemonic.MULTF:
         resul = firstValue * secondValue;
         break;
-      case Opcodes.BEQ:
+      case OpcodeMnemonic.BEQ:
         resul = firstValue === secondValue ? 1 : 0;
         break;
-      case Opcodes.BNE:
+      case OpcodeMnemonic.BNE:
         resul = firstValue !== secondValue ? 1 : 0;
         break;
-      case Opcodes.BGT:
+      case OpcodeMnemonic.BGT:
         resul = firstValue > secondValue ? 1 : 0;
         break;
       default:
@@ -256,4 +256,35 @@ export class FunctionalUnit {
 
     return list;
   }
+
+  public static newFromOpcode(opcode: Opcode) {
+    switch (opcode.mnemonic) {
+      case OpcodeMnemonic.ADD:
+      case OpcodeMnemonic.ADDI:
+      case OpcodeMnemonic.SUB:
+      case OpcodeMnemonic.OR:
+      case OpcodeMnemonic.AND:
+      case OpcodeMnemonic.NOR:
+      case OpcodeMnemonic.XOR:
+      case OpcodeMnemonic.SLLV:
+      case OpcodeMnemonic.SRLV:
+        return FunctionalUnitKind.INTEGERSUM;
+      case OpcodeMnemonic.ADDF:
+      case OpcodeMnemonic.SUBF:
+        return FunctionalUnitKind.FLOATINGSUM;
+      case OpcodeMnemonic.MULT:
+        return FunctionalUnitKind.INTEGERMULTIPLY;
+      case OpcodeMnemonic.MULTF:
+        return FunctionalUnitKind.FLOATINGMULTIPLY;
+      case OpcodeMnemonic.SW:
+      case OpcodeMnemonic.SF:
+      case OpcodeMnemonic.LW:
+      case OpcodeMnemonic.LF:
+        return FunctionalUnitKind.MEMORY;
+      case OpcodeMnemonic.BGT:
+      case OpcodeMnemonic.BNE:
+      case OpcodeMnemonic.BEQ:
+        return FunctionalUnitKind.JUMP;
+    }
+  } 
 }

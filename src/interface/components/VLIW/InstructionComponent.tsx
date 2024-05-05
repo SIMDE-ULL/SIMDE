@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useDrag } from 'react-dnd';
 
-import { OpcodesNames } from '../../../core/Common/Opcodes';
+import { OpcodesNames } from '../../../core/Common/Opcode';
 import { Instruction } from '../../../core/Common/Instruction';
 
 

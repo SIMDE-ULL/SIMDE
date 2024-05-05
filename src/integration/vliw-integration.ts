@@ -30,7 +30,7 @@ import { displayBatchResults } from '../interface/actions/modals';
 
 import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/aggregator';
-import { FunctionalUnitType } from '@/core/Common/FunctionalUnit';
+import { FunctionalUnitKind } from '@/core/Common/FunctionalUnit';
 
 export class VLIWIntegration extends MachineIntegration {
     // Global objects for binding React to the View
@@ -350,65 +350,65 @@ export class VLIWIntegration extends MachineIntegration {
 
     saveVliwConfig = (vliwConfig) => {
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.INTEGERSUM,
+          FunctionalUnitKind.INTEGERSUM,
           +vliwConfig.integerSumQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.INTEGERSUM,
+          FunctionalUnitKind.INTEGERSUM,
           +vliwConfig.integerSumLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.INTEGERMULTIPLY,
+          FunctionalUnitKind.INTEGERMULTIPLY,
           +vliwConfig.integerMultQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.INTEGERMULTIPLY,
+          FunctionalUnitKind.INTEGERMULTIPLY,
           +vliwConfig.integerMultLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +vliwConfig.floatingSumQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +vliwConfig.floatingSumLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +vliwConfig.floatingSumQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +vliwConfig.floatingSumLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGMULTIPLY,
+          FunctionalUnitKind.FLOATINGMULTIPLY,
           +vliwConfig.floatingMultQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGMULTIPLY,
+          FunctionalUnitKind.FLOATINGMULTIPLY,
           +vliwConfig.floatingMultLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.JUMP,
+          FunctionalUnitKind.JUMP,
           +vliwConfig.jumpQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.JUMP,
+          FunctionalUnitKind.JUMP,
           +vliwConfig.jumpLatency,
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.MEMORY,
+          FunctionalUnitKind.MEMORY,
           +vliwConfig.memoryQuantity,
         );
         this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.MEMORY,
+          FunctionalUnitKind.MEMORY,
           +vliwConfig.memoryLatency,
         );
 

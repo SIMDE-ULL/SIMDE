@@ -2,7 +2,7 @@ import { expect, beforeEach, test } from 'vitest'
 import { Code } from '../../../core/Common/Code';
 import { Superscalar } from '../../../core/Superscalar/Superscalar';
 import { SuperscalarStatus } from '../../../core/Superscalar/SuperscalarEnums';
-import { FunctionalUnitType } from '../../../core/Common/FunctionalUnit';
+import { FunctionalUnitKind } from '../../../core/Common/FunctionalUnit';
 import { codeInput, memContent } from "../code/recorrelista";
 
 
@@ -38,9 +38,9 @@ test('recorrelista.pla is executed properly', t => {
 
             // Check that instructions are being executed in the correct Functional Units
             // 13 -> FLOATINGMULTIPLY, 16 -> MEMORY and 12 -> JUMP
-            expect(context.machine.functionalUnit[FunctionalUnitType.FLOATINGMULTIPLY][0].getVisualData().filter(e => e.id === 13).length).toBeGreaterThan(0); // Instruction 13 is not at FLOATINGMULTIPLY Functional unit at cycle 40');
-            expect(context.machine.functionalUnit[FunctionalUnitType.MEMORY][0].getVisualData().filter(e => e.id === 16).length).toBeGreaterThan(0); // Instruction 16 is not at MEMORY Functional unit at cycle 40');
-            expect(context.machine.functionalUnit[FunctionalUnitType.JUMP][0].getVisualData().filter(e => e.id === 12).length).toBeGreaterThan(0); // Instruction 12 is not at JUMP Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitKind.FLOATINGMULTIPLY][0].getVisualData().filter(e => e.id === 13).length).toBeGreaterThan(0); // Instruction 13 is not at FLOATINGMULTIPLY Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitKind.MEMORY][0].getVisualData().filter(e => e.id === 16).length).toBeGreaterThan(0); // Instruction 16 is not at MEMORY Functional unit at cycle 40');
+            expect(context.machine.functionalUnit[FunctionalUnitKind.JUMP][0].getVisualData().filter(e => e.id === 12).length).toBeGreaterThan(0); // Instruction 12 is not at JUMP Functional unit at cycle 40');
         }
 
         if (context.machine.status.cycle === 60 || context.machine.status.cycle === 70) { // at cycle 70 the jump is still looping

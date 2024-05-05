@@ -1,4 +1,4 @@
-import { FunctionalUnit, FunctionalUnitType } from '../../core/Common/FunctionalUnit';
+import { FunctionalUnit, FunctionalUnitKind } from '../../core/Common/FunctionalUnit';
 export const HEADER_TABLE_CYCLE = 'HEADER_TABLE_CYCLE';
 export const TABLE_CYCLE = 'TABLE_CYCLE';
 
@@ -44,33 +44,33 @@ function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
 
     for (let i = 0; i < data.getVLIWOperationsNumber(); i++) { // numero de instrucciones cortas en la instrucción larga
         for (let j = 0; j < cols.length; j++) {
-            if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.INTEGERSUM)
+            if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.INTEGERSUM)
                 && (data.getOperation(i).getFunctionalUnitIndex() === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.INTEGERMULTIPLY)
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.INTEGERMULTIPLY)
                 && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.FLOATINGSUM)
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.FLOATINGSUM)
             && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.FLOATINGMULTIPLY)
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.FLOATINGMULTIPLY)
             && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1] + functionalUnitNumbers[2]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.MEMORY)
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.MEMORY)
             && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] +
              functionalUnitNumbers[1] + functionalUnitNumbers[2] + functionalUnitNumbers[3]) === j)) {
 
                 cols[j] = data.getOperation(i).id;
 
-            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.JUMP)
+            } else if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitKind.JUMP)
             && ((data.getOperation(i).getFunctionalUnitIndex() + functionalUnitNumbers[0] + functionalUnitNumbers[1]
             + functionalUnitNumbers[2] + functionalUnitNumbers[3] + functionalUnitNumbers[4]) === j)) {
 

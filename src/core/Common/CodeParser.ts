@@ -1,381 +1,300 @@
 import {
   type Token,
-  TokenError,
-  type TokenPosition,
-  alt_sc,
   apply,
   buildLexer,
-  expectEOF,
-  expectSingleResult,
-  opt_sc,
+  rule,
   rep_sc,
-  seq,
+  alt,
+  expectSingleResult,
+  expectEOF,
+  type TokenError,
+  kleft,
+  str,
   tok,
+  kright,
+  seq,
 } from "typescript-parsec";
-import { Instruction } from "./Instruction";
-import { Formats, FormatsNames } from "./InstructionFormats";
-import { OpcodesNames, opcodeToFormat } from "./Opcodes";
+import type { OpcodeMnemonic, OpcodeType } from "./Opcode";
+import type { RegisterKind } from "./Register";
 
-enum Tokens {
-  Inmediate = 0,
-  RegFP = 1,
-  RegGP = 2,
-  Id = 3,
-  Label = 4,
-  BraketOpen = 5,
-  BraketClose = 6,
-  Number = 7,
-  Comma = 8,
-  Space = 9,
-  NewLine = 10,
-  Comment = 11,
+/* Tokens and tokenizer */
+
+enum TokenKind {
+  Opcode = 0,
+  Register = 1,
+  Immediate = 2,
+  Label = 3,
+  Unsigned = 4,
+  OpenParen = 5,
+  CloseParen = 6,
+  Space = 7,
+  Comment = 8,
 }
 
-enum RegType {
-  FP = 0,
-  GP = 1,
-}
-const RegTypeNames: string[] = ["FP", "GP"];
-
-interface Reg {
-  type: RegType;
-  pos: TokenPosition;
-  num: number;
-  text: string;
-}
-
-interface Address {
-  address: number;
-  reg: Reg;
-}
-
-interface OpcodeToken {
-  opcode: number;
-  pos: TokenPosition;
-}
+type TokenType = Token<TokenKind>;
 
 const tokenizer = buildLexer([
-  [true, /^#[+-]?[0-9]+/g, Tokens.Inmediate],
-  [true, /^[Ff][0-9]+/g, Tokens.RegFP],
-  [true, /^[Rr][0-9]+/g, Tokens.RegGP],
-  [true, /^[A-Za-z][A-Za-z0-9]*\:/g, Tokens.Label],
-  [true, /^[A-Za-z][A-Za-z0-9]*/g, Tokens.Id],
-  [true, /^\(/g, Tokens.BraketOpen],
-  [true, /^\)/g, Tokens.BraketClose],
-  [true, /^[+-]?[0-9]+/g, Tokens.Number],
-  [false, /^\,/g, Tokens.Comma],
-  [false, /^[ \t\v\f]+/g, Tokens.Space],
-  [false, /^\r?\n/g, Tokens.NewLine],
-  [false, /^\/\/.*\n/g, Tokens.Comment],
+  [true, /^[A-Z]+g/, TokenKind.Opcode],
+  [true, /^[A-Z][0-9]+/g, TokenKind.Register],
+  [true, /^#[0-9]+/g, TokenKind.Immediate],
+  [true, /^[a-zA-Z_][a-zA-Z0-9_]*/g, TokenKind.Label],
+  [true, /^\d+/g, TokenKind.Unsigned],
+  [true, /^\(/g, TokenKind.OpenParen],
+  [true, /^\)/g, TokenKind.CloseParen],
+  [false, /^\s+/g, TokenKind.Space],
+  [false, /^[/][/][^\n]*\n/g, TokenKind.Comment],
 ]);
 
-const inmParser = apply(
-  tok(Tokens.Inmediate),
-  (num: Token<Tokens.Inmediate>) => {
-    return +num.text.slice(1);
-  },
-);
+/* AST definitions */
 
-const regParser = apply(
-  alt_sc(tok(Tokens.RegFP), tok(Tokens.RegGP)),
-  (reg: Token<Tokens.RegFP> | Token<Tokens.RegGP>) => {
-    let type = RegType.GP;
-    if (reg.kind === Tokens.RegFP) {
-      type = RegType.FP;
-    }
-    return {
-      type: type,
-      pos: reg.pos,
-      num: +reg.text.slice(1),
-      text: reg.text,
-    };
-  },
-);
-
-const addressParser = apply(
-  seq(
-    opt_sc(tok(Tokens.Number)),
-    tok(Tokens.BraketOpen),
-    regParser,
-    tok(Tokens.BraketClose),
-  ),
-  (
-    address: [
-      Token<Tokens.Number>,
-      Token<Tokens.BraketOpen>,
-      Reg,
-      Token<Tokens.BraketClose>,
-    ],
-  ) => {
-    if (address[2].type === RegType.FP) {
-      throw new TokenError(
-        address[2].pos,
-        "Address register cannot be FP register",
-      );
-    }
-    return { address: address[0] ? +address[0].text : 0, reg: address[2] };
-  },
-);
-
-const opcodeParser = apply(
-  tok(Tokens.Id),
-  (opcodeTok: Token<Tokens.Id>): OpcodeToken => {
-    const opcode: number = OpcodesNames.indexOf(opcodeTok.text);
-    if (opcode !== -1) {
-      return { opcode: opcode, pos: opcodeTok.pos };
-    }
-    throw new TokenError(opcodeTok.pos, `Unknown opcode "${opcodeTok.text}".`);
-  },
-);
-
-export class CodeParser {
-  private _instructions: Instruction[] = [];
-  private _labels: { [k: string]: number } = {};
-
-  private _generalRegisters: number;
-  private _memorySize: number;
-
-  public get instructions(): Instruction[] {
-    return this._instructions;
-  }
-
-  public get labels(): { [k: string]: number } {
-    return this._labels;
-  }
-
-  public get lines(): number {
-    return this._instructions.length;
-  }
-
-  constructor(code: string, generalRegisters: number, memorySize: number) {
-    this._generalRegisters = generalRegisters;
-    this._memorySize = memorySize;
-    this.parse(code);
-  }
-
-  private parse(code: string) {
-    const result = expectSingleResult(
-      expectEOF(this.genCodeParser().parse(tokenizer.parse(code))),
-    );
-
-    // Create labels and instructions
-    let pos = 0;
-    for (let i = 0; i < result[1].length; i++) {
-      const line = result[1][i];
-      if ("kind" in line && line.kind === Tokens.Label) {
-        const name = line.text.slice(0, -1);
-        if (name in this._labels) {
-          throw new Error(
-            `Error at instruction ${pos}, label ${line.text.slice(
-              0,
-              -1,
-            )} already exists`,
-          );
-        }
-        this._labels[name] = pos;
-      } else if (line instanceof Instruction) {
-        this._instructions.push(line);
-        pos++;
-      } else {
-        throw new Error(`Unexpected code parser fail: ${JSON.stringify(line)}`);
-      }
-    }
-  }
-
-  private genCodeParser() {
-    return seq(
-      opt_sc(tok(Tokens.Number)),
-      rep_sc(alt_sc(this.genOperationParser(), tok(Tokens.Label))),
-    );
-  }
-
-  private genOperationParser() {
-    return apply(
-      alt_sc(
-        seq(opcodeParser, regParser, regParser, regParser),
-        seq(opcodeParser, regParser, regParser, inmParser),
-        seq(opcodeParser, regParser, regParser, tok(Tokens.Id)),
-        seq(opcodeParser, regParser, addressParser),
-        opcodeParser,
-      ), // The order is important, the first succesfull match is the one that is returned
-      (
-        operation:
-          | OpcodeToken
-          | [OpcodeToken, Reg, Reg, Reg]
-          | [OpcodeToken, Reg, Reg, number]
-          | [OpcodeToken, Reg, Address]
-          | [OpcodeToken, Reg, Reg, Token<Tokens.Id>],
-      ) => {
-        let type: Formats;
-        const instruction: Instruction = new Instruction();
-        let pos: TokenPosition;
-
-        // set the opcode and get the current position
-        if (Array.isArray(operation)) {
-          instruction.opcode = operation[0].opcode;
-          pos = operation[0].pos;
-        } else {
-          instruction.opcode = operation.opcode;
-          pos = operation.pos;
-        }
-
-        // Check the recived instruction format and set the operands
-        if (!Array.isArray(operation)) {
-          type = Formats.Noop;
-        } else if ("num" in operation[2] && operation.length === 4) {
-          if (operation[2].type !== operation[1].type) {
-            throw new TokenError(
-              operation[2].pos,
-              `Second operand register type(${
-                RegTypeNames[operation[2].type]
-              }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`,
-            );
-          }
-
-          if (typeof operation[3] === "number") {
-            type = Formats.GeneralRegisterAndInmediate;
-
-            // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Destiny register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
-
-            instruction.setOperand(0, operation[1].num, operation[1].text);
-            instruction.setOperand(1, operation[2].num, operation[2].text);
-            instruction.setOperand(
-              2,
-              operation[3],
-              `#${operation[3].toString()}`,
-            );
-            if (operation[1].type === RegType.FP) {
-              throw new TokenError(
-                operation[1].pos,
-                "Inmediate operand not allowed for floating point registers",
-              );
-            }
-          } else if ("num" in operation[3]) {
-            if (operation[3].type !== operation[1].type) {
-              throw new TokenError(
-                operation[3].pos,
-                `Third operand register type(${
-                  RegTypeNames[operation[3].type]
-                }) mistmatch. Expected ${RegTypeNames[operation[1].type]}`,
-              );
-            }
-
-            if (operation[1].type === RegType.FP) {
-              type = Formats.TwoFloatingRegisters;
-            } else {
-              type = Formats.TwoGeneralRegisters;
-            }
-
-            // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Destiny register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
-            if (operation[3].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[3].pos,
-                "Operand 2 register number out of bounds",
-              );
-            }
-
-            instruction.setOperand(0, operation[1].num, operation[1].text);
-            instruction.setOperand(1, operation[2].num, operation[2].text);
-            instruction.setOperand(2, operation[3].num, operation[3].text);
-          } else if ("pos" in operation[3]) {
-            type = Formats.Jump;
-
-            // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 2 register number out of bounds",
-              );
-            }
-
-            instruction.setOperand(0, operation[1].num, operation[1].text);
-            instruction.setOperand(1, operation[2].num, operation[2].text);
-            instruction.setOperand(2, undefined, operation[3].text);
-          }
-        } else if (operation.length === 3) {
-          if (operation[1].type === RegType.FP) {
-            type = Formats.FloatingLoadStore;
-          } else {
-            type = Formats.GeneralLoadStore;
-          }
-
-          // Check that the registers are in bounds
-          if (operation[1].num > this._generalRegisters) {
-            throw new TokenError(
-              operation[1].pos,
-              "Destiny register number out of bounds",
-            );
-          }
-          if (operation[2].reg.num > this._generalRegisters) {
-            throw new TokenError(
-              operation[2].reg.pos,
-              "Adress register number out of bounds",
-            );
-          }
-          if (operation[2].address > this._memorySize) {
-            throw new TokenError(
-              operation[2].reg.pos,
-              "Memory address out of bounds",
-            );
-          }
-
-          instruction.setOperand(0, operation[1].num, operation[1].text);
-          instruction.setOperand(
-            1,
-            operation[2].address,
-            operation[2].address.toString(),
-          );
-          instruction.setOperand(
-            2,
-            operation[2].reg.num,
-            `(${operation[2].reg.text})`,
-          );
-        }
-
-        const expectedType = opcodeToFormat(instruction.opcode);
-        if (type !== expectedType) {
-          throw new TokenError(
-            pos,
-            `Invalid instruction format for ${
-              OpcodesNames[instruction.opcode]
-            }. Expected ${FormatsNames[expectedType]} format, got ${
-              FormatsNames[type]
-            } format or similar`,
-          );
-        }
-
-        return instruction;
-      },
-    );
-  }
+interface Opcode<T extends OpcodeType> {
+  kind: `${Capitalize<Lowercase<T>>}Opcode`;
+  mnemonic: T;
 }
+
+interface Immediate {
+  kind: "Immediate";
+  value: number;
+}
+
+interface GenericRegister<T extends RegisterKind> {
+  kind: `${T}Register`;
+  index: number;
+}
+
+type GeneralPurposeRegister = GenericRegister<RegisterKind.GeneralPurpose>;
+type FloatingPointRegister = GenericRegister<RegisterKind.FloatingPoint>;
+
+type Register = {
+  [T in RegisterKind]: GenericRegister<T>;
+}[RegisterKind];
+
+interface Label {
+  kind: "Label";
+  name: string;
+}
+
+interface Addressing {
+  kind: "Addressing";
+  offset: number;
+  address: number;
+}
+
+type Operand = Immediate | Register | Label | Addressing;
+
+type OperandSet<T extends Operand[]> = {
+  [Property in keyof T]: T[Property];
+};
+
+interface GenericInstruction<T extends OpcodeType, U extends Operand[] = []> {
+  kind: `${Capitalize<Lowercase<T>>}Instruction`;
+  opcode: Opcode<T>;
+  operands?: OperandSet<U>;
+}
+
+type NopInstruction = GenericInstruction<OpcodeMnemonic.NOP>;
+
+type AddInstruction = GenericInstruction<
+  OpcodeMnemonic.ADD,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type AddiInstruction = GenericInstruction<
+  OpcodeMnemonic.ADDI,
+  [GeneralPurposeRegister, GeneralPurposeRegister, Immediate]
+>;
+
+type SubInstruction = GenericInstruction<
+  OpcodeMnemonic.SUB,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type AddfInstruction = GenericInstruction<
+  OpcodeMnemonic.ADDF,
+  [FloatingPointRegister, FloatingPointRegister, FloatingPointRegister]
+>;
+
+type SubfInstruction = GenericInstruction<
+  OpcodeMnemonic.SUBF,
+  [FloatingPointRegister, FloatingPointRegister, FloatingPointRegister]
+>;
+
+type MultInstruction = GenericInstruction<
+  OpcodeMnemonic.MULT,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type MultfInstruction = GenericInstruction<
+  OpcodeMnemonic.MULTF,
+  [FloatingPointRegister, FloatingPointRegister, FloatingPointRegister]
+>;
+
+type OrInstruction = GenericInstruction<
+  OpcodeMnemonic.OR,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type AndInstruction = GenericInstruction<
+  OpcodeMnemonic.AND,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type XorInstruction = GenericInstruction<
+  OpcodeMnemonic.XOR,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type NorInstruction = GenericInstruction<
+  OpcodeMnemonic.NOR,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type SllvInstruction = GenericInstruction<
+  OpcodeMnemonic.SLLV,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type SrlvInstruction = GenericInstruction<
+  OpcodeMnemonic.SRLV,
+  [GeneralPurposeRegister, GeneralPurposeRegister, GeneralPurposeRegister]
+>;
+
+type LwInstruction = GenericInstruction<
+  OpcodeMnemonic.LW,
+  [GeneralPurposeRegister, Addressing]
+>;
+
+type LfInstruction = GenericInstruction<
+  OpcodeMnemonic.LF,
+  [FloatingPointRegister, Addressing]
+>;
+
+type SwInstruction = GenericInstruction<
+  OpcodeMnemonic.SW,
+  [GeneralPurposeRegister, Addressing]
+>;
+
+type SfInstruction = GenericInstruction<
+  OpcodeMnemonic.SF,
+  [FloatingPointRegister, Addressing]
+>;
+
+type BneInstruction = GenericInstruction<
+  OpcodeMnemonic.BNE,
+  [GeneralPurposeRegister, GeneralPurposeRegister, Label]
+>;
+
+type BeqInstruction = GenericInstruction<
+  OpcodeMnemonic.BEQ,
+  [GeneralPurposeRegister, GeneralPurposeRegister, Label]
+>;
+
+type BgtInstruction = GenericInstruction<
+  OpcodeMnemonic.BGT,
+  [GeneralPurposeRegister, GeneralPurposeRegister, Label]
+>;
+
+type Instruction =
+  | NopInstruction
+  | AddInstruction
+  | AddiInstruction
+  | SubInstruction
+  | AddfInstruction
+  | SubfInstruction
+  | MultInstruction
+  | MultfInstruction
+  | OrInstruction
+  | AndInstruction
+  | XorInstruction
+  | NorInstruction
+  | SllvInstruction
+  | SrlvInstruction
+  | LwInstruction
+  | LfInstruction
+  | SwInstruction
+  | SfInstruction
+  | BneInstruction
+  | BeqInstruction
+  | BgtInstruction;
+
+interface LabelDefinition {
+  kind: "LabelDefinition";
+  name: string;
+  lineNumber: number;
+}
+
+type Statement = Instruction | LabelDefinition;
+
+interface Program {
+  statements: Statement[];
+}
+
+/* Parser implementation */
+
+const applyRegister = ([registerPrefix, index]: [
+  Token<TokenKind>,
+  Immediate,
+]): Register => {
+  switch (registerPrefix.text) {
+    case "R":
+      return { kind: "GeneralPurposeRegister", index: index.value };
+    case "F":
+      return { kind: "FloatingPointRegister", index: index.value };
+  }
+};
+
+const applyImmediate = (value: Token<TokenKind.Immediate>): Immediate => {
+  return { kind: "Immediate", value: +value.text };
+};
+
+const applyLabel = (value: Token<TokenKind.Label>): Label => {
+  return { kind: "Label", name: value.text };
+};
+
+const applyLabelDefinition = (
+  value: Label,
+  [token, _]: [Token<TokenKind>, Token<TokenKind>],
+): LabelDefinition => {
+  return {
+    kind: "LabelDefinition",
+    name: value.name,
+    lineNumber: token.pos.rowBegin, // TODO: test this
+  };
+};
+
+const applyStatement = (value: Instruction | LabelDefinition): Statement => {
+  return value;
+};
+
+const applyProgram = (value: Statement[]): Program => {
+  return {
+    statements: value,
+  };
+};
+
+export const REGISTER = rule<TokenKind, Register>();
+export const IMMEDIATE = rule<TokenKind, Immediate>();
+export const LABEL = rule<TokenKind, Label>();
+export const INSTR = rule<TokenKind, Instruction>();
+export const LABELDEF = rule<TokenKind, LabelDefinition>();
+export const STAT = rule<TokenKind, Statement>();
+export const PROGRAM = rule<TokenKind, Program>();
+
+REGISTER.setPattern(
+  apply(seq(alt(str("R"), str("F")), IMMEDIATE), applyRegister),
+);
+IMMEDIATE.setPattern(apply(tok(TokenKind.Immediate), applyImmediate));
+LABEL.setPattern(apply(tok(TokenKind.Label), applyLabel));
+LABELDEF.setPattern(apply(kleft(LABEL, str(":")), applyLabelDefinition));
+STAT.setPattern(apply(alt(INSTR, LABELDEF), applyStatement));
+PROGRAM.setPattern(apply(rep_sc(STAT), applyProgram));
+
+export const parseProgram = (programString: string): Program | TokenError => {
+  try {
+    return expectSingleResult(
+      expectEOF(PROGRAM.parse(tokenizer.parse(programString))),
+    );
+  } catch (e) {
+    return e;
+  }
+};
