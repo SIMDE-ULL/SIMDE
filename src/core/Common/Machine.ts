@@ -2,14 +2,14 @@ import { Register } from "./Register";
 import {
   FunctionalUnit,
   FUNCTIONALUNITTYPESQUANTITY,
-  FunctionalUnitType,
+  type FunctionalUnitKind,
   FunctionalUnitNumbers,
 } from "./FunctionalUnit";
-import { Cache } from "./Cache";
+import type { Cache } from "./Cache";
 import { Memory } from "./Memory";
 
-const MACHINE_REGISTER_SIZE = 64;
-const MACHINE_MEMORY_SIZE = 1024;
+export const MACHINE_REGISTER_SIZE = 64;
+export const MACHINE_MEMORY_SIZE = 1024;
 const MACHINE_MEMORY_FAIL_LATENCY = 9;
 
 export interface MachineStatus {
@@ -156,10 +156,10 @@ export class Machine {
   }
 
   public changeFunctionalUnitLatency(
-    type: FunctionalUnitType,
+    type: FunctionalUnitKind,
     latency: number
   ) {
-    if (latency == 0) {
+    if (latency === 0) {
       return;
     }
 
@@ -168,7 +168,7 @@ export class Machine {
     }
   }
 
-  public changeFunctionalUnitNumber(type: FunctionalUnitType, num: number) {
+  public changeFunctionalUnitNumber(type: FunctionalUnitKind, num: number) {
     if (num === 0) {
       return;
     }

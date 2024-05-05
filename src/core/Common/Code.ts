@@ -1,7 +1,7 @@
 import { Instruction } from "./Instruction";
 
-import { CodeParser } from "./CodeParser";
-import { Machine } from "./Machine";
+import { parseProgram } from "./CodeParser";
+import { MACHINE_REGISTER_SIZE, MACHINE_MEMORY_SIZE } from "./Machine";
 
 export class Code {
   private _lines: number;
@@ -25,7 +25,7 @@ export class Code {
   }
 
   public load(input: string) {
-    let codeParsed = new CodeParser(input, Machine.NGP, Machine.MEMORY_SIZE);
+    const program = parseProgram(input, MACHINE_REGISTER_SIZE, MACHINE_MEMORY_SIZE);
 
     // First we need the number of code lines
     this._lines = codeParsed.lines;

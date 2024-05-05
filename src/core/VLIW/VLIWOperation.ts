@@ -1,16 +1,16 @@
 import { Instruction } from '../Common/Instruction';
-import { FunctionalUnitType } from '../Common/FunctionalUnit';
-import { Opcodes } from '../Common/Opcodes';
+import { FunctionalUnitKind } from '../Common/FunctionalUnit';
+import { OpcodeMnemonic } from '../Common/Opcode';
 
 export class VLIWOperation extends Instruction {
 
-    private _functionalUnitType: FunctionalUnitType;
+    private _functionalUnitType: FunctionalUnitKind;
     private _functionalUnitIndex: number;
     private _predicate: number;
     private _predicateTrue: number;
     private _predicateFalse: number;
 
-    constructor(operation?: VLIWOperation, instruction?: Instruction, type?: FunctionalUnitType, functionalUnitIndex?: number) {
+    constructor(operation?: VLIWOperation, instruction?: Instruction, type?: FunctionalUnitKind, functionalUnitIndex?: number) {
         if (operation) {
             super(operation);
             this.buildFromVLIWOperation(operation);
@@ -33,7 +33,7 @@ export class VLIWOperation extends Instruction {
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
+    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitKind, functionalUnitIndex: number) {
         this._functionalUnitType = functionalUnitType;
         this._functionalUnitIndex = functionalUnitIndex;
         this._predicate = 0;
@@ -42,7 +42,7 @@ export class VLIWOperation extends Instruction {
     }
 
     // Getters
-    public getFunctionalUnitType(): FunctionalUnitType {
+    public getFunctionalUnitType(): FunctionalUnitKind {
         return this._functionalUnitType;
     }
 
@@ -63,7 +63,7 @@ export class VLIWOperation extends Instruction {
     }
 
     // Setters
-    public setFunctionalUnitType(t: FunctionalUnitType) {
+    public setFunctionalUnitType(t: FunctionalUnitKind) {
         this._functionalUnitType = t;
     }
 

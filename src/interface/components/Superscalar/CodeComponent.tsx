@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { OpcodesNames } from '../../../core/Common/Opcodes';
+import { OpcodesNames } from '../../../core/Common/Opcode';
 
 import { Instruction } from '../../../core/Common/Instruction';
 

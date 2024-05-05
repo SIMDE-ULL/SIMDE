@@ -25,7 +25,7 @@ import {
 
 import { displayBatchResults } from '../interface/actions/modals';
 
-import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
+import { FunctionalUnitKind } from '../core/Common/FunctionalUnit';
 
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
 import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
@@ -345,65 +345,65 @@ export class SuperscalarIntegration extends MachineIntegration {
 
     saveSuperConfig = (superConfig) => {
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.INTEGERSUM,
+          FunctionalUnitKind.INTEGERSUM,
           +superConfig.integerSumQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.INTEGERSUM,
+          FunctionalUnitKind.INTEGERSUM,
           +superConfig.integerSumLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.INTEGERMULTIPLY,
+          FunctionalUnitKind.INTEGERMULTIPLY,
           +superConfig.integerMultQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.INTEGERMULTIPLY,
+          FunctionalUnitKind.INTEGERMULTIPLY,
           +superConfig.integerMultLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +superConfig.floatingSumQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +superConfig.floatingSumLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +superConfig.floatingSumQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
+          FunctionalUnitKind.FLOATINGSUM,
           +superConfig.floatingSumLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGMULTIPLY,
+          FunctionalUnitKind.FLOATINGMULTIPLY,
           +superConfig.floatingMultQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGMULTIPLY,
+          FunctionalUnitKind.FLOATINGMULTIPLY,
           +superConfig.floatingMultLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.JUMP,
+          FunctionalUnitKind.JUMP,
           +superConfig.jumpQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.JUMP,
+          FunctionalUnitKind.JUMP,
           +superConfig.jumpLatency,
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.MEMORY,
+          FunctionalUnitKind.MEMORY,
           +superConfig.memoryQuantity,
         );
         this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.MEMORY,
+          FunctionalUnitKind.MEMORY,
           +superConfig.memoryLatency,
         );
 
