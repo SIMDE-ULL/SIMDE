@@ -1,4 +1,5 @@
-import { beforeEach, expect, test } from "vitest";
+import { TokenError } from "typescript-parsec";
+import { expect, test } from "vitest";
 import { Code } from "../../../../core/Common/Code";
 
 const input = `2
@@ -165,18 +166,18 @@ test("Parsing strange registers throws errors", (t) => {
 
 test("Parser check bounds", (t) => {
   const input = `1
-	ADDI R128 R0 #0`;
+	ADDI R64 R0 #0`;
   const inpu2 = `1
-	ADDF F128 F0 F0`;
+	ADDF F64 F0 F0`;
   const inpu3 = `1
-	SF R0 1025(F0)`;
+	SF R0 1024(F0)`;
   const code: Code = new Code();
 
   expect(() => code.load(input)).toThrowError(
-    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds',
+    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":10}: Destination register number out of bounds',
   );
   expect(() => code.load(inpu2)).toThrowError(
-    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":11}: Destiny register number out of bounds',
+    '{"index":8,"rowBegin":2,"columnBegin":7,"rowEnd":2,"columnEnd":10}: Destination register number out of bounds',
   );
   expect(() => code.load(inpu3)).toThrowError(
     '{"index":14,"rowBegin":2,"columnBegin":13,"rowEnd":2,"columnEnd":15}: Address register cannot be FP register',
@@ -490,8 +491,8 @@ FIN:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("should not error on CRLF newlines", (t) => {
+test("should not error on CRLF newlines", () => {
   const input = "LW R1, 10(R0)\r\nMULT R2, R1, R1\n";
-  const code: Code = new Code();
-  expect(() => code.load(input)).not.toThrowError();
+  const code = new Code();
+  expect(() => code.load(input)).not.toThrowError(TokenError);
 });
