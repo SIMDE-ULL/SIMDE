@@ -323,7 +323,7 @@ export class CodeParser {
           if (operation[2].reg.num >= this._generalRegisters) {
             throw new TokenError(
               operation[2].reg.pos,
-              "Adress register number out of bounds",
+              "Address register number out of bounds",
             );
           }
           if (operation[2].address >= this._memorySize) {
