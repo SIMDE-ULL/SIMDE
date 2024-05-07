@@ -189,7 +189,7 @@ export class CodeParser {
     );
   }
 
-  private genOperationParser() {
+  private genOperationParser = () => {
     return apply(
       alt_sc(
         seq(opcodeParser, regParser, regParser, regParser),
@@ -236,18 +236,14 @@ export class CodeParser {
             type = Formats.GeneralRegisterAndInmediate;
 
             // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Destiny register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
+            this.assertRegisterIndexBoundaries(
+              operation[1],
+              "Destination register number out of bounds",
+            );
+            this.assertRegisterIndexBoundaries(
+              operation[2],
+              "Operand 1 register number out of bounds",
+            );
 
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].num, operation[2].text);
@@ -279,24 +275,18 @@ export class CodeParser {
             }
 
             // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Destiny register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
-            if (operation[3].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[3].pos,
-                "Operand 2 register number out of bounds",
-              );
-            }
+            this.assertRegisterIndexBoundaries(
+              operation[1],
+              "Destination register number out of bounds",
+            );
+            this.assertRegisterIndexBoundaries(
+              operation[2],
+              "Operand 1 register number out of bounds",
+            );
+            this.assertRegisterIndexBoundaries(
+              operation[3],
+              "Operand 2 register number out of bounds",
+            );
 
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].num, operation[2].text);
@@ -305,18 +295,14 @@ export class CodeParser {
             type = Formats.Jump;
 
             // Check that the registers are in bounds
-            if (operation[1].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[1].pos,
-                "Operand 1 register number out of bounds",
-              );
-            }
-            if (operation[2].num > this._generalRegisters) {
-              throw new TokenError(
-                operation[2].pos,
-                "Operand 2 register number out of bounds",
-              );
-            }
+            this.assertRegisterIndexBoundaries(
+              operation[1],
+              "Operand 1 register number out of bounds",
+            );
+            this.assertRegisterIndexBoundaries(
+              operation[2],
+              "Operand 2 register number out of bounds",
+            );
 
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].num, operation[2].text);
@@ -330,19 +316,17 @@ export class CodeParser {
           }
 
           // Check that the registers are in bounds
-          if (operation[1].num > this._generalRegisters) {
-            throw new TokenError(
-              operation[1].pos,
-              "Destiny register number out of bounds",
-            );
-          }
-          if (operation[2].reg.num > this._generalRegisters) {
+          this.assertRegisterIndexBoundaries(
+            operation[1],
+            "Operand 1 register number out of bounds",
+          );
+          if (operation[2].reg.num >= this._generalRegisters) {
             throw new TokenError(
               operation[2].reg.pos,
-              "Adress register number out of bounds",
+              "Address register number out of bounds",
             );
           }
-          if (operation[2].address > this._memorySize) {
+          if (operation[2].address >= this._memorySize) {
             throw new TokenError(
               operation[2].reg.pos,
               "Memory address out of bounds",
@@ -377,5 +361,14 @@ export class CodeParser {
         return instruction;
       },
     );
-  }
+  };
+
+  private assertRegisterIndexBoundaries = (
+    register: Reg,
+    errorMessage: string,
+  ) => {
+    if (register.num >= this._generalRegisters) {
+      throw new TokenError(register.pos, errorMessage);
+    }
+  };
 }
