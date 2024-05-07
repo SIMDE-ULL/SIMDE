@@ -13,6 +13,13 @@ export class DependencyChecker {
         switch (operation.opcode) {
             case Opcodes.ADD:
             case Opcodes.ADDI:
+            case Opcodes.SUB:
+            case Opcodes.SRLV:
+            case Opcodes.SLLV:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.XOR:
+            case Opcodes.NOR:
                 if (checkGPR[operation.getOperand(0)].latency < functionalUnitLatencies[FunctionalUnitType.INTEGERSUM]) {
                     checkGPR[operation.getOperand(0)].latency = functionalUnitLatencies[FunctionalUnitType.INTEGERSUM];
                     checkGPR[operation.getOperand(0)].register = operation.id;
@@ -64,6 +71,13 @@ export class DependencyChecker {
         switch (operation.opcode) {
             case Opcodes.ADD:
             case Opcodes.MULT:
+            case Opcodes.SUB:
+            case Opcodes.SRLV:
+            case Opcodes.SLLV:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.XOR:
+            case Opcodes.NOR:
                 if (((checkGPR[operation.getOperand(1)].latency > 0) && (checkGPR[operation.getOperand(1)].register < operation.id))
                     || ((checkGPR[operation.getOperand(2)].latency > 0) && (checkGPR[operation.getOperand(2)].register < operation.id))) {
                     result = false;
@@ -119,6 +133,13 @@ export class DependencyChecker {
         switch (operation.opcode) {
             case Opcodes.ADD:
             case Opcodes.MULT:
+            case Opcodes.SUB:
+            case Opcodes.SRLV:
+            case Opcodes.SLLV:
+            case Opcodes.OR:
+            case Opcodes.AND:
+            case Opcodes.XOR:
+            case Opcodes.NOR:
                 result = NaTGP[operation.getOperand(1)] || NaTGP[operation.getOperand(2)];
                 break;
             case Opcodes.ADDI:
