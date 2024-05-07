@@ -80,7 +80,7 @@ export class FunctionalUnit {
 
   constructor(
     private _type: FunctionalUnitType,
-    private _latency: number = FunctionalUnitLantencies[_type]
+    private _latency: number = FunctionalUnitLantencies[_type],
   ) {
     this._currentBlankTimeUnits = this._latency - 1;
   }
@@ -112,7 +112,7 @@ export class FunctionalUnit {
     this._currentBlankTimeUnits++;
     this._currentBlankTimeUnits = Math.min(
       this._currentBlankTimeUnits,
-      this._latency - 1
+      this._latency - 1,
     ); // it cannot be more than the latency
   }
 
@@ -134,16 +134,20 @@ export class FunctionalUnit {
   }
 
   public getReadyInstructionUid(): number {
+    return this.getReadyInstruction()?.uid || -1;
+  }
+
+  public getReadyInstruction(): Instruction {
     return this._instructions.length > 0 &&
-      this._instructions[0].blankTimeUnitsAhead == 0
-      ? this._instructions[0].instruction.uid
-      : -1;
+      this._instructions[0].blankTimeUnitsAhead === 0
+      ? this._instructions[0].instruction
+      : null;
   }
 
   // return the execution result of the instruction ready in the current cycle, or null if none
   public executeReadyInstruction(
     firstValue: number = 0,
-    secondValue: number = 0
+    secondValue: number = 0,
   ): FunctionalUnitResult {
     if (
       this._instructions.length == 0 ||

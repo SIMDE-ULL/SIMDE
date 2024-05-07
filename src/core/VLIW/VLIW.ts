@@ -1,7 +1,7 @@
 import { Machine } from '../Common/Machine';
 import { Opcodes } from '../Common/Opcodes';
 import { VLIWCode } from './VLIWCode';
-import { FunctionalUnit, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
+import { FunctionalUnit, FunctionalUnitResult, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
 import { DependencyChecker, Check } from './DependencyChecker';
 import { VLIWError } from './VLIWError';
 import { VLIWOperation } from './VLIWOperation';
@@ -150,15 +150,29 @@ export class VLIW extends Machine {
                     pending = true;
                 }
 
+                const instToExecute = this.functionalUnit[i][
+                  j
+                ].getReadyInstruction() as VLIWOperation;
 
-                let execution = this.functionalUnit[i][j].executeReadyInstruction();
-                let operation: any = (execution != null) ? execution.instruction : null;
-
-                if (operation != null) {
-                    if (this._predR[operation.getPred()]) {
-                        this.runOperation(operation, this.functionalUnit[i][j]);
-                    }
+                if (instToExecute && this._predR[instToExecute.getPred()]) {
+                  const registerFile = instToExecute.isDestinyRegisterFloat()
+                    ? this._fpr
+                    : this._gpr;
+                  const firstOperand =
+                    registerFile.content[
+                      instToExecute.getFirstOperandRegister()
+                    ];
+                  const secondOperand = instToExecute.hasImmediateOperand()
+                    ? instToExecute.getImmediateOperand()
+                    : registerFile.content[
+                        instToExecute.getSecondOperandRegister()
+                      ];
+                  const execution = this.functionalUnit[i][
+                    j
+                  ].executeReadyInstruction(firstOperand, secondOperand);
+                  this.runOperation(execution, this.functionalUnit[i][j]);
                 }
+
                 this.functionalUnit[i][j].tic();
             }
         }
@@ -233,65 +247,51 @@ export class VLIW extends Machine {
         this._predR[0] = true;
     }
 
-    private runOperation(operation: VLIWOperation, functionalUnit: FunctionalUnit) {
-        switch (operation.opcode) {
-            case Opcodes.ADD:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + this._gpr.content[operation.getOperand(2)], true);
-                break;
-            case Opcodes.MULT:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] * this._gpr.content[operation.getOperand(2)], true);
-                break;
-            case Opcodes.ADDI:
-                this._gpr.setContent(operation.getOperand(0), this._gpr.content[operation.getOperand(1)] + operation.getOperand(2), true);
-                break;
-            case Opcodes.ADDF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] + this._fpr.content[operation.getOperand(2)], true);
-                break;
-            case Opcodes.MULTF:
-                this._fpr.setContent(operation.getOperand(0), this._fpr.content[operation.getOperand(1)] * this._fpr.content[operation.getOperand(2)], true);
-                break;
-            case Opcodes.SW:
-                this._memory.setData(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._gpr.content[operation.getOperand(0)]);
-                break;
-            case Opcodes.SF:
-                this._memory.setData(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1), this._fpr.content[operation.getOperand(0)]);
-                break;
-            case Opcodes.LW: {
-                const datumInteger = this._memory.getData(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+    private runOperation(execution: FunctionalUnitResult, functionalUnit: FunctionalUnit) {
+        const operation = execution.instruction;
+        const registerFile = operation.isDestinyRegisterFloat()
+          ? this._fpr
+          : this._gpr;
 
-                //hack: as we dont have a well made error handling, intercept the error and just throw it
-                if (datumInteger instanceof Error) {
-                    throw datumInteger;
-                }
+        if (operation.isLoadInstruction()) {
+          // load and stores are a special cases, because they need to access the memory
+          const natFile = operation.isDestinyRegisterFloat()
+            ? this._NaTFP
+            : this._NaTGP;
+          const datum = this._memory.getData(
+            this._gpr.content[operation.getSecondOperandRegister()] +
+              operation.getAddressOperand(),
+          );
 
-                if (this._cache && !this._cache.success) {
-                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
-                }
+          //hack: as we dont have a well made error handling, intercept the error and just throw it
+          if (datum instanceof Error) {
+            throw datum;
+          }
 
-                this._gpr.setContent(operation.getOperand(0), datumInteger, true);
-                this._NaTGP[operation.getOperand(0)] = false;
-                break;
-            }
-            case Opcodes.LF: {
-                const datumFloat = this._memory.getData(this._gpr.content[operation.getOperand(2)] + operation.getOperand(1));
+          if (this._cache && !this._cache.success) {
+            functionalUnit.stall(
+              this._memoryFailLatency - functionalUnit.latency,
+            );
+          }
 
-                //hack: as we dont have a well made error handling, intercept the error and just throw it
-                if (datumFloat instanceof Error) {
-                    throw datumFloat;
-                }
-
-                if (this._cache && !this._cache.success) {
-                    functionalUnit.stall(this._memoryFailLatency - functionalUnit.latency);
-                }
-                
-                this._fpr.setContent(operation.getOperand(0), datumFloat, true);
-                this._NaTFP[operation.getOperand(0)] = false;
-                break;
-            }
-            default:
-                break;
+          registerFile.setContent(operation.getDestinyRegister(), datum, true);
+          natFile[operation.getDestinyRegister()] = false;
+        } else if (operation.isStoreInstruction()) {
+          this._memory.setData(
+            this._gpr.content[operation.getSecondOperandRegister()] +
+              operation.getAddressOperand(),
+            registerFile.content[operation.getFirstOperandRegister()],
+          );
+        } else {
+          // if the operation is not a load or store, then it is a register operation
+          registerFile.setContent(
+            operation.getDestinyRegister(),
+            execution.result,
+            true,
+          );
         }
-        this._gpr.setContent(0, 0, true);
+
+        // this is a old undocumented hack probably to avoid the 0 predication register to be set to false
         this._predR[0] = true;
     }
 
