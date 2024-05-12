@@ -24,8 +24,8 @@ dependencies:
     specifier: ^23.0.0
     version: 23.11.3
   i18next-browser-languagedetector:
-    specifier: 7.2.1
-    version: 7.2.1
+    specifier: 8.0.0
+    version: 8.0.0
   i18next-http-backend:
     specifier: ^2.2.0
     version: 2.5.1
@@ -838,7 +838,7 @@ packages:
       react: '>=16.14.0'
       react-dom: '>=16.14.0'
     dependencies:
-      '@babel/runtime': 7.24.0
+      '@babel/runtime': 7.24.5
       '@popperjs/core': 2.11.8
       '@react-aria/ssr': 3.9.2(react@18.3.1)
       '@restart/hooks': 0.4.16(react@18.3.1)
@@ -1465,7 +1465,7 @@ packages:
   /dom-helpers@5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
     dependencies:
-      '@babel/runtime': 7.24.0
+      '@babel/runtime': 7.24.5
       csstype: 3.1.3
     dev: false
 
@@ -1741,10 +1741,10 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /i18next-browser-languagedetector@7.2.1:
-    resolution: {integrity: sha512-h/pM34bcH6tbz8WgGXcmWauNpQupCGr25XPp9cZwZInR9XHSjIFDYp1SIok7zSPsTOMxdvuLyu86V+g2Kycnfw==}
+  /i18next-browser-languagedetector@8.0.0:
+    resolution: {integrity: sha512-zhXdJXTTCoG39QsrOCiOabnWj2jecouOqbchu3EfhtSHxIB5Uugnm9JaizenOy39h7ne3+fLikIjeW88+rgszw==}
     dependencies:
-      '@babel/runtime': 7.24.0
+      '@babel/runtime': 7.24.5
     dev: false
 
   /i18next-http-backend@2.5.1:
@@ -2467,7 +2467,7 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
     dependencies:
-      '@babel/runtime': 7.24.0
+      '@babel/runtime': 7.24.5
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
@@ -2942,7 +2942,7 @@ packages:
     peerDependencies:
       react: '>=15.0.0'
     dependencies:
-      '@babel/runtime': 7.24.0
+      '@babel/runtime': 7.24.5
       '@types/react': 18.3.1
       invariant: 2.2.4
       react: 18.3.1
