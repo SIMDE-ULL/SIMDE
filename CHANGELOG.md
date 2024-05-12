@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.5.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.4.0...v2.5.0) (2024-05-12)
+
+
+### Features
+
+* implement direct-mapped cache, cache config modal ([#158](https://github.com/SIMDE-ULL/SIMDE/issues/158)) ([15af20a](https://github.com/SIMDE-ULL/SIMDE/commit/15af20a06c30518fbac7e7305ed4b72285968c53))
+* **parser:** make line count header optional ([#143](https://github.com/SIMDE-ULL/SIMDE/issues/143)) ([8e072fa](https://github.com/SIMDE-ULL/SIMDE/commit/8e072fa6439f3add0e431c7112aa113e367cfcf9))
+
+
+### Bug Fixes
+
+* accept CRLF newlines ([#151](https://github.com/SIMDE-ULL/SIMDE/issues/151)) ([aafda4e](https://github.com/SIMDE-ULL/SIMDE/commit/aafda4e704acf27356c96f647a60986b25f85880))
+* add VITE_CONFIG_BASE env var to set BASE in vite.config.ts ([#138](https://github.com/SIMDE-ULL/SIMDE/issues/138)) ([b4e1a47](https://github.com/SIMDE-ULL/SIMDE/commit/b4e1a47bcf62dc735b5146a2006a77667c376539))
+* correct operand boundary checking ([#166](https://github.com/SIMDE-ULL/SIMDE/issues/166)) ([99faee3](https://github.com/SIMDE-ULL/SIMDE/commit/99faee3a8e73e40d9ff7816699bd2fbf417e1b0e))
+* **deps:** update dependency i18next-browser-languagedetector to v8 ([#167](https://github.com/SIMDE-ULL/SIMDE/issues/167)) ([3b4dab1](https://github.com/SIMDE-ULL/SIMDE/commit/3b4dab16219069622468bb9c2406fd09a6654625))
+* **interface:** show load code errors ([#145](https://github.com/SIMDE-ULL/SIMDE/issues/145)) ([b9010f8](https://github.com/SIMDE-ULL/SIMDE/commit/b9010f81d527b0fb1c5ad04e70ce8a92c6ffdea2))
+* **VLIW:** implement missing ALU instructions ([#165](https://github.com/SIMDE-ULL/SIMDE/issues/165)) ([96b13c0](https://github.com/SIMDE-ULL/SIMDE/commit/96b13c0165a1739ac7ba7b6af10c8b5c5a1895db))
+
 ## [2.4.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.3.0...v2.4.0) (2024-03-31)
 
 
