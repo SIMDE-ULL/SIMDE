@@ -11,7 +11,7 @@
     <img width="480px" alt="SIMDE Logo" src="https://github.com/SIMDE-ULL/SIMDE/assets/25517190/6af8eb99-8b46-4f08-a78a-195863fff035" />
 </p>
 
-> <p align="center">🖥️ Run <b>SIMDE</b> directly from your browser: <a href="https://SIMDE-ULL.github.io/SIMDE/">https://SIMDE-ULL.github.io/SIMDE/</a></p>
+> <p align="center">🖥️ Run <b>SIMDE</b> directly from your browser: <a href="https://simde.net/">https://simde.net/</a></p>
 
 __SIMDE__ is a computer simulator with a strong focus on assisting in learning and education. As a didactic simulator, SIMDE aims to supercharge the teaching of [computer architecture]((https://en.wikipedia.org/wiki/Computer_architecture)) principles with a pragmatic, _learn-by-doing_ approach.
 
@@ -41,7 +41,7 @@ When used in supporting educational practices, SIMDE shines both for reproducing
 
 SIMDE can be accessed directly from any modern browser of your choice at:
 
- [https://SIMDE-ULL.github.io/SIMDE/](https://SIMDE-ULL.github.io/SIMDE/)
+ [https://simde.net/](https://simde.net/)
 
 ## Building from sources
 
