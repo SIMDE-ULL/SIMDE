@@ -8,7 +8,7 @@
   description = "Educational computer architecture simulator";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,8 +41,7 @@
             inherit system;
             pkgs = nixpkgs.legacyPackages.${system};
             commonPackages = builtins.attrValues {
-              inherit (pkgs) nodejs;
-              inherit (pkgs.nodePackages) pnpm;
+              inherit (pkgs) nodejs pnpm;
             };
             inherit (pnpm2nix.packages.${system}) mkPnpmPackage;
           });
