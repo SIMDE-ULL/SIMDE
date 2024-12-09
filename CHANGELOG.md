@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.5.1](https://github.com/SIMDE-ULL/SIMDE/compare/v2.5.0...v2.5.1) (2024-12-09)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#185](https://github.com/SIMDE-ULL/SIMDE/issues/185)) ([9b0a878](https://github.com/SIMDE-ULL/SIMDE/commit/9b0a8788de8c297824640ab4d34efa9ec18ff876))
+* **deps:** update all non-major dependencies ([#205](https://github.com/SIMDE-ULL/SIMDE/issues/205)) ([785e1f0](https://github.com/SIMDE-ULL/SIMDE/commit/785e1f08fed598e278d5322c96a5f12ad7e3c7d4))
+* **deps:** update all non-major dependencies ([#209](https://github.com/SIMDE-ULL/SIMDE/issues/209)) ([6f2b8c4](https://github.com/SIMDE-ULL/SIMDE/commit/6f2b8c4075ecbd52e5899c09e10a6f0e0907e6a3))
+* **deps:** update dependency react-i18next to v15 ([#183](https://github.com/SIMDE-ULL/SIMDE/issues/183)) ([ccb8552](https://github.com/SIMDE-ULL/SIMDE/commit/ccb855238bc80145e6c30ff7376157bb3c5842ac))
+
 ## [2.5.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.4.0...v2.5.0) (2024-05-12)
 
 
