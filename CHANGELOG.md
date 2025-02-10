@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.5.1](https://github.com/SIMDE-ULL/SIMDE/compare/v2.5.0...v2.5.1) (2025-02-10)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#185](https://github.com/SIMDE-ULL/SIMDE/issues/185)) ([9b0a878](https://github.com/SIMDE-ULL/SIMDE/commit/9b0a8788de8c297824640ab4d34efa9ec18ff876))
+* **deps:** update all non-major dependencies ([#205](https://github.com/SIMDE-ULL/SIMDE/issues/205)) ([785e1f0](https://github.com/SIMDE-ULL/SIMDE/commit/785e1f08fed598e278d5322c96a5f12ad7e3c7d4))
+* **deps:** update all non-major dependencies ([#209](https://github.com/SIMDE-ULL/SIMDE/issues/209)) ([6f2b8c4](https://github.com/SIMDE-ULL/SIMDE/commit/6f2b8c4075ecbd52e5899c09e10a6f0e0907e6a3))
+* **deps:** update all non-major dependencies ([#214](https://github.com/SIMDE-ULL/SIMDE/issues/214)) ([5050d9a](https://github.com/SIMDE-ULL/SIMDE/commit/5050d9ac1e9fda81b6f3f1f797965fbf810bb9ff))
+* **deps:** update all non-major dependencies ([#215](https://github.com/SIMDE-ULL/SIMDE/issues/215)) ([f5a8716](https://github.com/SIMDE-ULL/SIMDE/commit/f5a87161c977d378a013e366cfca425af5fef1e2))
+* **deps:** update all non-major dependencies ([#216](https://github.com/SIMDE-ULL/SIMDE/issues/216)) ([f042b77](https://github.com/SIMDE-ULL/SIMDE/commit/f042b7777346b8b022889660141b738aff0101fb))
+* **deps:** update all non-major dependencies ([#217](https://github.com/SIMDE-ULL/SIMDE/issues/217)) ([c1fcf8a](https://github.com/SIMDE-ULL/SIMDE/commit/c1fcf8a4b7a8059db7f94a0489292c0bb3a08ee4))
+* **deps:** update all non-major dependencies ([#220](https://github.com/SIMDE-ULL/SIMDE/issues/220)) ([022ae3b](https://github.com/SIMDE-ULL/SIMDE/commit/022ae3bf6e2011b8169c78eb6e616acaa8b97fa1))
+* **deps:** update all non-major dependencies ([#221](https://github.com/SIMDE-ULL/SIMDE/issues/221)) ([7971ba8](https://github.com/SIMDE-ULL/SIMDE/commit/7971ba849c3125c3eb6ebd367ff8a598ae7667f6))
+* **deps:** update all non-major dependencies ([#222](https://github.com/SIMDE-ULL/SIMDE/issues/222)) ([7f631ba](https://github.com/SIMDE-ULL/SIMDE/commit/7f631ba173fee285efbb77aa1bd5cf9dba96be2e))
+* **deps:** update dependency react-i18next to v15 ([#183](https://github.com/SIMDE-ULL/SIMDE/issues/183)) ([ccb8552](https://github.com/SIMDE-ULL/SIMDE/commit/ccb855238bc80145e6c30ff7376157bb3c5842ac))
+
 ## [2.5.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.4.0...v2.5.0) (2024-05-12)
 
 
