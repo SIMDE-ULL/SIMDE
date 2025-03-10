@@ -1,6 +1,6 @@
+import { t } from "i18next";
 import { Suspense, useCallback, useState } from "react";
 import type { SimulatorLayoutProps } from "./Simulator.types";
-import { t } from "i18next";
 
 export default function SimulatorLayout({ simulators }: SimulatorLayoutProps) {
   const [simulator, setSimulator] = useState(null);
@@ -26,7 +26,7 @@ export default function SimulatorLayout({ simulators }: SimulatorLayoutProps) {
                 name="simulator"
                 id={simulator.name}
                 key={simulator.name}
-                style={{visibility: "hidden"}}
+                style={{ visibility: "hidden" }}
                 onClick={() => setSimulatorFromIndex(index)}
               />
               <label htmlFor={simulator.name} key={simulator.name}>

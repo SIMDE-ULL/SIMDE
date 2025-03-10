@@ -2,8 +2,16 @@ import { Suspense, lazy } from "react";
 import { SimulatorLayout } from "./layouts";
 
 const simulators = [
-  { name: "superscalar", component: lazy(() => import("./components/Superscalar/SuperscalarComponent")) },
-  { name: "vliw", component: lazy(() => import("./components/VLIW/VLIWComponent")) },
+  {
+    name: "superscalar",
+    component: lazy(
+      () => import("./components/Superscalar/SuperscalarComponent"),
+    ),
+  },
+  {
+    name: "vliw",
+    component: lazy(() => import("./components/VLIW/VLIWComponent")),
+  },
 ];
 
 const App = () => {
