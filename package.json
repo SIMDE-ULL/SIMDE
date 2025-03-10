@@ -62,8 +62,11 @@
     "vite-tsconfig-paths": "^5.0.0",
     "vitest": "^2.0.0"
   },
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.5.2",
   "engines": {
     "node": ">=18"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
   }
 }
