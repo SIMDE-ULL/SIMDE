@@ -1,27 +1,25 @@
-import * as React from "react";
-import {BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPageComponent from "./components/LandingPage/LandingPageComponent";
-import ProjectPage from "./components/LandingPage/ProjectPageComponent";
+import { Suspense, lazy } from "react";
+import { SimulatorLayout } from "./layouts";
 
-import SuperscalarComponent from "./components/Superscalar/SuperscalarComponent";
-import VLIWComponent from "./components/VLIW/VLIWComponent";
-
+const simulators = [
+  {
+    name: "superscalar",
+    component: lazy(
+      () => import("./components/Superscalar/SuperscalarComponent"),
+    ),
+  },
+  {
+    name: "vliw",
+    component: lazy(() => import("./components/VLIW/VLIWComponent")),
+  },
+];
 
 const App = () => {
-    return (
-        <BrowserRouter basename={import.meta.env.BASE_URL} >
-            <div className="pagebody">
-            <React.Suspense fallback={<div>Loading... </div>}>
-                <Routes>
-                    <Route path="/" element={<LandingPageComponent/>} />
-                    <Route path="/superscalar" element={<SuperscalarComponent />} />
-                    <Route path="/vliw" element={<VLIWComponent />} />
-                    <Route path="/project" element={<ProjectPage />} />
-                </Routes>
-            </React.Suspense>
-            </div>
-        </BrowserRouter>
-   );
-}
+  return (
+    <Suspense fallback={<div>Loading... </div>}>
+      <SimulatorLayout simulators={simulators} />
+    </Suspense>
+  );
+};
 
 export default App;
