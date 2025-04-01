@@ -7,13 +7,6 @@ ADDI	R2 R0 #50
 ADD     R3 R0 R2
 `;
 
-const inputWithComments = `// This is a comment
-// And just another comment
-2
-ADDI	R2 R0 #50
-ADD     R3 R0 R2
-`;
-
 const input2 = `1
 LF F0 (R4)
 `;
@@ -59,9 +52,36 @@ test("Lines counter can be ommited", (t) => {
   expect(3).toBe(code.lines);
 });
 
-test("Commentaries on top should not affect the parsing", (t) => {
-  const code: Code = new Code();
-  code.load(inputWithComments);
+test("Code comments on top should not affect the parsing", (t) => {
+  // Code input with comments at the beginning of the file
+  const input = `// This is a comment
+	// And just another comment
+	ADDI	R2 R0 #50
+	ADD     R3 R0 R2
+	`;
+  const code = new Code();
+  code.load(input);
+
+  expect(2).toBe(code.lines);
+});
+
+test("Inline code comments should not affect the parsing", (t) => {
+  // Code input with an inline comment
+  const input = `ADD R0 R1 R2 // Comment should work here
+	`;
+  const code = new Code();
+  code.load(input);
+
+  expect(1).toBe(code.lines);
+});
+
+test("Last line may include a comment", (t) => {
+  // Code input with a comment in last line
+  const input = `ADDI	R2 R0 #50
+	ADD     R3 R0 R2 // Comment should work here as well`;
+  const code = new Code();
+  code.load(input);
+
   expect(2).toBe(code.lines);
 });
 
