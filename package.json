@@ -1,6 +1,6 @@
 {
   "name": "simde",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Educational superscalar and VLIW simulator",
   "homepage": "https://github.com/SIMDE-ULL/SIMDE",
   "bugs": {
@@ -67,6 +67,9 @@
     "node": ">=18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild"
+    ]
   }
 }
