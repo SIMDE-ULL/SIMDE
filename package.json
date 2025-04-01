@@ -20,7 +20,7 @@
     "docs": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out build/docs",
     "fmt": "biome format --write ./src",
     "lint": "biome lint --apply ./src",
-    "test": "vitest --run",
+    "test": "vitest run --dir ./src",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
