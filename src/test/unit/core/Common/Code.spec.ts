@@ -85,6 +85,17 @@ test("Last line may include a comment", (t) => {
   expect(2).toBe(code.lines);
 });
 
+test("Lines may end with CRLF style newlines", (t) => {
+  // Code input with CRLF newlines
+  const input =
+    "ADDI\tR2 R0 #50\r\n\t  ADD     R3 R0 R2 // Comment right before CRLF \r\n";
+
+  const code = new Code();
+  code.load(input);
+
+  expect(2).toBe(code.lines);
+});
+
 test("Parsing operand errors are being thrown", (t) => {
   const input = `3
         LF F1 (R2)

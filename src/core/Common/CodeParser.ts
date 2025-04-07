@@ -66,7 +66,7 @@ const tokenizer = buildLexer([
   [false, /^\,/g, Tokens.Comma],
   [false, /^[ \t\v\f]+/g, Tokens.Space],
   [false, /^\r?\n/g, Tokens.NewLine],
-  [false, /^\/\/.*(\n|$)/g, Tokens.Comment],
+  [false, /^\/\/.*(\r?\n|$)/g, Tokens.Comment],
 ]);
 
 const inmParser = apply(
