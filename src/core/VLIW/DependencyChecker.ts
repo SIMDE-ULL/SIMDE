@@ -1,12 +1,33 @@
+import { FunctionalUnitType } from "../Common/FunctionalUnit";
 import { Opcodes } from "../Common/Opcodes";
 import type { VLIWOperation } from "./VLIWOperation";
-import { FunctionalUnitType } from "../Common/FunctionalUnit";
 
 export interface Check {
   latency: number;
   register: number;
 }
 
+/* TODO: refactor into const immutable object with functions,
+  rename to "dependency validator" or "validate dependencies"
+  ```ts
+  const {
+    checkSourceOperands,
+    checkSourceOperandsSafe,
+  } = DependencyValidator
+  // default check behavior
+  try {
+    checkSourceOperandsSafe(...)
+    ...
+  } catch (e: SourceOperandValidationError) {
+    ...
+  }
+
+  // noexcept / safe check
+  const { success } = checkSourceOperandsSafe(...)
+  if (!success) { ... }
+  ```
+*/
+// biome-ignore lint/complexity/noStaticOnlyClass: needs refactoring
 export class DependencyChecker {
   public static checkTargetOperation(
     operation: VLIWOperation,
@@ -92,8 +113,7 @@ export class DependencyChecker {
         break;
       default:
         throw new Error(
-          "Error at checkTargetOperation, unknown opcode: " +
-            Opcodes[operation.opcode],
+          `Error at checkTargetOperation, unknown opcode: ${Opcodes[operation.opcode]}`,
         );
     }
   }
@@ -186,8 +206,7 @@ export class DependencyChecker {
         break;
       default:
         throw new Error(
-          "Error at checkSourceOperands, unknown opcode: " +
-            Opcodes[operation.opcode],
+          `Error at checkSourceOperands, unknown opcode: ${Opcodes[operation.opcode]}`,
         );
     }
     return result;
@@ -198,7 +217,7 @@ export class DependencyChecker {
     NaTGP: boolean[],
     NaTFP: boolean[],
   ): boolean {
-    let result;
+    let result = true;
     switch (operation.opcode) {
       case Opcodes.ADD:
       case Opcodes.MULT:
@@ -241,7 +260,7 @@ export class DependencyChecker {
         break;
       default:
         throw new Error(
-          "Error at checkNat, unknown opcode: " + Opcodes[operation.opcode],
+          `Error at checkNat, unknown opcode: ${Opcodes[operation.opcode]}`,
         );
     }
     return result;
