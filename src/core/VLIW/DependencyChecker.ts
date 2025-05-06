@@ -1,5 +1,5 @@
 import { Opcodes } from '../Common/Opcodes';
-import { VLIWOperation } from './VLIWOperation';
+import type { VLIWOperation } from './VLIWOperation';
 import { FunctionalUnitType } from '../Common/FunctionalUnit';
 
 export interface Check {
@@ -8,7 +8,6 @@ export interface Check {
 }
 
 export class DependencyChecker {
-
     public static checkTargetOperation(operation: VLIWOperation, checkGPR: Check[], checkFPR: Check[], functionalUnitLatencies: number[]) {
         switch (operation.opcode) {
             case Opcodes.ADD:
@@ -32,6 +31,7 @@ export class DependencyChecker {
                 }
                 break;
             case Opcodes.ADDF:
+            case Opcodes.SUBF:
                 if (checkFPR[operation.getOperand(0)].latency < functionalUnitLatencies[FunctionalUnitType.FLOATINGSUM]) {
                     checkFPR[operation.getOperand(0)].latency = functionalUnitLatencies[FunctionalUnitType.FLOATINGSUM];
                     checkFPR[operation.getOperand(0)].register = operation.id;
@@ -89,6 +89,7 @@ export class DependencyChecker {
                 }
                 break;
             case Opcodes.ADDF:
+            case Opcodes.SUBF:
             case Opcodes.MULTF:
                 if (((checkFPR[operation.getOperand(1)].latency > 0) && (checkFPR[operation.getOperand(1)].register < operation.id))
                     || ((checkFPR[operation.getOperand(2)].latency > 0) && (checkFPR[operation.getOperand(2)].register < operation.id))) {
@@ -128,7 +129,6 @@ export class DependencyChecker {
     }
 
     public static checkNat(operation: VLIWOperation, NaTGP: boolean[], NaTFP: boolean[]): boolean {
-
         let result;
         switch (operation.opcode) {
             case Opcodes.ADD:
@@ -146,6 +146,7 @@ export class DependencyChecker {
                 result = NaTGP[operation.getOperand(1)];
                 break;
             case Opcodes.ADDF:
+            case Opcodes.SUBF:
             case Opcodes.MULTF:
                 result = NaTFP[operation.getOperand(1)] || NaTFP[operation.getOperand(2)];
                 break;
