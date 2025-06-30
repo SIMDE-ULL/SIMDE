@@ -30,8 +30,8 @@ importers:
         specifier: 8.2.0
         version: 8.2.0
       i18next-http-backend:
-        specifier: ^2.2.0
-        version: 2.7.3
+        specifier: ^3.0.0
+        version: 3.0.2
       i18next-localstorage-cache:
         specifier: 1.1.1
         version: 1.1.1
@@ -1171,8 +1171,8 @@ packages:
   i18next-browser-languagedetector@8.2.0:
     resolution: {integrity: sha512-P+3zEKLnOF0qmiesW383vsLdtQVyKtCNA9cjSoKCppTKPQVfKd2W8hbVo5ZhNJKDqeM7BOcvNoKJOjpHh4Js9g==}
 
-  i18next-http-backend@2.7.3:
-    resolution: {integrity: sha512-FgZxrXdRA5u44xfYsJlEBL4/KH3f2IluBpgV/7riW0YW2VEyM8FzVt2XHAOi6id0Ppj7vZvCZVpp5LrGXnc8Ig==}
+  i18next-http-backend@3.0.2:
+    resolution: {integrity: sha512-PdlvPnvIp4E1sYi46Ik4tBYh/v/NbYfFFgTjkwFl0is8A18s7/bx9aXqsrOax9WUbeNS6mD2oix7Z0yGGf6m5g==}
 
   i18next-localstorage-cache@1.1.1:
     resolution: {integrity: sha512-6kgVSg48bhmYCHppMCMExKBiiGOrb85jQBQMPnAwxVumn/fkXJYEfxV0rdfL0EYcZT+ciOqw+7VIMWkTVuk6Ng==}
@@ -2927,7 +2927,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.27.6
 
-  i18next-http-backend@2.7.3:
+  i18next-http-backend@3.0.2:
     dependencies:
       cross-fetch: 4.0.0
     transitivePeerDependencies:
