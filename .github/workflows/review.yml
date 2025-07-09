@@ -16,4 +16,4 @@ jobs:
         with:
           node-version: 20.19.x
       - run: pnpm install --frozen-lockfile
-      - uses: mongolyy/reviewdog-action-biome@v1
+      - uses: mongolyy/reviewdog-action-biome@v2
