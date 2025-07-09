@@ -1,5 +1,37 @@
 # Changelog
 
+## [2.5.1](https://github.com/SIMDE-ULL/SIMDE/compare/v2.5.0...v2.5.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* allow comments in last line of code input ([#234](https://github.com/SIMDE-ULL/SIMDE/issues/234)) ([e78fe48](https://github.com/SIMDE-ULL/SIMDE/commit/e78fe481f87761ff855e514a9ded7395e1ea830a))
+* allow CRLF terminators after comment in code parser ([#238](https://github.com/SIMDE-ULL/SIMDE/issues/238)) ([65b40c1](https://github.com/SIMDE-ULL/SIMDE/commit/65b40c18a56cc3723d8247b8eba7e2d8dbdb6d53))
+* **deps:** update all non-major dependencies ([#185](https://github.com/SIMDE-ULL/SIMDE/issues/185)) ([9b0a878](https://github.com/SIMDE-ULL/SIMDE/commit/9b0a8788de8c297824640ab4d34efa9ec18ff876))
+* **deps:** update all non-major dependencies ([#205](https://github.com/SIMDE-ULL/SIMDE/issues/205)) ([785e1f0](https://github.com/SIMDE-ULL/SIMDE/commit/785e1f08fed598e278d5322c96a5f12ad7e3c7d4))
+* **deps:** update all non-major dependencies ([#209](https://github.com/SIMDE-ULL/SIMDE/issues/209)) ([6f2b8c4](https://github.com/SIMDE-ULL/SIMDE/commit/6f2b8c4075ecbd52e5899c09e10a6f0e0907e6a3))
+* **deps:** update all non-major dependencies ([#214](https://github.com/SIMDE-ULL/SIMDE/issues/214)) ([5050d9a](https://github.com/SIMDE-ULL/SIMDE/commit/5050d9ac1e9fda81b6f3f1f797965fbf810bb9ff))
+* **deps:** update all non-major dependencies ([#215](https://github.com/SIMDE-ULL/SIMDE/issues/215)) ([f5a8716](https://github.com/SIMDE-ULL/SIMDE/commit/f5a87161c977d378a013e366cfca425af5fef1e2))
+* **deps:** update all non-major dependencies ([#216](https://github.com/SIMDE-ULL/SIMDE/issues/216)) ([f042b77](https://github.com/SIMDE-ULL/SIMDE/commit/f042b7777346b8b022889660141b738aff0101fb))
+* **deps:** update all non-major dependencies ([#217](https://github.com/SIMDE-ULL/SIMDE/issues/217)) ([c1fcf8a](https://github.com/SIMDE-ULL/SIMDE/commit/c1fcf8a4b7a8059db7f94a0489292c0bb3a08ee4))
+* **deps:** update all non-major dependencies ([#220](https://github.com/SIMDE-ULL/SIMDE/issues/220)) ([022ae3b](https://github.com/SIMDE-ULL/SIMDE/commit/022ae3bf6e2011b8169c78eb6e616acaa8b97fa1))
+* **deps:** update all non-major dependencies ([#221](https://github.com/SIMDE-ULL/SIMDE/issues/221)) ([7971ba8](https://github.com/SIMDE-ULL/SIMDE/commit/7971ba849c3125c3eb6ebd367ff8a598ae7667f6))
+* **deps:** update all non-major dependencies ([#222](https://github.com/SIMDE-ULL/SIMDE/issues/222)) ([7f631ba](https://github.com/SIMDE-ULL/SIMDE/commit/7f631ba173fee285efbb77aa1bd5cf9dba96be2e))
+* **deps:** update all non-major dependencies ([#224](https://github.com/SIMDE-ULL/SIMDE/issues/224)) ([f414a0d](https://github.com/SIMDE-ULL/SIMDE/commit/f414a0d4f85d45596fcee4e8a33fece4d5dc7d8e))
+* **deps:** update all non-major dependencies ([#225](https://github.com/SIMDE-ULL/SIMDE/issues/225)) ([240b253](https://github.com/SIMDE-ULL/SIMDE/commit/240b253fe4ad62d7ffdd5f3c2fd24887fb976508))
+* **deps:** update all non-major dependencies ([#226](https://github.com/SIMDE-ULL/SIMDE/issues/226)) ([560a53e](https://github.com/SIMDE-ULL/SIMDE/commit/560a53e8dc3419805f9e4699b7b15e1d4cb330c0))
+* **deps:** update all non-major dependencies ([#237](https://github.com/SIMDE-ULL/SIMDE/issues/237)) ([57ef023](https://github.com/SIMDE-ULL/SIMDE/commit/57ef023f552dc79d80adae7c856d52663ded593d))
+* **deps:** update all non-major dependencies ([#242](https://github.com/SIMDE-ULL/SIMDE/issues/242)) ([207dcb0](https://github.com/SIMDE-ULL/SIMDE/commit/207dcb0e088c32b96679f6bf417455da52d962dd))
+* **deps:** update all non-major dependencies ([#243](https://github.com/SIMDE-ULL/SIMDE/issues/243)) ([b073954](https://github.com/SIMDE-ULL/SIMDE/commit/b073954f0f65690e33370eeed55b813a763e5dad))
+* **deps:** update all non-major dependencies ([#244](https://github.com/SIMDE-ULL/SIMDE/issues/244)) ([08faa92](https://github.com/SIMDE-ULL/SIMDE/commit/08faa92baa172d1ebf8181b3e24bf9a6c198608f))
+* **deps:** update all non-major dependencies ([#249](https://github.com/SIMDE-ULL/SIMDE/issues/249)) ([4503d90](https://github.com/SIMDE-ULL/SIMDE/commit/4503d902e7eb3f367af9528523cfc26f47ee9dae))
+* **deps:** update all non-major dependencies ([#251](https://github.com/SIMDE-ULL/SIMDE/issues/251)) ([00be029](https://github.com/SIMDE-ULL/SIMDE/commit/00be029387bbaae68b58233a0cb4db4f98f3d50c))
+* **deps:** update all non-major dependencies ([#254](https://github.com/SIMDE-ULL/SIMDE/issues/254)) ([f042dc4](https://github.com/SIMDE-ULL/SIMDE/commit/f042dc4a8a467c500c7e4efd957345d1d2046ad8))
+* **deps:** update all non-major dependencies ([#256](https://github.com/SIMDE-ULL/SIMDE/issues/256)) ([faffdd1](https://github.com/SIMDE-ULL/SIMDE/commit/faffdd14f6ff10fff94b43296b390cf2744de7b0))
+* **deps:** update all non-major dependencies ([#258](https://github.com/SIMDE-ULL/SIMDE/issues/258)) ([9247954](https://github.com/SIMDE-ULL/SIMDE/commit/92479542e6653679f44914292e4b95bcb7795fa3))
+* **deps:** update dependency react-i18next to v15 ([#183](https://github.com/SIMDE-ULL/SIMDE/issues/183)) ([ccb8552](https://github.com/SIMDE-ULL/SIMDE/commit/ccb855238bc80145e6c30ff7376157bb3c5842ac))
+* support SUBF opcode in VLIW DependencyChecker ([#246](https://github.com/SIMDE-ULL/SIMDE/issues/246)) ([d4af24e](https://github.com/SIMDE-ULL/SIMDE/commit/d4af24eaa5a2f3bb39da648e3b09f1b6a59eba80))
+
 ## [2.5.0](https://github.com/SIMDE-ULL/SIMDE/compare/v2.4.0...v2.5.0) (2024-05-12)
 
 
