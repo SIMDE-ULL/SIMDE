@@ -14,8 +14,9 @@ import i18n from "./i18n";
 import "./main.scss";
 
 /**
- * HTML document shell shared by the app, error boundary, and hydrate fallback.
- * Providers (Redux, i18n) live here so every route has access to global state.
+ * HTML document shell shared by the app, error boundary, and hydration fallback.
+ * Providers (Redux and i18n) are placed here so that every route has access
+ * to global state.
  */
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -34,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <noscript>
-          <p>JavaScript is required to run this application.</p>
+          <p>This application requires JavaScript to run.</p>
         </noscript>
         <Provider store={store}>
           <I18nextProvider i18n={i18n}>
@@ -56,8 +57,8 @@ export default function Root() {
 }
 
 /**
- * Shown while client-side JavaScript loads in SPA mode.
- * Prevents a blank screen flash during hydration.
+ * Displayed while client-side JavaScript loads in SPA mode.
+ * Prevents a blank screen during hydration.
  */
 export function HydrateFallback() {
   return <div>Loading...</div>;

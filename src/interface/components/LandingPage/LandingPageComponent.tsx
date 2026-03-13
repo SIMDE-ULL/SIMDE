@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from 'react-router';
-// import projectpage from "./ProjectPageComponent";  // Unused?
 import { useTranslation } from "react-i18next";
 
 
@@ -11,7 +10,7 @@ const LandingPageComponent = () => {
       <div className="page">
         <div className="topnav">
           <ul className="navul">
-            <b className="navbaricon"><img alt="icon" src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"></img></b>
+            <b className="navbaricon"><img alt="SIMDE navigation icon" src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"></img></b>
             <li className="pagetitle"><p>{t('landingPage.pagetitle')}</p></li>
             <li><Link to="/">{t('landingPage.home')}</Link></li>
             <li><Link to="/Project">{t('landingPage.project')}</Link></li>
@@ -28,7 +27,7 @@ const LandingPageComponent = () => {
                 </div>
               </div>
               <div className="thumbnail">
-                <img src="" alt=""></img>
+                <img src="" alt="Decorative placeholder"></img>
                 <div className="caption">
                   <h3>{t('landingPage.superscalar')}</h3>
                   <p>{t('landingPage.superscalar_description')}</p>
@@ -38,7 +37,7 @@ const LandingPageComponent = () => {
                 </div>
               </div>
               <div className="thumbnail">
-                <img src="" alt=""></img>
+                <img src="" alt="Decorative placeholder"></img>
                 <div className="caption">
                   <h3>{t('landingPage.vliw')}</h3>
                   <p>{t('landingPage.vliw_description')}</p>

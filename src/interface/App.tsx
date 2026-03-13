@@ -7,11 +7,16 @@ import SuperscalarComponent from "./components/Superscalar/SuperscalarComponent"
 import VLIWComponent from "./components/VLIW/VLIWComponent";
 
 
+/**
+ * Legacy application shell with BrowserRouter.
+ * Rendered inside the catchall route during migration.
+ * Routes defined here are moved to individual route modules incrementally.
+ */
 const App = () => {
     return (
         <BrowserRouter basename={import.meta.env.BASE_URL} >
             <div className="pagebody">
-            <React.Suspense fallback={<div>Loading... </div>}>
+            <React.Suspense fallback={<div>Loading...</div>}>
                 <Routes>
                     <Route path="/" element={<LandingPageComponent/>} />
                     <Route path="/superscalar" element={<SuperscalarComponent />} />
