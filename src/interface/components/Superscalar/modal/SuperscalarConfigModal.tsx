@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -9,282 +10,289 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
-import { type WithTranslation, withTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { bindActionCreators, type Dispatch, type UnknownAction } from "redux";
-
+import { useTranslation } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleSuperConfigModal } from "../../../actions/modals";
 import SuperscalarIntegration from "../../../../integration/superscalar-integration";
 import { BATCH_CONFIG, SUPERSCALAR_CONFIG } from "../../../utils/constants";
 import { CacheType } from "@/core/Common/Cache";
-import type { GlobalState } from "../../../reducers";
 
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    isSuperscalarConfigModalShown: state.Ui.isSuperConfigModalOpen,
-  };
+/** Superscalar functional unit and cache configuration. */
+interface SuperscalarConfig {
+  integerSumQuantity: number;
+  integerSumLatency: number;
+  integerMultQuantity: number;
+  integerMultLatency: number;
+  floatingSumQuantity: number;
+  floatingSumLatency: number;
+  floatingMultQuantity: number;
+  floatingMultLatency: number;
+  memoryQuantity: number;
+  memoryLatency: number;
+  jumpQuantity: number;
+  jumpLatency: number;
+  issueGrade: number;
+  cacheType: string;
+  cacheFailPercentage: number;
+  cacheFailLatency: number;
+  cacheBlocks: number;
+  cacheLines: number;
+}
+
+const DEFAULT_CONFIG: SuperscalarConfig = {
+  integerSumQuantity: 2,
+  integerSumLatency: 1,
+  integerMultQuantity: 2,
+  integerMultLatency: 2,
+  floatingSumQuantity: 2,
+  floatingSumLatency: 4,
+  floatingMultQuantity: 2,
+  floatingMultLatency: 6,
+  memoryQuantity: 2,
+  memoryLatency: 4,
+  jumpQuantity: 1,
+  jumpLatency: 2,
+  issueGrade: 4,
+  cacheType: CacheType.NO_CACHE,
+  cacheFailPercentage: 30,
+  cacheFailLatency: 9,
+  cacheBlocks: 4,
+  cacheLines: 16,
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => {
-  return { actions: bindActionCreators({ toggleSuperConfigModal }, dispatch) };
-};
+/** Modal for configuring superscalar functional units, issue grade, and cache. */
+export const SuperscalarConfigModal: React.FC = () => {
+  const [config, setConfig] = useState<SuperscalarConfig>(DEFAULT_CONFIG);
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isSuperscalarConfigModalShown = useAppSelector(
+    (state) => state.Ui.isSuperConfigModalOpen
+  );
 
-export type SuperscalarConfigModalProps = WithTranslation &
-  ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-export const SuperscalarConfigModal: React.FC = ({
-  isSuperscalarConfigModalShown,
-  actions,
-  t,
-}: SuperscalarConfigModalProps) => {
-  const defaultConfig = {
-    integerSumQuantity: 2,
-    integerSumLatency: 1,
-    integerMultQuantity: 2,
-    integerMultLatency: 2,
-    floatingSumQuantity: 2,
-    floatingSumLatency: 4,
-    floatingMultQuantity: 2,
-    floatingMultLatency: 6,
-    memoryQuantity: 2,
-    memoryLatency: 4,
-    jumpQuantity: 1,
-    jumpLatency: 2,
-    issueGrade: 4,
-    cacheType: CacheType.NO_CACHE,
-    cacheFailPercentage: 30,
-    cacheFailLatency: 9,
-    cacheBlocks: 4,
-    cacheLines: 16,
+  const saveConfig = () => {
+    SuperscalarIntegration.saveSuperConfig(config);
+    closeModal();
   };
 
-  const [config, setConfig] = React.useState(defaultConfig);
-
-	const saveConfig = () => {
-		SuperscalarIntegration.saveSuperConfig(config);
-		closeModal();
-	};
-
-  const updateNumConfig = (event) => {
+  const updateNumConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, [event.target.name]: Number(event.target.value) });
   };
 
-  const updateStrConfig = (event) => {
+  const updateStrConfig = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setConfig({ ...config, [event.target.name]: event.target.value });
   };
 
   const setDefaultConfig = () => {
-    setConfig(defaultConfig);
+    setConfig(DEFAULT_CONFIG);
   };
 
   const closeModal = () => {
-    actions.toggleSuperConfigModal(false);
+    dispatch(toggleSuperConfigModal(false));
   };
 
-	return (
-		<Modal show={isSuperscalarConfigModalShown} onHide={closeModal}>
-			<Modal.Header closeButton>
-				<Modal.Title>{t("superscalarModal.name")}</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>
-				<Stack gap={1}>
-					<Alert variant="warning">{t("superscalarModal.warning")}</Alert>
-					<Container>
-						<h5>{t("superscalarModal.functionalUnits")}</h5>
-						<Row>
-							<Col>
-								<Form>
-									<Stack gap={1}>
-										<Row>
-											<Form.Label column xs={{ offset: 4 }}>
-												{t("superscalarModal.quantity")}
-											</Form.Label>
-											<Form.Label column>
-												{t("superscalarModal.latency")}
-											</Form.Label>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.intAdd")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="integerSumQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.integerSumQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="integerSumLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.integerSumLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.intMult")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="integerMultQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.integerMultQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="integerMultLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.integerMultLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.floatAdd")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="floatingSumQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.floatingSumQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="floatingSumLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.floatingSumLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.floatMult")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="floatingMultQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.floatingMultQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="floatingMultLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.floatingMultLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.memory")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="memoryQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.memoryQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="memoryLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.memoryLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-										<Row>
-											<Form.Label column>
-												{t("functionalUnits.jump")}
-											</Form.Label>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="jumpQuantity"
-														type="number"
-														min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
-														max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
-														value={config.jumpQuantity}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-											<Col>
-												<Form.Group>
-													<Form.Control
-														name="jumpLatency"
-														type="number"
-														min={SUPERSCALAR_CONFIG.LATENCY_MIN}
-														max={SUPERSCALAR_CONFIG.LATENCY_MAX}
-														value={config.jumpLatency}
-														onChange={updateNumConfig}
-													/>
-												</Form.Group>
-											</Col>
-										</Row>
-									</Stack>
-								</Form>
-							</Col>
-						</Row>
-					</Container>
-					<hr />
-					<Container>
+  return (
+    <Modal show={isSuperscalarConfigModalShown} onHide={closeModal}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("superscalarModal.name")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Stack gap={1}>
+          <Alert variant="warning">{t("superscalarModal.warning")}</Alert>
+          <Container>
+            <h5>{t("superscalarModal.functionalUnits")}</h5>
+            <Row>
+              <Col>
+                <Form>
+                  <Stack gap={1}>
+                    <Row>
+                      <Form.Label column xs={{ offset: 4 }}>
+                        {t("superscalarModal.quantity")}
+                      </Form.Label>
+                      <Form.Label column>
+                        {t("superscalarModal.latency")}
+                      </Form.Label>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.intAdd")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="integerSumQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.integerSumQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="integerSumLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.integerSumLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.intMult")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="integerMultQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.integerMultQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="integerMultLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.integerMultLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.floatAdd")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="floatingSumQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.floatingSumQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="floatingSumLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.floatingSumLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.floatMult")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="floatingMultQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.floatingMultQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="floatingMultLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.floatingMultLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.memory")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="memoryQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.memoryQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="memoryLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.memoryLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Form.Label column>
+                        {t("functionalUnits.jump")}
+                      </Form.Label>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="jumpQuantity"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MIN}
+                            max={SUPERSCALAR_CONFIG.FUNCTIONAL_UNIT_MAX}
+                            value={config.jumpQuantity}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col>
+                        <Form.Group>
+                          <Form.Control
+                            name="jumpLatency"
+                            type="number"
+                            min={SUPERSCALAR_CONFIG.LATENCY_MIN}
+                            max={SUPERSCALAR_CONFIG.LATENCY_MAX}
+                            value={config.jumpLatency}
+                            onChange={updateNumConfig}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Stack>
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+          <hr />
+          <Container>
             <h5>{t("superscalarModal.parameters")}</h5>
             <Row>
               <Col>
@@ -320,7 +328,7 @@ export const SuperscalarConfigModal: React.FC = ({
                           <Form.Select
                             name="cacheType"
                             value={config.cacheType}
-                            onChange={updateStrConfig}
+                            onChange={updateStrConfig as any}
                           >
                             <option value={CacheType.NO_CACHE}>
                               {t("superscalarModal.noCache")}
@@ -424,20 +432,17 @@ export const SuperscalarConfigModal: React.FC = ({
               </Col>
             </Row>
           </Container>
-				</Stack>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button className="me-auto" onClick={setDefaultConfig}>
-					{t("superscalarModal.default")}
-				</Button>
-				<Button onClick={closeModal}>{t("commonButtons.close")}</Button>
-				<Button onClick={saveConfig}>{t("commonButtons.save")}</Button>
-			</Modal.Footer>
-		</Modal>
-	);
+        </Stack>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button className="me-auto" onClick={setDefaultConfig}>
+          {t("superscalarModal.default")}
+        </Button>
+        <Button onClick={closeModal}>{t("commonButtons.close")}</Button>
+        <Button onClick={saveConfig}>{t("commonButtons.save")}</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(SuperscalarConfigModal));
+export default SuperscalarConfigModal;

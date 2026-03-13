@@ -1,13 +1,12 @@
-import { toggleLoadModal } from "@/interface/actions/modals";
-import FileReaderInput from "@/interface/components/Common/FileReaderInput";
+import * as React from "react";
+import { useState } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { toggleLoadModal } from "@/interface/actions/modals";
+import FileReaderInput from "@/interface/components/Common/FileReaderInput";
 import { Code } from "@/core/Common/Code";
 import SuperscalarIntegration from "@/integration/superscalar-integration";
-import { useState } from "react";
 
 const DEFAULT_MODAL_CODE = `
 ADDI	R2 R0 #50
@@ -36,33 +35,22 @@ ADDF	F2 F1 F0
 SF	F2 1(R3)
 `.trim();
 
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.Ui.isLoadModalOpen,
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
-}
-
-export type LoadModalComponentProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-export const LoadModalComponent = ({
-  isLoadModalOpen,
-  actions,
-}: LoadModalComponentProps) => {
+/** Superscalar code loading modal with inline editor and file upload. */
+export const LoadModalComponent: React.FC = () => {
   const [modalError, setModalError] = useState("");
   const [modalCode, setModalCode] = useState(DEFAULT_MODAL_CODE);
-  const [t] = useTranslation();
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isLoadModalOpen = useAppSelector(
+    (state) => state.Ui.isLoadModalOpen
+  );
 
   const close = () => {
-    actions.toggleLoadModal(false);
+    dispatch(toggleLoadModal(false));
   };
 
-  const loadCodeFromFile = ([[fileContent]]) => {
-    setModalCode(fileContent.target.result);
+  const loadCodeFromFile = ([[fileContent]]: [ProgressEvent<FileReader>, File][][]) => {
+    setModalCode((fileContent.target as FileReader).result as string);
   };
 
   const loadCode = () => {
@@ -74,8 +62,7 @@ export const LoadModalComponent = ({
 
       setModalError("");
       close();
-    } catch (error) {
-      // Check if error has the property position. Checking instance of TokenError not working
+    } catch (error: any) {
       const errorMessage = error.pos
         ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
         ${error.errorMessage}`
@@ -140,4 +127,4 @@ export const LoadModalComponent = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadModalComponent);
+export default LoadModalComponent;
