@@ -60,10 +60,10 @@
         "load": "Load"
     },
     "intervalModal": {
-        "intervalMessage": "Select the elements that you would like to show. You can use numbers and intervals separated by commas. Ex: 1,4,6-8...",
+        "intervalMessage": "Select the elements to display. Use numbers and intervals separated by commas. For example: 1,4,6-8",
         "errors": {
             "noEmptyInput": "Form field required",
-            "inputOutOfRange": "There is a value exceeding the maximum visible range",
+            "inputOutOfRange": "A value exceeds the maximum visible range",
             "noInputNumber": "Only number fields are accepted"
         }
     },
@@ -71,7 +71,7 @@
         "name": "Superscalar Configuration",
         "functionalUnits": "Functional Units",
         "parameters": "Parameters",
-        "warning": "Execution will restart once configuration changes",
+        "warning": "Execution restarts when the configuration changes",
         "latency": "Latency",
         "quantity": "Quantity",
         "cacheFault": "Cache fault",
@@ -86,7 +86,7 @@
     },
     "vliwModal": {
         "name": "VLIW Configuration",
-        "warning": "Execution will restart once configuration changes",
+        "warning": "Execution restarts when the configuration changes",
         "latency": "Latency",
         "quantity": "Quantity",
         "cacheFault": "Cache fault",
@@ -125,7 +125,7 @@
     "VLIWInstructions": "VLIW Instructions",
     "predicate": "Predicate",
     "generalRegisters": "General Registers",
-    "floatRegisters": "Floating point Registers",
+    "floatRegisters": "Floating-Point Registers",
     "reorderBuffer": {
         "Inst": "Inst",
         "Destiny": "Destiny",
@@ -136,7 +136,7 @@
     "execution": {
         "stopped": "Execution stopped at breakpoint",
         "finished": "Execution finished",
-        "error": "There was an unexpected error during execution"
+        "error": "An unexpected error occurred during execution"
     },
     "batchModal": {
         "title": "Batch Execution",
@@ -145,8 +145,8 @@
         "cacheFaultLatency": "Cache fault latency"
     },
     "batchResults": {
-        "title": "Batch execution done",
-        "subtext": "Go to the stats tab to see the results",
+        "title": "Batch execution complete",
+        "subtext": "Go to the statistics tab to see the results",
         "download": "Download stats (JSON)"
     },
     "landingPage": {
@@ -156,11 +156,11 @@
         "home": "Home",
         "project": "Project",
         "superscalar": "Superscalar",
-        "superscalar_description": "Simulate the operation of a superscalar machine executing your code step by step!",
+        "superscalar_description": "Simulate the operation of a superscalar machine executing your code step by step.",
         "go": "Go",
         "vliw": "VLIW",
-        "vliw_description": "Simulate the operation of a VLIW machine by executing your code step by step!",
-        "licency": "@Released under GPLv3 licency"
+        "vliw_description": "Simulate the operation of a VLIW machine by executing your code step by step.",
+        "licency": "Released under the GPLv3 license"
 
     },
     "projectPage": {
@@ -168,16 +168,16 @@
         "home": "Home",
         "project": "Project",
         "watsimde": "What is SIMDEWeb?",
-        "simdedescription1": "SIMDE is a simulator to support the teaching of ILP architectures (Instructional level parallelism).",
-        "simdedescription2": "This simulator is a visual representation of a Superecalar machine execution and students can see how the instructions move through the multiple stages of the pipeline.",
+        "simdedescription1": "SIMDE is a simulator to support the teaching of ILP (instruction-level parallelism) architectures.",
+        "simdedescription2": "This simulator provides a visual representation of superscalar machine execution. Students can observe how instructions move through the multiple stages of the pipeline.",
         "simdedescription3": "This makes it easier to learn concepts such as the Tomasulo algorithm and the purpose of structures such as the reorder buffer.",
-        "tecnology": "Tecnology",
-        "tecnologydescription": "SIMDE is developed with TypeScript, React, Redux, Sass and Webpack.",
+        "tecnology": "Technology",
+        "tecnologydescription": "SIMDE is developed with TypeScript, React, Redux, Sass, and Webpack.",
         "howtouse": "How to use?",
         "howtousedescription": "Test and learn!",
         "problems": "Problems?",
         "problemsdescription": "You can check our documentation",
-        "licency": "@Released under GPLv3 licency"
+        "licency": "Released under the GPLv3 license"
        
     },
     "stats": {
@@ -209,14 +209,14 @@
             "issueNumber": "Issuing",
             "executeNumber": "Executing",
             "writeBackNumber": "On Write Back",
-            "commitNumber": "Commiting"
+            "commitNumber": "Committing"
         },
         "unitsUsage": "Units usage per cycle",
-        "instrStatuses": "Instructions statuses per cycle",
+        "instrStatuses": "Instruction statuses per cycle",
         "cycles": "Cycles per iteration",
-        "commitDiscard": "Commited vs Discarded instructions",
-        "commited": "Commited",
+        "commitDiscard": "Committed versus Discarded instructions",
+        "commited": "Committed",
         "discarded": "Discarded",
-        "statusAverage": "Per instruction status average cycles"
+        "statusAverage": "Average cycles per instruction status"
     }
 }
