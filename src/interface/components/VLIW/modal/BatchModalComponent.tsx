@@ -1,94 +1,66 @@
-import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
-import { bindActionCreators } from 'redux';
-import { toggleOptionsModal, toggleBatchModal } from '../../../actions/modals';
-import { connect } from 'react-redux';
-import VLIWIntegration from '../../../../integration/vliw-integration';
-import { VLIW_CONFIG, BATCH_CONFIG } from '../../../utils/constants';
+import * as React from "react";
+import { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { toggleBatchModal } from "../../../actions/modals";
+import VLIWIntegration from "../../../../integration/vliw-integration";
 
-class BatchModalComponent extends React.Component<any, any> {
-    constructor(public props: any, public state: any) {
-        super(props);
-        this.state = {
-            replications: 10
-        };
-        this.close = this.close.bind(this);
-        this.setOptions = this.setOptions.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+/** VLIW batch execution modal for configuring replication count. */
+export const BatchModalComponent: React.FC = () => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isBatchModalOpen = useAppSelector(
+    (state) => state.Ui.isBatchModalOpen
+  );
+  const [replications, setReplications] = useState(10);
 
-    close() {
-        this.props.actions.toggleBatchModal(false);
-    }
+  const close = () => {
+    dispatch(toggleBatchModal(false));
+  };
 
-    handleChange(event) {
-        let newState = { ...this.state };
-        newState.replications = event.target.value;
-        this.setState(newState);
-    }
+  const setOptions = () => {
+    VLIWIntegration.setBatchMode(replications);
+    close();
+    VLIWIntegration.makeBatchExecution();
+  };
 
-    setOptions() {
-        VLIWIntegration.setBatchMode(
-            this.state.replications);
-        this.close();
-        VLIWIntegration.makeBatchExecution();
-    }
-
-    render() {
-        return (
-            <Modal show={this.props.isBatchModalOpen} onHide={this.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{this.props.t('batchModal.title')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form className="form form-horizontal">
-                        <div className="form-group">
-                            <label
-                                htmlFor="replications"
-                                className="control-label col-sm-4"
-                            >
-                                {this.props.t('batchModal.replications')}
-                            </label>
-                            <div className="col-sm-8">
-                                <input
-                                    className="form-control"
-                                    name="replications"
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    value={this.state.replications}
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                        </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.close}>
-                        {this.props.t('commonButtons.close')}
-                    </Button>
-                    <Button
-                        className="btn btn-primary"
-                        onClick={this.setOptions}
-                    >
-                        {this.props.t('commonButtons.launch')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        isBatchModalOpen: state.Ui.isBatchModalOpen
-    };
+  return (
+    <Modal show={isBatchModalOpen} onHide={close}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("batchModal.title")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form className="form form-horizontal">
+          <div className="form-group">
+            <label
+              htmlFor="replications"
+              className="control-label col-sm-4"
+            >
+              {t("batchModal.replications")}
+            </label>
+            <div className="col-sm-8">
+              <input
+                className="form-control"
+                name="replications"
+                type="number"
+                min="0"
+                max="100"
+                value={replications}
+                onChange={(e) => setReplications(Number(e.target.value))}
+              />
+            </div>
+          </div>
+        </form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={close}>{t("commonButtons.close")}</Button>
+        <Button className="btn btn-primary" onClick={setOptions}>
+          {t("commonButtons.launch")}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
-function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ toggleBatchModal }, dispatch) };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchModalComponent));
+export default BatchModalComponent;

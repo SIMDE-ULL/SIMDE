@@ -1,59 +1,58 @@
-import * as React from 'react';
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 
-import { Instruction } from '../../../core/Common/Instruction';
-import InstructionComponent from './InstructionComponent';
+import { Instruction } from "../../../core/Common/Instruction";
+import InstructionComponent from "./InstructionComponent";
 
-import { withTranslation } from 'react-i18next';
+const COLOR_PALETTE = ["blue", "green", "yellow", "pink"];
 
-
-class CodeComponent extends React.Component<any, any> {
-
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            colorPalette: [
-                'blue',
-                'green',
-                'yellow',
-                'pink'
-            ]
-        };
-    }
-
-    setColor(row) {
-        return this.props.colorBasicBlocks ? this.state.colorPalette[row.basicBlock % this.state.colorPalette.length] : ''
-    }
-
-   render() {
-       return (
-            <div className='smd-code panel panel-default'>
-                <div className='panel-heading'>
-                    {this.props.t("code")}
-            </div>
-                <div className='panel-body'>
-                    <div className='smd-table'>
-                        <div className='smd-table-header'>
-                            <div className='smd-table-header_title'>#</div>
-                            <div className='smd-table-header_title'>OPCODE</div>
-                            <div className='smd-table-header_title'>OP1</div>
-                            <div className='smd-table-header_title'>OP2</div>
-                            <div className='smd-table-header_title'>OP3</div>
-                        </div>
-                        <div className='smd-table-body'>
-                            {
-                                this.props.code && this.props.code.map((row: Instruction, i) =>
-                                    <InstructionComponent instruction={row} key={i} loc={i}
-                                        color={this.setColor(row)}
-                                    />
-                                )
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>);
-    }
+interface CodeComponentProps {
+  code: Instruction[];
+  colorBasicBlocks: boolean;
+  toggleBreakPoint?: (instructions: Instruction[]) => void;
 }
 
+/** VLIW code listing with optional basic block coloring. */
+export const CodeComponent: React.FC<CodeComponentProps> = ({
+  code,
+  colorBasicBlocks,
+  toggleBreakPoint,
+}) => {
+  const { t } = useTranslation();
 
+  const setColor = (row: Instruction): string => {
+    return colorBasicBlocks
+      ? COLOR_PALETTE[row.basicBlock % COLOR_PALETTE.length]
+      : "";
+  };
 
-export default withTranslation()(CodeComponent);
+  return (
+    <div className="smd-code panel panel-default">
+      <div className="panel-heading">{t("code")}</div>
+      <div className="panel-body">
+        <div className="smd-table">
+          <div className="smd-table-header">
+            <div className="smd-table-header_title">#</div>
+            <div className="smd-table-header_title">OPCODE</div>
+            <div className="smd-table-header_title">OP1</div>
+            <div className="smd-table-header_title">OP2</div>
+            <div className="smd-table-header_title">OP3</div>
+          </div>
+          <div className="smd-table-body">
+            {code &&
+              code.map((row: Instruction, i) => (
+                <InstructionComponent
+                  instruction={row}
+                  key={i}
+                  loc={i}
+                  color={setColor(row)}
+                />
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CodeComponent;

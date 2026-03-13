@@ -1,100 +1,76 @@
-import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { withTranslation } from 'react-i18next';
-import { t } from 'i18next';
-import { bindActionCreators } from 'redux';
-import {
-    toggleOptionsModal,
-    toggleBatchModal,
-    closeBatchResults
-} from '../../../actions/modals';
-import { connect } from 'react-redux';
-import VLIWIntegration from '../../../../integration/vliw-integration';
+import * as React from "react";
+import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { closeBatchResults } from "../../../actions/modals";
 
-class BatchResultsModalComponent extends React.Component<any, any> {
-    constructor(props: any, state: any) {
-        super(props);
+/** VLIW batch execution results modal showing statistics. */
+export const BatchResultsModalComponent: React.FC = () => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isBatchResultsModalOpen = useAppSelector(
+    (state) => state.Ui.isBatchResultsModalOpen
+  );
+  const results = useAppSelector((state) => state.Ui.batchResults) as any;
 
-        this.close = this.close.bind(this);
-    }
+  const close = () => {
+    dispatch(closeBatchResults());
+  };
 
-    close() {
-        this.props.actions.closeBatchResults(false);
-    }
-
-    render() {
-        return (
-            <Modal
-                show={this.props.isBatchResultsModalOpen}
-                onHide={this.close}
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>{this.props.t('batchResults.title')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="smd-batch_results">
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                                {this.props.t('batchResults.replications')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.replications}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.average')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.average}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.standardDeviation')}
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.standardDeviation}
-                        
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.worst')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.worst}
-                            </div>
-                        </div>
-                        <div className="smd-batch_results-entry">
-                            <div className="smd-batch_results-entry_label">
-                            {this.props.t('batchResults.best')}:
-                            </div>
-                            <div className="smd-batch_results-entry_value">
-                                {this.props.results.best}
-                            </div>
-                        </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.close}>
-                        {this.props.t('commonButtons.close')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-}
-
-const mapStateToProps = state => {
-    return {
-        isBatchResultsModalOpen: state.Ui.isBatchResultsModalOpen,
-        results: state.UI.batchResults
-    };
+  return (
+    <Modal show={isBatchResultsModalOpen} onHide={close}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t("batchResults.title")}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="smd-batch_results">
+          <div className="smd-batch_results-entry">
+            <div className="smd-batch_results-entry_label">
+              {t("batchResults.replications")}:
+            </div>
+            <div className="smd-batch_results-entry_value">
+              {results.replications}
+            </div>
+          </div>
+          <div className="smd-batch_results-entry">
+            <div className="smd-batch_results-entry_label">
+              {t("batchResults.average")}
+            </div>
+            <div className="smd-batch_results-entry_value">
+              {results.average}
+            </div>
+          </div>
+          <div className="smd-batch_results-entry">
+            <div className="smd-batch_results-entry_label">
+              {t("batchResults.standardDeviation")}
+            </div>
+            <div className="smd-batch_results-entry_value">
+              {results.standardDeviation}
+            </div>
+          </div>
+          <div className="smd-batch_results-entry">
+            <div className="smd-batch_results-entry_label">
+              {t("batchResults.worst")}:
+            </div>
+            <div className="smd-batch_results-entry_value">
+              {results.worst}
+            </div>
+          </div>
+          <div className="smd-batch_results-entry">
+            <div className="smd-batch_results-entry_label">
+              {t("batchResults.best")}:
+            </div>
+            <div className="smd-batch_results-entry_value">
+              {results.best}
+            </div>
+          </div>
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={close}>{t("commonButtons.close")}</Button>
+      </Modal.Footer>
+    </Modal>
+  );
 };
 
-function mapDispatchToProps(dispatch) {
-    return { actions: bindActionCreators({ closeBatchResults }, dispatch) };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(BatchResultsModalComponent));
+export default BatchResultsModalComponent;
