@@ -1,41 +1,33 @@
 import * as React from "react";
-import IntervalModalComponent from "./modal/IntervalModalComponent";
 
-export class ROBMapperComponent extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
+/** Props for the ROB mapper display component. */
+interface ROBMapperComponentProps {
+  title: string;
+  data: Record<string, string>;
+}
 
-    this.state = {};
-  }
-
-  render() {
-    return (
-      <div className="smd-rob_mapper panel panel-default">
-        <div className="panel-heading">{this.props.title}</div>
-        <div className="smd-rob_mapper-body panel-body">
-          <div className="smd-table">
-            {  Object.keys(this.props.data).map(index => (
-                <div
-                  className="smd-table_row"
-                  key={`${this.props.title + index}`}
-                >
-                  <div
-                    className="smd-table_cell"
-                    key={`${this.props.title + index + 65}`}
-                  >
-                    {index}
-                  </div>
-                  <div
-                    className="smd-table_cell"
-                    key={`${this.props.title + index + 131}`}
-                  >
-                    {this.props.data[index]}
-                  </div>
-                </div>
-              ))}
-          </div>
+/** Displays the reorder buffer to register mapping table. */
+export const ROBMapperComponent: React.FC<ROBMapperComponentProps> = ({
+  title,
+  data,
+}) => {
+  return (
+    <div className="smd-rob_mapper panel panel-default">
+      <div className="panel-heading">{title}</div>
+      <div className="smd-rob_mapper-body panel-body">
+        <div className="smd-table">
+          {Object.keys(data).map((index) => (
+            <div className="smd-table_row" key={`${title}${index}`}>
+              <div className="smd-table_cell" key={`${title}${index}65`}>
+                {index}
+              </div>
+              <div className="smd-table_cell" key={`${title}${index}131`}>
+                {data[index]}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};

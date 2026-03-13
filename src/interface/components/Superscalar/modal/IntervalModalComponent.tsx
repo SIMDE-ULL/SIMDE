@@ -1,68 +1,85 @@
-import * as React from 'react';
-import { Modal, Button } from 'react-bootstrap';
-import { withTranslation } from 'react-i18next';
-import { generateIntervalFromImput } from '../../../utils/interval';
+import * as React from "react";
+import { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { generateIntervalFromImput } from "../../../utils/interval";
 
-class IntervalModalComponent extends React.Component<any, any> {
-
-    constructor(public props: any) {
-        super(props);
-        this.close = this.close.bind(this);
-        this.accept = this.accept.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-
-        this.state = { showModal: false };
-    }
-
-    handleChange(event) {
-        this.setState({ value: event.target.value, error: '' });
-    }
-
-    close() {
-        this.props.close();
-    }
-
-    accept() {
-        try {
-            const value = generateIntervalFromImput(this.state.value, this.props.max);
-            this.props.onAccept(value);
-            this.setState({ value: '' });
-            this.props.close();
-        } catch (err) {
-            this.setState({...this.state, error: err })
-        }
-    }
-
-    render() {
-        return (
-            <Modal show={this.state.showModal} onHide={this.close}>
-            <Modal.Header closeButton>
-                <Modal.Title>{this.props.t(this.props.title)}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form className='form intervalForm'>
-                    <div className='form-group'>
-                        <div className='col-sm-12 text-center'>
-                            <label className='control-label'>{this.props.t('intervalModal.intervalMessage')}
-                            </label>
-                        </div>
-                        <div className='col-sm-12'>
-                            <input type='text' className='form-control' value={this.state.value} onChange={this.handleChange} />
-                        </div>
-                    </div>
-                </form>
-                {   
-                    this.state.error ? <div className="smd-forms_error">
-                    {this.props.t(`intervalModal.errors.${this.state.error}`)}
-                    </div> : <div></div>
-                }
-            </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={this.close}>{this.props.t('commonButtons.close')}</Button>
-                <Button className='btn btn-primary' onClick={this.accept}>{this.props.t('commonButtons.accept')}</Button>
-            </Modal.Footer>
-        </Modal>);
-    }
+/** Props for the interval input modal. */
+interface IntervalModalComponentProps {
+  title: string;
+  onAccept: (value: number[]) => void;
+  max: number;
+  open: boolean;
+  close: () => void;
 }
 
-export default withTranslation()(IntervalModalComponent);
+/** Modal dialog for entering register/memory index intervals (e.g. "0-15,32"). */
+export const IntervalModalComponent: React.FC<IntervalModalComponentProps> = ({
+  title,
+  onAccept,
+  max,
+  open,
+  close,
+}) => {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const { t } = useTranslation();
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    setError("");
+  };
+
+  const accept = () => {
+    try {
+      const interval = generateIntervalFromImput(value, max);
+      onAccept(interval);
+      setValue("");
+      close();
+    } catch (err: any) {
+      setError(err.message || err);
+    }
+  };
+
+  return (
+    <Modal show={open} onHide={close}>
+      <Modal.Header closeButton>
+        <Modal.Title>{t(title)}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form className="form intervalForm">
+          <div className="form-group">
+            <div className="col-sm-12 text-center">
+              <label className="control-label">
+                {t("intervalModal.intervalMessage")}
+              </label>
+            </div>
+            <div className="col-sm-12">
+              <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </form>
+        {error ? (
+          <div className="smd-forms_error">
+            {t(`intervalModal.errors.${error}`)}
+          </div>
+        ) : (
+          <div />
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={close}>{t("commonButtons.close")}</Button>
+        <Button className="btn btn-primary" onClick={accept}>
+          {t("commonButtons.accept")}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+export default IntervalModalComponent;
