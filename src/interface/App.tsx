@@ -1,5 +1,5 @@
 import * as React from "react";
-import {BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import LandingPageComponent from "./components/LandingPage/LandingPageComponent";
 import ProjectPage from "./components/LandingPage/ProjectPageComponent";
 
