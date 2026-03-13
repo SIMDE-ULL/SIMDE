@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import {
   Alert,
   Button,
@@ -9,77 +10,83 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
-import { type WithTranslation, withTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleVliwConfigModal } from "../../../actions/modals";
-import { type Dispatch, bindActionCreators, type UnknownAction } from "redux";
-
 import VLIWIntegration from "../../../../integration/vliw-integration";
 import { BATCH_CONFIG, VLIW_CONFIG } from "../../../utils/constants";
-
-import { connect } from "react-redux";
-import type { GlobalState } from "@/interface/reducers";
 import { CacheType } from "@/core/Common/Cache";
 
-const mapStateToProps = (state: GlobalState) => {
-  return {
-    isVliwConfigModalOpen: state.Ui.isVliwConfigModalOpen,
-  };
+interface VliwConfig {
+  integerSumQuantity: number;
+  integerSumLatency: number;
+  integerMultQuantity: number;
+  integerMultLatency: number;
+  floatingSumQuantity: number;
+  floatingSumLatency: number;
+  floatingMultQuantity: number;
+  floatingMultLatency: number;
+  memoryQuantity: number;
+  memoryLatency: number;
+  jumpQuantity: number;
+  jumpLatency: number;
+  issueGrade: number;
+  cacheType: string;
+  cacheFailPercentage: number;
+  cacheFailLatency: number;
+  cacheBlocks: number;
+  cacheLines: number;
+}
+
+const DEFAULT_CONFIG: VliwConfig = {
+  integerSumQuantity: 2,
+  integerSumLatency: 1,
+  integerMultQuantity: 2,
+  integerMultLatency: 2,
+  floatingSumQuantity: 2,
+  floatingSumLatency: 4,
+  floatingMultQuantity: 2,
+  floatingMultLatency: 6,
+  memoryQuantity: 2,
+  memoryLatency: 4,
+  jumpQuantity: 1,
+  jumpLatency: 2,
+  issueGrade: 4,
+  cacheType: CacheType.NO_CACHE,
+  cacheFailPercentage: 30,
+  cacheFailLatency: 9,
+  cacheBlocks: 4,
+  cacheLines: 16,
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<UnknownAction>) => {
-  return { actions: bindActionCreators({ toggleVliwConfigModal }, dispatch) };
-};
-export type VliwConfigModalProps = WithTranslation &
-  ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-export const vliwConfigModal: React.FC = ({
-  isVliwConfigModalOpen,
-  actions,
-  t,
-}: VliwConfigModalProps) => {
-  const defaultConfig = {
-    integerSumQuantity: 2,
-    integerSumLatency: 1,
-    integerMultQuantity: 2,
-    integerMultLatency: 2,
-    floatingSumQuantity: 2,
-    floatingSumLatency: 4,
-    floatingMultQuantity: 2,
-    floatingMultLatency: 6,
-    memoryQuantity: 2,
-    memoryLatency: 4,
-    jumpQuantity: 1,
-    jumpLatency: 2,
-    issueGrade: 4,
-    cacheType: CacheType.NO_CACHE,
-    cacheFailPercentage: 30,
-    cacheFailLatency: 9,
-    cacheBlocks: 4,
-    cacheLines: 16,
-  };
-
-  const [config, setConfig] = React.useState(defaultConfig);
+/** VLIW machine configuration modal for functional units, cache, and parameters. */
+export const VLIWConfigModalComponent: React.FC = () => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isVliwConfigModalOpen = useAppSelector(
+    (state) => state.Ui.isVliwConfigModalOpen
+  );
+  const [config, setConfig] = useState<VliwConfig>(DEFAULT_CONFIG);
 
   const saveConfig = () => {
     VLIWIntegration.saveVliwConfig(config);
     closeModal();
   };
 
-  const updateNumConfig = (event) => {
+  const updateNumConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, [event.target.name]: Number(event.target.value) });
   };
 
-  const updateStrConfig = (event) => {
+  const updateStrConfig = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setConfig({ ...config, [event.target.name]: event.target.value });
   };
 
   const setDefaultConfig = () => {
-    setConfig(defaultConfig);
+    setConfig(DEFAULT_CONFIG);
   };
 
   const closeModal = () => {
-    actions.toggleVliwConfigModal(false);
+    dispatch(toggleVliwConfigModal(false));
   };
 
   return (
@@ -418,7 +425,4 @@ export const vliwConfigModal: React.FC = ({
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withTranslation()(vliwConfigModal));
+export default VLIWConfigModalComponent;

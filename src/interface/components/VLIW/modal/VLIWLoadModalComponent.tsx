@@ -5,8 +5,7 @@ import * as React from "react";
 import { useState } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
+import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import VLIWIntegration from "../../../../integration/vliw-integration";
 import { toggleLoadModal } from "../../../actions/modals";
 
@@ -42,32 +41,20 @@ const DEFAULT_MODAL_VLIW_CODE = `2	0 0 0 0	2 0 1 0
 1	9 0 1 0
 `;
 
-const mapStateToProps = (state) => {
-  return {
-    isLoadModalOpen: state.Ui.isLoadModalOpen,
-  };
-};
+/** VLIW code loading modal with general and VLIW code text areas. */
+export const VLIWLoadModalComponent: React.FC = () => {
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const isLoadModalOpen = useAppSelector((state) => state.Ui.isLoadModalOpen);
 
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators({ toggleLoadModal }, dispatch) };
-}
-
-export type VLIWLoadModalComponentProps = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-export const VLIWLoadModalComponent = ({
-  isLoadModalOpen,
-  actions,
-}: VLIWLoadModalComponentProps) => {
   const [modalError, setModalError] = useState({ general: "", vliw: "" });
   const [modalCode, setModalCode] = useState({
     general: DEFAULT_MODAL_CODE,
     vliw: DEFAULT_MODAL_VLIW_CODE,
   });
-  const [t] = useTranslation();
 
   const close = () => {
-    actions.toggleLoadModal(false);
+    dispatch(toggleLoadModal(false));
   };
 
   const loadCodeFromFile = ([[fileContent]]) => {
@@ -87,7 +74,6 @@ export const VLIWLoadModalComponent = ({
       code.load(modalCode.general);
       generalError = "";
     } catch (error) {
-      // Check if error has the property position. Checking instance of TokenError not working
       const errorMessage = error.pos
         ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
         ${error.errorMessage}`
@@ -104,7 +90,6 @@ export const VLIWLoadModalComponent = ({
       vliwError = "";
       close();
     } catch (error) {
-      // Check if error has the property position. Checking instance of TokenError not working
       const errorMessage = error.pos
         ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
         ${error.errorMessage}`
@@ -209,7 +194,4 @@ export const VLIWLoadModalComponent = ({
   );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(VLIWLoadModalComponent);
+export default VLIWLoadModalComponent;
