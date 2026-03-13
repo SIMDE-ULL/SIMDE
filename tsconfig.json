@@ -25,9 +25,10 @@
     "types": ["vite/client", "vitest/importMeta"],
     // "exactOptionalPropertyTypes": true
     /* Paths */
+    "rootDirs": [".", "./.react-router/types"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", ".react-router/types/**/*"]
 }
