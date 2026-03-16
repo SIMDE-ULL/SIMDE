@@ -50,7 +50,7 @@ const VLIWComponent = () => {
             <VLIWLoadContentModalComponent />
             <VliwConfigModalComponent />
             <OptionsModalComponent />
-            <AutorModalComponent />
+            <AutorModalComponent authors={{ newAuthor: "Melissa Díaz Arteaga", coAuthor: "Adrián Abreu González" }} />
             <BatchModalComponent integration={VLIWIntegration} />
             <BatchResultsModalComponent />
         </div>

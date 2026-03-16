@@ -4,8 +4,17 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleAuthorModal } from "../../../actions/modals";
 
+interface AuthorInfo {
+  newAuthor: string;
+  coAuthor?: string;
+}
+
+interface AutorModalProps {
+  authors: AuthorInfo;
+}
+
 /** About/author information modal. */
-export const AutorModalComponent: FC = () => {
+export const AutorModalComponent: FC<AutorModalProps> = ({ authors }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isAuthorModalOpen = useAppSelector(
@@ -31,11 +40,13 @@ export const AutorModalComponent: FC = () => {
           </div>
           <div className="row">
             <div className="col-sm-12">
-              <label>{t("authorModal.newAuthor")}</label>: Melissa Díaz Arteaga
+              <label>{t("authorModal.newAuthor")}</label>: {authors.newAuthor}
             </div>
-            <div className="col-sm-12">
-              <label>{t("authorModal.coAuthor")}</label>: Adrián Abreu González
-            </div>
+            {authors.coAuthor && (
+              <div className="col-sm-12">
+                <label>{t("authorModal.coAuthor")}</label>: {authors.coAuthor}
+              </div>
+            )}
           </div>
         </div>
       </Modal.Body>

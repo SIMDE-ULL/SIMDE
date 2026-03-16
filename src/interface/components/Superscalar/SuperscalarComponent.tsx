@@ -46,7 +46,7 @@ const SuperscalarComponent = () => {
             <SuperscalarLoadContentModalComponent />
             <SuperscalarConfigModalComponent />
             <OptionsModalComponent />
-            <AutorModalComponent />
+            <AutorModalComponent authors={{ newAuthor: "Adrián Abreu González" }} />
             <BatchModalComponent integration={SuperscalarIntegration} />
             <BatchResultsModalComponent />
         </div>
