@@ -6,7 +6,13 @@ import { enableBatching } from "./interface/reducers/batching";
 export function createAppStore() {
   return configureStore({
     reducer: enableBatching(reducers),
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ["machine/superscalarLoad"],
+          ignoredPaths: ["Machine.code"],
+        },
+      }),
   });
 }
 
