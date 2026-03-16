@@ -8,7 +8,7 @@ import VLIWComponent from "./components/VLIW/VLIWComponent";
 /**
  * Legacy application shell rendered inside the RR7 catchall route.
  * BrowserRouter removed — the framework now provides the router context.
- * Routes defined here will be migrated to individual route modules incrementally.
+ * Routes defined here are migrated to individual route modules incrementally.
  */
 const App = () => {
     return (

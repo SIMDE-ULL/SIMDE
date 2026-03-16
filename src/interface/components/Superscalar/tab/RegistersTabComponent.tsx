@@ -11,7 +11,7 @@ import {
 } from "../../../actions/intervals-actions";
 import { Machine } from "../../../../core/Common/Machine";
 
-/** Tab displaying memory, general purpose, and floating point register banks. */
+/** Tab displaying memory, general-purpose, and floating-point register banks. */
 export const RegisterTabComponent: FC = () => {
   const dispatch = useAppDispatch();
   const memory = useAppSelector((state) => state.Machine.memory);

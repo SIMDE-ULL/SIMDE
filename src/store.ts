@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { enableBatching } from './interface/reducers/batching';
 import reducers from './interface/reducers';
 
-/** Creates a new store instance. Called per-request in SSR, once on the client. */
+/** Creates a new Redux store instance with batched dispatch support. */
 export function createAppStore() {
   return configureStore({
     reducer: enableBatching(reducers),

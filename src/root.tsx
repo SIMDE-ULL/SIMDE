@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import { Provider } from "react-redux";
 import { I18nextProvider } from "react-i18next";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, type ReactNode } from "react";
 
 import { store } from "./store";
 import i18n from "./i18n";
@@ -15,10 +15,10 @@ import "./main.scss";
 
 /**
  * HTML document shell shared by the app, error boundary, and hydration fallback.
- * Redux Provider is always rendered since pre-rendered routes don't execute
+ * Redux Provider is always rendered because pre-rendered routes do not execute
  * component code at build time (only loaders run). The store is a singleton.
  */
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
