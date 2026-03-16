@@ -372,15 +372,6 @@ export class SuperscalarIntegration extends MachineIntegration {
         );
 
         this.superscalar.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
-          +superConfig.floatingSumQuantity,
-        );
-        this.superscalar.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
-          +superConfig.floatingSumLatency,
-        );
-
-        this.superscalar.changeFunctionalUnitNumber(
           FunctionalUnitType.FLOATINGMULTIPLY,
           +superConfig.floatingMultQuantity,
         );

@@ -377,15 +377,6 @@ export class VLIWIntegration extends MachineIntegration {
         );
 
         this.vliw.changeFunctionalUnitNumber(
-          FunctionalUnitType.FLOATINGSUM,
-          +vliwConfig.floatingSumQuantity,
-        );
-        this.vliw.changeFunctionalUnitLatency(
-          FunctionalUnitType.FLOATINGSUM,
-          +vliwConfig.floatingSumLatency,
-        );
-
-        this.vliw.changeFunctionalUnitNumber(
           FunctionalUnitType.FLOATINGMULTIPLY,
           +vliwConfig.floatingMultQuantity,
         );
