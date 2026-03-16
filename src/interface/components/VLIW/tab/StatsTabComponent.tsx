@@ -41,12 +41,10 @@ export const StatsTabComponent: FC = () => {
               },
               series:
                 unitsUsage &&
-                (Array.from(unitsUsage.keys()) as string[]).map((unitName) => ({
+                Object.keys(unitsUsage).map((unitName) => ({
                   name: t("stats.units." + unitName),
                   type: "line",
-                  data: unitsUsage
-                    .get(unitName)
-                    .map((value: number) => value * 100),
+                  data: unitsUsage[unitName].map((value: number) => value * 100),
                 })),
             }}
           />

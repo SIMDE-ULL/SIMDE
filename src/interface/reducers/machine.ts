@@ -25,10 +25,9 @@ interface MachineStats {
     commited: number;
     discarded: number;
     commitedPerInstr: StatsEntry[];
-    // TODO: convert Map state to plain objects for Redux serializableCheck
-    unitsUsage: Map<string, number[]>;
-    statusesCount: Map<string, number[]>;
-    instructionsStatusesAverageCycles: Map<number, InstructionStatsEntry>;
+    unitsUsage: Record<string, number[]>;
+    statusesCount: Record<string, number[]>;
+    instructionsStatusesAverageCycles: Record<number, InstructionStatsEntry>;
 }
 
 interface InstructionStatsEntry {
@@ -201,9 +200,9 @@ export const initialState: MachineState = {
         commited: 0,
         discarded: 0,
         commitedPerInstr: [],
-        unitsUsage: new Map(),
-        statusesCount: new Map(),
-        instructionsStatusesAverageCycles: new Map()
+        unitsUsage: {},
+        statusesCount: {},
+        instructionsStatusesAverageCycles: {}
     },
     cycle: 0,
     pc: 0,
@@ -279,21 +278,41 @@ const machineSlice = createSlice({
         currentPC(state, action: PayloadAction<number>) {
             state.pc = action.payload;
         },
-        nextInstructionsCommited(state, action: PayloadAction<Map<number, number>>) {
-            state.stats.commitedPerInstr = Array.from(action.payload, ([name, value]) => ({ name: String(name), value }));
+        nextInstructionsCommited: {
+            reducer(state, action: PayloadAction<StatsEntry[]>) {
+                state.stats.commitedPerInstr = action.payload;
+            },
+            prepare(data: Map<number, number>) {
+                return { payload: Array.from(data, ([name, value]) => ({ name: String(name), value })) };
+            },
         },
         nextTotalCommited(state, action: PayloadAction<{ commited: number; discarded: number }>) {
             state.stats.commited = action.payload.commited;
             state.stats.discarded = action.payload.discarded;
         },
-        nextUnitsUsage(state, action: PayloadAction<Map<string, number[]>>) {
-            state.stats.unitsUsage = action.payload;
+        nextUnitsUsage: {
+            reducer(state, action: PayloadAction<Record<string, number[]>>) {
+                state.stats.unitsUsage = action.payload;
+            },
+            prepare(data: Map<string, number[]>) {
+                return { payload: Object.fromEntries(data) };
+            },
         },
-        nextStatusesCount(state, action: PayloadAction<Map<string, number[]>>) {
-            state.stats.statusesCount = action.payload;
+        nextStatusesCount: {
+            reducer(state, action: PayloadAction<Record<string, number[]>>) {
+                state.stats.statusesCount = action.payload;
+            },
+            prepare(data: Map<string, number[]>) {
+                return { payload: Object.fromEntries(data) };
+            },
         },
-        nextInstructionsStatusesAverageCycles(state, action: PayloadAction<Map<number, InstructionStatsEntry>>) {
-            state.stats.instructionsStatusesAverageCycles = action.payload;
+        nextInstructionsStatusesAverageCycles: {
+            reducer(state, action: PayloadAction<Record<number, InstructionStatsEntry>>) {
+                state.stats.instructionsStatusesAverageCycles = action.payload;
+            },
+            prepare(data: Map<number, InstructionStatsEntry>) {
+                return { payload: Object.fromEntries(data) };
+            },
         },
         superscalarLoad(state, action: PayloadAction<Instruction[]>) {
             state.code = action.payload;

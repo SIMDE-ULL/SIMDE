@@ -6,8 +6,7 @@ import reducers from './interface/reducers';
 export function createAppStore() {
   return configureStore({
     reducer: enableBatching(reducers),
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({ serializableCheck: false }),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
   });
 }
 

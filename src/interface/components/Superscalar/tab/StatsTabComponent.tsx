@@ -47,11 +47,11 @@ export const StatsTabComponent: FC = () => {
               yAxis: { type: "value" },
               series:
                 statusesCount &&
-                (Array.from(statusesCount.keys()) as string[]).map((statusName) => ({
+                Object.keys(statusesCount).map((statusName) => ({
                   name: t("stats.statuses." + statusName),
                   type: "bar",
                   stack: "statuses",
-                  data: statusesCount.get(statusName),
+                  data: statusesCount[statusName],
                 })),
             }}
           />
@@ -86,10 +86,10 @@ export const StatsTabComponent: FC = () => {
               yAxis: { type: "value", max: 100, axisLabel: { formatter: "{value}%" } },
               series:
                 unitsUsage &&
-                (Array.from(unitsUsage.keys()) as string[]).map((unitName) => ({
+                Object.keys(unitsUsage).map((unitName) => ({
                   name: t("stats.units." + unitName),
                   type: "line",
-                  data: unitsUsage.get(unitName).map((value: number) => value * 100),
+                  data: unitsUsage[unitName].map((value: number) => value * 100),
                 })),
             }}
           />
@@ -159,7 +159,7 @@ export const StatsTabComponent: FC = () => {
             <tbody>
               {instrCommitPercentage &&
                 instrCommitPercentage.map((d: { name: string; value: number }) => {
-                  const stats = instrStatuses.get(Number(d.name));
+                  const stats = instrStatuses[Number(d.name)];
                   return (
                   <tr key={d.name}>
                     <th scope="row">{d.name}</th>
