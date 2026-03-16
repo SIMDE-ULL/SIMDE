@@ -39,7 +39,7 @@ import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
 import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/aggregator';
 
-import { MachineIntegration } from './machine-integration';
+import { MachineIntegration } from './machine-integration.client';
 
 export class SuperscalarIntegration extends MachineIntegration {
     // Global objects for binding React to the View
@@ -218,7 +218,7 @@ export class SuperscalarIntegration extends MachineIntegration {
             this.collectStats();
             this.dispatchAllSuperscalarActions();
             this.finishedExecution = true;
-            alert(i18n.t('execution.finished'));
+            if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
         }
     }
 
@@ -330,10 +330,10 @@ export class SuperscalarIntegration extends MachineIntegration {
                     this.executionLoop(speed);
                 } else {
                     if (machineStatus === SuperscalarStatus.SUPER_BREAKPOINT) {
-                        alert(i18n.t('execution.stopped'));
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.stopped'));
                     } else if (machineStatus === SuperscalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
-                        alert(i18n.t('execution.finished'));
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
                         
                     }
                 }

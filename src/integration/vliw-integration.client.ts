@@ -19,7 +19,7 @@ import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
 import i18n from '../i18n';
 
-import { MachineIntegration } from './machine-integration';
+import { MachineIntegration } from './machine-integration.client';
 import { VLIW } from '../core/VLIW/VLIW';
 import { VLIWCode } from '../core/VLIW/VLIWCode';
 import { VLIWError } from '../core/VLIW/VLIWError';
@@ -208,14 +208,14 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    alert(i18n.t('execution.error') + ": " + VLIWError[err]);
+                    if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[err]);
                     err = VLIWError.ENDEXE;
                 }
             }
             this.collectStats();
             this.dispatchAllVLIWActions();
             this.finishedExecution = true;
-            alert(i18n.t('execution.finished'));
+            if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
         }
     }
 
@@ -244,7 +244,7 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    alert(i18n.t('execution.error') + ": " + VLIWError[err]);
+                    if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[err]);
                     err = VLIWError.ENDEXE;
                 }
             }
@@ -328,14 +328,14 @@ export class VLIWIntegration extends MachineIntegration {
                         stop = false;
                         break;
                     case VLIWError.BREAKPOINT:
-                        alert(i18n.t('execution.stopped'));
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.stopped'));
                         break;
                     case VLIWError.ENDEXE:
                         this.finishedExecution = true;
-                        alert(i18n.t('execution.finished'));
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
                         break;
                     default:
-                        alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus]);
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus]);
                         break;
                 }
 
