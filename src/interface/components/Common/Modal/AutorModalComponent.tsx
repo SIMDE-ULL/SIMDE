@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleAuthorModal } from "../../../actions/modals";
 
-/** VLIW about/author modal showing original, new, and co-author credits. */
+/** About/author information modal. */
 export const AutorModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -34,7 +34,7 @@ export const AutorModalComponent: FC = () => {
               <label>{t("authorModal.newAuthor")}</label>: Melissa Díaz Arteaga
             </div>
             <div className="col-sm-12">
-              <label>{t("authorModal.coAuthor")}</label> Adrian Abreu González
+              <label>{t("authorModal.coAuthor")}</label>: Adrián Abreu González
             </div>
           </div>
         </div>

@@ -1,12 +1,16 @@
-import { useState, type ChangeEvent, type FC } from "react";
+import { useState, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleBatchModal } from "../../../actions/modals";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
+import type { MachineIntegration } from "../../../../integration/machine-integration.client";
 
-/** Superscalar batch execution configuration modal. */
-export const BatchModalComponent: FC = () => {
+interface BatchModalProps {
+  integration: MachineIntegration;
+}
+
+/** Batch execution configuration modal for both Superscalar and VLIW. */
+export const BatchModalComponent: FC<BatchModalProps> = ({ integration }) => {
   const [replications, setReplications] = useState(10);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -16,14 +20,10 @@ export const BatchModalComponent: FC = () => {
     dispatch(toggleBatchModal(false));
   };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setReplications(Number(event.target.value));
-  };
-
   const setOptions = () => {
-    SuperscalarIntegration.setBatchMode(replications);
+    integration.setBatchMode(replications);
     close();
-    SuperscalarIntegration.makeBatchExecution();
+    integration.makeBatchExecution();
   };
 
   return (
@@ -45,7 +45,7 @@ export const BatchModalComponent: FC = () => {
                 min="0"
                 max="100"
                 value={replications}
-                onChange={handleChange}
+                onChange={(e) => setReplications(Number(e.target.value))}
               />
             </div>
           </div>

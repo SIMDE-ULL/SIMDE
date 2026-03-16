@@ -6,10 +6,12 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
 import OptionsModalComponent from "../Superscalar/modal/OptionsModalComponent";
-import AutorModalComponent from "./modal/AutorModalComponent";
+import AutorModalComponent from "../Common/Modal/AutorModalComponent";
 
-import BatchModalComponent from "../VLIW/modal/BatchModalComponent";
+import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
+
+import VLIWIntegration from "../../../integration/vliw-integration.client";
 
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";
 import RegisterVLIWTabComponent  from "./tab/RegistersVLIWTabComponent";
@@ -48,7 +50,7 @@ const VLIWComponent = () => {
             <VliwConfigModalComponent />
             <OptionsModalComponent />
             <AutorModalComponent />
-            <BatchModalComponent />
+            <BatchModalComponent integration={VLIWIntegration} />
             <BatchResultsModalComponent />
         </div>
     )

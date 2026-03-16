@@ -13,10 +13,12 @@ import SuperscalarConfigModalComponent from "./modal/SuperscalarConfigModal";
 import SuperscalarLoadContentModalComponent from "./modal/SuperscalarLoadContentModalComponent";
 
 import OptionsModalComponent from "./modal/OptionsModalComponent";
-import AutorModalComponent from "./modal/AutorModalComponent";
+import AutorModalComponent from "../Common/Modal/AutorModalComponent";
 
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
+
+import SuperscalarIntegration from "../../../integration/superscalar-integration.client";
 
 /** Superscalar simulation page with tabbed views and modal dialogs. */
 const SuperscalarComponent = () => {
@@ -43,7 +45,7 @@ const SuperscalarComponent = () => {
             <SuperscalarConfigModalComponent />
             <OptionsModalComponent />
             <AutorModalComponent />
-            <BatchModalComponent />
+            <BatchModalComponent integration={SuperscalarIntegration} />
             <BatchResultsModalComponent />
         </div>
     )
