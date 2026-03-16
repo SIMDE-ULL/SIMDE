@@ -11,12 +11,22 @@ import { Suspense } from "react";
 
 import { store } from "./store";
 import i18n from "./i18n";
+import { ClientOnly } from "./interface/components/Common/ClientOnly";
 import "./main.scss";
+
+import type { Route } from "./+types/root";
+
+/** Detects the preferred locale from the Accept-Language header. */
+export function loader({ request }: Route.LoaderArgs) {
+  const acceptLang = request.headers.get("Accept-Language") ?? "";
+  const locale = acceptLang.startsWith("es") ? "es" : "en";
+  return { locale };
+}
 
 /**
  * HTML document shell shared by the app, error boundary, and hydration fallback.
- * Providers (Redux and i18n) are placed here so that every route has access
- * to global state.
+ * I18nextProvider runs on both server and client. Redux Provider is client-only
+ * because the simulation state has no server-side representation.
  */
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,13 +47,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <noscript>
           <p>This application requires JavaScript to run.</p>
         </noscript>
-        <Provider store={store}>
-          <I18nextProvider i18n={i18n}>
-            <Suspense fallback={<div>Loading...</div>}>
-              {children}
-            </Suspense>
-          </I18nextProvider>
-        </Provider>
+        <I18nextProvider i18n={i18n}>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ClientOnly fallback={children}>
+              {() => (
+                <Provider store={store}>
+                  {children}
+                </Provider>
+              )}
+            </ClientOnly>
+          </Suspense>
+        </I18nextProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -52,13 +66,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 /** Root route — renders the matched child route via Outlet. */
-export default function Root() {
+export default function Root({ loaderData }: Route.ComponentProps) {
+  if (loaderData?.locale) {
+    i18n.changeLanguage(loaderData.locale);
+  }
   return <Outlet />;
 }
 
 /**
- * Displayed while client-side JavaScript loads in SPA mode.
- * Prevents a blank screen during hydration.
+ * Displayed while client-side JavaScript loads during SSR hydration.
+ * Prevents a blank screen while the bundle loads.
  */
 export function HydrateFallback() {
   return <div>Loading...</div>;
