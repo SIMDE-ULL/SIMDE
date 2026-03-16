@@ -6,7 +6,7 @@ import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleLoadModal } from "@/interface/actions/modals";
 import FileReaderInput from "@/interface/components/Common/FileReaderInput";
 import { Code } from "@/core/Common/Code";
-import SuperscalarIntegration from "@/integration/superscalar-integration";
+import SuperscalarIntegration from "@/integration/superscalar-integration.client";
 
 const DEFAULT_MODAL_CODE = `
 ADDI	R2 R0 #50

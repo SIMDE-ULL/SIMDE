@@ -13,7 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleVliwConfigModal } from "../../../actions/modals";
-import VLIWIntegration from "../../../../integration/vliw-integration";
+import VLIWIntegration from "../../../../integration/vliw-integration.client";
 import { BATCH_CONFIG, VLIW_CONFIG } from "../../../utils/constants";
 import { CacheType } from "@/core/Common/Cache";
 

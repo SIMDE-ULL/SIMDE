@@ -13,7 +13,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleSuperConfigModal } from "../../../actions/modals";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 import { BATCH_CONFIG, SUPERSCALAR_CONFIG } from "../../../utils/constants";
 import { CacheType } from "@/core/Common/Cache";
 

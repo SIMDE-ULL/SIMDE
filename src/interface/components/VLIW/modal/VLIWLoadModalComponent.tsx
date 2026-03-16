@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import VLIWIntegration from "../../../../integration/vliw-integration";
+import VLIWIntegration from "../../../../integration/vliw-integration.client";
 import { toggleLoadModal } from "../../../actions/modals";
 
 const DEFAULT_MODAL_CODE = `

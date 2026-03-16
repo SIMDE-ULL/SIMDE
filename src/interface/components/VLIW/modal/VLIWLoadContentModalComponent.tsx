@@ -5,7 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleVliwLoadContentModal } from "../../../actions/modals";
-import VLIWIntegration from "../../../../integration/vliw-integration";
+import VLIWIntegration from "../../../../integration/vliw-integration.client";
 import { ContentIntegration } from "../../../../integration/content-integration";
 
 /** VLIW content loading modal with textarea and file upload. */

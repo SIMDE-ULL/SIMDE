@@ -16,7 +16,7 @@ import CodeComponent from "../CodeComponent";
 import { TableComponent } from "../TableComponent";
 import RegisterComponent from "../../Superscalar/RegisterComponent";
 import { PREDICATE_SIZE } from "../../../reducers/machine";
-import VLIWIntegration from "../../../../integration/vliw-integration";
+import VLIWIntegration from "../../../../integration/vliw-integration.client";
 
 /** Main VLIW simulation view tab showing pipeline stages and functional units. */
 export const GeneralVLIWTabComponent: React.FC = () => {

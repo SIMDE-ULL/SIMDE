@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleBatchModal } from "../../../actions/modals";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 
 /** Superscalar batch execution configuration modal. */
 export const BatchModalComponent: React.FC = () => {

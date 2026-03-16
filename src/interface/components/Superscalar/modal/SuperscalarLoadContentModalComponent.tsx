@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleSuperscalarLoadContentModal } from "../../../actions/modals";
 import FileReaderInput from "../../Common/FileReaderInput";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 import { ContentIntegration } from "../../../../integration/content-integration";
 
 /** Modal for loading initial register/memory content into the superscalar simulator. */

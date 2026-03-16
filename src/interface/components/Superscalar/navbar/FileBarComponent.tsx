@@ -14,7 +14,7 @@ import {
 } from "../../../actions/modals";
 import { viewBasicBlocks } from "../../../actions";
 import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 
 /** Superscalar menu bar with file, view, config, experimentation, and help menus. */
 export const FileBarComponent: React.FC = () => {

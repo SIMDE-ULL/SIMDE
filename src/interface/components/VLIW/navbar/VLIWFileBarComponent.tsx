@@ -14,7 +14,7 @@ import {
 } from "../../../actions/modals";
 import { viewBasicBlocks } from "../../../actions";
 import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
-import vliwIntegration from "../../../../integration/vliw-integration";
+import vliwIntegration from "../../../../integration/vliw-integration.client";
 
 /** VLIW menu bar with file, view, config, experimentation, and help menus. */
 export const VLIWFileBarComponent: React.FC = () => {

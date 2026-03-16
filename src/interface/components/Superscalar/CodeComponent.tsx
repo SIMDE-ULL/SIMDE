@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { OpcodesNames } from "../../../core/Common/Opcodes";
 import { Instruction } from "../../../core/Common/Instruction";
-import SuperscalarIntegration from "../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../integration/superscalar-integration.client";
 
 /** Props for the superscalar code display component. */
 interface CodeComponentProps {
