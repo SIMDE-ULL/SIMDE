@@ -1,5 +1,5 @@
 import * as React from "react";
-import { t } from 'i18next';
+import { useTranslation } from "react-i18next";
 import { Tabs, Tab } from "react-bootstrap";
 
 import FileBarComponent from './navbar/FileBarComponent';
@@ -19,7 +19,9 @@ import AutorModalComponent from "./modal/AutorModalComponent";
 import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
+/** Superscalar simulation page with tabbed views and modal dialogs. */
 const SuperscalarComponent = () => {
+    const { t } = useTranslation();
     return (
         <div className='smd'>
             <div className='navigation-bars'>

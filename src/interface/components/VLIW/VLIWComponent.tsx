@@ -1,5 +1,5 @@
 import * as React from "react";
-import { t } from 'i18next';
+import { useTranslation } from "react-i18next";
 import { Tabs, Tab } from "react-bootstrap";
 
 import { DndProvider } from "react-dnd";
@@ -22,7 +22,9 @@ import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
 import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 
 
+/** VLIW simulation page with tabbed views and modal dialogs. */
 const VLIWComponent = () => {
+    const { t } = useTranslation();
     return (
         <div className='smd'>
             <div className='navigation-bars'>
