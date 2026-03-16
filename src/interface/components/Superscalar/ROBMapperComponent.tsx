@@ -3,7 +3,7 @@ import { type FC } from "react";
 /** Props for the ROB mapper display component. */
 interface ROBMapperComponentProps {
   title: string;
-  data: Record<string, string>;
+  data: Record<string, number>;
 }
 
 /** Displays the reorder buffer to register mapping table. */

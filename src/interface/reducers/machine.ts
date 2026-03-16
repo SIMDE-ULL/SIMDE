@@ -1,59 +1,158 @@
-import {
-    NEXT_PREFETCH_CYCLE,
-    NEXT_DECODER_CYCLE,
-    NEXT_JUMP_TABLE_CYCLE,
-    FUNCTIONAL_UNIT_CYCLE,
-    HEADER_TABLE_CYCLE,
-    TABLE_CYCLE,
-    NEXT_RESERVE_STATION_CYCLE,
-    NEXT_REORDER_BUFFER_MAPPER_CYCLE,
-    NEXT_REORDER_BUFFER_CYCLE,
-    NEXT_REGISTERS_CYCLE,
-    NEXT_MEMORY_CYCLE,
-    NEXT_CYCLE,
-    NEXT_INSTRUCTIONS_COMMITED,
-    NEXT_TOTAL_COMMITED,
-    NEXT_UNITS_OCUPATION,
-    NEXT_STATUSES_COUNT,
-    NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES,
-    CURRENT_PC,
-    SUPERSCALAR_LOAD,
-    VIEW_BASIC_BLOCKS
-} from '../actions';
-
-import {
-    ADD_MEMORY_INTERVAL,
-    REMOVE_MEMORY_INTERVAL,
-    ADD_GENERAL_REGISTERS_INTERVAL,
-    REMOVE_GENERAL_REGISTERS_INTERVAL,
-    ADD_FLOATING_REGISTERS_INTERVAL,
-    REMOVE_FLOATING_REGISTERS_INTERVAL
-} from '../actions/intervals-actions';
+import { createSlice, type Draft, type PayloadAction } from '@reduxjs/toolkit';
 import { generateRangeArray } from '../utils/interval';
-import { PUSH_HISTORY, TAKE_HISTORY, RESET_HISTORY } from '../actions/history';
-
 import { Machine } from '../../core/Common/Machine';
-import { removeInterval, addInterval } from './interval';
-import {
-    NEXT_NAT_FPR_CYCLE,
-    ADD_NAT_FPR_INTERVAL,
-    ADD_NAT_GPR_INTERVAL,
-    ADD_PREDICATE_INTERVAL,
-    REMOVE_NAT_GPR_INTERVAL,
-    REMOVE_PREDICATE_INTERVAL,
-    REMOVE_NAT_FPR_INTERVAL,
-    NEXT_NAT_GPR_CYCLE,
-    NEXT_PREDICATE_CYCLE
-} from '../actions/predicate-nat-actions';
+import type { Instruction } from '../../core/Common/Instruction';
 
 export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
 
-export const initialState = {
-    prefetchUnit: [] as any[],
-    decoder: [] as any[],
-    jumpPrediction: [] as any[],
-    history: [] as any[],
+interface RangedData {
+    data: (number | boolean)[];
+    visibleRangeValues: number[];
+}
+
+interface FunctionalUnitEntry {
+    content: unknown[];
+    header: string[];
+}
+
+export interface StatsEntry {
+    name: string;
+    value: number;
+}
+
+interface MachineStats {
+    commited: number;
+    discarded: number;
+    commitedPerInstr: StatsEntry[];
+    // TODO: convert Map state to plain objects for Redux serializableCheck
+    unitsUsage: Map<string, number[]>;
+    statusesCount: Map<string, number[]>;
+    instructionsStatusesAverageCycles: Map<number, InstructionStatsEntry>;
+}
+
+interface InstructionStatsEntry {
+    prefetchCycles: number;
+    decodeCycles: number;
+    issueCycles: number;
+    executeCycles: number;
+    writeBackCycles: number;
+}
+
+interface ReserveStationEntry {
+    instruction: { id: string; value: string; uid: string };
+    Qj: string;
+    Vj: string;
+    Qk: string;
+    Vk: string;
+    A: string;
+    ROB: string;
+}
+
+interface HistoryEntry {
+    prefetchUnit: unknown[];
+    decoder: unknown[];
+    jumpPrediction: unknown[];
+    functionalUnitIntAdd: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitIntSub: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitFloAdd: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitFloSub: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitMemory: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitJump: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitAluMem: FunctionalUnitEntry | Record<string, never>;
+    reserveStationIntAdd: ReserveStationEntry[];
+    reserveStationIntSub: ReserveStationEntry[];
+    reserveStationFloAdd: ReserveStationEntry[];
+    reserveStationFloSub: ReserveStationEntry[];
+    reserveStationMemory: ReserveStationEntry[];
+    reserveStationJump: ReserveStationEntry[];
+    ROBGpr: { data: Record<string, number> };
+    ROBFpr: { data: Record<string, number> };
+    predicate: RangedData;
+    natGpr: RangedData;
+    natFpr: RangedData;
+    reorderBuffer: unknown[];
+    generalRegisters: RangedData;
+    floatingRegisters: RangedData;
+    memory: RangedData;
+    cycle: number;
+}
+
+export interface MachineState {
+    prefetchUnit: unknown[];
+    decoder: unknown[];
+    jumpPrediction: unknown[];
+    history: HistoryEntry[];
+    functionalUnitIntAdd: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitIntSub: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitFloAdd: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitFloSub: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitMemory: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitJump: FunctionalUnitEntry | Record<string, never>;
+    functionalUnitAluMem: FunctionalUnitEntry | Record<string, never>;
+    reserveStationIntAdd: ReserveStationEntry[];
+    reserveStationIntSub: ReserveStationEntry[];
+    reserveStationFloAdd: ReserveStationEntry[];
+    reserveStationFloSub: ReserveStationEntry[];
+    reserveStationMemory: ReserveStationEntry[];
+    reserveStationJump: ReserveStationEntry[];
+    ROBGpr: { data: Record<string, number> };
+    ROBFpr: { data: Record<string, number> };
+    reorderBuffer: unknown[];
+    generalRegisters: RangedData;
+    floatingRegisters: RangedData;
+    memory: RangedData;
+    predicate: RangedData;
+    natGpr: RangedData;
+    natFpr: RangedData;
+    stats: MachineStats;
+    cycle: number;
+    pc: number;
+    code: Instruction[];
+    vliwCode: unknown[];
+    vliwExecutionHeaderTable: unknown[];
+    vliwExecutionTable: unknown[];
+    colorBasicBlocks: boolean;
+}
+
+type RangedField = 'memory' | 'generalRegisters' | 'floatingRegisters' | 'predicate' | 'natGpr' | 'natFpr';
+
+function addIntervalToField(state: Draft<MachineState>, field: RangedField, interval: number[]) {
+    const current = state[field];
+    const newVisibleRangeValues = Array.from(
+        new Set([...current.visibleRangeValues, ...interval])
+    ).sort((a, b) => a - b);
+
+    state[field] = {
+        ...current,
+        visibleRangeValues: newVisibleRangeValues
+    };
+    for (const entry of state.history) {
+        (entry[field] as RangedData).visibleRangeValues = newVisibleRangeValues;
+    }
+}
+
+function removeIntervalFromField(state: Draft<MachineState>, field: RangedField, interval: number[]) {
+    const toRemove = new Set(interval);
+    const current = state[field];
+    const newVisibleRangeValues = current.visibleRangeValues.filter(
+        (x: number) => !toRemove.has(x)
+    );
+
+    state[field] = {
+        ...current,
+        visibleRangeValues: newVisibleRangeValues
+    };
+    for (const entry of state.history) {
+        (entry[field] as RangedData).visibleRangeValues = newVisibleRangeValues;
+    }
+}
+
+export const initialState: MachineState = {
+    prefetchUnit: [],
+    decoder: [],
+    jumpPrediction: [],
+    history: [],
     functionalUnitIntAdd: {},
     functionalUnitIntSub: {},
     functionalUnitFloAdd: {},
@@ -61,285 +160,285 @@ export const initialState = {
     functionalUnitMemory: {},
     functionalUnitJump: {},
     functionalUnitAluMem: {},
-    reserveStationIntAdd: [] as any[],
-    reserveStationIntSub: [] as any[],
-    reserveStationFloAdd: [] as any[],
-    reserveStationFloSub: [] as any[],
-    reserveStationMemory: [] as any[],
-    reserveStationJump: [] as any[],
+    reserveStationIntAdd: [],
+    reserveStationIntSub: [],
+    reserveStationFloAdd: [],
+    reserveStationFloSub: [],
+    reserveStationMemory: [],
+    reserveStationJump: [],
     ROBGpr: {
         data: {}
     },
     ROBFpr: {
         data: {}
     },
-    reorderBuffer: [] as any[],
+    reorderBuffer: [],
     generalRegisters: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(Machine.NGP)
     },
     floatingRegisters: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(Machine.NFP)
     },
     memory: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(Machine.MEMORY_SIZE)
     },
     predicate: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     natGpr: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     natFpr: {
-        data: [] as any[],
+        data: [],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     stats: {
         commited: 0,
         discarded: 0,
-        commitedPerInstr: [] as any[],
+        commitedPerInstr: [],
         unitsUsage: new Map(),
         statusesCount: new Map(),
         instructionsStatusesAverageCycles: new Map()
     },
     cycle: 0,
     pc: 0,
-    code: [] as any[],
-    vliwCode: [] as any[],
-    vliwExecutionHeaderTable: [] as any[],
-    vliwExecutionTable: [] as any[],
+    code: [],
+    vliwCode: [],
+    vliwExecutionHeaderTable: [],
+    vliwExecutionTable: [],
     colorBasicBlocks: false
 };
 
-export function MachineReducers(state = initialState, action: { type: string; value?: any }): typeof initialState {
-    switch (action.type) {
-        case NEXT_PREFETCH_CYCLE:
-            return (state = { ...state, prefetchUnit: action.value });
-        case NEXT_DECODER_CYCLE:
-            return (state = { ...state, decoder: action.value });
-        case NEXT_JUMP_TABLE_CYCLE:
-            return (state = { ...state, jumpPrediction: action.value });
-        case FUNCTIONAL_UNIT_CYCLE:
-            return (state = {
-                ...state,
-                functionalUnitIntAdd: action.value[0],
-                functionalUnitIntSub: action.value[1],
-                functionalUnitFloAdd: action.value[2],
-                functionalUnitFloSub: action.value[3],
-                functionalUnitMemory: action.value[4],
-                functionalUnitJump: action.value[5],
-                functionalUnitAluMem: action.value[6]
-            });
-        case HEADER_TABLE_CYCLE:
-            return (state = {
-                ...state,
-                vliwExecutionHeaderTable: action.value
-            });
-        case TABLE_CYCLE:
-            return (state = {
-                ...state,
-                vliwExecutionTable: action.value
-            });
-        case NEXT_RESERVE_STATION_CYCLE:
-            return (state = {
-                ...state,
-                reserveStationIntAdd: action.value[0],
-                reserveStationIntSub: action.value[1],
-                reserveStationFloAdd: action.value[2],
-                reserveStationFloSub: action.value[3],
-                reserveStationMemory: action.value[4],
-                reserveStationJump: action.value[5]
-            });
-        case NEXT_REORDER_BUFFER_MAPPER_CYCLE:
-            return (state = {
-                ...state,
-                ROBGpr: { ...state.ROBGpr, data: action.value[0] },
-                ROBFpr: { ...state.ROBFpr, data: action.value[1] }
-            });
-        case NEXT_REORDER_BUFFER_CYCLE:
-            return (state = {
-                ...state,
-                reorderBuffer: action.value
-            });
-        case NEXT_REGISTERS_CYCLE:
-            return (state = {
-                ...state,
-                generalRegisters: {
-                    ...state.generalRegisters,
-                    data: [...action.value[0]]
-                },
-                floatingRegisters: {
-                    ...state.floatingRegisters,
-                    data: [...action.value[1]]
-                }
-            });
-        case NEXT_MEMORY_CYCLE:
-            return (state = {
-                ...state,
-                memory: {
-                    ...state.memory,
-                    data: action.value
-                }
-            });
-        case NEXT_CYCLE:
-            return (state = {
-                ...state,
-                cycle: action.value
-            });
-        case CURRENT_PC:
-            return (state = {
-                ...state,
-                pc: action.value
-            });
-        case NEXT_INSTRUCTIONS_COMMITED:
-            return (state = {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    commitedPerInstr: Array.from(action.value, ([name, value]) => ({ name, value }))
-                }
-            });
-        case NEXT_TOTAL_COMMITED:
-            return (state = {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    commited: action.value.commited,
-                    discarded: action.value.discarded
-                }
-            });
-        case NEXT_UNITS_OCUPATION:
-            return (state = {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    unitsUsage: action.value
-                }
-            });
-        case NEXT_STATUSES_COUNT:
-            return (state = {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    statusesCount: action.value
-                }
-            });
-        case NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES:
-            return (state = {
-                ...state,
-                stats: {
-                    ...state.stats,
-                    instructionsStatusesAverageCycles: action.value
-                }
-            });
-        case SUPERSCALAR_LOAD:
-            return (state = {
-                ...state,
-                code: action.value
-            });
-        case VIEW_BASIC_BLOCKS:
-            return (state = {
-                ...state,
-                colorBasicBlocks: action.value
-            });
-        case ADD_MEMORY_INTERVAL:
-            return addInterval(state, 'memory', action.value);
-        case REMOVE_MEMORY_INTERVAL:
-            return removeInterval(state, 'memory', action.value);
-        case ADD_GENERAL_REGISTERS_INTERVAL:
-            return addInterval(state, 'generalRegisters', action.value);
-        case REMOVE_GENERAL_REGISTERS_INTERVAL:
-            return removeInterval(state, 'generalRegisters', action.value);
-        case ADD_FLOATING_REGISTERS_INTERVAL:
-            return addInterval(state, 'floatingRegisters', action.value);
-        case REMOVE_FLOATING_REGISTERS_INTERVAL:
-            return removeInterval(state, 'floatingRegisters', action.value);
-        case PUSH_HISTORY:
-            return (state = {
-                ...state,
-                history: [
-                    ...state.history,
-                    {
-                        prefetchUnit: state.prefetchUnit,
-                        decoder: state.decoder,
-                        jumpPrediction: state.jumpPrediction,
-                        functionalUnitIntAdd: state.functionalUnitIntAdd,
-                        functionalUnitIntSub: state.functionalUnitIntSub,
-                        functionalUnitFloAdd: state.functionalUnitFloAdd,
-                        functionalUnitFloSub: state.functionalUnitFloSub,
-                        functionalUnitMemory: state.functionalUnitMemory,
-                        functionalUnitJump: state.functionalUnitJump,
-                        functionalUnitAluMem: state.functionalUnitAluMem,
-                        reserveStationIntAdd: state.reserveStationIntAdd,
-                        reserveStationIntSub: state.reserveStationIntSub,
-                        reserveStationFloAdd: state.reserveStationFloAdd,
-                        reserveStationFloSub: state.reserveStationFloSub,
-                        reserveStationMemory: state.reserveStationMemory,
-                        reserveStationJump: state.reserveStationJump,
-                        ROBGpr: { ...state.ROBGpr },
-                        ROBFpr: { ...state.ROBFpr },
-                        predicate: { ...state.predicate },
-                        natGpr: { ...state.natGpr },
-                        natFpr: { ...state.natFpr },
-                        reorderBuffer: state.reorderBuffer,
-                        generalRegisters: state.generalRegisters,
-                        floatingRegisters: state.floatingRegisters,
-                        memory: state.memory,
-                        cycle: state.cycle
-                    }
-                ].slice(-MAX_HISTORY_SIZE)
-            });
-        case TAKE_HISTORY:
-            return (state = {
-                ...state,
-                ...state.history[state.history.length - 1 - action.value]
-            });
-        case RESET_HISTORY:
-            return (state = {
-                ...state,
-                history: []
-            });
-        case NEXT_NAT_FPR_CYCLE:
-            return {
-                ...state,
-                natFpr: {
-                    ...state.natFpr,
-                    data: [...action.value]
-                }
+const machineSlice = createSlice({
+    name: 'machine',
+    initialState,
+    reducers: {
+        nextPrefetchCycle(state, action: PayloadAction<unknown[]>) {
+            state.prefetchUnit = action.payload;
+        },
+        nextDecoderCycle(state, action: PayloadAction<unknown[]>) {
+            state.decoder = action.payload;
+        },
+        nextJumpTableCycle(state, action: PayloadAction<unknown[]>) {
+            state.jumpPrediction = action.payload;
+        },
+        nextFunctionalUnitCycle(state, action: PayloadAction<(FunctionalUnitEntry | Record<string, never>)[]>) {
+            state.functionalUnitIntAdd = action.payload[0];
+            state.functionalUnitIntSub = action.payload[1];
+            state.functionalUnitFloAdd = action.payload[2];
+            state.functionalUnitFloSub = action.payload[3];
+            state.functionalUnitMemory = action.payload[4];
+            state.functionalUnitJump = action.payload[5];
+            state.functionalUnitAluMem = action.payload[6];
+        },
+        nextVliwHeaderTableCycle(state, action: PayloadAction<unknown[]>) {
+            state.vliwExecutionHeaderTable = action.payload;
+        },
+        nextVliwTableCycle(state, action: PayloadAction<unknown[]>) {
+            state.vliwExecutionTable = action.payload;
+        },
+        nextReserveStationCycle(state, action: PayloadAction<unknown[][]>) {
+            state.reserveStationIntAdd = action.payload[0] as ReserveStationEntry[];
+            state.reserveStationIntSub = action.payload[1] as ReserveStationEntry[];
+            state.reserveStationFloAdd = action.payload[2] as ReserveStationEntry[];
+            state.reserveStationFloSub = action.payload[3] as ReserveStationEntry[];
+            state.reserveStationMemory = action.payload[4] as ReserveStationEntry[];
+            state.reserveStationJump = action.payload[5] as ReserveStationEntry[];
+        },
+        nextReorderBufferMapperCycle(state, action: PayloadAction<[Record<string, number>, Record<string, number>]>) {
+            state.ROBGpr = { ...state.ROBGpr, data: action.payload[0] };
+            state.ROBFpr = { ...state.ROBFpr, data: action.payload[1] };
+        },
+        nextReorderBufferCycle(state, action: PayloadAction<unknown[]>) {
+            state.reorderBuffer = action.payload;
+        },
+        nextRegistersCycle(state, action: PayloadAction<[number[], number[]]>) {
+            state.generalRegisters = {
+                ...state.generalRegisters,
+                data: [...action.payload[0]]
             };
-        case NEXT_NAT_GPR_CYCLE:
-            return {
-                ...state,
-                natGpr: {
-                    ...state.natGpr,
-                    data: [...action.value]
-                }
+            state.floatingRegisters = {
+                ...state.floatingRegisters,
+                data: [...action.payload[1]]
             };
-        case NEXT_PREDICATE_CYCLE:
-            return {
-                ...state,
-                predicate: {
-                    ...state.predicate,
-                    data: [...action.value]
-                }
+        },
+        nextMemoryCycle(state, action: PayloadAction<number[]>) {
+            state.memory = {
+                ...state.memory,
+                data: action.payload
             };
-        case ADD_NAT_FPR_INTERVAL:
-            return addInterval(state, 'natFpr', action.value);
-        case ADD_NAT_GPR_INTERVAL:
-            return addInterval(state, 'natGpr', action.value);
-        case ADD_PREDICATE_INTERVAL:
-            return addInterval(state, 'predicate', action.value);
-        case REMOVE_NAT_FPR_INTERVAL:
-            return removeInterval(state, 'natFpr', action.value);
-        case REMOVE_NAT_GPR_INTERVAL:
-            return removeInterval(state, 'natGpr', action.value);
-        case REMOVE_PREDICATE_INTERVAL:
-            return removeInterval(state, 'predicate', action.value);
-        default:
-            return state;
+        },
+        nextCycle(state, action: PayloadAction<number>) {
+            state.cycle = action.payload;
+        },
+        currentPC(state, action: PayloadAction<number>) {
+            state.pc = action.payload;
+        },
+        nextInstructionsCommited(state, action: PayloadAction<Map<number, number>>) {
+            state.stats.commitedPerInstr = Array.from(action.payload, ([name, value]) => ({ name: String(name), value }));
+        },
+        nextTotalCommited(state, action: PayloadAction<{ commited: number; discarded: number }>) {
+            state.stats.commited = action.payload.commited;
+            state.stats.discarded = action.payload.discarded;
+        },
+        nextUnitsUsage(state, action: PayloadAction<Map<string, number[]>>) {
+            state.stats.unitsUsage = action.payload;
+        },
+        nextStatusesCount(state, action: PayloadAction<Map<string, number[]>>) {
+            state.stats.statusesCount = action.payload;
+        },
+        nextInstructionsStatusesAverageCycles(state, action: PayloadAction<Map<number, InstructionStatsEntry>>) {
+            state.stats.instructionsStatusesAverageCycles = action.payload;
+        },
+        superscalarLoad(state, action: PayloadAction<Instruction[]>) {
+            state.code = action.payload;
+        },
+        viewBasicBlocks(state, action: PayloadAction<boolean>) {
+            state.colorBasicBlocks = action.payload;
+        },
+        addMemoryInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'memory', action.payload);
+        },
+        removeMemoryInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'memory', action.payload);
+        },
+        addGeneralRegistersInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'generalRegisters', action.payload);
+        },
+        removeGeneralRegistersInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'generalRegisters', action.payload);
+        },
+        addFloatingRegistersInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'floatingRegisters', action.payload);
+        },
+        removeFloatingRegistersInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'floatingRegisters', action.payload);
+        },
+        pushHistory(state) {
+            state.history = [
+                ...state.history,
+                {
+                    prefetchUnit: state.prefetchUnit,
+                    decoder: state.decoder,
+                    jumpPrediction: state.jumpPrediction,
+                    functionalUnitIntAdd: state.functionalUnitIntAdd,
+                    functionalUnitIntSub: state.functionalUnitIntSub,
+                    functionalUnitFloAdd: state.functionalUnitFloAdd,
+                    functionalUnitFloSub: state.functionalUnitFloSub,
+                    functionalUnitMemory: state.functionalUnitMemory,
+                    functionalUnitJump: state.functionalUnitJump,
+                    functionalUnitAluMem: state.functionalUnitAluMem,
+                    reserveStationIntAdd: state.reserveStationIntAdd,
+                    reserveStationIntSub: state.reserveStationIntSub,
+                    reserveStationFloAdd: state.reserveStationFloAdd,
+                    reserveStationFloSub: state.reserveStationFloSub,
+                    reserveStationMemory: state.reserveStationMemory,
+                    reserveStationJump: state.reserveStationJump,
+                    ROBGpr: { ...state.ROBGpr },
+                    ROBFpr: { ...state.ROBFpr },
+                    predicate: { ...state.predicate },
+                    natGpr: { ...state.natGpr },
+                    natFpr: { ...state.natFpr },
+                    reorderBuffer: state.reorderBuffer,
+                    generalRegisters: state.generalRegisters,
+                    floatingRegisters: state.floatingRegisters,
+                    memory: state.memory,
+                    cycle: state.cycle
+                }
+            ].slice(-MAX_HISTORY_SIZE);
+        },
+        takeHistory(state, action: PayloadAction<number>) {
+            const entry = state.history[state.history.length - 1 - action.payload];
+            if (entry) {
+                Object.assign(state, entry);
+            }
+        },
+        resetHistory(state) {
+            state.history = [];
+        },
+        nextNatFprCycle(state, action: PayloadAction<boolean[]>) {
+            state.natFpr = {
+                ...state.natFpr,
+                data: [...action.payload]
+            };
+        },
+        nextNatGprCycle(state, action: PayloadAction<boolean[]>) {
+            state.natGpr = {
+                ...state.natGpr,
+                data: [...action.payload]
+            };
+        },
+        nextPredicateCycle(state, action: PayloadAction<boolean[]>) {
+            state.predicate = {
+                ...state.predicate,
+                data: [...action.payload]
+            };
+        },
+        addNatFprInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'natFpr', action.payload);
+        },
+        addNatGprInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'natGpr', action.payload);
+        },
+        addPredicateInterval(state, action: PayloadAction<number[]>) {
+            addIntervalToField(state, 'predicate', action.payload);
+        },
+        removeNatFprInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'natFpr', action.payload);
+        },
+        removeNatGprInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'natGpr', action.payload);
+        },
+        removePredicateInterval(state, action: PayloadAction<number[]>) {
+            removeIntervalFromField(state, 'predicate', action.payload);
+        },
     }
-}
+});
+
+export const {
+    nextPrefetchCycle,
+    nextDecoderCycle,
+    nextJumpTableCycle,
+    nextFunctionalUnitCycle,
+    nextVliwHeaderTableCycle,
+    nextVliwTableCycle,
+    nextReserveStationCycle,
+    nextReorderBufferMapperCycle,
+    nextReorderBufferCycle,
+    nextRegistersCycle,
+    nextMemoryCycle,
+    nextCycle,
+    currentPC,
+    nextInstructionsCommited,
+    nextTotalCommited,
+    nextUnitsUsage,
+    nextStatusesCount,
+    nextInstructionsStatusesAverageCycles,
+    superscalarLoad,
+    viewBasicBlocks,
+    addMemoryInterval,
+    removeMemoryInterval,
+    addGeneralRegistersInterval,
+    removeGeneralRegistersInterval,
+    addFloatingRegistersInterval,
+    removeFloatingRegistersInterval,
+    pushHistory,
+    takeHistory,
+    resetHistory,
+    nextNatFprCycle,
+    nextNatGprCycle,
+    nextPredicateCycle,
+    addNatFprInterval,
+    addNatGprInterval,
+    addPredicateInterval,
+    removeNatFprInterval,
+    removeNatGprInterval,
+    removePredicateInterval,
+} = machineSlice.actions;
+
+export const MachineReducers = machineSlice.reducer;

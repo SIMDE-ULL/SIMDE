@@ -1,13 +1,10 @@
 import { FunctionalUntitVisualEntry } from "../../core/Common/FunctionalUnit";
-
-export const FUNCTIONAL_UNIT_CYCLE = 'FUNCTIONAL_UNIT_CYCLE';
+import { nextFunctionalUnitCycle as _nextFunctionalUnitCycle } from '../reducers/machine';
 
 export function nextFunctionalUnitCycle(data: unknown[][]) {
-    return {
-        type: FUNCTIONAL_UNIT_CYCLE,
-        value: data.map(element => mapFunctionalUnitData(element))
-    };
+    return _nextFunctionalUnitCycle(data.map(element => mapFunctionalUnitData(element)));
 }
+
 function mapFunctionalUnitData(data: unknown[]): { content: unknown[]; header: string[] } {
     let toReturnObject: { content: unknown[]; header: string[] } = {
         content: [],

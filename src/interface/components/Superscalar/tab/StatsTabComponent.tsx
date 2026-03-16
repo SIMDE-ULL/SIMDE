@@ -158,18 +158,21 @@ export const StatsTabComponent: FC = () => {
             </thead>
             <tbody>
               {instrCommitPercentage &&
-                instrCommitPercentage.map((d: { name: string; value: number }) => (
+                instrCommitPercentage.map((d: { name: string; value: number }) => {
+                  const stats = instrStatuses.get(Number(d.name));
+                  return (
                   <tr key={d.name}>
                     <th scope="row">{d.name}</th>
-                    <td>{code[d.name].toString()}</td>
-                    <td>{formatTableNumber(instrStatuses.get(d.name).prefetchCycles)}</td>
-                    <td>{formatTableNumber(instrStatuses.get(d.name).decodeCycles)}</td>
-                    <td>{formatTableNumber(instrStatuses.get(d.name).issueCycles)}</td>
-                    <td>{formatTableNumber(instrStatuses.get(d.name).executeCycles)}</td>
-                    <td>{formatTableNumber(instrStatuses.get(d.name).writeBackCycles)}</td>
+                    <td>{code[Number(d.name)]?.toString()}</td>
+                    <td>{formatTableNumber(stats?.prefetchCycles ?? 0)}</td>
+                    <td>{formatTableNumber(stats?.decodeCycles ?? 0)}</td>
+                    <td>{formatTableNumber(stats?.issueCycles ?? 0)}</td>
+                    <td>{formatTableNumber(stats?.executeCycles ?? 0)}</td>
+                    <td>{formatTableNumber(stats?.writeBackCycles ?? 0)}</td>
                     <td>{formatTableNumber(d.value * 100)}%</td>
                   </tr>
-                ))}
+                  );
+                })}
             </tbody>
           </table>
         </div>

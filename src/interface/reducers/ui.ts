@@ -1,21 +1,20 @@
-import {
-    TOGGLE_LOAD_MODAL,
-    TOGGLE_AUTHOR_MODAL,
-    TOGGLE_OPTIONS_MODAL,
-    TOGGLE_SUPER_CONFIG_MODAL,
-    TOGGLE_VLIW_CONFIG_MODAL,
-    TOGGLE_SUPERSCALAR_LOAD_CONTENT_MODAL,
-    TOGGLE_VLIW_LOAD_CONTENT_MODAL,
-    TOGGLE_BATCH_MODAL,
-    CLOSE_BATCH_RESULTS,
-    DISPLAY_BATCH_RESULTS
-} from '../actions/modals';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import {
-    SET_CYCLES_PER_REPLICATION
-} from '../actions/stats-actions';
+export interface UiState {
+    isLoadModalOpen: boolean;
+    isAuthorModalOpen: boolean;
+    isOptionsModalOpen: boolean;
+    isSuperConfigModalOpen: boolean;
+    isVliwConfigModalOpen: boolean;
+    isSuperscalarLoadContentModalOpen: boolean;
+    isVliwLoadContentModalOpen: boolean;
+    isBatchModalOpen: boolean;
+    isBatchResultsModalOpen: boolean;
+    batchResults: number[];
+    batchStatsResults: unknown;
+}
 
-export const initialState = {
+export const initialState: UiState = {
     isLoadModalOpen: false,
     isAuthorModalOpen: false,
     isOptionsModalOpen: false,
@@ -29,67 +28,60 @@ export const initialState = {
     batchStatsResults: {}
 };
 
-export function UiReducers(state = initialState, action: { type: string; value?: any }) {
-    switch (action.type) {
-        case TOGGLE_LOAD_MODAL:
-            return (state = {
-                ...state,
-                isLoadModalOpen: action.value
-            });
-        case TOGGLE_AUTHOR_MODAL:
-            return (state = {
-                ...state,
-                isAuthorModalOpen: action.value
-            });
-        case TOGGLE_OPTIONS_MODAL:
-            return (state = {
-                ...state,
-                isOptionsModalOpen: action.value
-            });
-        case TOGGLE_SUPER_CONFIG_MODAL:
-            return (state = {
-                ...state,
-                isSuperConfigModalOpen: action.value
-            });
-        case TOGGLE_VLIW_CONFIG_MODAL:
-            return (state = {
-                ...state,
-                isVliwConfigModalOpen: action.value
-            });
-        case TOGGLE_BATCH_MODAL:
-            return (state = {
-                ...state,
-                isBatchModalOpen: action.value
-            });
-        case TOGGLE_SUPERSCALAR_LOAD_CONTENT_MODAL:
-            return (state = {
-                ...state,
-                isSuperscalarLoadContentModalOpen: action.value
-            });
-        case TOGGLE_VLIW_LOAD_CONTENT_MODAL:
-            return (state = {
-                ...state,
-                isVliwLoadContentModalOpen: action.value
-            });
-        case SET_CYCLES_PER_REPLICATION:
-            return (state = {
-                ...state,
-                batchResults: action.value,
-            });
-        case DISPLAY_BATCH_RESULTS:
-            return (state = {
-                ...state,
-                isBatchResultsModalOpen: true,
-                batchStatsResults: action.value
-            });
-        case CLOSE_BATCH_RESULTS:
-            return (state = {
-                ...state,
-                isBatchResultsModalOpen: false,
-                batchStatsResults: {}
-            });
-
-        default: 
-            return state;
+const uiSlice = createSlice({
+    name: 'ui',
+    initialState,
+    reducers: {
+        toggleLoadModal(state, action: PayloadAction<boolean>) {
+            state.isLoadModalOpen = action.payload;
+        },
+        toggleAuthorModal(state, action: PayloadAction<boolean>) {
+            state.isAuthorModalOpen = action.payload;
+        },
+        toggleOptionsModal(state, action: PayloadAction<boolean>) {
+            state.isOptionsModalOpen = action.payload;
+        },
+        toggleSuperConfigModal(state, action: PayloadAction<boolean>) {
+            state.isSuperConfigModalOpen = action.payload;
+        },
+        toggleVliwConfigModal(state, action: PayloadAction<boolean>) {
+            state.isVliwConfigModalOpen = action.payload;
+        },
+        toggleBatchModal(state, action: PayloadAction<boolean>) {
+            state.isBatchModalOpen = action.payload;
+        },
+        toggleSuperscalarLoadContentModal(state, action: PayloadAction<boolean>) {
+            state.isSuperscalarLoadContentModalOpen = action.payload;
+        },
+        toggleVliwLoadContentModal(state, action: PayloadAction<boolean>) {
+            state.isVliwLoadContentModalOpen = action.payload;
+        },
+        setCyclesPerReplication(state, action: PayloadAction<number[]>) {
+            state.batchResults = action.payload;
+        },
+        displayBatchResults(state, action: PayloadAction<unknown>) {
+            state.isBatchResultsModalOpen = true;
+            state.batchStatsResults = action.payload;
+        },
+        closeBatchResults(state) {
+            state.isBatchResultsModalOpen = false;
+            state.batchStatsResults = {};
+        },
     }
-}
+});
+
+export const {
+    toggleLoadModal,
+    toggleAuthorModal,
+    toggleOptionsModal,
+    toggleSuperConfigModal,
+    toggleVliwConfigModal,
+    toggleBatchModal,
+    toggleSuperscalarLoadContentModal,
+    toggleVliwLoadContentModal,
+    setCyclesPerReplication,
+    displayBatchResults,
+    closeBatchResults,
+} = uiSlice.actions;
+
+export const UiReducers = uiSlice.reducer;

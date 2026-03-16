@@ -1,12 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import { MachineReducers, type initialState as machineInitialState } from './machine'
-import { ColorReducers, type initialState as colorsInitialState } from './color'
-import { UiReducers, type initialState as uiInitialState } from './ui'
+import { MachineReducers, type MachineState } from './machine'
+import { ColorReducers, type ColorState } from './color'
+import { UiReducers, type UiState } from './ui'
 
 export interface GlobalState {
-    Machine: typeof machineInitialState,
-    Ui: typeof uiInitialState,
-    Colors: typeof colorsInitialState
+    Machine: MachineState,
+    Ui: UiState,
+    Colors: ColorState
 }
 
 export default combineReducers({

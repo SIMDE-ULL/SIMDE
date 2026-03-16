@@ -1,12 +1,8 @@
 import { FunctionalUnitType } from '../../core/Common/FunctionalUnit';
-export const HEADER_TABLE_CYCLE = 'HEADER_TABLE_CYCLE';
-export const TABLE_CYCLE = 'TABLE_CYCLE';
+import { nextVliwHeaderTableCycle as _nextVliwHeaderTableCycle, nextVliwTableCycle } from '../reducers/machine';
 
 export function nextVLIWHeaderTableCycle(functionalUnitNumbers: number[]) {
-    return {
-        type: HEADER_TABLE_CYCLE,
-        value: mapVLIWHeaderTable(functionalUnitNumbers)
-    };
+    return _nextVliwHeaderTableCycle(mapVLIWHeaderTable(functionalUnitNumbers));
 }
 
 interface LargeInstructionLike {
@@ -19,10 +15,7 @@ interface LargeInstructionLike {
 }
 
 export function nextVLIWExecutionTableCycle(data: LargeInstructionLike[], functionalUnitNumbers: number[]) {
-    return {
-        type: TABLE_CYCLE,
-        value: data.map(element => mapVLIWTableData(element, functionalUnitNumbers))
-    };
+    return nextVliwTableCycle(data.map(element => mapVLIWTableData(element, functionalUnitNumbers)));
 }
 
 function mapVLIWHeaderTable(functionalUnitNumbers: number[]): { translateKey?: string; extraValue: string | number }[] {
@@ -50,7 +43,7 @@ function mapVLIWTableData(data: LargeInstructionLike, functionalUnitNumbers: num
     let cols: (number | null)[] = new Array(functionalUnitAmount);
     cols.fill(null);
 
-    for (let i = 0; i < data.getVLIWOperationsNumber(); i++) { // numero de instrucciones cortas en la instrucción larga
+    for (let i = 0; i < data.getVLIWOperationsNumber(); i++) {
         for (let j = 0; j < cols.length; j++) {
             if ((data.getOperation(i).getFunctionalUnitType() === FunctionalUnitType.INTEGERSUM)
                 && (data.getOperation(i).getFunctionalUnitIndex() === j)) {
@@ -87,11 +80,6 @@ function mapVLIWTableData(data: LargeInstructionLike, functionalUnitNumbers: num
         }
     }
     return cols.map(c => c != null ? c : ' ');
-
-    // data.getVLIWOperationsNumber(); numero de operaciones de la instucción larga
-    // data.getOperation(0).id; //numero de la operación superescalar
-    // data.getOperation(0).getFunctionalUnitType; // tipo de operacion ADDI...
-    // data.getOperation(0).getFunctionalUnitIndex; // numero de unidad funcional a la que se asignara
 }
 
 const functionalUnitTranslateKeys: Record<number, string> = {

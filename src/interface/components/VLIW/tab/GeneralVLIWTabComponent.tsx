@@ -7,8 +7,8 @@ import {
   removeNatFprInterval,
   addNatGprInterval,
   removeNatGprInterval,
-  addMemoryInterval as addPredicateInterval,
-  removeMemoryInterval as removePredicateInterval,
+  addPredicateInterval,
+  removePredicateInterval,
 } from "../../../actions/predicate-nat-actions";
 
 import FunctionalUnitComponent from "../FunctionalUnitComponent";

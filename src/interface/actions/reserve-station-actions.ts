@@ -1,10 +1,7 @@
-export const NEXT_RESERVE_STATION_CYCLE = 'NEXT_RESERVE_STATION_CYCLE';
+import { nextReserveStationCycle as _nextReserveStationCycle } from '../reducers/machine';
 
 export function nextReserveStationCycle(data: unknown[]) {
-    return {
-        type: NEXT_RESERVE_STATION_CYCLE,
-        value: data.map(element => mapReserveStationEntry(element))
-    };
+    return _nextReserveStationCycle(data.map(element => mapReserveStationEntry(element)));
 }
 
 function mapReserveStationEntry(element: unknown): unknown[] {

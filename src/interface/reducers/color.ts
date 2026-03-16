@@ -1,21 +1,25 @@
-import { COLOR_CELL } from "../actions";
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-export const initialState = {
+export interface ColorState {
+    uidColors: Record<number, string>;
+    IidColors: Record<number, string>;
+}
+
+export const initialState: ColorState = {
     uidColors: {},
     IidColors: {}
-}
+};
 
-export function ColorReducers(state = initialState, action: { type: string; value?: any }) {
-    switch (action.type) {
-        case COLOR_CELL:
-            return (state = {
-                ...state,
-                uidColors: {
-                    ...state.uidColors,
-                    [action.value[0]]: action.value[1]
-                }
-            });
-        default:
-            return state;
+const colorSlice = createSlice({
+    name: 'color',
+    initialState,
+    reducers: {
+        colorCell(state, action: PayloadAction<[number, string]>) {
+            state.uidColors[action.payload[0]] = action.payload[1];
+        },
     }
-}
+});
+
+export const { colorCell } = colorSlice.actions;
+
+export const ColorReducers = colorSlice.reducer;

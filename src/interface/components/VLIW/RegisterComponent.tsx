@@ -4,7 +4,7 @@ import IntervalModalComponent from "./modal/IntervalModalComponent";
 
 interface RegisterComponentProps {
   title: string;
-  data: number[];
+  data: (number | boolean)[];
   visibleRange: number[];
   addInterval: (value: number[]) => void;
   removeInterval: (value: number[]) => void;
