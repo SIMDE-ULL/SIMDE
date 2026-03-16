@@ -1,11 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PhotoshopPicker } from "react-color";
+import { HexColorPicker } from "react-colorful";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { colorCell } from "../../actions/reorder-buffer-actions";
 
-/** Color picker state for ROB instruction highlighting. */
 interface ColorPickerState {
   displayColorPicker: boolean;
   instructionUid: number | null;
@@ -28,12 +27,12 @@ export const ReorderBufferComponent: React.FC = () => {
     setPickerState({
       displayColorPicker: true,
       instructionUid,
-      selectedColor: instructionColor,
+      selectedColor: instructionColor || "#ffffff",
     });
   };
 
   const onColorAccept = () => {
-    dispatch(colorCell(pickerState.instructionUid, (pickerState.selectedColor as any).hex));
+    dispatch(colorCell(pickerState.instructionUid, pickerState.selectedColor));
     setPickerState({
       displayColorPicker: false,
       instructionUid: null,
@@ -47,10 +46,6 @@ export const ReorderBufferComponent: React.FC = () => {
       instructionUid: null,
       selectedColor: "",
     });
-  };
-
-  const handleChangeComplete = (color: any) => {
-    setPickerState({ ...pickerState, selectedColor: color });
   };
 
   const popover: React.CSSProperties = {
@@ -67,12 +62,20 @@ export const ReorderBufferComponent: React.FC = () => {
       <div className="panel-body smd-reorder_buffer-body">
         {pickerState.displayColorPicker ? (
           <div style={popover}>
-            <PhotoshopPicker
+            <HexColorPicker
               color={pickerState.selectedColor}
-              onAccept={onColorAccept}
-              onChangeComplete={handleChangeComplete}
-              onCancel={onColorCancel}
+              onChange={(hex) =>
+                setPickerState((prev) => ({ ...prev, selectedColor: hex }))
+              }
             />
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: 4, marginTop: 4 }}>
+              <button type="button" onClick={onColorCancel}>
+                {t("common.cancel", "Cancel")}
+              </button>
+              <button type="button" onClick={onColorAccept}>
+                OK
+              </button>
+            </div>
           </div>
         ) : null}
         <div className="smd-table">

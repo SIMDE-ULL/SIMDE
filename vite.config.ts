@@ -7,13 +7,10 @@ export default defineConfig({
   ssr: {
     noExternal: [
       "react-bootstrap",
-      "react-color",
       /^@restart\//,
       "dom-helpers",
       "uncontrollable",
       "react-transition-group",
-      "material-colors",
-      "tinycolor2",
     ],
   },
 });
