@@ -14,7 +14,7 @@ import {
 import FunctionalUnitComponent from "../FunctionalUnitComponent";
 import CodeComponent from "../CodeComponent";
 import { TableComponent } from "../TableComponent";
-import RegisterComponent from "../../Superscalar/RegisterComponent";
+import RegisterComponent from "../../Common/RegisterComponent";
 import { PREDICATE_SIZE } from "../../../reducers/machine";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
 

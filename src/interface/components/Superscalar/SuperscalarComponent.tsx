@@ -5,7 +5,7 @@ import FileBarComponent from './navbar/FileBarComponent';
 import AccessBarComponent from "./navbar/AccessBarComponent";
 
 import GeneralTabComponent from "./tab/GeneralTabComponent";
-import RegisterTabComponent from './tab/RegistersTabComponent';
+import RegisterTabComponent from '../Common/RegistersTabComponent';
 import StatsTabComponent from './tab/StatsTabComponent';
 
 import LoadModalComponent from "./modal/LoadModalComponent";

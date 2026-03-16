@@ -1,6 +1,6 @@
 import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
-import IntervalModalComponent from "./modal/IntervalModalComponent";
+import IntervalModalComponent from "./Modal/IntervalModalComponent";
 
 /** Props for the register display component. */
 interface RegisterComponentProps {

@@ -1,6 +1,6 @@
 import { type FC } from "react";
-import RegisterComponent from "../RegisterComponent";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import RegisterComponent from "./RegisterComponent";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import {
   addFloatingRegistersInterval,
   removeFloatingRegistersInterval,
@@ -8,11 +8,11 @@ import {
   removeGeneralRegistersInterval,
   addMemoryInterval,
   removeMemoryInterval,
-} from "../../../actions/intervals-actions";
-import { Machine } from "../../../../core/Common/Machine";
+} from "../../actions/intervals-actions";
+import { Machine } from "../../../core/Common/Machine";
 
-/** VLIW tab displaying memory, general-purpose, and floating-point register banks. */
-export const RegisterVLIWTabComponent: FC = () => {
+/** Tab displaying memory, general-purpose, and floating-point register banks. */
+export const RegistersTabComponent: FC = () => {
   const dispatch = useAppDispatch();
   const memory = useAppSelector((state) => state.Machine.memory);
   const generalRegisters = useAppSelector((state) => state.Machine.generalRegisters);
@@ -54,4 +54,4 @@ export const RegisterVLIWTabComponent: FC = () => {
   );
 };
 
-export default RegisterVLIWTabComponent;
+export default RegistersTabComponent;

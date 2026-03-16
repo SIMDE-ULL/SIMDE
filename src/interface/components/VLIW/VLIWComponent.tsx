@@ -14,7 +14,7 @@ import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalCompone
 import VLIWIntegration from "../../../integration/vliw-integration.client";
 
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";
-import RegisterVLIWTabComponent  from "./tab/RegistersVLIWTabComponent";
+import RegisterVLIWTabComponent  from "../Common/RegistersTabComponent";
 import StatsTabComponent from "./tab/StatsTabComponent";
 import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
