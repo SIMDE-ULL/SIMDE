@@ -1,16 +1,22 @@
 import * as React from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
-import VliwIntegration from "../../../../integration/vliw-integration";
+import VliwIntegration from "../../../../integration/vliw-integration.client";
 
 /** VLIW playback control bar with play/pause/stop/step and speed controls. */
 export const VLIWAccessBarComponent: React.FC = () => {
   const { t } = useTranslation();
   const cycle = useAppSelector((state) => state.Machine.cycle);
+  const speedRef = useRef<HTMLInputElement>(null);
+
+  const syncSpeed = () => {
+    VliwIntegration.speedValue = parseInt(speedRef.current?.value || "0", 10);
+  };
 
   return (
     <div className="smd-access_bar">
-      <a onClick={() => VliwIntegration.play()}>
+      <a onClick={() => { syncSpeed(); VliwIntegration.play(); }}>
         <i className="fa fa-play" aria-hidden="true" />
       </a>
       <a onClick={() => VliwIntegration.pause()}>
@@ -36,8 +42,8 @@ export const VLIWAccessBarComponent: React.FC = () => {
           {t("accessBar.speed")}
         </label>
         <input
+          ref={speedRef}
           type="number"
-          id="velocidad"
           className="smd-speed_value"
           defaultValue={"5"}
           min="0"

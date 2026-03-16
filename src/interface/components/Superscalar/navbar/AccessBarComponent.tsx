@@ -1,16 +1,22 @@
 import * as React from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 
 /** Superscalar playback control bar with play/pause/stop/step and speed controls. */
 export const AccessBarComponent: React.FC = () => {
   const { t } = useTranslation();
   const cycle = useAppSelector((state) => state.Machine.cycle);
+  const speedRef = useRef<HTMLInputElement>(null);
+
+  const syncSpeed = () => {
+    SuperscalarIntegration.speedValue = parseInt(speedRef.current?.value || "0", 10);
+  };
 
   return (
     <div className="smd-access_bar">
-      <a onClick={() => SuperscalarIntegration.play()}>
+      <a onClick={() => { syncSpeed(); SuperscalarIntegration.play(); }}>
         <i className="fa fa-play" aria-hidden="true" />
       </a>
       <a onClick={() => SuperscalarIntegration.pause()}>
@@ -36,8 +42,8 @@ export const AccessBarComponent: React.FC = () => {
           {t("accessBar.speed")}
         </label>
         <input
+          ref={speedRef}
           type="number"
-          id="velocidad"
           className="smd-speed_value"
           defaultValue={"5"}
           min="0"

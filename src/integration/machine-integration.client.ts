@@ -1,8 +1,16 @@
 import { ContentIntegration } from './content-integration';
 
+/**
+ * Abstract base for machine integration layers (Superscalar, VLIW).
+ * Bridges the simulation engine with the Redux store and UI.
+ * Client-only — browser APIs (DOM, alert, setTimeout) are used by subclasses.
+ */
 export abstract class MachineIntegration {
 
     public contentIntegration: ContentIntegration;
+
+    /** Speed value sourced from UI. Set by components before calling play(). */
+    public speedValue: number = 0;
 
     abstract loadCode: (code: any) => void;
 
@@ -24,11 +32,14 @@ export abstract class MachineIntegration {
     abstract setFpr: (data: number[]) => void;
     abstract setGpr: (data: number[]) => void;
 
-    calculateSpeed() {
-        let speed = parseInt((document.getElementById('velocidad')as HTMLInputElement).value, 10);
-
+    /**
+     * Calculates the execution delay from the speed value.
+     * Speed value is set by the UI component via `speedValue` property,
+     * avoiding direct DOM access (document.getElementById).
+     */
+    calculateSpeed(): number {
         const defaultStep = 2000;
-        return speed ? defaultStep / speed : 0;
+        return this.speedValue ? defaultStep / this.speedValue : 0;
     }
 
     calculateStandardDeviation(average, values): number {
