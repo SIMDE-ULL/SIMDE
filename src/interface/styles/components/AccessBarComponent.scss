@@ -3,10 +3,12 @@
 .smd-access_bar {
     padding: 0.5rem 0rem;
 
-    a {
-        padding: 1.5rem 1.5rem;
+    button {
+        padding: 0 1.5rem;
         color: black;
         cursor: pointer;
+        background: none;
+        border: none;
     }
 
     .smd-cycle {
