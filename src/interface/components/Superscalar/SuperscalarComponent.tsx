@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Tabs, Tab } from "react-bootstrap";
 
 import FileBarComponent from './navbar/FileBarComponent';
-import AccessBarComponent from "./navbar/AccessBarComponent";
+import AccessBarComponent from "../Common/AccessBarComponent";
 
 import GeneralTabComponent from "./tab/GeneralTabComponent";
 import RegisterTabComponent from '../Common/RegistersTabComponent';
@@ -29,7 +29,7 @@ const SuperscalarComponent = () => {
             <ExecutionNotification />
             <div className='navigation-bars'>
                 <FileBarComponent />
-                <AccessBarComponent />
+                <AccessBarComponent integration={SuperscalarIntegration} />
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>
                 <Tab eventKey={1} title={t('accessBar.superscalar')}>

@@ -18,7 +18,7 @@ import RegisterVLIWTabComponent  from "../Common/RegistersTabComponent";
 import StatsTabComponent from "./tab/StatsTabComponent";
 import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
-import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
+import AccessBarComponent from "../Common/AccessBarComponent";
 
 import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 import ExecutionNotification from "../Common/ExecutionNotification";
@@ -31,7 +31,7 @@ const VLIWComponent = () => {
             <ExecutionNotification />
             <div className='navigation-bars'>
                 <VLIWFileBarComponent />
-                <VLIWAccessBarComponent />
+                <AccessBarComponent integration={VLIWIntegration} />
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>
                 <Tab eventKey={1} title={t('accessBar.vliw')}>

@@ -1,33 +1,37 @@
 import { useRef, type FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../../../../store/hooks";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
+import { useAppSelector } from "../../../store/hooks";
+import type { MachineIntegration } from "../../../integration/machine-integration.client";
 
-/** Superscalar playback control bar with play/pause/stop/step and speed controls. */
-export const AccessBarComponent: FC = () => {
+interface AccessBarProps {
+  integration: MachineIntegration;
+}
+
+/** Playback control bar with play/pause/stop/step and speed controls. */
+export const AccessBarComponent: FC<AccessBarProps> = ({ integration }) => {
   const { t } = useTranslation();
   const cycle = useAppSelector((state) => state.Machine.cycle);
   const speedRef = useRef<HTMLInputElement>(null);
 
   const syncSpeed = () => {
-    SuperscalarIntegration.speedValue = parseInt(speedRef.current?.value || "0", 10);
+    integration.speedValue = parseInt(speedRef.current?.value || "0", 10);
   };
 
   return (
     <div className="smd-access_bar">
-      <a onClick={() => { syncSpeed(); SuperscalarIntegration.play(); }}>
+      <a onClick={() => { syncSpeed(); integration.play(); }}>
         <i className="fa fa-play" aria-hidden="true" />
       </a>
-      <a onClick={() => SuperscalarIntegration.pause()}>
+      <a onClick={() => integration.pause()}>
         <i className="fa fa-pause" aria-hidden="true" />
       </a>
-      <a onClick={() => SuperscalarIntegration.stop()}>
+      <a onClick={() => integration.stop()}>
         <i className="fa fa-stop" aria-hidden="true" />
       </a>
-      <a onClick={() => SuperscalarIntegration.stepBack()}>
+      <a onClick={() => integration.stepBack()}>
         <i className="fa fa-step-backward" aria-hidden="true" />
       </a>
-      <a onClick={() => SuperscalarIntegration.stepForward()}>
+      <a onClick={() => integration.stepForward()}>
         <i className="fa fa-step-forward" aria-hidden="true" />
       </a>
       <div className="smd-cycle">
