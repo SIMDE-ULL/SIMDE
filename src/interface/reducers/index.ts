@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from '@reduxjs/toolkit'
 import { MachineReducers, type initialState as machineInitialState } from './machine'
 import { ColorReducers, type initialState as colorsInitialState } from './color'
 import { UiReducers, type initialState as uiInitialState } from './ui'

@@ -1,15 +1,18 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { enableBatching } from './interface/reducers/batching';
-import { createStore, Store } from 'redux';
 import reducers from './interface/reducers';
 
-// Guard against server-side execution where `window` is not available.
-const devToolsEnhancer =
-  typeof window !== "undefined" && (window as any).__REDUX_DEVTOOLS_EXTENSION__
-    ? (window as any).__REDUX_DEVTOOLS_EXTENSION__()
-    : undefined;
+/** Creates a new store instance. Called per-request in SSR, once on the client. */
+export function createAppStore() {
+  return configureStore({
+    reducer: enableBatching(reducers),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({ serializableCheck: false }),
+  });
+}
 
-/** Global Redux store. Uses custom batching to dispatch multiple actions atomically. */
-export let store: Store<any> = createStore(
-  enableBatching(reducers),
-  devToolsEnhancer,
-);
+export const store = createAppStore();
+
+export type AppStore = ReturnType<typeof createAppStore>;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
