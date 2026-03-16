@@ -1,4 +1,5 @@
 
+import { useCallback } from 'react';
 import { useDrop } from 'react-dnd';
 
 
@@ -19,8 +20,10 @@ function VLIWOperationComponent(props: any) {
         })
     }));
 
+    const dropRef = useCallback((node: HTMLDivElement | null) => { drop(node); }, [drop]);
+
     return (
-        <div ref={drop}
+        <div ref={dropRef}
             className={ isOver ? "smd-table_cell smd-table_cell_isover" : "smd-table_cell" }
             key={`${'VliwCode' + props.pos[0] + '' + props.pos[1]}`}>
             { props.op }
