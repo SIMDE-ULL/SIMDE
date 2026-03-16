@@ -4,6 +4,7 @@ import { Tabs, Tab } from "react-bootstrap";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { ClientOnly } from "../Common/ClientOnly";
 
 import VliwConfigModalComponent from "./modal/VLIWConfigModalComponent";
 import OptionsModalComponent from "../Superscalar/modal/OptionsModalComponent";
@@ -33,9 +34,13 @@ const VLIWComponent = () => {
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>
                 <Tab eventKey={1} title={t('accessBar.vliw')}>
-                    <DndProvider backend={HTML5Backend}>
-                        <GeneralVLIWTabComponent />
-                    </DndProvider>
+                    <ClientOnly fallback={<div>Loading...</div>}>
+                        {() => (
+                            <DndProvider backend={HTML5Backend}>
+                                <GeneralVLIWTabComponent />
+                            </DndProvider>
+                        )}
+                    </ClientOnly>
                 </Tab>
                 <Tab eventKey={2} title={t('accessBar.memReg')}>
                     <RegisterVLIWTabComponent />
