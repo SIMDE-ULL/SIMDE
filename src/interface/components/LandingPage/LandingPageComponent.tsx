@@ -12,7 +12,7 @@ const LandingPageComponent = () => {
             <b className="navbaricon"><img alt="SIMDE navigation icon" src="https://adiumxtras.com/images/pictures/futuramas_bender_dock_icon_1_8169_3288_image_4129.png"></img></b>
             <li className="pagetitle"><p>{t('landingPage.pagetitle')}</p></li>
             <li><Link to="/">{t('landingPage.home')}</Link></li>
-            <li><Link to="/Project">{t('landingPage.project')}</Link></li>
+            <li><Link to="/project">{t('landingPage.project')}</Link></li>
           </ul>
          </div>
          <div className="pagecontent">
@@ -22,7 +22,7 @@ const LandingPageComponent = () => {
                 <div className="container">
                   <h1 className="display-2">{t('landingPage.pagetitle')}</h1>
                   <p>{t('landingPage.description')}</p>
-                  <p><Link className="btn btn-primary btn-lg" to="/Project">{t('landingPage.read')}</Link></p>
+                  <p><Link className="btn btn-primary btn-lg" to="/project">{t('landingPage.read')}</Link></p>
                 </div>
               </div>
               <div className="thumbnail">
@@ -41,7 +41,7 @@ const LandingPageComponent = () => {
                   <h3>{t('landingPage.vliw')}</h3>
                   <p>{t('landingPage.vliw_description')}</p>
                   <div className="pagebtngroup">
-                    <Link className="btn btn-primary" to="/VLIW">{t('landingPage.go')}</Link><a className="pagebtn btn btn-light" href="https://etsiiull.gitbooks.io/simde/">{t('landingPage.read')}</a>
+                    <Link className="btn btn-primary" to="/vliw">{t('landingPage.go')}</Link><a className="pagebtn btn btn-light" href="https://etsiiull.gitbooks.io/simde/">{t('landingPage.read')}</a>
                   </div>
                 </div>
               </div>
