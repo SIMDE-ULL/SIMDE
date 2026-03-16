@@ -26,7 +26,6 @@ const LandingPageComponent = () => {
                 </div>
               </div>
               <div className="thumbnail">
-                <img src="" alt="Decorative placeholder"></img>
                 <div className="caption">
                   <h3>{t('landingPage.superscalar')}</h3>
                   <p>{t('landingPage.superscalar_description')}</p>
@@ -36,7 +35,6 @@ const LandingPageComponent = () => {
                 </div>
               </div>
               <div className="thumbnail">
-                <img src="" alt="Decorative placeholder"></img>
                 <div className="caption">
                   <h3>{t('landingPage.vliw')}</h3>
                   <p>{t('landingPage.vliw_description')}</p>
