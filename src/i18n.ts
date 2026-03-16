@@ -1,8 +1,8 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import en from "../public/locales/en/common.json";
-import es from "../public/locales/es/common.json";
+import en from "./locales/en/common.json";
+import es from "./locales/es/common.json";
 
 const clientLng =
   typeof window !== "undefined" && navigator?.language?.startsWith("es")
