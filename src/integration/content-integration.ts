@@ -112,7 +112,6 @@ export class ContentIntegration {
         let lastPosition = -1;
         Object.keys(content).forEach(key => {
             let i = +key;
-            console.log("[" + i + "] " + content[i]);
 
             // Check if is the next position after the last one
             let isContinuos = lastPosition !== -1 && i === lastPosition + 1;

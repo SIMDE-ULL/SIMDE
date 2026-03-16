@@ -1,4 +1,3 @@
-"use strict";
 import { Stats, InstructionStatsEntry } from "./stats";
 
 export interface StatEntry {
