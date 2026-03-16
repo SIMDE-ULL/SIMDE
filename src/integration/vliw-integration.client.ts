@@ -17,7 +17,7 @@ import {
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
 import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
-import { t } from 'i18next';
+import i18n from '../i18n';
 
 import { MachineIntegration } from './machine-integration';
 import { VLIW } from '../core/VLIW/VLIW';
@@ -208,14 +208,14 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    alert(t('execution.error') + ": " + VLIWError[err]);
+                    alert(i18n.t('execution.error') + ": " + VLIWError[err]);
                     err = VLIWError.ENDEXE;
                 }
             }
             this.collectStats();
             this.dispatchAllVLIWActions();
             this.finishedExecution = true;
-            alert(t('execution.finished'));
+            alert(i18n.t('execution.finished'));
         }
     }
 
@@ -244,7 +244,7 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    alert(t('execution.error') + ": " + VLIWError[err]);
+                    alert(i18n.t('execution.error') + ": " + VLIWError[err]);
                     err = VLIWError.ENDEXE;
                 }
             }
@@ -328,14 +328,14 @@ export class VLIWIntegration extends MachineIntegration {
                         stop = false;
                         break;
                     case VLIWError.BREAKPOINT:
-                        alert(t('execution.stopped'));
+                        alert(i18n.t('execution.stopped'));
                         break;
                     case VLIWError.ENDEXE:
                         this.finishedExecution = true;
-                        alert(t('execution.finished'));
+                        alert(i18n.t('execution.finished'));
                         break;
                     default:
-                        alert(t('execution.error') + ": " + VLIWError[machineStatus]);
+                        alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus]);
                         break;
                 }
 

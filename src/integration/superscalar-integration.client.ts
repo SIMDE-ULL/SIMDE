@@ -30,7 +30,7 @@ import { FunctionalUnitType } from '../core/Common/FunctionalUnit';
 import { pushHistory, takeHistory, resetHistory } from '../interface/actions/history';
 import { MAX_HISTORY_SIZE } from '../interface/reducers/machine';
 
-import { t } from 'i18next';
+import i18n from '../i18n';
 import { Code } from '../core/Common/Code';
 import { createCache } from '../core/Common/Cache';
 import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
@@ -218,7 +218,7 @@ export class SuperscalarIntegration extends MachineIntegration {
             this.collectStats();
             this.dispatchAllSuperscalarActions();
             this.finishedExecution = true;
-            alert(t('execution.finished'));
+            alert(i18n.t('execution.finished'));
         }
     }
 
@@ -330,10 +330,10 @@ export class SuperscalarIntegration extends MachineIntegration {
                     this.executionLoop(speed);
                 } else {
                     if (machineStatus === SuperscalarStatus.SUPER_BREAKPOINT) {
-                        alert(t('execution.stopped'));
+                        alert(i18n.t('execution.stopped'));
                     } else if (machineStatus === SuperscalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
-                        alert(t('execution.finished'));
+                        alert(i18n.t('execution.finished'));
                         
                     }
                 }
