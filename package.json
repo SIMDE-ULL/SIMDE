@@ -59,7 +59,7 @@
     "stylelint-config-standard-scss": "^13.0.0",
     "typedoc": "^0.28.0",
     "typescript": "^5.0.2",
-    "vite": "^5.0.0",
+    "vite": "^7.3.1",
     "vite-tsconfig-paths": "^5.0.0",
     "vitest": "^2.0.0"
   },
@@ -71,9 +71,6 @@
     "onlyBuiltDependencies": [
       "@biomejs/biome",
       "esbuild"
-    ],
-    "patchedDependencies": {
-      "@restart/ui@1.9.4": "patches/@restart__ui@1.9.4.patch"
-    }
+    ]
   }
 }
