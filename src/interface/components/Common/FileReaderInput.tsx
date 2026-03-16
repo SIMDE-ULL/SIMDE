@@ -78,6 +78,14 @@ export const FileReaderInput: FC<FileReaderInputProps> = ({
     <div
       className="_react-file-reader-input"
       onClick={triggerInput}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          triggerInput();
+        }
+      }}
+      // biome-ignore lint/a11y/useSemanticElements: wrapper div acts as a click target for the hidden file input
+      role="button"
+      tabIndex={0}
       style={style}
     >
       <input

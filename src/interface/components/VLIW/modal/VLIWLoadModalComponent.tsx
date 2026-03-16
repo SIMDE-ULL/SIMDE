@@ -80,11 +80,16 @@ export const VLIWLoadModalComponent: FC = () => {
     try {
       code.load(modalCode.general);
       generalError = "";
-    } catch (error: any) {
-      const errorMessage = error.pos
-        ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
-        ${error.errorMessage}`
-        : error.message;
+    } catch (error: unknown) {
+      const err = error as {
+        pos?: { rowBegin: number; columnBegin: number };
+        errorMessage?: string;
+        message?: string;
+      };
+      const errorMessage = err.pos
+        ? `Syntax error at line ${err.pos.rowBegin}, column ${err.pos.columnBegin}:
+        ${err.errorMessage}`
+        : (err.message ?? String(error));
 
       setModalError({ vliw: "", general: errorMessage });
       return;
@@ -96,11 +101,16 @@ export const VLIWLoadModalComponent: FC = () => {
 
       vliwError = "";
       close();
-    } catch (error: any) {
-      const errorMessage = error.pos
-        ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
-        ${error.errorMessage}`
-        : error.message;
+    } catch (error: unknown) {
+      const err = error as {
+        pos?: { rowBegin: number; columnBegin: number };
+        errorMessage?: string;
+        message?: string;
+      };
+      const errorMessage = err.pos
+        ? `Syntax error at line ${err.pos.rowBegin}, column ${err.pos.columnBegin}:
+        ${err.errorMessage}`
+        : (err.message ?? String(error));
       vliwError = errorMessage;
     }
 

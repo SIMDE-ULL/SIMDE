@@ -31,7 +31,7 @@ interface SuperscalarConfig {
   jumpQuantity: number;
   jumpLatency: number;
   issueGrade: number;
-  cacheType: string;
+  cacheType: CacheType;
   cacheFailPercentage: number;
   cacheFailLatency: number;
   cacheBlocks: number;
@@ -78,7 +78,10 @@ export const SuperscalarConfigModal: FC = () => {
   };
 
   const updateStrConfig = (event: ChangeEvent<HTMLSelectElement>) => {
-    setConfig({ ...config, [event.target.name]: event.target.value });
+    setConfig({
+      ...config,
+      [event.target.name]: event.target.value as CacheType,
+    });
   };
 
   const setDefaultConfig = () => {
@@ -327,7 +330,7 @@ export const SuperscalarConfigModal: FC = () => {
                           <Form.Select
                             name="cacheType"
                             value={config.cacheType}
-                            onChange={updateStrConfig as any}
+                            onChange={updateStrConfig}
                           >
                             <option value={CacheType.NO_CACHE}>
                               {t("superscalarModal.noCache")}

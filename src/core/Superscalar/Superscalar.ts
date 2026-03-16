@@ -512,13 +512,14 @@ export class Superscalar extends Machine {
       // Update all the reserve stations values that are waiting for this result
       // (jumps dont return a value for instructions, so we skip them)
       if (!inst.isJumpInstruction()) {
+        const resultValue = resul ?? 0;
         for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
-          this._reserveStations[j].setROBValue(instUid, resul!);
+          this._reserveStations[j].setROBValue(instUid, resultValue);
         }
       }
 
       // update the reorder buffer with the result
-      this._reorderBuffer.writeResultValue(instUid, resul!);
+      this._reorderBuffer.writeResultValue(instUid, resul ?? 0);
 
       // Remove the instruction entry from the reserve station
       this._reserveStations[type].removeInstruction(instUid);

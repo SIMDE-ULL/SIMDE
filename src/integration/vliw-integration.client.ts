@@ -23,7 +23,7 @@ import { MAX_HISTORY_SIZE } from "../interface/reducers/machine";
 
 import i18n from "../i18n";
 
-import { createCache } from "../core/Common/Cache";
+import { type CacheType, createCache } from "../core/Common/Cache";
 import { VLIW } from "../core/VLIW/VLIW";
 import { VLIWCode } from "../core/VLIW/VLIWCode";
 import { VLIWError } from "../core/VLIW/VLIWError";
@@ -353,18 +353,18 @@ export class VLIWIntegration extends MachineIntegration {
     if (this.vliw.status.cycle > 0) {
       return;
     }
-    Object.keys(data).forEach((key) => {
+    for (const key of Object.keys(data)) {
       this.vliw.fpr.setContent(+key, data[+key], false);
-    });
+    }
   };
 
   setGpr = (data: { [k: number]: number }) => {
     if (this.vliw.status.cycle > 0) {
       return;
     }
-    Object.keys(data).forEach((key) => {
+    for (const key of Object.keys(data)) {
       this.vliw.gpr.setContent(+key, data[+key], false);
-    });
+    }
   };
 
   executionLoop = (speed: number) => {
@@ -387,7 +387,7 @@ export class VLIWIntegration extends MachineIntegration {
           default:
             store.dispatch(
               showNotification(
-                `${i18n.t("execution.error")}: ${VLIWError[machineStatus!]}`,
+                `${i18n.t("execution.error")}: ${machineStatus != null ? VLIWError[machineStatus] : "unknown"}`,
               ),
             );
             break;
@@ -402,68 +402,86 @@ export class VLIWIntegration extends MachineIntegration {
     }
   };
 
-  saveVliwConfig = (vliwConfig: Record<string, any>) => {
+  saveVliwConfig = (vliwConfig: {
+    integerSumQuantity: number;
+    integerSumLatency: number;
+    integerMultQuantity: number;
+    integerMultLatency: number;
+    floatingSumQuantity: number;
+    floatingSumLatency: number;
+    floatingMultQuantity: number;
+    floatingMultLatency: number;
+    memoryQuantity: number;
+    memoryLatency: number;
+    jumpQuantity: number;
+    jumpLatency: number;
+    cacheType: CacheType;
+    cacheFailPercentage: number;
+    cacheFailLatency: number;
+    cacheBlocks: number;
+    cacheLines: number;
+  }) => {
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.INTEGERSUM,
-      +vliwConfig.integerSumQuantity,
+      vliwConfig.integerSumQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.INTEGERSUM,
-      +vliwConfig.integerSumLatency,
+      vliwConfig.integerSumLatency,
     );
 
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.INTEGERMULTIPLY,
-      +vliwConfig.integerMultQuantity,
+      vliwConfig.integerMultQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.INTEGERMULTIPLY,
-      +vliwConfig.integerMultLatency,
+      vliwConfig.integerMultLatency,
     );
 
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.FLOATINGSUM,
-      +vliwConfig.floatingSumQuantity,
+      vliwConfig.floatingSumQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.FLOATINGSUM,
-      +vliwConfig.floatingSumLatency,
+      vliwConfig.floatingSumLatency,
     );
 
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.FLOATINGMULTIPLY,
-      +vliwConfig.floatingMultQuantity,
+      vliwConfig.floatingMultQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.FLOATINGMULTIPLY,
-      +vliwConfig.floatingMultLatency,
+      vliwConfig.floatingMultLatency,
     );
 
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.JUMP,
-      +vliwConfig.jumpQuantity,
+      vliwConfig.jumpQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.JUMP,
-      +vliwConfig.jumpLatency,
+      vliwConfig.jumpLatency,
     );
 
     this.vliw.changeFunctionalUnitNumber(
       FunctionalUnitType.MEMORY,
-      +vliwConfig.memoryQuantity,
+      vliwConfig.memoryQuantity,
     );
     this.vliw.changeFunctionalUnitLatency(
       FunctionalUnitType.MEMORY,
-      +vliwConfig.memoryLatency,
+      vliwConfig.memoryLatency,
     );
 
     this.vliw.cache = createCache(
       vliwConfig.cacheType,
-      +vliwConfig.cacheBlocks,
-      +vliwConfig.cacheLines,
-      +vliwConfig.cacheFailPercentage / 100,
+      vliwConfig.cacheBlocks,
+      vliwConfig.cacheLines,
+      vliwConfig.cacheFailPercentage / 100,
     );
-    this.vliw.memoryFailLatency = +vliwConfig.cacheFailLatency;
+    this.vliw.memoryFailLatency = vliwConfig.cacheFailLatency;
 
     this.resetMachine();
   };

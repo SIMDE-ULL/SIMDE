@@ -12,6 +12,6 @@ export function downloadTextFile(filename: string, text: string) {
   URL.revokeObjectURL(url);
 }
 
-export function downloadJsonFile(filename: string, object: any) {
+export function downloadJsonFile(filename: string, object: unknown) {
   downloadTextFile(filename, JSON.stringify(object));
 }

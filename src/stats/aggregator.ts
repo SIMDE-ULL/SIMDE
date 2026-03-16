@@ -70,7 +70,7 @@ export class StatsAgregator {
         if (!result.has(key)) {
           result.set(key, 0);
         }
-        result.set(key, result.get(key)! + value);
+        result.set(key, (result.get(key) ?? 0) + value);
       }
     }
 
@@ -94,9 +94,14 @@ export class StatsAgregator {
           result.set(key, value);
         } else {
           //iterate over the properties of the object
-          for (const prop in value) {
-            if (value.hasOwnProperty(prop)) {
-              (result.get(key) as any)[prop] += (value as any)[prop];
+          const existing = result.get(key) as unknown as Record<
+            string,
+            number | boolean
+          >;
+          const incoming = value as unknown as Record<string, number | boolean>;
+          for (const prop in incoming) {
+            if (Object.prototype.hasOwnProperty.call(incoming, prop)) {
+              (existing[prop] as number) += incoming[prop] as number;
             }
           }
         }
@@ -104,9 +109,11 @@ export class StatsAgregator {
     }
 
     for (const [, value] of result) {
-      for (const prop in value) {
-        if (value.hasOwnProperty(prop)) {
-          (value as any)[prop] = (value as any)[prop] / this._stats.length;
+      const entry = value as unknown as Record<string, number | boolean>;
+      for (const prop in entry) {
+        if (Object.prototype.hasOwnProperty.call(entry, prop)) {
+          (entry[prop] as number) =
+            (entry[prop] as number) / this._stats.length;
         }
       }
     }

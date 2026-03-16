@@ -35,8 +35,8 @@ export const IntervalModalComponent: FC<IntervalModalComponentProps> = ({
       onAccept(interval);
       setValue("");
       close();
-    } catch (err: any) {
-      setError(err.message || err);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
     }
   };
 
@@ -49,12 +49,13 @@ export const IntervalModalComponent: FC<IntervalModalComponentProps> = ({
         <form className="form intervalForm">
           <div className="form-group">
             <div className="col-sm-12 text-center">
-              <label className="control-label">
+              <label className="control-label" htmlFor="interval-input">
                 {t("intervalModal.intervalMessage")}
               </label>
             </div>
             <div className="col-sm-12">
               <input
+                id="interval-input"
                 type="text"
                 className="form-control"
                 value={value}

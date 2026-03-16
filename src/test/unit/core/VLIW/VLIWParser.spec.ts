@@ -2,10 +2,7 @@ import { beforeEach, expect, test } from "vitest";
 import { Code } from "../../../../core/Common/Code";
 import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
 
-const context: { code: VLIWCode; superscalarCode: Code } = {
-  code: null as any,
-  superscalarCode: null as any,
-};
+const context = {} as { code: VLIWCode; superscalarCode: Code };
 
 beforeEach(() => {
   context.code = new VLIWCode();

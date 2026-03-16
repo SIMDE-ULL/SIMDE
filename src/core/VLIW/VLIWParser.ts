@@ -75,7 +75,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
 
   // This other parsers depends on the previous one, so we need to declare it here also
 
-  let currentIndex: IndexParsed = null!; // This is a ugly hack, but unfortunately combine consumes the index that we need in operationParser
+  let currentIndex: IndexParsed | undefined; // This is set by operationCombiner before operationParser runs
   const operationCombiner = combine(indexParser, (indexParsed: IndexParsed) => {
     currentIndex = indexParsed;
     const numOfElements = indexParsed.isJump ? 5 : 2;
@@ -96,6 +96,11 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
         );
       }
 
+      if (currentIndex === undefined) {
+        throw new Error(
+          "Parser error: currentIndex was not set by operationCombiner",
+        );
+      }
       const index = +currentIndex.index;
       const functionalUnitType = componets[0];
       const functionalUnitIndex = +componets[1][0].text; //TODO: Check if this is out of bounds

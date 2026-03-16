@@ -51,7 +51,7 @@ const ProjectPage = () => {
       </div>
       <nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
         <div className="licence text-light">
-          <a>{t("projectPage.licency")}</a>
+          <span>{t("projectPage.licency")}</span>
         </div>
       </nav>
     </div>

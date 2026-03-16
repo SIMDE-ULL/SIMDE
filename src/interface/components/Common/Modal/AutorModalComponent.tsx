@@ -34,17 +34,17 @@ export const AutorModalComponent: FC<AutorModalProps> = ({ authors }) => {
         <div className="text-center">
           <div className="row">
             <div className="col-sm-12">
-              <label>{t("authorModal.originalAuthor")}</label>: Iván Castilla
+              <span>{t("authorModal.originalAuthor")}</span>: Iván Castilla
               Rodríguez
             </div>
           </div>
           <div className="row">
             <div className="col-sm-12">
-              <label>{t("authorModal.newAuthor")}</label>: {authors.newAuthor}
+              <span>{t("authorModal.newAuthor")}</span>: {authors.newAuthor}
             </div>
             {authors.coAuthor && (
               <div className="col-sm-12">
-                <label>{t("authorModal.coAuthor")}</label>: {authors.coAuthor}
+                <span>{t("authorModal.coAuthor")}</span>: {authors.coAuthor}
               </div>
             )}
           </div>

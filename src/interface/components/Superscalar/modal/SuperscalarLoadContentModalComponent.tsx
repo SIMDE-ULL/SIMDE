@@ -1,4 +1,4 @@
-import { type FC, useRef, useState } from "react";
+import { type ChangeEvent, type FC, useRef, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { ContentIntegration } from "../../../../integration/content-integration";
@@ -21,13 +21,16 @@ export const SuperscalarLoadContentModalComponent: FC = () => {
     dispatch(toggleSuperscalarLoadContentModal(false));
   };
 
-  const handleInputFileChange = (_e: any, results: any) => {
-    results.forEach((result: any) => {
+  const handleInputFileChange = (
+    _e: ChangeEvent<HTMLInputElement>,
+    results: [ProgressEvent<FileReader>, File][],
+  ) => {
+    for (const result of results) {
       const [e] = result;
       if (contentRef.current) {
-        contentRef.current.value = e.target.result;
+        contentRef.current.value = (e.target as FileReader).result as string;
       }
-    });
+    }
   };
 
   const loadContent = () => {
@@ -41,13 +44,18 @@ export const SuperscalarLoadContentModalComponent: FC = () => {
       SuperscalarIntegration.setMemory(contentIntegration.MEMContent);
       SuperscalarIntegration.dispatchAllSuperscalarActions();
       close();
-    } catch (err: any) {
-      if (err.pos) {
+    } catch (err: unknown) {
+      const error = err as {
+        pos?: { rowBegin: number; columnBegin: number };
+        errorMessage?: string;
+        message?: string;
+      };
+      if (error.pos) {
         setError(
-          `[${err.pos?.rowBegin}:${err.pos?.columnBegin}]: ${err.errorMessage}`,
+          `[${error.pos.rowBegin}:${error.pos.columnBegin}]: ${error.errorMessage}`,
         );
       } else {
-        setError(err.message);
+        setError(error.message ?? String(err));
       }
     }
   };

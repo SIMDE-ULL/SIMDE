@@ -31,8 +31,8 @@ export class RandomCache extends Cache {
 
   public applyToGetData(
     target: typeof Memory.prototype.getData,
-    thisArg: any,
-    args: any[],
+    thisArg: Memory,
+    args: [address: number],
   ) {
     this.success = this.faultChance < Math.random();
 
@@ -70,8 +70,8 @@ export class DirectCache extends Cache {
 
   public applyToGetData(
     target: typeof Memory.prototype.getData,
-    thisArg: any,
-    args: any[],
+    thisArg: Memory,
+    args: [address: number],
   ) {
     const address = args[0];
 
@@ -90,8 +90,8 @@ export class DirectCache extends Cache {
 
   public applyToSetData(
     target: typeof Memory.prototype.setData,
-    thisArg: any,
-    args: any[],
+    thisArg: Memory,
+    args: [address: number, value: number],
   ) {
     const address = args[0];
 

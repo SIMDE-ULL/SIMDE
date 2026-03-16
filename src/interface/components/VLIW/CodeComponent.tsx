@@ -41,6 +41,7 @@ export const CodeComponent: FC<CodeComponentProps> = ({
             {code?.map((row: Instruction, i) => (
               <InstructionComponent
                 instruction={row}
+                // biome-ignore lint/suspicious/noArrayIndexKey: instructions are identified by their position in the program
                 key={i}
                 loc={i}
                 color={setColor(row)}

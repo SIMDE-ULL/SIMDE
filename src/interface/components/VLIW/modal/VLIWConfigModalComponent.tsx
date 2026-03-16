@@ -30,7 +30,7 @@ interface VliwConfig {
   jumpQuantity: number;
   jumpLatency: number;
   issueGrade: number;
-  cacheType: string;
+  cacheType: CacheType;
   cacheFailPercentage: number;
   cacheFailLatency: number;
   cacheBlocks: number;
@@ -77,7 +77,10 @@ export const VLIWConfigModalComponent: FC = () => {
   };
 
   const updateStrConfig = (event: ChangeEvent<HTMLSelectElement>) => {
-    setConfig({ ...config, [event.target.name]: event.target.value });
+    setConfig({
+      ...config,
+      [event.target.name]: event.target.value as CacheType,
+    });
   };
 
   const setDefaultConfig = () => {

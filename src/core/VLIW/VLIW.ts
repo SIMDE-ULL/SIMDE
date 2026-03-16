@@ -72,7 +72,10 @@ export class VLIW extends Machine {
   //TODO: These checks functions are never used
   public checkCode() {
     for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
-      const instruction = this._code.getLargeInstruction(i)!;
+      const instruction = this._code.getLargeInstruction(i);
+      if (!instruction) {
+        throw new Error(`Large instruction at index ${i} not found`);
+      }
       for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
         const operation = instruction.getOperation(j);
         if (
@@ -103,15 +106,14 @@ export class VLIW extends Machine {
     } catch (error) {
       if (error !== VLIWError.ERRNO) {
         throw new Error(`Predicate Error: ${error}`);
-      } else {
-        return VLIWError.ERRNO;
       }
+      return VLIWError.ERRNO;
     }
   }
 
   public tic() {
-    let i;
-    let j;
+    let i: number;
+    let j: number;
     let pending = false;
     this.status.cycle++;
 
@@ -124,7 +126,8 @@ export class VLIW extends Machine {
         this.functionalUnit[
           FunctionalUnitType.JUMP
         ][0].executeReadyInstruction();
-      const operation: any = execution != null ? execution.instruction : null;
+      const operation: VLIWOperation | null =
+        execution != null ? (execution.instruction as VLIWOperation) : null;
       if (operation != null) {
         if (this._predR[operation.getPred()]) {
           this.pc = this.runJump(operation);
@@ -173,7 +176,10 @@ export class VLIW extends Machine {
             firstOperand,
             secondOperand,
           );
-          this.runOperation(execution!, this.functionalUnit[i][j]);
+          if (!execution) {
+            throw new Error("Expected execution result from ready instruction");
+          }
+          this.runOperation(execution, this.functionalUnit[i][j]);
         }
 
         this.functionalUnit[i][j].tic();
@@ -361,8 +367,11 @@ export class VLIW extends Machine {
       checkFPR[i].latency = 0;
     }
 
-    for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
-      const instruction = this._code.getLargeInstruction(row)!;
+    for (let r = 0; r < this._code.getLargeInstructionNumber(); r++) {
+      const instruction = this._code.getLargeInstruction(r);
+      if (!instruction) {
+        throw new Error(`Large instruction at index ${r} not found`);
+      }
       for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
         //TODO
         //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
@@ -394,7 +403,7 @@ export class VLIW extends Machine {
 
   private checkPredicate(row: number, _id: number) {
     const controlCheckList: Check[] = []; // list<TChequeo> checkPredicate;
-    for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
+    for (let r = 0; r < this._code.getLargeInstructionNumber(); r++) {
       let index = 0;
       while (index < controlCheckList.length) {
         if (controlCheckList[index].latency === 1) {
@@ -404,7 +413,10 @@ export class VLIW extends Machine {
           index++;
         }
       }
-      const instruction = this._code.getLargeInstruction(row)!;
+      const instruction = this._code.getLargeInstruction(r);
+      if (!instruction) {
+        throw new Error(`Large instruction at index ${r} not found`);
+      }
       for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
         if (
           instruction.getOperation(j).getFunctionalUnitType() ===

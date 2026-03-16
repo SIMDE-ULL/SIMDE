@@ -1,6 +1,23 @@
 import { useTranslation } from "react-i18next";
+import type { ColorState } from "../../reducers/color";
 
-export function ReserveStationComponent(props: any) {
+interface ReserveStationRow {
+  instruction: { id: string; value: string; uid: string };
+  Qj: string;
+  Vj: string;
+  Qk: string;
+  Vk: string;
+  A: string;
+  ROB: string;
+}
+
+interface ReserveStationComponentProps {
+  title: string;
+  data?: ReserveStationRow[];
+  colors: ColorState;
+}
+
+export function ReserveStationComponent(props: ReserveStationComponentProps) {
   const { t } = useTranslation();
 
   return (
@@ -18,7 +35,7 @@ export function ReserveStationComponent(props: any) {
             <div className="smd-table-header_title">ROB</div>
           </div>
           <div className="smd-table-body">
-            {props.data?.map((row: any, i: number) => (
+            {props.data?.map((row: ReserveStationRow, i: number) => (
               <div
                 className="smd-table_row"
                 title={row.instruction.value}

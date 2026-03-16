@@ -1,4 +1,4 @@
-import { type FC, useRef, useState } from "react";
+import { type ChangeEvent, type FC, useRef, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { ContentIntegration } from "../../../../integration/content-integration";
@@ -21,13 +21,17 @@ export const VLIWLoadContentModalComponent: FC = () => {
     dispatch(toggleVliwLoadContentModal(false));
   };
 
-  const handleInputFileChange = (_e: any, results: any) => {
-    results.forEach((result: any) => {
+  const handleInputFileChange = (
+    _e: ChangeEvent<HTMLInputElement>,
+    results: [ProgressEvent<FileReader>, File][],
+  ) => {
+    for (const result of results) {
       const [e] = result;
       if (contentInputRef.current) {
-        contentInputRef.current.value = e.target.result;
+        contentInputRef.current.value = (e.target as FileReader)
+          .result as string;
       }
-    });
+    }
   };
 
   const loadContent = () => {

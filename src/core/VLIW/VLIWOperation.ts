@@ -41,7 +41,12 @@ export class VLIWOperation extends Instruction {
     functionalUnitType: FunctionalUnitType | undefined,
     functionalUnitIndex: number | undefined,
   ) {
-    this._functionalUnitType = functionalUnitType!;
+    if (functionalUnitType === undefined) {
+      throw new Error(
+        "functionalUnitType is required when building from instruction",
+      );
+    }
+    this._functionalUnitType = functionalUnitType;
     this._functionalUnitIndex = functionalUnitIndex ?? 0;
     this._predicate = 0;
     this._predicateTrue = 0;

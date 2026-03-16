@@ -48,8 +48,17 @@ export const CodeComponent: FC<CodeComponentProps> = ({
             {code?.map((row: Instruction, i) => (
               <div
                 className="smd-table_row"
+                // biome-ignore lint/suspicious/noArrayIndexKey: instructions are identified by their position in the program
                 key={`Code${i}`}
                 onClick={() => setBreakpoint(i)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setBreakpoint(i);
+                  }
+                }}
+                // biome-ignore lint/a11y/useSemanticElements: table row acts as a clickable breakpoint toggle
+                role="button"
+                tabIndex={0}
               >
                 <div
                   className={`smd-table_cell ${row.breakPoint ? "smd-breakpoint" : ""}`}

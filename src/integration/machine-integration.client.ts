@@ -11,7 +11,7 @@ export abstract class MachineIntegration {
   /** Speed value sourced from UI. Set by components before calling play(). */
   public speedValue = 0;
 
-  abstract loadCode: (code: any) => void;
+  abstract loadCode(code: unknown): void;
 
   abstract makeBatchExecution: () => void;
 

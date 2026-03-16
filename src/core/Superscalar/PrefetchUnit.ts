@@ -36,7 +36,11 @@ export class PrefetchUnit {
   }
 
   public get(): Instruction {
-    return this._entries.shift()!;
+    const entry = this._entries.shift();
+    if (entry === undefined) {
+      throw new Error("PrefetchUnit is empty, cannot get instruction");
+    }
+    return entry;
   }
 
   public getId(): number {

@@ -3,7 +3,19 @@ import { useDrag } from "react-dnd";
 
 import { OpcodesNames } from "../../../core/Common/Opcodes";
 
-function InstructionComponent(props: any) {
+interface InstructionData {
+  label: string;
+  opcode: number;
+  operandsString: string[];
+}
+
+interface InstructionComponentProps {
+  loc: number;
+  instruction: InstructionData;
+  color: string;
+}
+
+function InstructionComponent(props: InstructionComponentProps) {
   const loc = props.loc;
 
   const [, drag] = useDrag(() => ({

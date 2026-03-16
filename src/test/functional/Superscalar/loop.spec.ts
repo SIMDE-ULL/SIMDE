@@ -11,10 +11,7 @@ import {
 import { codeInput as doubleCodeInput } from "../code/bucledoble";
 import { codeInput as softCodeInput } from "../code/buclesoft";
 
-const context: { code: Code; machine: Superscalar } = {
-  code: null as any,
-  machine: null as any,
-};
+const context = {} as { code: Code; machine: Superscalar };
 
 beforeEach(() => {
   context.code = new Code();

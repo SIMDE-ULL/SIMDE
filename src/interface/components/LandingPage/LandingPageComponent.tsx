@@ -78,7 +78,7 @@ const LandingPageComponent = () => {
       </div>
       <nav className="footer navbar navbar-default navbar-fixed-bottom sticky">
         <div className="licence text-light">
-          <a>{t("landingPage.licency")}</a>
+          <span>{t("landingPage.licency")}</span>
         </div>
       </nav>
     </div>

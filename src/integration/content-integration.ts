@@ -91,10 +91,10 @@ const contentParser = apply(
     const result: { [k: number]: number } = {};
     for (let i = 0; i < content.length; i++) {
       let j = 0;
-      content[i][1].forEach((num) => {
+      for (const num of content[i][1]) {
         result[+content[i][0].text.slice(1, -1) + j] = num;
         j++;
-      });
+      }
     }
     return result;
   },
@@ -142,7 +142,7 @@ export class ContentIntegration {
     let result = `\n${headerName}`;
     // Iterate over Content
     let lastPosition = -1;
-    Object.keys(content).forEach((key) => {
+    for (const key of Object.keys(content)) {
       const i = +key;
 
       // Check if is the next position after the last one
@@ -155,7 +155,7 @@ export class ContentIntegration {
       result += `${content[i]} `;
       // Update last position
       lastPosition = i;
-    });
+    }
 
     return result;
   }
@@ -177,7 +177,7 @@ export class ContentIntegration {
     const result = expectSingleResult(
       expectEOF(fileParser.parse(tokenizer.parse(input))),
     );
-    result.forEach((section) => {
+    for (const section of result) {
       switch (section[0].text) {
         case "#FPR":
           this.FPRContent = section[1] ?? {};
@@ -193,8 +193,7 @@ export class ContentIntegration {
           break;
         default:
           throw new Error(`Invalid header: ${section[0].text}`);
-          break;
       }
-    });
+    }
   }
 }

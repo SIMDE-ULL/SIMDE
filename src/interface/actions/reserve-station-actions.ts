@@ -6,11 +6,24 @@ export function nextReserveStationCycle(data: unknown[]) {
   );
 }
 
+interface ReserveStationEntry {
+  instruction: { id: string; value: string; uid: string } | null;
+  Qj: string;
+  Vj: string;
+  Qk: string;
+  Vk: string;
+  A: string;
+  ROB: string;
+}
+
 function mapReserveStationEntry(element: unknown): unknown[] {
-  const content = element as { data: any; size: number };
+  const content = element as {
+    data: (ReserveStationEntry | null)[];
+    size: number;
+  };
   const data = content.data;
   const toReturn = [];
-  let i;
+  let i: number;
 
   const defaultObject = {
     instruction: { id: "", value: "", uid: "" },
@@ -23,20 +36,21 @@ function mapReserveStationEntry(element: unknown): unknown[] {
   };
   for (i = 0; i < data.length; i++) {
     let aux = { ...defaultObject };
-    if (data[i] != null) {
+    const entry = data[i];
+    if (entry != null) {
       aux = {
         instruction: { id: "", value: "", uid: "" },
-        Qj: data[i].Qj,
-        Vj: data[i].Vj,
-        Qk: data[i].Qk,
-        Vk: data[i].Vk,
-        A: data[i].A,
-        ROB: data[i].ROB,
+        Qj: entry.Qj,
+        Vj: entry.Vj,
+        Qk: entry.Qk,
+        Vk: entry.Vk,
+        A: entry.A,
+        ROB: entry.ROB,
       };
-      if (data[i].instruction != null) {
-        aux.instruction.id = data[i].instruction.id;
-        aux.instruction.value = data[i].instruction.value;
-        aux.instruction.uid = data[i].instruction.uid;
+      if (entry.instruction != null) {
+        aux.instruction.id = entry.instruction.id;
+        aux.instruction.value = entry.instruction.value;
+        aux.instruction.uid = entry.instruction.uid;
       }
     }
 

@@ -22,26 +22,27 @@ export const AccessBarComponent: FC<AccessBarProps> = ({ integration }) => {
 
   return (
     <div className="smd-access_bar">
-      <a
+      <button
+        type="button"
         onClick={() => {
           syncSpeed();
           integration.play();
         }}
       >
         <i className="fa fa-play" />
-      </a>
-      <a onClick={() => integration.pause()}>
+      </button>
+      <button type="button" onClick={() => integration.pause()}>
         <i className="fa fa-pause" />
-      </a>
-      <a onClick={() => integration.stop()}>
+      </button>
+      <button type="button" onClick={() => integration.stop()}>
         <i className="fa fa-stop" />
-      </a>
-      <a onClick={() => integration.stepBack()}>
+      </button>
+      <button type="button" onClick={() => integration.stepBack()}>
         <i className="fa fa-step-backward" />
-      </a>
-      <a onClick={() => integration.stepForward()}>
+      </button>
+      <button type="button" onClick={() => integration.stepForward()}>
         <i className="fa fa-step-forward" />
-      </a>
+      </button>
       <div className="smd-cycle">
         <label htmlFor="cycle" className="smd-cycle_label">
           {t("accessBar.cycle")}

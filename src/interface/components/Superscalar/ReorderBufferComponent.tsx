@@ -1,6 +1,7 @@
 import { type CSSProperties, type FC, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { useTranslation } from "react-i18next";
+import type { VisualReorderBufferEntry } from "../../../core/Superscalar/ReorderBuffer";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { colorCell } from "../../actions/reorder-buffer-actions";
 
@@ -31,7 +32,10 @@ export const ReorderBufferComponent: FC = () => {
   };
 
   const onColorAccept = () => {
-    dispatch(colorCell(pickerState.instructionUid!, pickerState.selectedColor));
+    if (pickerState.instructionUid === null) {
+      return;
+    }
+    dispatch(colorCell(pickerState.instructionUid, pickerState.selectedColor));
     setPickerState({
       displayColorPicker: false,
       instructionUid: null,
@@ -100,10 +104,10 @@ export const ReorderBufferComponent: FC = () => {
             </div>
           </div>
           <div className="smd-table-body">
-            {content
-              ?.map((row: any, i: number) => ({ row, i }))
-              .filter((e: any) => e.row.instruction.id !== "")
-              .map((e: any) => (
+            {(content as VisualReorderBufferEntry[])
+              ?.map((row, i) => ({ row, i }))
+              .filter((e) => e.row.instruction.id !== "")
+              .map((e) => (
                 <div
                   className="smd-table_row smd-reorder_buffer_entry"
                   style={{
@@ -112,6 +116,17 @@ export const ReorderBufferComponent: FC = () => {
                   onClick={() =>
                     handleClick(e.row.instruction.uid, e.row.instruction.color)
                   }
+                  onKeyDown={(ev) => {
+                    if (ev.key === "Enter" || ev.key === " ") {
+                      handleClick(
+                        e.row.instruction.uid,
+                        e.row.instruction.color,
+                      );
+                    }
+                  }}
+                  // biome-ignore lint/a11y/useSemanticElements: table row acts as a clickable element for instruction selection
+                  role="button"
+                  tabIndex={0}
                   title={e.row.instruction.value}
                   key={`ReorderBuffer${e.i}`}
                 >

@@ -1,12 +1,18 @@
 import { useCallback } from "react";
 import { useDrop } from "react-dnd";
 
-function VLIWOperationComponent(props: any) {
+interface VLIWOperationComponentProps {
+  op: string;
+  pos: [number, number];
+  onDropInstruction: (item: { loc: number }, pos: [number, number]) => void;
+}
+
+function VLIWOperationComponent(props: VLIWOperationComponentProps) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "INSTRUCTION",
     drop: (item) => {
       try {
-        props.onDropInstruction(item, props.pos);
+        props.onDropInstruction(item as { loc: number }, props.pos);
       } catch (e) {
         console.log((e as Error).message);
       }
