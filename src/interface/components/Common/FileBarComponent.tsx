@@ -2,43 +2,37 @@ import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownButton } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import {
   toggleLoadModal,
   toggleAuthorModal,
-  toggleVliwConfigModal,
   toggleBatchModal,
-  toggleVliwLoadContentModal,
-} from "../../../actions/modals";
-import { viewBasicBlocks } from "../../../actions";
-import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
-import vliwIntegration from "../../../../integration/vliw-integration.client";
+} from "../../actions/modals";
+import { viewBasicBlocks } from "../../actions";
+import { downloadJsonFile } from "../../utils/Downloader";
 
-/** VLIW menu bar with file, view, config, experimentation, and help menus. */
-export const VLIWFileBarComponent: FC = () => {
+interface FileBarProps {
+  configLabel: string;
+  onOpenConfigModal: () => void;
+  onOpenContentModal: () => void;
+  onDownloadContent: () => void;
+  onDownloadCode: () => void;
+  onExportStats: () => void;
+}
+
+/** Menu bar with file, view, config, experimentation, and help menus. */
+export const FileBarComponent: FC<FileBarProps> = ({
+  configLabel,
+  onOpenConfigModal,
+  onOpenContentModal,
+  onDownloadContent,
+  onDownloadCode,
+  onExportStats,
+}) => {
   const [color, setColor] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const memory = useAppSelector((state) => state.Machine.memory);
-
-  const downloadContentFile = () => {
-    if (vliwIntegration.contentIntegration) {
-      downloadTextFile(
-        "content.txt",
-        vliwIntegration.contentIntegration.deparse()
-      );
-    } else {
-      downloadTextFile("content.txt", "");
-    }
-  };
-
-  const downloadCodeFile = () => {
-    if (vliwIntegration.vliw.code) {
-      downloadTextFile("code.txt", vliwIntegration.vliw.code.save());
-    } else {
-      downloadTextFile("code.txt", "");
-    }
-  };
 
   return (
     <Dropdown className="smd-filebar">
@@ -59,21 +53,13 @@ export const VLIWFileBarComponent: FC = () => {
         >
           {t("fileBar.file.exportMemory")}
         </Dropdown.Item>
-        <Dropdown.Item eventKey="3" onClick={downloadContentFile}>
+        <Dropdown.Item eventKey="3" onClick={onDownloadContent}>
           {t("fileBar.file.exportContent")}
         </Dropdown.Item>
-        <Dropdown.Item eventKey="4" onClick={downloadCodeFile}>
+        <Dropdown.Item eventKey="4" onClick={onDownloadCode}>
           {t("fileBar.file.exportCode")}
         </Dropdown.Item>
-        <Dropdown.Item
-          eventKey="5"
-          onClick={() =>
-            downloadJsonFile(
-              "stats.json",
-              vliwIntegration.stats.exportStats()
-            )
-          }
-        >
+        <Dropdown.Item eventKey="5" onClick={onExportStats}>
           {t("fileBar.file.exportStats")}
         </Dropdown.Item>
       </DropdownButton>
@@ -98,16 +84,10 @@ export const VLIWFileBarComponent: FC = () => {
         key={"dropdown-options"}
         id={"dropdown-options"}
       >
-        <Dropdown.Item
-          eventKey="1"
-          onClick={() => dispatch(toggleVliwConfigModal(true))}
-        >
-          {t("fileBar.config.vliw")}
+        <Dropdown.Item eventKey="1" onClick={onOpenConfigModal}>
+          {t(configLabel)}
         </Dropdown.Item>
-        <Dropdown.Item
-          eventKey="1"
-          onClick={() => dispatch(toggleVliwLoadContentModal(true))}
-        >
+        <Dropdown.Item eventKey="1" onClick={onOpenContentModal}>
           {t("fileBar.config.content")}
         </Dropdown.Item>
       </DropdownButton>
@@ -145,4 +125,4 @@ export const VLIWFileBarComponent: FC = () => {
   );
 };
 
-export default VLIWFileBarComponent;
+export default FileBarComponent;

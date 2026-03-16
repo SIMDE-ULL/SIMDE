@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Tabs, Tab } from "react-bootstrap";
 
-import FileBarComponent from './navbar/FileBarComponent';
+import FileBarComponent from '../Common/FileBarComponent';
 import AccessBarComponent from "../Common/AccessBarComponent";
 
 import GeneralTabComponent from "./tab/GeneralTabComponent";
@@ -20,15 +20,38 @@ import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalCompone
 
 import SuperscalarIntegration from "../../../integration/superscalar-integration.client";
 import ExecutionNotification from "../Common/ExecutionNotification";
+import { toggleSuperConfigModal, toggleSuperscalarLoadContentModal } from "../../actions/modals";
+import { downloadJsonFile, downloadTextFile } from "../../utils/Downloader";
+import { useAppDispatch } from "../../../store/hooks";
 
 /** Superscalar simulation page with tabbed views and modal dialogs. */
 const SuperscalarComponent = () => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     return (
         <div className='smd'>
             <ExecutionNotification />
             <div className='navigation-bars'>
-                <FileBarComponent />
+                <FileBarComponent
+                    configLabel="fileBar.config.superscalar"
+                    onOpenConfigModal={() => dispatch(toggleSuperConfigModal(true))}
+                    onOpenContentModal={() => dispatch(toggleSuperscalarLoadContentModal(true))}
+                    onDownloadContent={() => {
+                        if (SuperscalarIntegration.contentIntegration) {
+                            downloadTextFile("content.txt", SuperscalarIntegration.contentIntegration.deparse());
+                        } else {
+                            downloadTextFile("content.txt", "");
+                        }
+                    }}
+                    onDownloadCode={() => {
+                        if (SuperscalarIntegration.superscalar.code) {
+                            downloadTextFile("code.txt", SuperscalarIntegration.superscalar.code.save());
+                        } else {
+                            downloadTextFile("code.txt", "");
+                        }
+                    }}
+                    onExportStats={() => downloadJsonFile("stats.json", SuperscalarIntegration.stats.exportStats())}
+                />
                 <AccessBarComponent integration={SuperscalarIntegration} />
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>

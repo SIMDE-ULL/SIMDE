@@ -16,21 +16,44 @@ import VLIWIntegration from "../../../integration/vliw-integration.client";
 import GeneralVLIWTabComponent from "./tab/GeneralVLIWTabComponent";
 import RegisterVLIWTabComponent  from "../Common/RegistersTabComponent";
 import StatsTabComponent from "./tab/StatsTabComponent";
-import VLIWFileBarComponent from "./navbar/VLIWFileBarComponent";
+import FileBarComponent from "../Common/FileBarComponent";
 import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
 import AccessBarComponent from "../Common/AccessBarComponent";
 
 import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
 import ExecutionNotification from "../Common/ExecutionNotification";
+import { toggleVliwConfigModal, toggleVliwLoadContentModal } from "../../actions/modals";
+import { downloadJsonFile, downloadTextFile } from "../../utils/Downloader";
+import { useAppDispatch } from "../../../store/hooks";
 
 /** VLIW simulation page with tabbed views and modal dialogs. */
 const VLIWComponent = () => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     return (
         <div className='smd'>
             <ExecutionNotification />
             <div className='navigation-bars'>
-                <VLIWFileBarComponent />
+                <FileBarComponent
+                    configLabel="fileBar.config.vliw"
+                    onOpenConfigModal={() => dispatch(toggleVliwConfigModal(true))}
+                    onOpenContentModal={() => dispatch(toggleVliwLoadContentModal(true))}
+                    onDownloadContent={() => {
+                        if (VLIWIntegration.contentIntegration) {
+                            downloadTextFile("content.txt", VLIWIntegration.contentIntegration.deparse());
+                        } else {
+                            downloadTextFile("content.txt", "");
+                        }
+                    }}
+                    onDownloadCode={() => {
+                        if (VLIWIntegration.vliw.code) {
+                            downloadTextFile("code.txt", VLIWIntegration.vliw.code.save());
+                        } else {
+                            downloadTextFile("code.txt", "");
+                        }
+                    }}
+                    onExportStats={() => downloadJsonFile("stats.json", VLIWIntegration.stats.exportStats())}
+                />
                 <AccessBarComponent integration={VLIWIntegration} />
             </div>
             <Tabs defaultActiveKey={1} id='working-area-tabs'>
