@@ -4,6 +4,13 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
   plugins: [reactRouter(), tsconfigPaths()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ["import", "global-builtin", "color-functions", "if-function"],
+      },
+    },
+  },
   ssr: {
     noExternal: [
       "react-bootstrap",

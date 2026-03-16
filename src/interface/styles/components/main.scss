@@ -1,25 +1,25 @@
-@import './App';
-@import './AccessBarComponent';
-@import './CodeComponent';
-@import './FileBarComponent';
-@import './FunctionalUnitComponent';
-@import './GeneralTabComponent';
-@import './IntervalModalComponent';
-@import './LoadModalComponent';
-@import './JumpPredictionComponent'; 
-@import './LoadContentModalComponent';
+@forward './App';
+@forward './AccessBarComponent';
+@forward './CodeComponent';
+@forward './FileBarComponent';
+@forward './FunctionalUnitComponent';
+@forward './GeneralTabComponent';
+@forward './IntervalModalComponent';
+@forward './LoadModalComponent';
+@forward './JumpPredictionComponent';
+@forward './LoadContentModalComponent';
 
-@import './PrefetchDecoderComponent';
-@import './RegisterComponent';
-@import './RegistersTabComponent';
-@import './ReserveStationComponent';
-@import './ROBMapperComponent';
-@import './ReorderBufferComponent';
+@forward './PrefetchDecoderComponent';
+@forward './RegisterComponent';
+@forward './RegistersTabComponent';
+@forward './ReserveStationComponent';
+@forward './ROBMapperComponent';
+@forward './ReorderBufferComponent';
 
-@import './BatchResultsComponent';
-@import './SuperscalarConfigModalComponent';
+@forward './BatchResultsComponent';
+@forward './SuperscalarConfigModalComponent';
 
-@import './Forms';
-@import './Panel';
-@import './Table';
-@import './Tabs';
+@forward './Forms';
+@forward './Panel';
+@forward './Table';
+@forward './Tabs';

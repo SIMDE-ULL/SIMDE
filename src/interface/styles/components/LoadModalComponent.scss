@@ -1,4 +1,4 @@
-@import '../base/variables';
+@use '../base/variables' as *;
 
 .smd-load_modal {
     textarea {

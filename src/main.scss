@@ -1,4 +1,5 @@
-@import 'interface/styles/main';
+@use 'interface/styles/base/variables' as *;
+@use 'interface/styles/main';
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
 body, html {

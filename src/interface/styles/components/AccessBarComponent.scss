@@ -1,4 +1,4 @@
-@import '../base/variables';
+@use '../base/variables' as *;
 
 .smd-access_bar {
     padding: 0.5rem 0rem;

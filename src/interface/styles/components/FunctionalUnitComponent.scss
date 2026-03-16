@@ -1,4 +1,4 @@
-@import '../base/variables';
+@use '../base/variables' as *;
 
 .smd-functional_unit {
     flex: 1 1 auto;

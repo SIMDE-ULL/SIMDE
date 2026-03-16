@@ -1,6 +1,6 @@
-@import './base/main';
-@import './components/main';
-@import './vendor/main';
-@import './utils/main';
-@import './landingpage/main';
-@import './projectpage/main';
+@forward './base/main';
+@forward './components/main';
+@forward './vendor/main';
+@forward './utils/main';
+@forward './landingpage/main';
+@forward './projectpage/main';
