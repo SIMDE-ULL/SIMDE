@@ -71,6 +71,9 @@
     "onlyBuiltDependencies": [
       "@biomejs/biome",
       "esbuild"
-    ]
+    ],
+    "patchedDependencies": {
+      "@restart/ui@1.9.4": "patches/@restart__ui@1.9.4.patch"
+    }
   }
 }
