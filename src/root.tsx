@@ -7,7 +7,7 @@ import {
 } from "react-router";
 import { Provider } from "react-redux";
 import { I18nextProvider } from "react-i18next";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 
 import { store } from "./store";
 import i18n from "./i18n";
@@ -67,9 +67,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 /** Root route — renders the matched child route via Outlet. */
 export default function Root({ loaderData }: Route.ComponentProps) {
-  if (loaderData?.locale) {
-    i18n.changeLanguage(loaderData.locale);
-  }
+  useEffect(() => {
+    if (loaderData?.locale) {
+      i18n.changeLanguage(loaderData.locale);
+    }
+  }, [loaderData?.locale]);
+
   return <Outlet />;
 }
 
