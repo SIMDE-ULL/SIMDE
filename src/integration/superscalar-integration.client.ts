@@ -55,12 +55,12 @@ export class SuperscalarIntegration extends MachineIntegration {
     batchStats = new StatsAgregator();
 
     /*
-    * This call all the components to update the state
-    * if there is a step param, the components will use
-    * their history to set the appropiate content
+    * Dispatches all component state updates.
+    * If a step parameter is provided, components use
+    * their history to set the appropriate content.
     */
     dispatchAllSuperscalarActions = (step?: number) => {
-        // Code should only be setted on the first iteration
+        // Code is only set on the first iteration
         let robMap = this.superscalar.reorderBuffer.getVisualInstructionMap();
         store.dispatch(
                 batchActions(
@@ -176,8 +176,8 @@ export class SuperscalarIntegration extends MachineIntegration {
     loadCode = (code: Code) => {
         this.superscalar.code = code;
         this.resetMachine();
-        // There is no need to update the code with the rest,
-        // it should remain the same during all the program execution
+        // The code remains the same during the entire program execution,
+        // so it does not need to be updated with the rest of the state.
         store.dispatch(superscalarLoad(code.instructions));
     }
 
@@ -275,8 +275,8 @@ export class SuperscalarIntegration extends MachineIntegration {
         if (!this.superscalar.code) {
             return;
         }
-        // In normal execution I have to avoid the asynchrnous way of
-        // js entering in the interval, the only way I have is to using a semaphore
+        // During normal execution, a semaphore prevents the asynchronous
+        // interval callback from re-entering the execution loop.
         this.stopCondition = ExecutionStatus.STOP;
 
         if (!this.executing) {
@@ -286,7 +286,7 @@ export class SuperscalarIntegration extends MachineIntegration {
     }
 
     stepBack = () => {
-        // There is no time travelling for batch mode and initial mode
+        // Time travel is unavailable in batch mode and initial mode
         if (this.superscalar.status.cycle > 0 && this.backStep < MAX_HISTORY_SIZE &&
             (this.superscalar.status.cycle - this.backStep > 0)) {
             this.backStep++;
