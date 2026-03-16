@@ -49,8 +49,9 @@ export const LoadModalComponent: React.FC = () => {
     dispatch(toggleLoadModal(false));
   };
 
-  const loadCodeFromFile = ([[fileContent]]: [ProgressEvent<FileReader>, File][][]) => {
-    setModalCode((fileContent.target as FileReader).result as string);
+  const loadCodeFromFile = (files: [ProgressEvent<FileReader>, File][]) => {
+    const [event] = files[0];
+    setModalCode((event.target as FileReader).result as string);
   };
 
   const loadCode = () => {

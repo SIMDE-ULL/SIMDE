@@ -57,12 +57,14 @@ export const VLIWLoadModalComponent: React.FC = () => {
     dispatch(toggleLoadModal(false));
   };
 
-  const loadCodeFromFile = ([[fileContent]]) => {
-    setModalCode({ ...modalCode, general: fileContent.target.result });
+  const loadCodeFromFile = (files: [ProgressEvent<FileReader>, File][]) => {
+    const [event] = files[0];
+    setModalCode({ ...modalCode, general: (event.target as FileReader).result as string });
   };
 
-  const loadVLIWCodeFromFile = ([[fileContent]]) => {
-    setModalCode({ ...modalCode, vliw: fileContent.target.result });
+  const loadVLIWCodeFromFile = (files: [ProgressEvent<FileReader>, File][]) => {
+    const [event] = files[0];
+    setModalCode({ ...modalCode, vliw: (event.target as FileReader).result as string });
   };
 
   const loadCode = () => {
@@ -73,7 +75,7 @@ export const VLIWLoadModalComponent: React.FC = () => {
     try {
       code.load(modalCode.general);
       generalError = "";
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.pos
         ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
         ${error.errorMessage}`
@@ -89,7 +91,7 @@ export const VLIWLoadModalComponent: React.FC = () => {
 
       vliwError = "";
       close();
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = error.pos
         ? `Syntax error at line ${error.pos?.rowBegin}, column ${error.pos?.columnBegin}:
         ${error.errorMessage}`
