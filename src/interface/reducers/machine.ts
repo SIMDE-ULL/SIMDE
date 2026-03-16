@@ -257,7 +257,7 @@ export function MachineReducers(state = initialState, action: { type: string; va
         case ADD_FLOATING_REGISTERS_INTERVAL:
             return addInterval(state, 'floatingRegisters', action.value);
         case REMOVE_FLOATING_REGISTERS_INTERVAL:
-            return addInterval(state, 'floatingRegisters', action.value);
+            return removeInterval(state, 'floatingRegisters', action.value);
         case PUSH_HISTORY:
             return (state = {
                 ...state,
@@ -283,8 +283,8 @@ export function MachineReducers(state = initialState, action: { type: string; va
                         ROBGpr: { ...state.ROBGpr },
                         ROBFpr: { ...state.ROBFpr },
                         predicate: { ...state.predicate },
-                        NatGpr: { ...state.natGpr },
-                        NatFpr: { ...state.natFpr },
+                        natGpr: { ...state.natGpr },
+                        natFpr: { ...state.natFpr },
                         reorderBuffer: state.reorderBuffer,
                         generalRegisters: state.generalRegisters,
                         floatingRegisters: state.floatingRegisters,
@@ -328,17 +328,17 @@ export function MachineReducers(state = initialState, action: { type: string; va
                 }
             };
         case ADD_NAT_FPR_INTERVAL:
-            return addInterval(state, 'NatFpr', action.value);
+            return addInterval(state, 'natFpr', action.value);
         case ADD_NAT_GPR_INTERVAL:
-            return addInterval(state, 'NatGpr', action.value);
+            return addInterval(state, 'natGpr', action.value);
         case ADD_PREDICATE_INTERVAL:
-            return addInterval(state, 'Predicate', action.value);
+            return addInterval(state, 'predicate', action.value);
         case REMOVE_NAT_FPR_INTERVAL:
-            return removeInterval(state, 'NatFpr', action.value);
+            return removeInterval(state, 'natFpr', action.value);
         case REMOVE_NAT_GPR_INTERVAL:
-            return removeInterval(state, 'NatGpr', action.value);
+            return removeInterval(state, 'natGpr', action.value);
         case REMOVE_PREDICATE_INTERVAL:
-            return removeInterval(state, 'Predicate', action.value);
+            return removeInterval(state, 'predicate', action.value);
         default:
             return state;
     }
