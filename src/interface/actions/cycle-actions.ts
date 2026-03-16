@@ -1,1 +1,1 @@
-export { nextCycle, currentPC } from '../reducers/machine';
+export { nextCycle, currentPC } from "../reducers/machine";

@@ -1,7 +1,7 @@
-import { useState, type CSSProperties, type FC } from "react";
-import { useTranslation } from "react-i18next";
+import { type CSSProperties, type FC, useState } from "react";
 import { HexColorPicker } from "react-colorful";
-import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { colorCell } from "../../actions/reorder-buffer-actions";
 
 interface ColorPickerState {
@@ -67,7 +67,14 @@ export const ReorderBufferComponent: FC = () => {
                 setPickerState((prev) => ({ ...prev, selectedColor: hex }))
               }
             />
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: 4, marginTop: 4 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: 4,
+                marginTop: 4,
+              }}
+            >
               <button type="button" onClick={onColorCancel}>
                 {t("common.cancel", "Cancel")}
               </button>
@@ -87,43 +94,35 @@ export const ReorderBufferComponent: FC = () => {
             <div className="smd-table-header_title">
               {t("reorderBuffer.Value")}
             </div>
-            <div className="smd-table-header_title">
-              {t("reorderBuffer.A")}
-            </div>
+            <div className="smd-table-header_title">{t("reorderBuffer.A")}</div>
             <div className="smd-table-header_title">
               {t("reorderBuffer.Stage")}
             </div>
           </div>
           <div className="smd-table-body">
-            {content &&
-              content
-                .map((row: any, i: number) => ({ row, i }))
-                .filter((e: any) => e.row.instruction.id !== "")
-                .map((e: any) => (
-                  <div
-                    className="smd-table_row smd-reorder_buffer_entry"
-                    style={{
-                      background: colors.uidColors[e.row.instruction.uid],
-                    }}
-                    onClick={() =>
-                      handleClick(
-                        e.row.instruction.uid,
-                        e.row.instruction.color
-                      )
-                    }
-                    title={e.row.instruction.value}
-                    key={`ReorderBuffer${e.i}`}
-                  >
-                    <div className="smd-table_cell">{`[${e.i}]`}</div>
-                    <div className="smd-table_cell">{e.row.instruction.id}</div>
-                    <div className="smd-table_cell">
-                      {e.row.destinyRegister}
-                    </div>
-                    <div className="smd-table_cell">{e.row.value}</div>
-                    <div className="smd-table_cell">{e.row.address}</div>
-                    <div className="smd-table_cell">{e.row.superStage}</div>
-                  </div>
-                ))}
+            {content
+              ?.map((row: any, i: number) => ({ row, i }))
+              .filter((e: any) => e.row.instruction.id !== "")
+              .map((e: any) => (
+                <div
+                  className="smd-table_row smd-reorder_buffer_entry"
+                  style={{
+                    background: colors.uidColors[e.row.instruction.uid],
+                  }}
+                  onClick={() =>
+                    handleClick(e.row.instruction.uid, e.row.instruction.color)
+                  }
+                  title={e.row.instruction.value}
+                  key={`ReorderBuffer${e.i}`}
+                >
+                  <div className="smd-table_cell">{`[${e.i}]`}</div>
+                  <div className="smd-table_cell">{e.row.instruction.id}</div>
+                  <div className="smd-table_cell">{e.row.destinyRegister}</div>
+                  <div className="smd-table_cell">{e.row.value}</div>
+                  <div className="smd-table_cell">{e.row.address}</div>
+                  <div className="smd-table_cell">{e.row.superStage}</div>
+                </div>
+              ))}
           </div>
         </div>
       </div>

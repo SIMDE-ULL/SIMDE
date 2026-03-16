@@ -175,7 +175,7 @@ export function ExportAsString(
   _instructionNumber: number,
   _instructions: LargeInstruction[],
 ): string {
-  let outputString: string = "";
+  let outputString = "";
   outputString += _instructionNumber;
 
   for (let i = 0; i < _instructionNumber; i++) {

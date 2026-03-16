@@ -1,5 +1,5 @@
-import { useState, type ChangeEvent, type FC } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { type ChangeEvent, type FC, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { generateIntervalFromImput } from "../../../utils/interval";
 

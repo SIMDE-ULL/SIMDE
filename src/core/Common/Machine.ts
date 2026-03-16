@@ -1,12 +1,12 @@
-import { Register } from "./Register";
+import type { Cache } from "./Cache";
 import {
-  FunctionalUnit,
   FUNCTIONALUNITTYPESQUANTITY,
-  FunctionalUnitType,
+  FunctionalUnit,
   FunctionalUnitNumbers,
+  type FunctionalUnitType,
 } from "./FunctionalUnit";
-import { Cache } from "./Cache";
 import { Memory } from "./Memory";
+import { Register } from "./Register";
 
 const MACHINE_REGISTER_SIZE = 64;
 const MACHINE_MEMORY_SIZE = 1024;
@@ -123,7 +123,7 @@ export class Machine {
       for (let j = 0; j < this.functionalUnit[i].length; j++) {
         this.functionalUnit[i][j] = new FunctionalUnit(
           this.functionalUnit[i][j].type,
-          this.functionalUnit[i][j].latency
+          this.functionalUnit[i][j].latency,
         );
       }
     }
@@ -150,16 +150,22 @@ export class Machine {
     this._fpr.setAllContent(0);
     this.memory = new Memory(Machine.MEMORY_SIZE);
     if (this.cache) {
-      this.memory.getData = new Proxy(this.memory.getData, this.cache.getHandler);
-      this.memory.setData = new Proxy(this.memory.setData, this.cache.setHandler);
+      this.memory.getData = new Proxy(
+        this.memory.getData,
+        this.cache.getHandler,
+      );
+      this.memory.setData = new Proxy(
+        this.memory.setData,
+        this.cache.setHandler,
+      );
     }
   }
 
   public changeFunctionalUnitLatency(
     type: FunctionalUnitType,
-    latency: number
+    latency: number,
   ) {
-    if (latency == 0) {
+    if (latency === 0) {
       return;
     }
 

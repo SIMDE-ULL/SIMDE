@@ -1,22 +1,26 @@
-import { type FC } from "react";
-import RegisterComponent from "./RegisterComponent";
-import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import type { FC } from "react";
+import { Machine } from "../../../core/Common/Machine";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   addFloatingRegistersInterval,
-  removeFloatingRegistersInterval,
   addGeneralRegistersInterval,
-  removeGeneralRegistersInterval,
   addMemoryInterval,
+  removeFloatingRegistersInterval,
+  removeGeneralRegistersInterval,
   removeMemoryInterval,
 } from "../../actions/intervals-actions";
-import { Machine } from "../../../core/Common/Machine";
+import RegisterComponent from "./RegisterComponent";
 
 /** Tab displaying memory, general-purpose, and floating-point register banks. */
 export const RegistersTabComponent: FC = () => {
   const dispatch = useAppDispatch();
   const memory = useAppSelector((state) => state.Machine.memory);
-  const generalRegisters = useAppSelector((state) => state.Machine.generalRegisters);
-  const floatingRegisters = useAppSelector((state) => state.Machine.floatingRegisters);
+  const generalRegisters = useAppSelector(
+    (state) => state.Machine.generalRegisters,
+  );
+  const floatingRegisters = useAppSelector(
+    (state) => state.Machine.floatingRegisters,
+  );
 
   return (
     <div className="smd-register-tab">

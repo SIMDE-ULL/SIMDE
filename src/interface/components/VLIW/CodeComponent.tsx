@@ -1,7 +1,7 @@
-import { type FC } from "react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Instruction } from "../../../core/Common/Instruction";
+import type { Instruction } from "../../../core/Common/Instruction";
 import InstructionComponent from "./InstructionComponent";
 
 const COLOR_PALETTE = ["blue", "green", "yellow", "pink"];
@@ -38,15 +38,14 @@ export const CodeComponent: FC<CodeComponentProps> = ({
             <div className="smd-table-header_title">OP3</div>
           </div>
           <div className="smd-table-body">
-            {code &&
-              code.map((row: Instruction, i) => (
-                <InstructionComponent
-                  instruction={row}
-                  key={i}
-                  loc={i}
-                  color={setColor(row)}
-                />
-              ))}
+            {code?.map((row: Instruction, i) => (
+              <InstructionComponent
+                instruction={row}
+                key={i}
+                loc={i}
+                color={setColor(row)}
+              />
+            ))}
           </div>
         </div>
       </div>

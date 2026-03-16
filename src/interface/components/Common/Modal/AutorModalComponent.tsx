@@ -1,7 +1,7 @@
-import { type FC } from "react";
-import { Modal, Button } from "react-bootstrap";
+import type { FC } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { toggleAuthorModal } from "../../../actions/modals";
 
 interface AuthorInfo {
@@ -18,7 +18,7 @@ export const AutorModalComponent: FC<AutorModalProps> = ({ authors }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isAuthorModalOpen = useAppSelector(
-    (state) => state.Ui.isAuthorModalOpen
+    (state) => state.Ui.isAuthorModalOpen,
   );
 
   const close = () => {

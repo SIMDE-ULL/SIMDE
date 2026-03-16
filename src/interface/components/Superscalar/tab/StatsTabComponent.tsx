@@ -1,7 +1,7 @@
-import { type FC } from "react";
+import ReactECharts from "echarts-for-react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
-import ReactECharts from "echarts-for-react";
 
 /** Statistics visualization tab with charts for instruction statuses, unit usage, and commit/discard ratios. */
 export const StatsTabComponent: FC = () => {
@@ -9,10 +9,16 @@ export const StatsTabComponent: FC = () => {
 
   const commited = useAppSelector((state) => state.Machine.stats.commited);
   const discarded = useAppSelector((state) => state.Machine.stats.discarded);
-  const instrCommitPercentage = useAppSelector((state) => state.Machine.stats.commitedPerInstr);
+  const instrCommitPercentage = useAppSelector(
+    (state) => state.Machine.stats.commitedPerInstr,
+  );
   const unitsUsage = useAppSelector((state) => state.Machine.stats.unitsUsage);
-  const statusesCount = useAppSelector((state) => state.Machine.stats.statusesCount);
-  const instrStatuses = useAppSelector((state) => state.Machine.stats.instructionsStatusesAverageCycles);
+  const statusesCount = useAppSelector(
+    (state) => state.Machine.stats.statusesCount,
+  );
+  const instrStatuses = useAppSelector(
+    (state) => state.Machine.stats.instructionsStatusesAverageCycles,
+  );
   const cyclesPerReplication = useAppSelector((state) => state.Ui.batchResults);
   const code = useAppSelector((state) => state.Machine.code);
 
@@ -38,7 +44,11 @@ export const StatsTabComponent: FC = () => {
                   saveAsImage: {},
                   dataView: {
                     readOnly: true,
-                    lang: [t("stats.toolbox.dataView"), t("stats.toolbox.close"), t("stats.toolbox.refresh")],
+                    lang: [
+                      t("stats.toolbox.dataView"),
+                      t("stats.toolbox.close"),
+                      t("stats.toolbox.refresh"),
+                    ],
                   },
                 },
               },
@@ -48,7 +58,7 @@ export const StatsTabComponent: FC = () => {
               series:
                 statusesCount &&
                 Object.keys(statusesCount).map((statusName) => ({
-                  name: t("stats.statuses." + statusName),
+                  name: t(`stats.statuses.${statusName}`),
                   type: "bar",
                   stack: "statuses",
                   data: statusesCount[statusName],
@@ -64,12 +74,18 @@ export const StatsTabComponent: FC = () => {
               legend: {
                 top: "bottom",
                 selected: {
-                  [t("stats.units.rs0")]: false, [t("stats.units.rs1")]: false,
-                  [t("stats.units.rs2")]: false, [t("stats.units.rs3")]: false,
-                  [t("stats.units.rs4")]: false, [t("stats.units.rs5")]: false,
-                  [t("stats.units.fu0")]: false, [t("stats.units.fu1")]: false,
-                  [t("stats.units.fu2")]: false, [t("stats.units.fu3")]: false,
-                  [t("stats.units.fu4")]: false, [t("stats.units.fu5")]: false,
+                  [t("stats.units.rs0")]: false,
+                  [t("stats.units.rs1")]: false,
+                  [t("stats.units.rs2")]: false,
+                  [t("stats.units.rs3")]: false,
+                  [t("stats.units.rs4")]: false,
+                  [t("stats.units.rs5")]: false,
+                  [t("stats.units.fu0")]: false,
+                  [t("stats.units.fu1")]: false,
+                  [t("stats.units.fu2")]: false,
+                  [t("stats.units.fu3")]: false,
+                  [t("stats.units.fu4")]: false,
+                  [t("stats.units.fu5")]: false,
                 },
               },
               toolbox: {
@@ -77,19 +93,29 @@ export const StatsTabComponent: FC = () => {
                   saveAsImage: {},
                   dataView: {
                     readOnly: true,
-                    lang: [t("stats.toolbox.dataView"), t("stats.toolbox.close"), t("stats.toolbox.refresh")],
+                    lang: [
+                      t("stats.toolbox.dataView"),
+                      t("stats.toolbox.close"),
+                      t("stats.toolbox.refresh"),
+                    ],
                   },
                 },
               },
               tooltip: { trigger: "axis", axisPointer: { type: "cross" } },
               xAxis: { type: "category" },
-              yAxis: { type: "value", max: 100, axisLabel: { formatter: "{value}%" } },
+              yAxis: {
+                type: "value",
+                max: 100,
+                axisLabel: { formatter: "{value}%" },
+              },
               series:
                 unitsUsage &&
                 Object.keys(unitsUsage).map((unitName) => ({
-                  name: t("stats.units." + unitName),
+                  name: t(`stats.units.${unitName}`),
                   type: "line",
-                  data: unitsUsage[unitName].map((value: number) => value * 100),
+                  data: unitsUsage[unitName].map(
+                    (value: number) => value * 100,
+                  ),
                 })),
             }}
           />
@@ -125,7 +151,11 @@ export const StatsTabComponent: FC = () => {
                     saveAsImage: {},
                     dataView: {
                       readOnly: true,
-                      lang: [t("stats.toolbox.dataView"), t("stats.toolbox.close"), t("stats.toolbox.refresh")],
+                      lang: [
+                        t("stats.toolbox.dataView"),
+                        t("stats.toolbox.close"),
+                        t("stats.toolbox.refresh"),
+                      ],
                     },
                   },
                 },
@@ -157,22 +187,23 @@ export const StatsTabComponent: FC = () => {
               </tr>
             </thead>
             <tbody>
-              {instrCommitPercentage &&
-                instrCommitPercentage.map((d: { name: string; value: number }) => {
+              {instrCommitPercentage?.map(
+                (d: { name: string; value: number }) => {
                   const stats = instrStatuses[Number(d.name)];
                   return (
-                  <tr key={d.name}>
-                    <th scope="row">{d.name}</th>
-                    <td>{code[Number(d.name)]?.toString()}</td>
-                    <td>{formatTableNumber(stats?.prefetchCycles ?? 0)}</td>
-                    <td>{formatTableNumber(stats?.decodeCycles ?? 0)}</td>
-                    <td>{formatTableNumber(stats?.issueCycles ?? 0)}</td>
-                    <td>{formatTableNumber(stats?.executeCycles ?? 0)}</td>
-                    <td>{formatTableNumber(stats?.writeBackCycles ?? 0)}</td>
-                    <td>{formatTableNumber(d.value * 100)}%</td>
-                  </tr>
+                    <tr key={d.name}>
+                      <th scope="row">{d.name}</th>
+                      <td>{code[Number(d.name)]?.toString()}</td>
+                      <td>{formatTableNumber(stats?.prefetchCycles ?? 0)}</td>
+                      <td>{formatTableNumber(stats?.decodeCycles ?? 0)}</td>
+                      <td>{formatTableNumber(stats?.issueCycles ?? 0)}</td>
+                      <td>{formatTableNumber(stats?.executeCycles ?? 0)}</td>
+                      <td>{formatTableNumber(stats?.writeBackCycles ?? 0)}</td>
+                      <td>{formatTableNumber(d.value * 100)}%</td>
+                    </tr>
                   );
-                })}
+                },
+              )}
             </tbody>
           </table>
         </div>

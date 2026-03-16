@@ -1,4 +1,4 @@
-import { Instruction } from "../Common/Instruction";
+import type { Instruction } from "../Common/Instruction";
 
 export interface PrefetchUnitVisualEntry {
   id: number;
@@ -24,7 +24,7 @@ export class PrefetchUnit {
   }
 
   public isEmpty() {
-    return this._entries.length == 0;
+    return this._entries.length === 0;
   }
 
   public hasBreakpoint() {

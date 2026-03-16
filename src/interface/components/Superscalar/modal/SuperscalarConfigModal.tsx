@@ -1,4 +1,5 @@
-import { useState, type ChangeEvent, type FC } from "react";
+import { CacheType } from "@/core/Common/Cache";
+import { type ChangeEvent, type FC, useState } from "react";
 import {
   Alert,
   Button,
@@ -10,11 +11,10 @@ import {
   Stack,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { toggleSuperConfigModal } from "../../../actions/modals";
 import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { toggleSuperConfigModal } from "../../../actions/modals";
 import { BATCH_CONFIG, SUPERSCALAR_CONFIG } from "../../../utils/constants";
-import { CacheType } from "@/core/Common/Cache";
 
 /** Superscalar functional unit and cache configuration. */
 interface SuperscalarConfig {
@@ -65,7 +65,7 @@ export const SuperscalarConfigModal: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isSuperscalarConfigModalShown = useAppSelector(
-    (state) => state.Ui.isSuperConfigModalOpen
+    (state) => state.Ui.isSuperConfigModalOpen,
   );
 
   const saveConfig = () => {

@@ -1,11 +1,11 @@
-import { useRef, useState, type FC } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { type FC, useRef, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { ContentIntegration } from "../../../../integration/content-integration";
+import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { toggleSuperscalarLoadContentModal } from "../../../actions/modals";
 import FileReaderInput from "../../Common/FileReaderInput";
-import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
-import { ContentIntegration } from "../../../../integration/content-integration";
 
 /** Modal for loading initial register/memory content into the superscalar simulator. */
 export const SuperscalarLoadContentModalComponent: FC = () => {
@@ -14,7 +14,7 @@ export const SuperscalarLoadContentModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isSuperscalarLoadContentModalOpen = useAppSelector(
-    (state) => state.Ui.isSuperscalarLoadContentModalOpen
+    (state) => state.Ui.isSuperscalarLoadContentModalOpen,
   );
 
   const close = () => {
@@ -44,7 +44,7 @@ export const SuperscalarLoadContentModalComponent: FC = () => {
     } catch (err: any) {
       if (err.pos) {
         setError(
-          `[${err.pos?.rowBegin}:${err.pos?.columnBegin}]: ${err.errorMessage}`
+          `[${err.pos?.rowBegin}:${err.pos?.columnBegin}]: ${err.errorMessage}`,
         );
       } else {
         setError(err.message);

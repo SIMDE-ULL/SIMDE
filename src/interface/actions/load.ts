@@ -1,1 +1,1 @@
-export { superscalarLoad } from '../reducers/machine';
+export { superscalarLoad } from "../reducers/machine";

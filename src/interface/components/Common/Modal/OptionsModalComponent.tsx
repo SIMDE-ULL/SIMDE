@@ -1,7 +1,7 @@
-import { type ChangeEvent, type FC } from "react";
+import type { ChangeEvent, FC } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { toggleOptionsModal } from "../../../actions/modals";
 
 /** Options modal (currently a placeholder for cache fault percentage). */
@@ -9,7 +9,7 @@ export const OptionsModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isOptionsModalOpen = useAppSelector(
-    (state) => state.Ui.isOptionsModalOpen
+    (state) => state.Ui.isOptionsModalOpen,
   );
 
   const cacheFailPercentage = 0;

@@ -1,1 +1,1 @@
-export { nextJumpTableCycle } from '../reducers/machine';
+export { nextJumpTableCycle } from "../reducers/machine";

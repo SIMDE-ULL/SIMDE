@@ -69,12 +69,9 @@ const tokenizer = buildLexer([
   [false, /^\/\/.*(\r?\n|$)/g, Tokens.Comment],
 ]);
 
-const inmParser = apply(
-  tok(Tokens.Inmediate),
-  (num: Token<Tokens>) => {
-    return +num.text.slice(1);
-  },
-);
+const inmParser = apply(tok(Tokens.Inmediate), (num: Token<Tokens>) => {
+  return +num.text.slice(1);
+});
 
 const regParser = apply(
   alt_sc(tok(Tokens.RegFP), tok(Tokens.RegGP)),
@@ -99,14 +96,7 @@ const addressParser = apply(
     regParser,
     tok(Tokens.BraketClose),
   ),
-  (
-    address: [
-      Token<Tokens> | undefined,
-      Token<Tokens>,
-      Reg,
-      Token<Tokens>,
-    ],
-  ) => {
+  (address: [Token<Tokens> | undefined, Token<Tokens>, Reg, Token<Tokens>]) => {
     if (address[2].type === RegType.FP) {
       throw new TokenError(
         address[2].pos,

@@ -29,7 +29,7 @@ export class Memory implements Iterable<number> {
     return this.data.length;
   }
 
-  public getData(address: number): Error | number  {
+  public getData(address: number): Error | number {
     const error = forcePositiveAddresses(address);
     if (error) return error;
 

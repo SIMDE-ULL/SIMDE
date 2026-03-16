@@ -1,7 +1,7 @@
-import { type FC } from "react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
+import type { Instruction } from "../../../core/Common/Instruction";
 import { OpcodesNames } from "../../../core/Common/Opcodes";
-import { Instruction } from "../../../core/Common/Instruction";
 import SuperscalarIntegration from "../../../integration/superscalar-integration.client";
 
 /** Props for the superscalar code display component. */
@@ -45,32 +45,31 @@ export const CodeComponent: FC<CodeComponentProps> = ({
             <div className="smd-table-header_title">OP3</div>
           </div>
           <div className="smd-table-body">
-            {code &&
-              code.map((row: Instruction, i) => (
+            {code?.map((row: Instruction, i) => (
+              <div
+                className="smd-table_row"
+                key={`Code${i}`}
+                onClick={() => setBreakpoint(i)}
+              >
                 <div
-                  className="smd-table_row"
-                  key={`Code${i}`}
-                  onClick={() => setBreakpoint(i)}
+                  className={`smd-table_cell ${row.breakPoint ? "smd-breakpoint" : ""}`}
                 >
-                  <div
-                    className={`smd-table_cell ${row.breakPoint ? "smd-breakpoint" : ""}`}
-                  >
-                    {row.label} {i}
-                  </div>
-                  <div className={`smd-table_cell ${getBlockColor(row)}`}>
-                    {OpcodesNames[row.opcode]}
-                  </div>
-                  <div className={`smd-table_cell ${getBlockColor(row)}`}>
-                    {row.operandsString[0]}
-                  </div>
-                  <div className={`smd-table_cell ${getBlockColor(row)}`}>
-                    {row.operandsString[1]}
-                  </div>
-                  <div className={`smd-table_cell ${getBlockColor(row)}`}>
-                    {row.operandsString[2]}
-                  </div>
+                  {row.label} {i}
                 </div>
-              ))}
+                <div className={`smd-table_cell ${getBlockColor(row)}`}>
+                  {OpcodesNames[row.opcode]}
+                </div>
+                <div className={`smd-table_cell ${getBlockColor(row)}`}>
+                  {row.operandsString[0]}
+                </div>
+                <div className={`smd-table_cell ${getBlockColor(row)}`}>
+                  {row.operandsString[1]}
+                </div>
+                <div className={`smd-table_cell ${getBlockColor(row)}`}>
+                  {row.operandsString[2]}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

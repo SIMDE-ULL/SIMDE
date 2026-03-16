@@ -1,21 +1,18 @@
-import { Machine } from "../Common/Machine";
 import { Code } from "../Common/Code";
+import { Machine } from "../Common/Machine";
 
-import { ReorderBuffer } from "./ReorderBuffer";
-import { PrefetchUnit } from "./PrefetchUnit";
-import { ReserveStation } from "./ReserveStation";
 import {
-  FunctionalUnit,
-  FunctionalUnitType,
-  FunctionalUnitNumbers,
   FUNCTIONALUNITTYPESQUANTITY,
+  FunctionalUnit,
+  FunctionalUnitNumbers,
+  FunctionalUnitType,
 } from "../Common/FunctionalUnit";
-import { JumpPredictor } from "./JumpPredictor";
 import { Instruction } from "../Common/Instruction";
-import {
-  CommitStatus,
-  SuperscalarStatus,
-} from "./SuperscalarEnums";
+import { JumpPredictor } from "./JumpPredictor";
+import { PrefetchUnit } from "./PrefetchUnit";
+import { ReorderBuffer } from "./ReorderBuffer";
+import { ReserveStation } from "./ReserveStation";
+import { CommitStatus, SuperscalarStatus } from "./SuperscalarEnums";
 
 export class Superscalar extends Machine {
   private static PREDTABLEBITS = 4;
@@ -85,7 +82,7 @@ export class Superscalar extends Machine {
     this._reserveStations = {} as Record<number, ReserveStation>;
     let total = 0; //  total ROB size
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-      let size = this.getReserveStationSize(i);
+      const size = this.getReserveStationSize(i);
       this._reserveStations[i] = new ReserveStation(size);
       total += size;
     }
@@ -106,7 +103,7 @@ export class Superscalar extends Machine {
 
   public changeFunctionalUnitLatency(
     type: FunctionalUnitType,
-    latency: number
+    latency: number,
   ) {
     super.changeFunctionalUnitLatency(type, latency);
 
@@ -115,7 +112,7 @@ export class Superscalar extends Machine {
       for (let j = 0; j < this.aluMem.length; j++) {
         this.aluMem[j] = new FunctionalUnit(
           FunctionalUnitType.INTEGERSUM,
-          latency
+          latency,
         );
       }
     }
@@ -126,12 +123,12 @@ export class Superscalar extends Machine {
 
     // Update the number of alu mem units acortding to the number of memory units
     if (type === FunctionalUnitType.MEMORY) {
-      let currentLatency = this.aluMem[0].latency;
+      const currentLatency = this.aluMem[0].latency;
       this._aluMem = new Array(num);
       for (let j = 0; j < num; j++) {
         this.aluMem[j] = new FunctionalUnit(
           FunctionalUnitType.INTEGERSUM,
-          currentLatency
+          currentLatency,
         );
       }
     }
@@ -150,7 +147,7 @@ export class Superscalar extends Machine {
 
   private getRegisterValueOrROBRef(
     register: number,
-    floatingPoint: boolean
+    floatingPoint: boolean,
   ): [number, boolean] {
     let isROBRef = false;
     let result = 0; // Value or Rob index
@@ -175,7 +172,7 @@ export class Superscalar extends Machine {
 
   private checkJump(
     instruction: Instruction,
-    executionResult: number
+    executionResult: number,
   ): boolean {
     // Check if the prediction was correct
     // Typescript does not support ^ operator for boolean
@@ -197,10 +194,10 @@ export class Superscalar extends Machine {
         for (let j = 0; j < this.functionalUnit[i].length; j++) {
           this.functionalUnit[i][j] = new FunctionalUnit(
             this.functionalUnit[i][j].type,
-            this.functionalUnit[i][j].latency
+            this.functionalUnit[i][j].latency,
           );
           this._reserveStations[i] = new ReserveStation(
-            this._reserveStations[i].size
+            this._reserveStations[i].size,
           );
         }
       }
@@ -209,7 +206,7 @@ export class Superscalar extends Machine {
       for (let i = 0; i < this.aluMem.length; i++) {
         this.aluMem[i] = new FunctionalUnit(
           this.aluMem[i].type,
-          this.aluMem[i].latency
+          this.aluMem[i].latency,
         );
       }
 
@@ -235,7 +232,7 @@ export class Superscalar extends Machine {
 
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
       this._reserveStations[i] = new ReserveStation(
-        this._reserveStations[i].size
+        this._reserveStations[i].size,
       );
     }
     this._reorderBuffer = new ReorderBuffer(this._reorderBuffer.size);
@@ -246,7 +243,7 @@ export class Superscalar extends Machine {
     for (let j = 0; j < this.aluMem.length; j++) {
       this.aluMem[j] = new FunctionalUnit(
         this.aluMem[j].type,
-        this.aluMem[j].latency
+        this.aluMem[j].latency,
       );
     }
 
@@ -258,9 +255,9 @@ export class Superscalar extends Machine {
     while (!this._prefetchUnit.isFull() && this.pc < this.code.lines) {
       // Importante: Hago una copia de la instrucción original para distinguir
       // las distintas apariciones de una misma inst.
-      let instruction = new Instruction(
+      const instruction = new Instruction(
         this.code.instructions[this.pc],
-        this.status.cycle * 100 + i
+        this.status.cycle * 100 + i,
       );
       if (
         instruction.isJumpInstruction() &&
@@ -279,21 +276,21 @@ export class Superscalar extends Machine {
 
   ticDecoder() {
     while (!this._decoder.isFull() && !this._prefetchUnit.isEmpty()) {
-      let instruction = this._prefetchUnit.get();
+      const instruction = this._prefetchUnit.get();
       this._decoder.add(instruction);
     }
   }
 
   issueInstructionToReserveStation(instruction: Instruction, type: number) {
-    let instrUid = instruction.uid;
+    const instrUid = instruction.uid;
     this._reserveStations[type].issueInstruction(instruction);
 
     // check were the value of the first operand is
-    let firstOperandReg = instruction.getFirstOperandRegister();
+    const firstOperandReg = instruction.getFirstOperandRegister();
     if (firstOperandReg !== -1) {
-      let [value, isROBRef] = this.getRegisterValueOrROBRef(
+      const [value, isROBRef] = this.getRegisterValueOrROBRef(
         firstOperandReg,
-        instruction.isFirstOperandFloat()
+        instruction.isFirstOperandFloat(),
       );
       if (isROBRef) {
         this._reserveStations[type].setFirstOperandReference(instrUid, value);
@@ -304,7 +301,7 @@ export class Superscalar extends Machine {
       // move the value of the immediate to the reserve station, if it has one
       this._reserveStations[type].setFirstOperandValue(
         instrUid,
-        instruction.getImmediateOperand()
+        instruction.getImmediateOperand(),
       );
     } else {
       // set the value of the first operand to 0
@@ -312,11 +309,11 @@ export class Superscalar extends Machine {
     }
 
     // check were the value of the second operand is
-    let secondOperandReg = instruction.getSecondOperandRegister();
+    const secondOperandReg = instruction.getSecondOperandRegister();
     if (secondOperandReg !== -1) {
-      let [value, isROBRef] = this.getRegisterValueOrROBRef(
+      const [value, isROBRef] = this.getRegisterValueOrROBRef(
         secondOperandReg,
-        instruction.isSecondOperandFloat()
+        instruction.isSecondOperandFloat(),
       );
       if (isROBRef) {
         this._reserveStations[type].setSecondOperandReference(instrUid, value);
@@ -327,7 +324,7 @@ export class Superscalar extends Machine {
       // move the value of the immediate to the reserve station, if it has one
       this._reserveStations[type].setSecondOperandValue(
         instrUid,
-        instruction.getImmediateOperand()
+        instruction.getImmediateOperand(),
       );
     } else {
       // set the value of the second operand to 0
@@ -338,7 +335,7 @@ export class Superscalar extends Machine {
     if (instruction.getAddressOperand() !== -1) {
       this._reserveStations[type].setAddressOperand(
         instrUid,
-        instruction.getAddressOperand()
+        instruction.getAddressOperand(),
       );
     }
 
@@ -354,8 +351,8 @@ export class Superscalar extends Machine {
 
   ticIssue() {
     while (!this._decoder.isEmpty()) {
-      let fuType: FunctionalUnitType = this.code.getFunctionalUnitType(
-        this._decoder.getId()
+      const fuType: FunctionalUnitType = this.code.getFunctionalUnitType(
+        this._decoder.getId(),
       );
 
       // Check if there is space in the reorder buffer and the reserve station
@@ -366,7 +363,7 @@ export class Superscalar extends Machine {
         break;
       }
 
-      let instruction: Instruction = this._decoder.get();
+      const instruction: Instruction = this._decoder.get();
       this.issueInstructionToReserveStation(instruction, fuType);
       // This is a hack, because putting the instruction in the reorder buffer before that in the reserve station will cause a circular dependency on instructions that reads and writes the same register, but the reserve station entry needs the rob index
       this._reorderBuffer.issueInstruction(instruction);
@@ -374,9 +371,9 @@ export class Superscalar extends Machine {
   }
 
   executeInstruction(type: FunctionalUnitType, num: number) {
-    let readyInstsRefs = this._reserveStations[type].getReadyInstructions();
-    for (let instrUID of readyInstsRefs) {
-      let instruction = this._reorderBuffer.getInstruction(instrUID);
+    const readyInstsRefs = this._reserveStations[type].getReadyInstructions();
+    for (const instrUID of readyInstsRefs) {
+      const instruction = this._reorderBuffer.getInstruction(instrUID);
 
       // Check if the instruction is a store and skip it
       // TODO: dont do this?
@@ -418,24 +415,24 @@ export class Superscalar extends Machine {
 
     // Go through all the Address ALU and execute the address calculus
     for (let i = 0; i < this.aluMem.length; i++) {
-      let execution = this.aluMem[i].executeReadyInstruction();
+      const execution = this.aluMem[i].executeReadyInstruction();
       if (execution != null) {
         // if an instruction is ready, write the result address to the reorder buffer and reserve station
-        let instrUid = execution.instruction.uid;
-        let baseAddress =
+        const instrUid = execution.instruction.uid;
+        const baseAddress =
           this._reserveStations[FunctionalUnitType.MEMORY].getAddressOperand(
-            instrUid
+            instrUid,
           );
-        let offset =
+        const offset =
           this._reserveStations[
             FunctionalUnitType.MEMORY
           ].getSecondOperandValue(instrUid);
-        let address = baseAddress + offset;
+        const address = baseAddress + offset;
 
         this._reorderBuffer.writeResultAddress(instrUid, address);
         this._reserveStations[FunctionalUnitType.MEMORY].setAddressOperand(
           instrUid,
-          address
+          address,
         );
       }
 
@@ -444,12 +441,12 @@ export class Superscalar extends Machine {
 
     // Go again through all the memory reserve stations but this time sending the instructions to the address ALU
     for (let i = 0; i < this.aluMem.length; i++) {
-      let readyInstsRefs =
+      const readyInstsRefs =
         this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions(
-          true
+          true,
         ); // we dont need the first operand ready, as we are only calculating the address
-      for (let instrUID of readyInstsRefs) {
-        let instruction = this._reorderBuffer.getInstruction(instrUID);
+      for (const instrUID of readyInstsRefs) {
+        const instruction = this._reorderBuffer.getInstruction(instrUID);
 
         if (
           instruction.isStoreInstruction() ||
@@ -472,24 +469,24 @@ export class Superscalar extends Machine {
 
   writeInstruction(type: FunctionalUnitType, num: number) {
     let resul: number | undefined;
-    let instUid = this.functionalUnit[type][num].getReadyInstructionUid();
+    const instUid = this.functionalUnit[type][num].getReadyInstructionUid();
     if (instUid !== -1) {
-      let inst = this._reorderBuffer.getInstruction(instUid);
-      let firstValue =
+      const inst = this._reorderBuffer.getInstruction(instUid);
+      const firstValue =
         this._reserveStations[type].getFirstOperandValue(instUid);
-      let secondValue =
+      const secondValue =
         this._reserveStations[type].getSecondOperandValue(instUid);
 
       // execute it
-      let execution = this.functionalUnit[type][num].executeReadyInstruction(
+      const execution = this.functionalUnit[type][num].executeReadyInstruction(
         firstValue,
-        secondValue
+        secondValue,
       );
 
       // load and stores are a special cases, because they need to access the memory
       if (inst.isLoadInstruction()) {
         const a = this.memory.getData(
-          this._reserveStations[type].getAddressOperand(instUid)
+          this._reserveStations[type].getAddressOperand(instUid),
         );
 
         //hack: as we dont have a well made error handling, intercept the error and just throw it
@@ -500,14 +497,14 @@ export class Superscalar extends Machine {
         resul = a;
         if (this.cache && !this.cache.success) {
           this.functionalUnit[type][num].stall(
-            this.memoryFailLatency - this.functionalUnit[type][num].latency
+            this.memoryFailLatency - this.functionalUnit[type][num].latency,
           );
         }
       } else if (inst.isStoreInstruction()) {
         // we dont do anything at this stage with stores
         // in fact, stores cant enter a functional unit
       } else {
-        resul = execution!.result;
+        resul = execution?.result;
       }
 
       // Finish the instruction execution
@@ -533,11 +530,11 @@ export class Superscalar extends Machine {
     //TODO: this is a really bad way to do this, as stores skips the execution stage and go directly to the write result stage
     // so here we are doing the execution stage of the stores. And also, we are writing the result of all the stores at the same time with no limits
     // why? because potatos
-    let readyLoadsRefs =
+    const readyLoadsRefs =
       this._reserveStations[FunctionalUnitType.MEMORY].getReadyInstructions();
-    let refsToRemove = new Array<number>();
-    for (let instrUID of readyLoadsRefs) {
-      let instruction = this._reorderBuffer.getInstruction(instrUID);
+    const refsToRemove = new Array<number>();
+    for (const instrUID of readyLoadsRefs) {
+      const instruction = this._reorderBuffer.getInstruction(instrUID);
 
       if (instruction.isStoreInstruction()) {
         // check that is really ready, as the memory address can be not calculated yet
@@ -549,16 +546,16 @@ export class Superscalar extends Machine {
         this._reorderBuffer.writeResultValue(
           instrUID,
           this._reserveStations[FunctionalUnitType.MEMORY].getFirstOperandValue(
-            instrUID
-          )
+            instrUID,
+          ),
         );
         //this._reserveStations[FunctionalUnitType.MEMORY].removeInstruction(instrRef);
         refsToRemove.push(instrUID);
       }
     }
-    for (let instrRef of refsToRemove) {
+    for (const instrRef of refsToRemove) {
       this._reserveStations[FunctionalUnitType.MEMORY].removeInstruction(
-        instrRef
+        instrRef,
       );
     }
 
@@ -580,16 +577,16 @@ export class Superscalar extends Machine {
       if (this._reorderBuffer.canCommitStoreInstruction()) {
         this.memory.setData(
           this._reorderBuffer.getResultAddress(),
-          this._reorderBuffer.getResultValue()
+          this._reorderBuffer.getResultValue(),
         );
       } else if (this._reorderBuffer.canCommitJumpInstruction()) {
         if (
           !this.checkJump(
             this._reorderBuffer.getInstruction(),
-            this._reorderBuffer.getResultValue()
+            this._reorderBuffer.getResultValue(),
           )
         ) {
-          let instUid = this._reorderBuffer.commitInstruction();
+          const instUid = this._reorderBuffer.commitInstruction();
           if (instUid !== -1) {
             this._currentCommitedInstrs.push(instUid);
           }
@@ -597,19 +594,19 @@ export class Superscalar extends Machine {
           return CommitStatus.SUPER_COMMITMISS;
         }
       } else if (this._reorderBuffer.canCommitRegisterInstruction()) {
-        let instruction = this._reorderBuffer.getInstruction();
-        let isFloat = instruction.isDestinyRegisterFloat();
+        const instruction = this._reorderBuffer.getInstruction();
+        const isFloat = instruction.isDestinyRegisterFloat();
         if (!isFloat) {
           this._gpr.setContent(
             instruction.getDestinyRegister(),
             this._reorderBuffer.getResultValue(),
-            false
+            false,
           );
         } else {
           this._fpr.setContent(
             instruction.getDestinyRegister(),
             this._reorderBuffer.getResultValue(),
-            false
+            false,
           );
         }
 
@@ -626,7 +623,7 @@ export class Superscalar extends Machine {
         return CommitStatus.SUPER_COMMITNO;
       }
 
-      let instUid = this._reorderBuffer.commitInstruction();
+      const instUid = this._reorderBuffer.commitInstruction();
       if (instUid !== -1) {
         this._currentCommitedInstrs.push(instUid);
       }
@@ -637,7 +634,7 @@ export class Superscalar extends Machine {
   public tic(): SuperscalarStatus {
     this.status.cycle++;
 
-    let commit = this.ticCommit();
+    const commit = this.ticCommit();
     if (
       commit !== CommitStatus.SUPER_COMMITEND &&
       commit !== CommitStatus.SUPER_COMMITMISS

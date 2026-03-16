@@ -1,49 +1,69 @@
-import { type FC } from "react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { superscalarLoad } from "../../../actions";
 import {
   addNatFprInterval,
-  removeNatFprInterval,
   addNatGprInterval,
-  removeNatGprInterval,
   addPredicateInterval,
+  removeNatFprInterval,
+  removeNatGprInterval,
   removePredicateInterval,
 } from "../../../actions/predicate-nat-actions";
 
-import FunctionalUnitComponent from "../FunctionalUnitComponent";
-import CodeComponent from "../CodeComponent";
-import { TableComponent } from "../TableComponent";
-import RegisterComponent from "../../Common/RegisterComponent";
-import { PREDICATE_SIZE } from "../../../reducers/machine";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
+import { PREDICATE_SIZE } from "../../../reducers/machine";
+import RegisterComponent from "../../Common/RegisterComponent";
+import CodeComponent from "../CodeComponent";
+import FunctionalUnitComponent from "../FunctionalUnitComponent";
+import { TableComponent } from "../TableComponent";
 
 /** Main VLIW simulation view tab showing pipeline stages and functional units. */
 export const GeneralVLIWTabComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const functionalUnitIntAdd = useAppSelector((state) => state.Machine.functionalUnitIntAdd);
-  const functionalUnitIntSub = useAppSelector((state) => state.Machine.functionalUnitIntSub);
-  const functionalUnitFloAdd = useAppSelector((state) => state.Machine.functionalUnitFloAdd);
-  const functionalUnitFloSub = useAppSelector((state) => state.Machine.functionalUnitFloSub);
-  const functionalUnitMemory = useAppSelector((state) => state.Machine.functionalUnitMemory);
-  const functionalUnitJump = useAppSelector((state) => state.Machine.functionalUnitJump);
+  const functionalUnitIntAdd = useAppSelector(
+    (state) => state.Machine.functionalUnitIntAdd,
+  );
+  const functionalUnitIntSub = useAppSelector(
+    (state) => state.Machine.functionalUnitIntSub,
+  );
+  const functionalUnitFloAdd = useAppSelector(
+    (state) => state.Machine.functionalUnitFloAdd,
+  );
+  const functionalUnitFloSub = useAppSelector(
+    (state) => state.Machine.functionalUnitFloSub,
+  );
+  const functionalUnitMemory = useAppSelector(
+    (state) => state.Machine.functionalUnitMemory,
+  );
+  const functionalUnitJump = useAppSelector(
+    (state) => state.Machine.functionalUnitJump,
+  );
   const natFpr = useAppSelector((state) => state.Machine.natFpr);
   const natGpr = useAppSelector((state) => state.Machine.natGpr);
   const predicate = useAppSelector((state) => state.Machine.predicate);
   const code = useAppSelector((state) => state.Machine.code);
   const pc = useAppSelector((state) => state.Machine.pc);
-  const colorBasicBlocks = useAppSelector((state) => state.Machine.colorBasicBlocks);
-  const vliwExecutionTable = useAppSelector((state) => state.Machine.vliwExecutionTable);
-  const vliwExecutionHeaderTable = useAppSelector((state) => state.Machine.vliwExecutionHeaderTable);
+  const colorBasicBlocks = useAppSelector(
+    (state) => state.Machine.colorBasicBlocks,
+  );
+  const vliwExecutionTable = useAppSelector(
+    (state) => state.Machine.vliwExecutionTable,
+  );
+  const vliwExecutionHeaderTable = useAppSelector(
+    (state) => state.Machine.vliwExecutionHeaderTable,
+  );
 
   return (
     <div className="smd-general_tab">
       <div className="smd-general_tab-code">
         <CodeComponent
           code={code}
-          toggleBreakPoint={(instructions) => dispatch(superscalarLoad(instructions))}
+          toggleBreakPoint={(instructions) =>
+            dispatch(superscalarLoad(instructions))
+          }
           colorBasicBlocks={colorBasicBlocks}
         />
       </div>

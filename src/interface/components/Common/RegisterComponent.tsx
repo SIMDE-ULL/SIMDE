@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import IntervalModalComponent from "./Modal/IntervalModalComponent";
 
@@ -54,7 +54,7 @@ export const RegisterComponent: FC<RegisterComponentProps> = ({
                     {index}
                   </div>
                   <div className="smd-table_cell" key={`${title}${index}131`}>
-                    {"" + data[index]}
+                    {`${data[index]}`}
                   </div>
                 </div>
               ))}
@@ -66,14 +66,14 @@ export const RegisterComponent: FC<RegisterComponentProps> = ({
             className="btn smd-register_button"
             onClick={() => setIsAddModalOpen(true)}
           >
-            <i className="fa fa-plus" aria-hidden="true" />
+            <i className="fa fa-plus" />
           </button>
           <button
             type="button"
             className="btn smd-register_button"
             onClick={() => setIsRemoveModalOpen(true)}
           >
-            <i className="fa fa-minus" aria-hidden="true" />
+            <i className="fa fa-minus" />
           </button>
         </div>
       </div>

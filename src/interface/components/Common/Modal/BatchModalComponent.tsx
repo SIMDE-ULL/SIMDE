@@ -1,9 +1,9 @@
-import { useState, type FC } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { type FC, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { toggleBatchModal } from "../../../actions/modals";
 import type { MachineIntegration } from "../../../../integration/machine-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { toggleBatchModal } from "../../../actions/modals";
 
 interface BatchModalProps {
   integration: MachineIntegration;

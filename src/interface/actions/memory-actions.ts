@@ -1,1 +1,1 @@
-export { nextMemoryCycle } from '../reducers/machine';
+export { nextMemoryCycle } from "../reducers/machine";

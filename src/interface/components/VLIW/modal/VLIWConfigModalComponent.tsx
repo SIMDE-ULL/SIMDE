@@ -1,4 +1,5 @@
-import { useState, type ChangeEvent, type FC } from "react";
+import { CacheType } from "@/core/Common/Cache";
+import { type ChangeEvent, type FC, useState } from "react";
 import {
   Alert,
   Button,
@@ -10,11 +11,10 @@ import {
   Stack,
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { toggleVliwConfigModal } from "../../../actions/modals";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { toggleVliwConfigModal } from "../../../actions/modals";
 import { BATCH_CONFIG, VLIW_CONFIG } from "../../../utils/constants";
-import { CacheType } from "@/core/Common/Cache";
 
 interface VliwConfig {
   integerSumQuantity: number;
@@ -63,7 +63,7 @@ export const VLIWConfigModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isVliwConfigModalOpen = useAppSelector(
-    (state) => state.Ui.isVliwConfigModalOpen
+    (state) => state.Ui.isVliwConfigModalOpen,
   );
   const [config, setConfig] = useState<VliwConfig>(DEFAULT_CONFIG);
 

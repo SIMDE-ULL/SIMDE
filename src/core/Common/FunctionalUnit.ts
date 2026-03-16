@@ -1,16 +1,16 @@
-import { Instruction } from "./Instruction";
+import type { Instruction } from "./Instruction";
 import { Opcodes } from "./Opcodes";
 
 export enum FunctionalUnitType {
   INTEGERSUM = 0,
-  INTEGERMULTIPLY,
-  FLOATINGSUM,
-  FLOATINGMULTIPLY,
-  MEMORY,
-  JUMP,
+  INTEGERMULTIPLY = 1,
+  FLOATINGSUM = 2,
+  FLOATINGMULTIPLY = 3,
+  MEMORY = 4,
+  JUMP = 5,
 }
 
-export let FunctionalUnitTypeNames: string[] = [
+export const FunctionalUnitTypeNames: string[] = [
   "Integer Sum",
   "Integer Multiply",
   "Floating Sum",
@@ -59,12 +59,12 @@ interface FunctionalUnitInstruction {
 }
 
 export class FunctionalUnit {
-  private _stalled: number = 0; // if >0, it is stalling (for ex because a memory fail) for that many cycles
+  private _stalled = 0; // if >0, it is stalling (for ex because a memory fail) for that many cycles
   private _instructions: FunctionalUnitInstruction[] = [];
 
-  private _nextRef: number = 0; //TODO: use instruction uid
+  private _nextRef = 0; //TODO: use instruction uid
   private _currentBlankTimeUnits: number;
-  private _hasExectutedInstBeforeTick: boolean = false;
+  private _hasExectutedInstBeforeTick = false;
 
   public get type(): FunctionalUnitType {
     return this._type;
@@ -94,7 +94,7 @@ export class FunctionalUnit {
 
     if (!this.isEmpty() && !this._hasExectutedInstBeforeTick) {
       //decrement blank time units of the next instruction to be executed
-      if (this._instructions[0].blankTimeUnitsAhead == 0) {
+      if (this._instructions[0].blankTimeUnitsAhead === 0) {
         // If an instruction has 0 blank time units ahead, it means it was behind another
         // or it wasnt executed and should be dropped
         // If no instruction was executed in this cycle,
@@ -126,7 +126,7 @@ export class FunctionalUnit {
   }
 
   public isEmpty(): boolean {
-    return this._instructions.length == 0;
+    return this._instructions.length === 0;
   }
 
   public isStalled(): boolean {
@@ -146,19 +146,19 @@ export class FunctionalUnit {
 
   // return the execution result of the instruction ready in the current cycle, or null if none
   public executeReadyInstruction(
-    firstValue: number = 0,
-    secondValue: number = 0,
+    firstValue = 0,
+    secondValue = 0,
   ): FunctionalUnitResult | null {
     if (
-      this._instructions.length == 0 ||
+      this._instructions.length === 0 ||
       this._instructions[0].blankTimeUnitsAhead > 0
     ) {
       return null;
     }
 
-    let instruction = this._instructions[0].instruction;
-    let opcode = instruction.opcode;
-    let ref = this._instructions[0].ref;
+    const instruction = this._instructions[0].instruction;
+    const opcode = instruction.opcode;
+    const ref = this._instructions[0].ref;
     this._instructions.shift();
 
     // execute it
@@ -216,8 +216,8 @@ export class FunctionalUnit {
 
   // return instruction reference (TODO: use instruction uid)
   public addInstruction(instruction: Instruction): number {
-    let ref = this._nextRef++;
-    let blankTimeUnitsAhead =
+    const ref = this._nextRef++;
+    const blankTimeUnitsAhead =
       this._currentBlankTimeUnits > 0 ? this._currentBlankTimeUnits : 0;
     this._instructions.push({
       instruction: instruction,
@@ -238,7 +238,7 @@ export class FunctionalUnit {
   }
 
   public getVisualData(): FunctionalUntitVisualEntry[] {
-    let list = [];
+    const list = [];
     let lastPos = 0;
     let j = 0;
     for (let i = 0; i < this._latency; i++) {

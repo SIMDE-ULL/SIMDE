@@ -1,7 +1,7 @@
-import { useRef, type FC } from "react";
+import { type FC, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useAppSelector } from "../../../store/hooks";
 import type { MachineIntegration } from "../../../integration/machine-integration.client";
+import { useAppSelector } from "../../../store/hooks";
 
 interface AccessBarProps {
   integration: MachineIntegration;
@@ -14,25 +14,33 @@ export const AccessBarComponent: FC<AccessBarProps> = ({ integration }) => {
   const speedRef = useRef<HTMLInputElement>(null);
 
   const syncSpeed = () => {
-    integration.speedValue = parseInt(speedRef.current?.value || "0", 10);
+    integration.speedValue = Number.parseInt(
+      speedRef.current?.value || "0",
+      10,
+    );
   };
 
   return (
     <div className="smd-access_bar">
-      <a onClick={() => { syncSpeed(); integration.play(); }}>
-        <i className="fa fa-play" aria-hidden="true" />
+      <a
+        onClick={() => {
+          syncSpeed();
+          integration.play();
+        }}
+      >
+        <i className="fa fa-play" />
       </a>
       <a onClick={() => integration.pause()}>
-        <i className="fa fa-pause" aria-hidden="true" />
+        <i className="fa fa-pause" />
       </a>
       <a onClick={() => integration.stop()}>
-        <i className="fa fa-stop" aria-hidden="true" />
+        <i className="fa fa-stop" />
       </a>
       <a onClick={() => integration.stepBack()}>
-        <i className="fa fa-step-backward" aria-hidden="true" />
+        <i className="fa fa-step-backward" />
       </a>
       <a onClick={() => integration.stepForward()}>
-        <i className="fa fa-step-forward" aria-hidden="true" />
+        <i className="fa fa-step-forward" />
       </a>
       <div className="smd-cycle">
         <label htmlFor="cycle" className="smd-cycle_label">

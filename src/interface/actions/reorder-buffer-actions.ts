@@ -1,15 +1,15 @@
-import { ReorderBuffer } from '../../core/Superscalar/ReorderBuffer';
-import { nextReorderBufferCycle as _nextReorderBufferCycle } from '../reducers/machine';
-import { colorCell as _colorCell } from '../reducers/color';
+import type { ReorderBuffer } from "../../core/Superscalar/ReorderBuffer";
+import { colorCell as _colorCell } from "../reducers/color";
+import { nextReorderBufferCycle as _nextReorderBufferCycle } from "../reducers/machine";
 
 export function nextReorderBufferCycle(data: ReorderBuffer) {
-    return _nextReorderBufferCycle(mapReorderBufferData(data));
+  return _nextReorderBufferCycle(mapReorderBufferData(data));
 }
 
 export function mapReorderBufferData(unit: ReorderBuffer) {
-    return unit.getVisualData();
+  return unit.getVisualData();
 }
 
 export function colorCell(instructionUid: number, color: string) {
-    return _colorCell([instructionUid, color]);
+  return _colorCell([instructionUid, color]);
 }

@@ -1,7 +1,7 @@
-import { type FC } from "react";
-import { Modal, Button } from "react-bootstrap";
+import type { FC } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { closeBatchResults } from "../../../actions/modals";
 import { downloadJsonFile } from "../../../utils/Downloader";
 
@@ -10,10 +10,10 @@ export const BatchResultsModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isBatchResultsModalOpen = useAppSelector(
-    (state) => state.Ui.isBatchResultsModalOpen
+    (state) => state.Ui.isBatchResultsModalOpen,
   );
   const batchStatsResults = useAppSelector(
-    (state) => state.Ui.batchStatsResults
+    (state) => state.Ui.batchStatsResults,
   );
 
   const close = () => {

@@ -1,7 +1,7 @@
-import { type FC } from "react";
+import ReactECharts from "echarts-for-react";
+import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
-import ReactECharts from "echarts-for-react";
 
 /** VLIW statistics visualization tab with unit usage and cycle charts. */
 export const StatsTabComponent: FC = () => {
@@ -42,9 +42,11 @@ export const StatsTabComponent: FC = () => {
               series:
                 unitsUsage &&
                 Object.keys(unitsUsage).map((unitName) => ({
-                  name: t("stats.units." + unitName),
+                  name: t(`stats.units.${unitName}`),
                   type: "line",
-                  data: unitsUsage[unitName].map((value: number) => value * 100),
+                  data: unitsUsage[unitName].map(
+                    (value: number) => value * 100,
+                  ),
                 })),
             }}
           />

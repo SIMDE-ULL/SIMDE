@@ -1,11 +1,11 @@
 import { Code } from "@/core/Common/Code";
 import { VLIWCode } from "@/core/VLIW/VLIWCode";
 import FileReaderInput from "@/interface/components/Common/FileReaderInput";
-import { useState, type FC } from "react";
+import { type FC, useState } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import { toggleLoadModal } from "../../../actions/modals";
 
 const DEFAULT_MODAL_CODE = `
@@ -58,12 +58,18 @@ export const VLIWLoadModalComponent: FC = () => {
 
   const loadCodeFromFile = (files: [ProgressEvent<FileReader>, File][]) => {
     const [event] = files[0];
-    setModalCode({ ...modalCode, general: (event.target as FileReader).result as string });
+    setModalCode({
+      ...modalCode,
+      general: (event.target as FileReader).result as string,
+    });
   };
 
   const loadVLIWCodeFromFile = (files: [ProgressEvent<FileReader>, File][]) => {
     const [event] = files[0];
-    setModalCode({ ...modalCode, vliw: (event.target as FileReader).result as string });
+    setModalCode({
+      ...modalCode,
+      vliw: (event.target as FileReader).result as string,
+    });
   };
 
   const loadCode = () => {

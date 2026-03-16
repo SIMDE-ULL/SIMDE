@@ -1,11 +1,11 @@
-import { useState, type FC } from "react";
-import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { toggleLoadModal } from "@/interface/actions/modals";
-import FileReaderInput from "@/interface/components/Common/FileReaderInput";
 import { Code } from "@/core/Common/Code";
 import SuperscalarIntegration from "@/integration/superscalar-integration.client";
+import { toggleLoadModal } from "@/interface/actions/modals";
+import FileReaderInput from "@/interface/components/Common/FileReaderInput";
+import { type FC, useState } from "react";
+import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 
 const DEFAULT_MODAL_CODE = `
 ADDI	R2 R0 #50
@@ -40,9 +40,7 @@ export const LoadModalComponent: FC = () => {
   const [modalCode, setModalCode] = useState(DEFAULT_MODAL_CODE);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const isLoadModalOpen = useAppSelector(
-    (state) => state.Ui.isLoadModalOpen
-  );
+  const isLoadModalOpen = useAppSelector((state) => state.Ui.isLoadModalOpen);
 
   const close = () => {
     dispatch(toggleLoadModal(false));

@@ -7,5 +7,5 @@ export enum VLIWError {
   ERRHARD = -3,
   ERRBRANCHDEP = -2,
   ERRPRED = -1,
-  ERRNO = 0
+  ERRNO = 0,
 }

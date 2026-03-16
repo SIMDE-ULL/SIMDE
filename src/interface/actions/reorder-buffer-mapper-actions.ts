@@ -1,1 +1,1 @@
-export { nextReorderBufferMapperCycle } from '../reducers/machine';
+export { nextReorderBufferMapperCycle } from "../reducers/machine";

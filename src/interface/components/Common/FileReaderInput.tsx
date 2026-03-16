@@ -1,4 +1,10 @@
-import { useRef, type CSSProperties, type ChangeEvent, type FC, type ReactNode } from "react";
+import {
+  type CSSProperties,
+  type ChangeEvent,
+  type FC,
+  type ReactNode,
+  useRef,
+} from "react";
 
 /** Props for the file reader input wrapper component. */
 interface FileReaderInputProps {
@@ -6,7 +12,10 @@ interface FileReaderInputProps {
   as?: "binary" | "buffer" | "text" | "url";
   children?: ReactNode;
   /** Callback receiving the original event and an array of [FileReader result, File] tuples. */
-  onChange: (event: ChangeEvent<HTMLInputElement>, results: [ProgressEvent<FileReader>, File][]) => void;
+  onChange: (
+    event: ChangeEvent<HTMLInputElement>,
+    results: [ProgressEvent<FileReader>, File][],
+  ) => void;
   /** File input accept attribute (e.g. ".pla", ".vliw"). */
   accept: string;
   style?: CSSProperties;
@@ -50,8 +59,8 @@ export const FileReaderInput: FC<FileReaderInputProps> = ({
                 reader.readAsDataURL(file);
                 break;
             }
-          })
-      )
+          }),
+      ),
     ).then((zippedResults) => {
       onChange(e, zippedResults);
     });

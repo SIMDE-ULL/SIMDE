@@ -22,11 +22,10 @@ export class Stats {
   private _instrEntries: Map<number, InstructionStatsEntry> = new Map();
   private _statusesAtCycle: Map<number, StatusesStats> = new Map();
   private _unitUsageAtCycle: Map<string, Map<number, number>> = new Map();
-  private _currentCycle: number = 0;
+  private _currentCycle = 0;
 
   public collectMultipleUnitUsage(unitName: string, usages: number[]) {
-    let usage =
-      usages.reduce((acc, val) => acc + val, 0) / usages.length;
+    const usage = usages.reduce((acc, val) => acc + val, 0) / usages.length;
     this.collectUnitUsage(unitName, usage);
   }
 
@@ -35,11 +34,11 @@ export class Stats {
       this._unitUsageAtCycle.set(unitName, new Map());
     }
 
-    this._unitUsageAtCycle.get(unitName)!.set(this._currentCycle, usage);
+    this._unitUsageAtCycle.get(unitName)?.set(this._currentCycle, usage);
   }
 
   public collectDecodeUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.decodeCycles++;
     }
@@ -49,7 +48,7 @@ export class Stats {
   }
 
   public collectPrefetchUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.prefetchCycles++;
     }
@@ -60,7 +59,7 @@ export class Stats {
   }
 
   public collectIssuedUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.issueCycles++;
     }
@@ -70,7 +69,7 @@ export class Stats {
   }
 
   public collectExecutingUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.executeCycles++;
     }
@@ -80,7 +79,7 @@ export class Stats {
   }
 
   public collectWriteBackUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.writeBackCycles++;
     }
@@ -91,7 +90,7 @@ export class Stats {
   }
 
   public collectCommitUids(uids: number[]) {
-    for (let uid of uids) {
+    for (const uid of uids) {
       this.createEntryIfNotExists(uid);
       this._instrEntries.get(uid)!.commited = true;
     }
@@ -110,8 +109,8 @@ export class Stats {
   }
 
   public getUnitsUsage(): Map<string, number[]> {
-    let usage = new Map<string, number[]>();
-    for (let [unitName, usageAtCycle] of this._unitUsageAtCycle) {
+    const usage = new Map<string, number[]>();
+    for (const [unitName, usageAtCycle] of this._unitUsageAtCycle) {
       usage.set(unitName, Array.from(usageAtCycle.values()));
     }
     return usage;
@@ -120,7 +119,7 @@ export class Stats {
   public getCommitedAndDiscarded(): { commited: number; discarded: number } {
     let commited = 0;
     let total = 0;
-    for (let [_, entry] of this._instrEntries) {
+    for (const [_, entry] of this._instrEntries) {
       if (entry.commited) {
         commited++;
       }
@@ -130,9 +129,9 @@ export class Stats {
   }
 
   public getCommitedPercentagePerInstruction(): Map<number, number> {
-    let commited = new Map<number, number>();
-    let total = new Map<number, number>();
-    for (let [_, entry] of this._instrEntries) {
+    const commited = new Map<number, number>();
+    const total = new Map<number, number>();
+    for (const [_, entry] of this._instrEntries) {
       if (!total.has(entry.instructionId)) {
         total.set(entry.instructionId, 0);
         commited.set(entry.instructionId, 0);
@@ -141,21 +140,21 @@ export class Stats {
       if (entry.commited) {
         commited.set(
           entry.instructionId,
-          commited.get(entry.instructionId)! + 1
+          commited.get(entry.instructionId)! + 1,
         );
       }
     }
 
-    for (let [instructionId, commitedCount] of commited) {
+    for (const [instructionId, commitedCount] of commited) {
       commited.set(instructionId, commitedCount / total.get(instructionId)!);
     }
     return commited;
   }
 
   public getInstructionsStatusesAverage(): Map<number, InstructionStatsEntry> {
-    let average = new Map<number, InstructionStatsEntry>();
-    let count = new Map<number, number>();
-    for (let [, entry] of this._instrEntries) {
+    const average = new Map<number, InstructionStatsEntry>();
+    const count = new Map<number, number>();
+    for (const [, entry] of this._instrEntries) {
       if (!count.has(entry.instructionId)) {
         count.set(entry.instructionId, 0);
         average.set(entry.instructionId, {
@@ -170,7 +169,8 @@ export class Stats {
       }
 
       if (entry.commited) {
-        average.get(entry.instructionId)!.prefetchCycles += entry.prefetchCycles;
+        average.get(entry.instructionId)!.prefetchCycles +=
+          entry.prefetchCycles;
         average.get(entry.instructionId)!.decodeCycles += entry.decodeCycles;
         average.get(entry.instructionId)!.issueCycles += entry.issueCycles;
         average.get(entry.instructionId)!.executeCycles += entry.executeCycles;
@@ -180,7 +180,7 @@ export class Stats {
       }
     }
 
-    for (let [instructionId, entry] of average) {
+    for (const [instructionId, entry] of average) {
       entry.prefetchCycles /= count.get(instructionId)!;
       entry.decodeCycles /= count.get(instructionId)!;
       entry.issueCycles /= count.get(instructionId)!;
@@ -191,21 +191,21 @@ export class Stats {
   }
 
   public getPerStatusCountAtCycle(): Map<string, number[]> {
-    let count = new Map<string, number[]>();
-    for (let [, statuses] of this._statusesAtCycle) {
-      for (let [status, value] of Object.entries(statuses)) {
+    const count = new Map<string, number[]>();
+    for (const [, statuses] of this._statusesAtCycle) {
+      for (const [status, value] of Object.entries(statuses)) {
         if (!count.has(status)) {
           count.set(status, []);
         }
-        count.get(status)!.push(value);
+        count.get(status)?.push(value);
       }
     }
     return count;
   }
 
   public exportStats(): object {
-    let unitUsage: Record<string, object> = {};
-    for (let [unitName, usageAtCycle] of this._unitUsageAtCycle) {
+    const unitUsage: Record<string, object> = {};
+    for (const [unitName, usageAtCycle] of this._unitUsageAtCycle) {
       unitUsage[unitName] = Object.fromEntries(usageAtCycle);
     }
     return {

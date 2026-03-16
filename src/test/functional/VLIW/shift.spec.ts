@@ -1,9 +1,9 @@
-import { expect, beforeEach, test } from "vitest";
+import { beforeEach, expect, test } from "vitest";
+import { Code } from "../../../core/Common/Code";
 import { VLIW } from "../../../core/VLIW/VLIW";
 import { VLIWCode } from "../../../core/VLIW/VLIWCode";
-import { Code } from "../../../core/Common/Code";
 import { VLIWError } from "../../../core/VLIW/VLIWError";
-import { codeInput, vliwCodeInput, resultContent } from "../code/despl";
+import { codeInput, resultContent, vliwCodeInput } from "../code/despl";
 
 const context: { code: VLIWCode; superscalarCode: Code; machine: VLIW } = {
   code: null as any,

@@ -1,16 +1,10 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "react-router";
-import { Provider } from "react-redux";
+import { type ReactNode, Suspense, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
-import { Suspense, useEffect, type ReactNode } from "react";
+import { Provider } from "react-redux";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 
-import { store } from "./store";
 import i18n from "./i18n";
+import { store } from "./store";
 import "./main.scss";
 
 /**
@@ -36,9 +30,7 @@ export function Layout({ children }: { children: ReactNode }) {
         </noscript>
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading...</div>}>
-            <Provider store={store}>
-              {children}
-            </Provider>
+            <Provider store={store}>{children}</Provider>
           </Suspense>
         </I18nextProvider>
         <ScrollRestoration />

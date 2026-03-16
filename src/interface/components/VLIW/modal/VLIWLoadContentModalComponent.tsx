@@ -1,18 +1,18 @@
-import { useRef, useState, type FC } from "react";
-import FileReaderInput from "../../Common/FileReaderInput";
-import { Modal, Button } from "react-bootstrap";
+import { type FC, useRef, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import { toggleVliwLoadContentModal } from "../../../actions/modals";
-import VLIWIntegration from "../../../../integration/vliw-integration.client";
 import { ContentIntegration } from "../../../../integration/content-integration";
+import VLIWIntegration from "../../../../integration/vliw-integration.client";
+import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
+import { toggleVliwLoadContentModal } from "../../../actions/modals";
+import FileReaderInput from "../../Common/FileReaderInput";
 
 /** VLIW content loading modal with textarea and file upload. */
 export const VLIWLoadContentModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isVliwLoadContentModalOpen = useAppSelector(
-    (state) => state.Ui.isVliwLoadContentModalOpen
+    (state) => state.Ui.isVliwLoadContentModalOpen,
   );
   const [error, setError] = useState("");
   const contentInputRef = useRef<HTMLTextAreaElement>(null);
@@ -57,7 +57,7 @@ export const VLIWLoadContentModalComponent: FC = () => {
         <Modal.Title>{t("loadContentModal.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <textarea ref={contentInputRef} defaultValue=""></textarea>
+        <textarea ref={contentInputRef} defaultValue="" />
         <div className="smd-load_content_modal-errors">
           {error && <div className="smd-forms_error">{error}</div>}
         </div>

@@ -1,6 +1,6 @@
-import { expect, beforeEach, test } from "vitest";
-import { RandomCache, DirectCache } from "@/core/Common/Cache";
+import { DirectCache, RandomCache } from "@/core/Common/Cache";
 import { Memory } from "@/core/Common/Memory";
+import { beforeEach, expect, test } from "vitest";
 
 let memory: Memory;
 

@@ -1,1 +1,1 @@
-export { nextPrefetchCycle, nextDecoderCycle } from '../reducers/machine';
+export { nextPrefetchCycle, nextDecoderCycle } from "../reducers/machine";

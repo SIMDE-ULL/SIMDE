@@ -1,1 +1,1 @@
-export { viewBasicBlocks } from '../reducers/machine';
+export { viewBasicBlocks } from "../reducers/machine";

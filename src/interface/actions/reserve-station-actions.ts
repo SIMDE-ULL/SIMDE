@@ -1,48 +1,50 @@
-import { nextReserveStationCycle as _nextReserveStationCycle } from '../reducers/machine';
+import { nextReserveStationCycle as _nextReserveStationCycle } from "../reducers/machine";
 
 export function nextReserveStationCycle(data: unknown[]) {
-    return _nextReserveStationCycle(data.map(element => mapReserveStationEntry(element)));
+  return _nextReserveStationCycle(
+    data.map((element) => mapReserveStationEntry(element)),
+  );
 }
 
 function mapReserveStationEntry(element: unknown): unknown[] {
-    const content = element as { data: any; size: number };
-    let data = content.data;
-    let toReturn = [];
-    let i;
+  const content = element as { data: any; size: number };
+  const data = content.data;
+  const toReturn = [];
+  let i;
 
-    const defaultObject = {
-        instruction: { id: '', value: '', uid: '' },
-        Qj: '',
-        Vj: '',
-        Qk: '',
-        Vk: '',
-        A: '',
-        ROB: ''
-    };
-    for (i = 0; i < data.length; i++) {
-        let aux = { ...defaultObject };
-        if (data[i] != null) {
-            aux = {
-                instruction: { id: '', value: '', uid: '' },
-                Qj: data[i].Qj,
-                Vj: data[i].Vj,
-                Qk: data[i].Qk,
-                Vk: data[i].Vk,
-                A: data[i].A,
-                ROB: data[i].ROB
-            };
-            if (data[i].instruction != null) {
-                aux.instruction.id = data[i].instruction.id;
-                aux.instruction.value = data[i].instruction.value;
-                aux.instruction.uid = data[i].instruction.uid;
-            }
-        }
-
-        toReturn.push(aux);
+  const defaultObject = {
+    instruction: { id: "", value: "", uid: "" },
+    Qj: "",
+    Vj: "",
+    Qk: "",
+    Vk: "",
+    A: "",
+    ROB: "",
+  };
+  for (i = 0; i < data.length; i++) {
+    let aux = { ...defaultObject };
+    if (data[i] != null) {
+      aux = {
+        instruction: { id: "", value: "", uid: "" },
+        Qj: data[i].Qj,
+        Vj: data[i].Vj,
+        Qk: data[i].Qk,
+        Vk: data[i].Vk,
+        A: data[i].A,
+        ROB: data[i].ROB,
+      };
+      if (data[i].instruction != null) {
+        aux.instruction.id = data[i].instruction.id;
+        aux.instruction.value = data[i].instruction.value;
+        aux.instruction.uid = data[i].instruction.uid;
+      }
     }
 
-    for (let j = i; j < content.size; j++) {
-        toReturn.push({ ...defaultObject });
-    }
-    return toReturn;
+    toReturn.push(aux);
+  }
+
+  for (let j = i; j < content.size; j++) {
+    toReturn.push({ ...defaultObject });
+  }
+  return toReturn;
 }

@@ -1,15 +1,15 @@
-import { OpcodesNames, Opcodes } from "./Opcodes";
-import { FunctionalUnitType } from "./FunctionalUnit";
+import type { FunctionalUnitType } from "./FunctionalUnit";
+import { Opcodes, OpcodesNames } from "./Opcodes";
 import { opcodeToFunctionalUnit } from "./Opcodes";
 
 export class Instruction {
-  public id: number = 0;
-  public basicBlock: number = 0;
-  public opcode: number = 0;
+  public id = 0;
+  public basicBlock = 0;
+  public opcode = 0;
   protected _operands: number[] = new Array(3);
   protected _operandsString: string[] = new Array(3);
-  protected _label: string = "";
-  protected _breakPoint: boolean = false;
+  protected _label = "";
+  protected _breakPoint = false;
 
   public get uid(): number {
     return this._uid ?? 0;
@@ -35,7 +35,10 @@ export class Instruction {
     return this._operandsString;
   }
 
-  constructor(from?: Instruction, protected _uid: number = 0) {
+  constructor(
+    from?: Instruction,
+    protected _uid = 0,
+  ) {
     if (from) {
       this.id = from.id;
       this.basicBlock = from.basicBlock;
@@ -47,12 +50,12 @@ export class Instruction {
   }
 
   toString(): string {
-    let aux: string = "";
+    let aux = "";
     if (this._operandsString[1]) {
-      aux += " " + this._operandsString[1];
+      aux += ` ${this._operandsString[1]}`;
     }
     if (this._operandsString[2]) {
-      aux += " " + this._operandsString[2];
+      aux += ` ${this._operandsString[2]}`;
     }
     return `${OpcodesNames[this.opcode]} ${this._operandsString[0]} ${aux}`;
   }
@@ -142,7 +145,7 @@ export class Instruction {
    */
   public isFirstOperandFloat(): boolean {
     return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.SF].includes(
-      this.opcode
+      this.opcode,
     );
   }
 

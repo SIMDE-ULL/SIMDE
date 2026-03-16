@@ -1,215 +1,244 @@
-import { expect, beforeEach, test } from 'vitest'
-import { VLIW } from '../../../core/VLIW/VLIW';
-import { VLIWCode } from '../../../core/VLIW/VLIWCode';
-import { Code } from '../../../core/Common/Code';
-import { VLIWError } from '../../../core/VLIW/VLIWError';
-import { codeInput, vliwCodeInput, vecContent, sumContent, resultContent } from "../code/bucle";
-import { codeInput as codeInput2, vliwCodeInput as vliwCodeInput2 } from "../code/bucle2";
-import { codeInput as codeInput3, vliwCodeInput as vliwCodeInput3 } from "../code/bucle3";
-import { codeInput as codeInput4, vliwCodeInput as vliwCodeInput4 } from "../code/bucle4";
+import { beforeEach, expect, test } from "vitest";
+import { Code } from "../../../core/Common/Code";
+import { VLIW } from "../../../core/VLIW/VLIW";
+import { VLIWCode } from "../../../core/VLIW/VLIWCode";
+import { VLIWError } from "../../../core/VLIW/VLIWError";
+import {
+  codeInput,
+  resultContent,
+  sumContent,
+  vecContent,
+  vliwCodeInput,
+} from "../code/bucle";
+import {
+  codeInput as codeInput2,
+  vliwCodeInput as vliwCodeInput2,
+} from "../code/bucle2";
+import {
+  codeInput as codeInput3,
+  vliwCodeInput as vliwCodeInput3,
+} from "../code/bucle3";
+import {
+  codeInput as codeInput4,
+  vliwCodeInput as vliwCodeInput4,
+} from "../code/bucle4";
 // @ts-expect-error TS6192 false positive — both imports are used below
-import { codeInput as doubleCodeInput, vliwCodeInput as doubleVliwCodeInput } from "../code/bucledoble";
-import { codeInput as softCodeInput, vliwCodeInput as softVliwCodeInput } from "../code/buclesoft";
-import { codeInput as softCodeInput2, vliwCodeInput as softVliwCodeInput2 } from "../code/buclesoft2";
+import {
+  codeInput as doubleCodeInput,
+  vliwCodeInput as doubleVliwCodeInput,
+} from "../code/bucledoble";
+import {
+  codeInput as softCodeInput,
+  vliwCodeInput as softVliwCodeInput,
+} from "../code/buclesoft";
+import {
+  codeInput as softCodeInput2,
+  vliwCodeInput as softVliwCodeInput2,
+} from "../code/buclesoft2";
 
-const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null as any, superscalarCode: null as any, machine: null as any };
+const context: { code: VLIWCode; superscalarCode: Code; machine: VLIW } = {
+  code: null as any,
+  superscalarCode: null as any,
+  machine: null as any,
+};
 
 beforeEach(() => {
-    context.code = new VLIWCode();
-    context.superscalarCode = new Code();
-    context.machine = new VLIW();
-    context.machine.init(true);
+  context.code = new VLIWCode();
+  context.superscalarCode = new Code();
+  context.machine = new VLIW();
+  context.machine.init(true);
 });
 
-test('Bucle.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(codeInput);
-    context.code.load(vliwCodeInput, context.superscalarCode);
-    context.machine.code = context.code;
+test("Bucle.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(codeInput);
+  context.code.load(vliwCodeInput, context.superscalarCode);
+  context.machine.code = context.code;
 
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(15);
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(15);
 
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
 
-    // Check the cycles
-    // 2 (loop init) + 16 * 13 (loop) + 1 (jump final extra step) = 211 + 1
-    expect(context.machine.status.cycle).toBe(212);
-})
+  // Check the cycles
+  // 2 (loop init) + 16 * 13 (loop) + 1 (jump final extra step) = 211 + 1
+  expect(context.machine.status.cycle).toBe(212);
+});
 
-test('Bucle2.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(codeInput2);
-    context.code.load(vliwCodeInput2, context.superscalarCode);
-    context.machine.code = context.code;
+test("Bucle2.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(codeInput2);
+  context.code.load(vliwCodeInput2, context.superscalarCode);
+  context.machine.code = context.code;
 
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(15);
 
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(15);
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
 
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
+  // Check the cycles
+  // 2 (loop init) + 16/2 * 13 (2 loops) + 1 (jump final extra step) = 107 + 1
+  expect(context.machine.status.cycle).toBe(108);
+});
 
-    // Check the cycles
-    // 2 (loop init) + 16/2 * 13 (2 loops) + 1 (jump final extra step) = 107 + 1
-    expect(context.machine.status.cycle).toBe(108);
-})
+test("Bucle3.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(codeInput3);
+  context.code.load(vliwCodeInput3, context.superscalarCode);
+  context.machine.code = context.code;
 
-test('Bucle3.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(codeInput3);
-    context.code.load(vliwCodeInput3, context.superscalarCode);
-    context.machine.code = context.code;
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(16);
 
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
 
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(16);
+  // Check the cycles
+  // 2 (loop init) + 16/4 * 14 (4 loops) + 1 (jump final extra step) = 59 + 1
+  expect(context.machine.status.cycle).toBe(60);
+});
 
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
+test("Bucle4.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(codeInput4);
+  context.code.load(vliwCodeInput4, context.superscalarCode);
+  context.machine.code = context.code;
 
-    // Check the cycles
-    // 2 (loop init) + 16/4 * 14 (4 loops) + 1 (jump final extra step) = 59 + 1
-    expect(context.machine.status.cycle).toBe(60);
-})
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-test('Bucle4.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(codeInput4);
-    context.code.load(vliwCodeInput4, context.superscalarCode);
-    context.machine.code = context.code;
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(18);
 
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
 
+  // Check the cycles
+  // 2 (loop init) + 16/8 * 16 (4 loops) + 1 (jump final extra step) = 35 + 1
+  expect(context.machine.status.cycle).toBe(36);
+});
 
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(18);
+test("Buclesoft.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(softCodeInput);
+  context.code.load(softVliwCodeInput, context.superscalarCode);
+  context.machine.code = context.code;
 
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-    // Check the cycles
-    // 2 (loop init) + 16/8 * 16 (4 loops) + 1 (jump final extra step) = 35 + 1
-    expect(context.machine.status.cycle).toBe(36);
-})
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
-test('Buclesoft.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(softCodeInput);
-    context.code.load(softVliwCodeInput, context.superscalarCode);
-    context.machine.code = context.code;
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(18);
 
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
 
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
+  // Check the cycles
+  // 9 (loop init + 2 loops) + 14 * 6 (loop) + 3 (final) + 4(last inst latency) = 100 + 1
+  expect(context.machine.status.cycle).toBe(101);
+});
 
+test("Buclesoft2.pla is executed properly", () => {
+  // Load code
+  context.superscalarCode.load(softCodeInput2);
+  context.code.load(softVliwCodeInput2, context.superscalarCode);
+  context.machine.code = context.code;
 
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(18);
+  // Load memory
+  context.machine.memory.setData(40, sumContent);
+  const vecBaseAddress = 50;
+  for (let i = 0; i < vecContent.length; i++) {
+    context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
+  }
 
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
+  // Execute code
+  while (context.machine.tic() !== VLIWError.ENDEXE) {}
 
-    // Check the cycles
-    // 9 (loop init + 2 loops) + 14 * 6 (loop) + 3 (final) + 4(last inst latency) = 100 + 1
-    expect(context.machine.status.cycle).toBe(101);
-})
+  // Check where the program counter is
+  expect(context.machine.pc).toBe(20);
 
-test('Buclesoft2.pla is executed properly', () => {
-    // Load code
-    context.superscalarCode.load(softCodeInput2);
-    context.code.load(softVliwCodeInput2, context.superscalarCode);
-    context.machine.code = context.code;
-
-    // Load memory
-    context.machine.memory.setData(40, sumContent);
-    const vecBaseAddress = 50;
-    for (let i = 0; i < vecContent.length; i++) {
-        context.machine.memory.setData(vecBaseAddress + i, vecContent[i]);
-    }
-
-    // Execute code
-    while (context.machine.tic() !== VLIWError.ENDEXE) { }
-
-
-    // Check where the program counter is
-    expect(context.machine.pc).toBe(20);
-
-    // Check the result
-    const resultBaseAddress = 70;
-    const result = Array.from(context.machine.memory).slice(
-        resultBaseAddress, resultBaseAddress + resultContent.length
-    );
-    expect(result).toStrictEqual(resultContent);
-    // Check the cycles
-    // 10 (loop init + 4 loops) + 12/2 * 7 (2 loops) + 3 (final) + 4(last inst latency) = 59 + 1
-    expect(context.machine.status.cycle).toBe(60);
-})
+  // Check the result
+  const resultBaseAddress = 70;
+  const result = Array.from(context.machine.memory).slice(
+    resultBaseAddress,
+    resultBaseAddress + resultContent.length,
+  );
+  expect(result).toStrictEqual(resultContent);
+  // Check the cycles
+  // 10 (loop init + 4 loops) + 12/2 * 7 (2 loops) + 3 (final) + 4(last inst latency) = 59 + 1
+  expect(context.machine.status.cycle).toBe(60);
+});
 
 // The double loop VLIW code is incorrect
 /*test('Bucledoble.pla is executed properly', () => {
@@ -240,4 +269,3 @@ test('Buclesoft2.pla is executed properly', () => {
     // 2 (loop init) + 16 * 8 (loop) + 4(jump latency) = 100 + 1
     t.deepEqual(context.machine.status.cycle, 101, 'Bad number of cycles');
 })*/
-

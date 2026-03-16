@@ -1,6 +1,6 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { enableBatching } from './interface/reducers/batching';
-import reducers from './interface/reducers';
+import { configureStore } from "@reduxjs/toolkit";
+import reducers from "./interface/reducers";
+import { enableBatching } from "./interface/reducers/batching";
 
 /** Creates a new Redux store instance with batched dispatch support. */
 export function createAppStore() {

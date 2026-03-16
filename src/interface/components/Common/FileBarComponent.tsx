@@ -1,14 +1,14 @@
-import { useState, type FC } from "react";
-import { useTranslation } from "react-i18next";
+import { type FC, useState } from "react";
 import { DropdownButton } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
-import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { useTranslation } from "react-i18next";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { viewBasicBlocks } from "../../actions";
 import {
-  toggleLoadModal,
   toggleAuthorModal,
   toggleBatchModal,
+  toggleLoadModal,
 } from "../../actions/modals";
-import { viewBasicBlocks } from "../../actions";
 import { downloadJsonFile } from "../../utils/Downloader";
 
 interface FileBarProps {
@@ -108,10 +108,7 @@ export const FileBarComponent: FC<FileBarProps> = ({
         key={"dropdown-help"}
         id={"dropdown-help"}
       >
-        <Dropdown.Item
-          eventKey="1"
-          href="https://etsiiull.gitbooks.io/simde/"
-        >
+        <Dropdown.Item eventKey="1" href="https://etsiiull.gitbooks.io/simde/">
           {t("fileBar.help.docs")}
         </Dropdown.Item>
         <Dropdown.Item

@@ -1,221 +1,219 @@
 {
-    "fileBar": {
-        "file": {
-            "name": "Archivo",
-            "load": "Cargar código ensamblador",
-            "exportCode": "Exportar código ensamblador",
-            "exportMemory": "Exportar memoria (JSON)",
-            "exportContent": "Exportar contenido \"Memoria - Registros\"",
-            "exportStats": "Exportar estadísticas (JSON)"
-        },
-        "view": {
-            "name": "Ver",
-            "basicBlocks": "Bloques básicos"
-        },
-        "config": {
-            "name": "Opciones",
-            "superscalar": "Configurar Máquina Superescalar",
-            "vliw": "Configurar Máquina VLIW",
-            "options": "Opciones",
-            "content": "Cargar contenido Memoria - Registros"
-        },
-        "execute": {
-            "name": "Ejecutar",
-            "init": "Iniciar",
-            "pause": "Pausar",
-            "stop": "Detener",
-            "back": "Atrás",
-            "forward": "Adelante"
-        },
-        "experimentation": {
-            "name": "Experimentación",
-            "batch": "Ejecución por lotes"
-        },
-        "help": {
-            "name": "Ayuda",
-            "docs": "Documentación",
-            "about": "Acerca de..."
-        }
+  "fileBar": {
+    "file": {
+      "name": "Archivo",
+      "load": "Cargar código ensamblador",
+      "exportCode": "Exportar código ensamblador",
+      "exportMemory": "Exportar memoria (JSON)",
+      "exportContent": "Exportar contenido \"Memoria - Registros\"",
+      "exportStats": "Exportar estadísticas (JSON)"
     },
-    "accessBar": {
-        "cycle": "Ciclo",
-        "speed": "Velocidad",
-        "superscalar": "Superescalar",
-        "memReg": "Memoria - Registros",
-        "stats": "Estadísticas",
-        "vliw": "VLIW"
+    "view": {
+      "name": "Ver",
+      "basicBlocks": "Bloques básicos"
     },
-    "authorModal": {
-        "title": "Acerca de...",
-        "originalAuthor": "Autor original",
-        "newAuthor": "Versión adapta por",
-        "coAuthor": "En colaboración con"
+    "config": {
+      "name": "Opciones",
+      "superscalar": "Configurar Máquina Superescalar",
+      "vliw": "Configurar Máquina VLIW",
+      "options": "Opciones",
+      "content": "Cargar contenido Memoria - Registros"
     },
-    "loadModal": {
-        "title": "Carga de código",
-        "load": "Cargar"
+    "execute": {
+      "name": "Ejecutar",
+      "init": "Iniciar",
+      "pause": "Pausar",
+      "stop": "Detener",
+      "back": "Atrás",
+      "forward": "Adelante"
     },
-    "loadContentModal": {
-        "title": "Carga de contenido Memoria - Registros",
-        "load": "Cargar"
+    "experimentation": {
+      "name": "Experimentación",
+      "batch": "Ejecución por lotes"
     },
-    "intervalModal": {
-        "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8...",
-        "errors": {
-            "noEmptyInput": "Debe rellenar el campo del formulario",
-            "inputOutOfRange": "Alguno de los valores excede el máximo rango visible",
-            "noInputNumber": "Introduzca solamente números para el rango"
-        }
-    },
-    "superscalarModal": {
-        "name": "Configuración Superescalar",
-        "functionalUnits": "Unidades Funcionales",
-        "parameters": "Parámetros",
-        "warning": "La ejecución será reiniciada tras modificar la configuración",
-        "latency": "Latencia",
-        "quantity": "Cantidad",
-        "cacheFault": "Fallo de caché",
-        "issue": "Emisión",
-        "default": "Valores por defecto",
-        "cacheType": "Tipo de caché",
-        "cacheLines": "Tamaño de caché",
-        "cacheBlocks": "Bloques de caché",
-        "noCache": "Sin caché",
-        "directCache": "Mapeado directo",
-        "randomCache": "Aleatoria"
-    },
-    "vliwModal": {
-        "name": "Configuración VLIW",
-        "warning": "La ejecución será reiniciada tras modificar la configuración",
-        "latency": "Latencia",
-        "quantity": "Cantidad",
-        "cacheFault": "Fallo de caché",
-        "issue": "Emisión",
-        "default": "Valores por defecto"
-    },
-    "optionsModal": {
-        "title": "Opciones",
-        "cacheFaultPercent": "% Fallo de caché"
-    },
-    "commonButtons": {
-        "close": "Cerrar",
-        "save": "Guardar",
-        "accept": "Aceptar",
-        "launch": "Lanzar",
-        "loadFromFile": "Cargar desde fichero"
-    },
-    "functionalUnits": {
-        "intAdd": "Suma entera",
-        "intMult": "Mult entera",
-        "floatAdd": "Suma flotante",
-        "floatMult": "Mult flotante",
-        "memory": "Memoria",
-        "jump": "Salto",
-        "aluMem": "ALU Direcciones"
-    },
-    "code": "Código",
-    "Jump table": "Tabla de saltos",
-    "Prefetch": "Prefetch",
-    "Decoder": "Decodificador",
-    "Reserve Stations": "Estaciones de reserva",
-    "UF": "Unidad Funcional",
-    "memory": "Memoria",
-    "ROB<->GPR": "ROB<->GPR",
-    "ROB<->FPR": "ROB<->FPR",
-    "predicate": "Predicado",
-    "generalRegisters": "Registros generales",
-    "floatRegisters": "Registros de punto flotante",
-    "reorderBuffer": {
-        "Inst": "Inst",
-        "Destiny": "Destino",
-        "Value": "Valor",
-        "A": "Dir",
-        "Stage": "Etapa"
-    },
-    "execution": {
-        "stopped": "Ejecución detenida en breakpoint",
-        "finished": "Ejecución finalizada",
-        "error": "Ha habido un error inesperado durante la ejecución"
-    },
-    "batchModal": {
-        "title": "Ejecución por lotes",
-        "replications": "Réplicas",
-        "cacheFaultPercentage": "Porcentaje de fallos de caché",
-        "cacheFaultLatency": "Latencia en fallos de cachés"
-    },
-    "batchResults": {
-        "title": "Ejecución por lotes realizada",
-        "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
-        "export": "Exportar estadísticas (JSON)"
-    },
-    "landingPage": {
-        "pagetitle": "SIMDEWeb",
-        "description": "Mucho más que un simulador...",
-        "read": "Leer más",
-        "home": "Home",
-        "project": "Proyecto",
-        "superscalar": "Superescalar",
-        "superscalar_description": "Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!",
-        "go": "Ir",
-        "vliw": "VLIW",
-        "vliw_description": "Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!",
-        "licency": "@liberado bajo licencia GPLv3"
-
-    },
-    "projectPage": {
-        "pagetitle": "SIMDEWeb",
-        "home": "Home",
-        "project": "Proyecto",
-        "whatsimde": "¿Qué es SIMDEWeb?",
-        "simdedescription1": "SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).",
-        "simdedescription2": "Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.",
-        "simdedescription3": "Esto hace más fácil aprender conceptos tales como el algoritmo de Tomasulo y el propósito de estructuras tales como el buffer de reorden.",
-        "tecnology": "Tecnologías",
-        "tecnologydescription": "SIMDE esta desarrollado con TypeScript, React, Redux, Sass y Webpack.",
-        "howtouse": "¿Cómo se usa?",
-        "howtousedescription": "¡Prueba y aprende!",
-        "problems": "¿Problemas?",
-        "problemsdescription": "Puedes consultar nuestra documentación",
-        "licency": "@liberado bajo licencia GPLv3"
-       
-    },
-    "stats": {
-        "toolbox": {
-            "dataView": "Ver datos",
-            "close": "Cerrar",
-            "refresh": "Recargar"
-        },
-        "units": {
-            "prefetch": "Prefetch",
-            "decode": "Decoder",
-            "rob": "ROB",
-            "fu0": "UF + Entera",
-            "fu1": "UF x Entera",
-            "fu2": "UF + Flotante",
-            "fu3": "UF x Flotante",
-            "fu4": "UF Memoria",
-            "fu5": "UF Salto",
-            "rs0": "ER + Entera",
-            "rs1": "ER x Entera",
-            "rs2": "ER + Flotante",
-            "rs3": "ER x Flotante",
-            "rs4": "ER Memoria",
-            "rs5": "ER Salto"
-        },
-        "statuses": {
-            "prefetchNumber": "En Prefetching",
-            "decodeNumber": "En decodificación",
-            "issueNumber": "En emisión",
-            "executeNumber": "En ejecución",
-            "writeBackNumber": "En escritura",
-            "commitNumber": "En commit"
-        },
-        "unitsUsage": "Ocupación de cada unidad por ciclo",
-        "instrStatuses": "Instrucciones en cada etapa por ciclo",
-        "cycles": "Ciclos por replica",
-        "commitDiscard": "Instrucciones commiteadas VS descartadas",
-        "commited": "Commiteada",
-        "discarded": "Descartada",
-        "statusAverage": "Media de ciclos de cada etapa por instrucción"
+    "help": {
+      "name": "Ayuda",
+      "docs": "Documentación",
+      "about": "Acerca de..."
     }
+  },
+  "accessBar": {
+    "cycle": "Ciclo",
+    "speed": "Velocidad",
+    "superscalar": "Superescalar",
+    "memReg": "Memoria - Registros",
+    "stats": "Estadísticas",
+    "vliw": "VLIW"
+  },
+  "authorModal": {
+    "title": "Acerca de...",
+    "originalAuthor": "Autor original",
+    "newAuthor": "Versión adapta por",
+    "coAuthor": "En colaboración con"
+  },
+  "loadModal": {
+    "title": "Carga de código",
+    "load": "Cargar"
+  },
+  "loadContentModal": {
+    "title": "Carga de contenido Memoria - Registros",
+    "load": "Cargar"
+  },
+  "intervalModal": {
+    "intervalMessage": "Seleccione los elementos que desea mostrar. Puede usar números e intervalos separados por comas. Ej: 1,4,6-8...",
+    "errors": {
+      "noEmptyInput": "Debe rellenar el campo del formulario",
+      "inputOutOfRange": "Alguno de los valores excede el máximo rango visible",
+      "noInputNumber": "Introduzca solamente números para el rango"
+    }
+  },
+  "superscalarModal": {
+    "name": "Configuración Superescalar",
+    "functionalUnits": "Unidades Funcionales",
+    "parameters": "Parámetros",
+    "warning": "La ejecución será reiniciada tras modificar la configuración",
+    "latency": "Latencia",
+    "quantity": "Cantidad",
+    "cacheFault": "Fallo de caché",
+    "issue": "Emisión",
+    "default": "Valores por defecto",
+    "cacheType": "Tipo de caché",
+    "cacheLines": "Tamaño de caché",
+    "cacheBlocks": "Bloques de caché",
+    "noCache": "Sin caché",
+    "directCache": "Mapeado directo",
+    "randomCache": "Aleatoria"
+  },
+  "vliwModal": {
+    "name": "Configuración VLIW",
+    "warning": "La ejecución será reiniciada tras modificar la configuración",
+    "latency": "Latencia",
+    "quantity": "Cantidad",
+    "cacheFault": "Fallo de caché",
+    "issue": "Emisión",
+    "default": "Valores por defecto"
+  },
+  "optionsModal": {
+    "title": "Opciones",
+    "cacheFaultPercent": "% Fallo de caché"
+  },
+  "commonButtons": {
+    "close": "Cerrar",
+    "save": "Guardar",
+    "accept": "Aceptar",
+    "launch": "Lanzar",
+    "loadFromFile": "Cargar desde fichero"
+  },
+  "functionalUnits": {
+    "intAdd": "Suma entera",
+    "intMult": "Mult entera",
+    "floatAdd": "Suma flotante",
+    "floatMult": "Mult flotante",
+    "memory": "Memoria",
+    "jump": "Salto",
+    "aluMem": "ALU Direcciones"
+  },
+  "code": "Código",
+  "Jump table": "Tabla de saltos",
+  "Prefetch": "Prefetch",
+  "Decoder": "Decodificador",
+  "Reserve Stations": "Estaciones de reserva",
+  "UF": "Unidad Funcional",
+  "memory": "Memoria",
+  "ROB<->GPR": "ROB<->GPR",
+  "ROB<->FPR": "ROB<->FPR",
+  "predicate": "Predicado",
+  "generalRegisters": "Registros generales",
+  "floatRegisters": "Registros de punto flotante",
+  "reorderBuffer": {
+    "Inst": "Inst",
+    "Destiny": "Destino",
+    "Value": "Valor",
+    "A": "Dir",
+    "Stage": "Etapa"
+  },
+  "execution": {
+    "stopped": "Ejecución detenida en breakpoint",
+    "finished": "Ejecución finalizada",
+    "error": "Ha habido un error inesperado durante la ejecución"
+  },
+  "batchModal": {
+    "title": "Ejecución por lotes",
+    "replications": "Réplicas",
+    "cacheFaultPercentage": "Porcentaje de fallos de caché",
+    "cacheFaultLatency": "Latencia en fallos de cachés"
+  },
+  "batchResults": {
+    "title": "Ejecución por lotes realizada",
+    "subtext": "Dirijase a la pestaña de estadísticas para ver los resultados",
+    "export": "Exportar estadísticas (JSON)"
+  },
+  "landingPage": {
+    "pagetitle": "SIMDEWeb",
+    "description": "Mucho más que un simulador...",
+    "read": "Leer más",
+    "home": "Home",
+    "project": "Proyecto",
+    "superscalar": "Superescalar",
+    "superscalar_description": "Simula el funcionamiento de una máquina superescalar ejecutando tu código paso a paso!",
+    "go": "Ir",
+    "vliw": "VLIW",
+    "vliw_description": "Simula el funcionamiento de una máquina VLIW ejecutando tu código paso a paso!",
+    "licency": "@liberado bajo licencia GPLv3"
+  },
+  "projectPage": {
+    "pagetitle": "SIMDEWeb",
+    "home": "Home",
+    "project": "Proyecto",
+    "whatsimde": "¿Qué es SIMDEWeb?",
+    "simdedescription1": "SIMDE es un simulador para apoyar la enseñanza de arquitecturas ILP (Paralelismo de nivel de instrucción).",
+    "simdedescription2": "Este simulador es una representación visual de una ejecución de máquina Superecalar y los estudiantes pueden ver cómo las instrucciones se mueven a través de las múltiples etapas de la tubería.",
+    "simdedescription3": "Esto hace más fácil aprender conceptos tales como el algoritmo de Tomasulo y el propósito de estructuras tales como el buffer de reorden.",
+    "tecnology": "Tecnologías",
+    "tecnologydescription": "SIMDE esta desarrollado con TypeScript, React, Redux, Sass y Webpack.",
+    "howtouse": "¿Cómo se usa?",
+    "howtousedescription": "¡Prueba y aprende!",
+    "problems": "¿Problemas?",
+    "problemsdescription": "Puedes consultar nuestra documentación",
+    "licency": "@liberado bajo licencia GPLv3"
+  },
+  "stats": {
+    "toolbox": {
+      "dataView": "Ver datos",
+      "close": "Cerrar",
+      "refresh": "Recargar"
+    },
+    "units": {
+      "prefetch": "Prefetch",
+      "decode": "Decoder",
+      "rob": "ROB",
+      "fu0": "UF + Entera",
+      "fu1": "UF x Entera",
+      "fu2": "UF + Flotante",
+      "fu3": "UF x Flotante",
+      "fu4": "UF Memoria",
+      "fu5": "UF Salto",
+      "rs0": "ER + Entera",
+      "rs1": "ER x Entera",
+      "rs2": "ER + Flotante",
+      "rs3": "ER x Flotante",
+      "rs4": "ER Memoria",
+      "rs5": "ER Salto"
+    },
+    "statuses": {
+      "prefetchNumber": "En Prefetching",
+      "decodeNumber": "En decodificación",
+      "issueNumber": "En emisión",
+      "executeNumber": "En ejecución",
+      "writeBackNumber": "En escritura",
+      "commitNumber": "En commit"
+    },
+    "unitsUsage": "Ocupación de cada unidad por ciclo",
+    "instrStatuses": "Instrucciones en cada etapa por ciclo",
+    "cycles": "Ciclos por replica",
+    "commitDiscard": "Instrucciones commiteadas VS descartadas",
+    "commited": "Commiteada",
+    "discarded": "Descartada",
+    "statusAverage": "Media de ciclos de cada etapa por instrucción"
+  }
 }

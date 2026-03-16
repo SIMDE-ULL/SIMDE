@@ -1,1 +1,1 @@
-export { pushHistory, takeHistory, resetHistory } from '../reducers/machine';
+export { pushHistory, takeHistory, resetHistory } from "../reducers/machine";

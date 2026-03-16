@@ -1,1 +1,1 @@
-export { nextRegistersCycle } from '../reducers/machine';
+export { nextRegistersCycle } from "../reducers/machine";
