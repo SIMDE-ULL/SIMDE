@@ -1,4 +1,4 @@
-import { expect, beforeEach, test } from 'vitest'
+import { expect, test } from 'vitest'
 import { ContentIntegration } from '../../../integration/content-integration';
 
 const input = `
@@ -38,18 +38,18 @@ const input6 = `
 // `
 
 
-test('Current content is selected properly', t => {
+test('Current content is selected properly', () => {
     let contentIntegration = new ContentIntegration(input);
     expect(contentIntegration.FPRContent[40]).toBe( 1);
     expect(contentIntegration.FPRContent[41]).toBe( 1);
 });
 
-test('Throws error if no content is selected', t => {
+test('Throws error if no content is selected', () => {
     expect(() => new ContentIntegration(input2)).toThrowError('{"index":1,"rowBegin":2,"columnBegin":1,"rowEnd":2,"columnEnd":5}: Unable to consume token: [40]');
 });
 
 
-test('Fills proper data', t => {
+test('Fills proper data', () => {
     let contentIntegration = new ContentIntegration(input3);
     expect(contentIntegration.GPRContent[1]).toBe( 5);
     expect(contentIntegration.GPRContent[2]).toBe( 1);
@@ -66,23 +66,23 @@ test('Fills proper data', t => {
     expect(contentIntegration.MEMContent[38]).toBe( 10);
 });
 
-test('Throws error when exceeding bounds', t => {
+test('Throws error when exceeding bounds', () => {
     expect(() => new ContentIntegration(input4)).toThrowError('#MEM content exceeds bound: 1025 exceeds 1024');
 });
 
-test('Can parse float numbers', t => {
+test('Can parse float numbers', () => {
     let contentIntegration = new ContentIntegration(input5);
     expect(contentIntegration.FPRContent[0]).toBe( 2.2);
     expect(contentIntegration.FPRContent[1]).toBe( 6.1);
     expect(contentIntegration.FPRContent[2]).toBe( 7.7);
 });
 
-test('Can parse hexadecimal numbers', t => {
+test('Can parse hexadecimal numbers', () => {
     let contentIntegration = new ContentIntegration(input6);
     expect(contentIntegration.GPRContent[0]).toBe( 10);
 });
 
-// test ('Throws error when memory address line isnt wrapped in brackets', t => {
+// test ('Throws error when memory address line isnt wrapped in brackets', () => {
 //     let error = t.throws(() => new ContentIntegration(input5));
 //     t.is(error.message, 'Unexpected line format at line 1');
 // });

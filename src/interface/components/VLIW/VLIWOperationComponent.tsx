@@ -3,9 +3,9 @@ import { useDrop } from 'react-dnd';
 
 
 function VLIWOperationComponent(props: any) {
-    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    const [{ isOver }, drop] = useDrop(() => ({
         accept: 'INSTRUCTION',
-        drop: (item, monitor) => {
+        drop: (item) => {
             try {
                 props.onDropInstruction(item, props.pos);
             } catch(e) {

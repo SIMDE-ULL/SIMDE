@@ -1,6 +1,5 @@
 import { Instruction } from '../Common/Instruction';
 import { FunctionalUnitType } from '../Common/FunctionalUnit';
-import { Opcodes } from '../Common/Opcodes';
 
 export class VLIWOperation extends Instruction {
 
@@ -33,7 +32,7 @@ export class VLIWOperation extends Instruction {
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType | undefined, functionalUnitIndex: number | undefined) {
+    buildFromInstruction(_instruction: Instruction, functionalUnitType: FunctionalUnitType | undefined, functionalUnitIndex: number | undefined) {
         this._functionalUnitType = functionalUnitType!;
         this._functionalUnitIndex = functionalUnitIndex ?? 0;
         this._predicate = 0;

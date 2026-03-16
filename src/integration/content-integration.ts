@@ -78,7 +78,7 @@ export class ContentIntegration {
     public MEMContent: { [k: number]: number } = {};
 
 
-    constructor(private input: string) {
+    constructor(input: string) {
         this.parseContent(input);
     }
 

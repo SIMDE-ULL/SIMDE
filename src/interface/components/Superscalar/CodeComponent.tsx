@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { OpcodesNames } from "../../../core/Common/Opcodes";
 import { Instruction } from "../../../core/Common/Instruction";

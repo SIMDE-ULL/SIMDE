@@ -10,17 +10,10 @@ ADD     R3 R0 R2
 const input2 = `1
 LF F0 (R4)
 `;
-const input3 = `3
-LF F1 (R2)
-LOOP:
-ADDF F1 F1 F0
-BNE	R2 R5 LOOP
-`;
-
 // =============================
 // PARSING ERRORS
 // =============================
-test("Lines are being parsed properly", (t) => {
+test("Lines are being parsed properly", () => {
   let code: Code = new Code();
   code.load(input);
   expect(2).toBe(code.lines);
@@ -29,7 +22,7 @@ test("Lines are being parsed properly", (t) => {
   expect(1).toBe(code.lines);
 });
 
-test("Lines counter is ignored", (t) => {
+test("Lines counter is ignored", () => {
   const input = `1
         LF F1 (R2)
         LOOP:
@@ -41,7 +34,7 @@ test("Lines counter is ignored", (t) => {
   expect(3).toBe(code.lines);
 });
 
-test("Lines counter can be ommited", (t) => {
+test("Lines counter can be ommited", () => {
   const input = `LF F1 (R2)
         LOOP:
         ADDF F1 F1 F0
@@ -52,7 +45,7 @@ test("Lines counter can be ommited", (t) => {
   expect(3).toBe(code.lines);
 });
 
-test("Code comments on top should not affect the parsing", (t) => {
+test("Code comments on top should not affect the parsing", () => {
   // Code input with comments at the beginning of the file
   const input = `// This is a comment
 	// And just another comment
@@ -65,7 +58,7 @@ test("Code comments on top should not affect the parsing", (t) => {
   expect(2).toBe(code.lines);
 });
 
-test("Inline code comments should not affect the parsing", (t) => {
+test("Inline code comments should not affect the parsing", () => {
   // Code input with an inline comment
   const input = `ADD R0 R1 R2 // Comment should work here
 	`;
@@ -75,7 +68,7 @@ test("Inline code comments should not affect the parsing", (t) => {
   expect(1).toBe(code.lines);
 });
 
-test("Last line may include a comment", (t) => {
+test("Last line may include a comment", () => {
   // Code input with a comment in last line
   const input = `ADDI	R2 R0 #50
 	ADD     R3 R0 R2 // Comment should work here as well`;
@@ -85,7 +78,7 @@ test("Last line may include a comment", (t) => {
   expect(2).toBe(code.lines);
 });
 
-test("Lines may end with CRLF style newlines", (t) => {
+test("Lines may end with CRLF style newlines", () => {
   // Code input with CRLF newlines
   const input =
     "ADDI\tR2 R0 #50\r\n\t  ADD     R3 R0 R2 // Comment right before CRLF \r\n";
@@ -96,7 +89,7 @@ test("Lines may end with CRLF style newlines", (t) => {
   expect(2).toBe(code.lines);
 });
 
-test("Parsing operand errors are being thrown", (t) => {
+test("Parsing operand errors are being thrown", () => {
   const input = `3
         LF F1 (R2)
         LOOP:
@@ -109,7 +102,7 @@ test("Parsing operand errors are being thrown", (t) => {
   );
 });
 
-test("Parsing addresses errors are being throw", (t) => {
+test("Parsing addresses errors are being throw", () => {
   const input = `3
     LF F1 (R-2)
     LOOP:
@@ -123,7 +116,7 @@ test("Parsing addresses errors are being throw", (t) => {
   );
 });
 
-test("Parsing opcodes errors are being thrown", (t) => {
+test("Parsing opcodes errors are being thrown", () => {
   const input = `3
     LF F1 (R2)
     LOOP:
@@ -136,7 +129,7 @@ test("Parsing opcodes errors are being thrown", (t) => {
   );
 });
 
-test("Repeated labels errors are being thrown", (t) => {
+test("Repeated labels errors are being thrown", () => {
   const input = `3
     LF F1 (R2)
     LOOP:
@@ -150,7 +143,7 @@ test("Repeated labels errors are being thrown", (t) => {
   );
 });
 
-test("Parsing strange inmediates throws errors", (t) => {
+test("Parsing strange inmediates throws errors", () => {
   const input = `1
 	ADDI R0 R0 #0x0`;
   const inpu2 = `1
@@ -175,7 +168,7 @@ test("Parsing strange inmediates throws errors", (t) => {
   );
 });
 
-test("Parsing strange registers throws errors", (t) => {
+test("Parsing strange registers throws errors", () => {
   const input = `1
 	ADDI R0.0 R0 #0`;
   const inpu2 = `1
@@ -195,7 +188,7 @@ test("Parsing strange registers throws errors", (t) => {
   );
 });
 
-test("Parser check bounds", (t) => {
+test("Parser check bounds", () => {
   const input = `1
 	ADDI R64 R0 #0`;
   const inpu2 = `1
@@ -215,7 +208,7 @@ test("Parser check bounds", (t) => {
   );
 });
 
-test("Example code 1 does not throws errors", (t) => {
+test("Example code 1 does not throws errors", () => {
   const input = `11
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -234,7 +227,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 2 does not throws errors", (t) => {
+test("Example code 2 does not throws errors", () => {
   const input = `14
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -256,7 +249,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 3 does not throws errors", (t) => {
+test("Example code 3 does not throws errors", () => {
   const input = `20
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -284,7 +277,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 4 does not throws errors", (t) => {
+test("Example code 4 does not throws errors", () => {
   const input = `32
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -324,7 +317,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 5 does not throws errors", (t) => {
+test("Example code 5 does not throws errors", () => {
   const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -351,7 +344,7 @@ LOOP2:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 6 does not throws errors", (t) => {
+test("Example code 6 does not throws errors", () => {
   const input = `8
 	ADDI	R1 R0 #1
 	ADDI	R2 R0 #2
@@ -367,7 +360,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 7 does not throws errors", (t) => {
+test("Example code 7 does not throws errors", () => {
   const input = `18
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -395,7 +388,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 8 does not throws errors", (t) => {
+test("Example code 8 does not throws errors", () => {
   const input = `27
 	ADDI	R2 R0 #50
 	ADDI	R3 R0 #70
@@ -432,7 +425,7 @@ LOOP:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 9 does not throws errors", (t) => {
+test("Example code 9 does not throws errors", () => {
   const input = `13
 // CODIGO:
 	ADDI	R10, R0, #10
@@ -456,7 +449,7 @@ FIN:
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 10 does not throws errors", (t) => {
+test("Example code 10 does not throws errors", () => {
   const input = `7
 ADDI R2 R0 #3
 BGT R0 R2 ET1
@@ -472,7 +465,7 @@ SUB R6 R2 R3
   expect(() => code.load(input)).not.toThrowError();
 });
 
-test("Example code 11 does not throws errors", (t) => {
+test("Example code 11 does not throws errors", () => {
   const input = `26
 	ADDI	R33 R0 #-1
 	ADDI	R34 R0 #400

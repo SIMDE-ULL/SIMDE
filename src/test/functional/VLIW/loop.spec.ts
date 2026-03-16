@@ -7,6 +7,7 @@ import { codeInput, vliwCodeInput, vecContent, sumContent, resultContent } from 
 import { codeInput as codeInput2, vliwCodeInput as vliwCodeInput2 } from "../code/bucle2";
 import { codeInput as codeInput3, vliwCodeInput as vliwCodeInput3 } from "../code/bucle3";
 import { codeInput as codeInput4, vliwCodeInput as vliwCodeInput4 } from "../code/bucle4";
+// @ts-expect-error TS6192 false positive — both imports are used below
 import { codeInput as doubleCodeInput, vliwCodeInput as doubleVliwCodeInput } from "../code/bucledoble";
 import { codeInput as softCodeInput, vliwCodeInput as softVliwCodeInput } from "../code/buclesoft";
 import { codeInput as softCodeInput2, vliwCodeInput as softVliwCodeInput2 } from "../code/buclesoft2";
@@ -51,7 +52,7 @@ test('Bucle.pla is executed properly', () => {
     expect(context.machine.status.cycle).toBe(212);
 })
 
-test('Bucle2.pla is executed properly', t => {
+test('Bucle2.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(codeInput2);
     context.code.load(vliwCodeInput2, context.superscalarCode);
@@ -83,7 +84,7 @@ test('Bucle2.pla is executed properly', t => {
     expect(context.machine.status.cycle).toBe(108);
 })
 
-test('Bucle3.pla is executed properly', t => {
+test('Bucle3.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(codeInput3);
     context.code.load(vliwCodeInput3, context.superscalarCode);
@@ -115,7 +116,7 @@ test('Bucle3.pla is executed properly', t => {
     expect(context.machine.status.cycle).toBe(60);
 })
 
-test('Bucle4.pla is executed properly', t => {
+test('Bucle4.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(codeInput4);
     context.code.load(vliwCodeInput4, context.superscalarCode);
@@ -147,7 +148,7 @@ test('Bucle4.pla is executed properly', t => {
     expect(context.machine.status.cycle).toBe(36);
 })
 
-test('Buclesoft.pla is executed properly', t => {
+test('Buclesoft.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(softCodeInput);
     context.code.load(softVliwCodeInput, context.superscalarCode);
@@ -179,7 +180,7 @@ test('Buclesoft.pla is executed properly', t => {
     expect(context.machine.status.cycle).toBe(101);
 })
 
-test('Buclesoft2.pla is executed properly', t => {
+test('Buclesoft2.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(softCodeInput2);
     context.code.load(softVliwCodeInput2, context.superscalarCode);
@@ -211,7 +212,7 @@ test('Buclesoft2.pla is executed properly', t => {
 })
 
 // The double loop VLIW code is incorrect
-/*test('Bucledoble.pla is executed properly', t => {
+/*test('Bucledoble.pla is executed properly', () => {
     // Load code
     context.superscalarCode.load(doubleCodeInput);
     context.code.load(doubleVliwCodeInput, context.superscalarCode);

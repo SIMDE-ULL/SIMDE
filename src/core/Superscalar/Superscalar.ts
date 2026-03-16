@@ -14,7 +14,6 @@ import { JumpPredictor } from "./JumpPredictor";
 import { Instruction } from "../Common/Instruction";
 import {
   CommitStatus,
-  SuperStage,
   SuperscalarStatus,
 } from "./SuperscalarEnums";
 
@@ -368,10 +367,7 @@ export class Superscalar extends Machine {
       }
 
       let instruction: Instruction = this._decoder.get();
-      let reserveStationPos = this.issueInstructionToReserveStation(
-        instruction,
-        fuType
-      );
+      this.issueInstructionToReserveStation(instruction, fuType);
       // This is a hack, because putting the instruction in the reorder buffer before that in the reserve station will cause a circular dependency on instructions that reads and writes the same register, but the reserve station entry needs the rob index
       this._reorderBuffer.issueInstruction(instruction);
     }

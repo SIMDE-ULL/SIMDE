@@ -12,7 +12,7 @@ beforeEach(() => {
 });
 
 
-test('Integer Sum has a correct latency', t => {
+test('Integer Sum has a correct latency', () => {
     // Execute code
     context.code.load("1\n ADDI R1 R0 #0");
     context.machine.code = context.code;
@@ -26,7 +26,7 @@ test('Integer Sum has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(6);
 })
 
-test('Integer Multiply has a correct latency', t => {
+test('Integer Multiply has a correct latency', () => {
     // Execute code
     context.code.load("1\n MULT R1 R0 R0");
     context.machine.code = context.code;
@@ -40,7 +40,7 @@ test('Integer Multiply has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(7);
 })
 
-test('Floating Sum has a correct latency', t => {
+test('Floating Sum has a correct latency', () => {
     // Execute code
     context.code.load("1\n ADDF F1 F0 F0");
     context.machine.code = context.code;
@@ -54,7 +54,7 @@ test('Floating Sum has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(9);
 })
 
-test('Floating Multiply has a correct latency', t => {
+test('Floating Multiply has a correct latency', () => {
     // Execute code
     context.code.load("1\n MULTF F1 F0 F0");
     context.machine.code = context.code;
@@ -68,7 +68,7 @@ test('Floating Multiply has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(11);
 })
 
-test('Memory has a correct latency', t => {
+test('Memory has a correct latency', () => {
     // Execute code
     context.code.load("1\n LF F1 0(R0)");
     context.machine.code = context.code;
@@ -82,7 +82,7 @@ test('Memory has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(11);
 })
 
-test('Jump has a correct latency', t => {
+test('Jump has a correct latency', () => {
     // Execute code
     context.code.load("1\n NOLOOP: BNE R0 R0 NOLOOP");
     context.machine.code = context.code;

@@ -155,7 +155,7 @@ export class Stats {
   public getInstructionsStatusesAverage(): Map<number, InstructionStatsEntry> {
     let average = new Map<number, InstructionStatsEntry>();
     let count = new Map<number, number>();
-    for (let [uid, entry] of this._instrEntries) {
+    for (let [, entry] of this._instrEntries) {
       if (!count.has(entry.instructionId)) {
         count.set(entry.instructionId, 0);
         average.set(entry.instructionId, {
@@ -192,7 +192,7 @@ export class Stats {
 
   public getPerStatusCountAtCycle(): Map<string, number[]> {
     let count = new Map<string, number[]>();
-    for (let [cycle, statuses] of this._statusesAtCycle) {
+    for (let [, statuses] of this._statusesAtCycle) {
       for (let [status, value] of Object.entries(statuses)) {
         if (!count.has(status)) {
           count.set(status, []);

@@ -21,7 +21,7 @@ export const VLIWLoadContentModalComponent: FC = () => {
     dispatch(toggleVliwLoadContentModal(false));
   };
 
-  const handleInputFileChange = (e: any, results: any) => {
+  const handleInputFileChange = (_e: any, results: any) => {
     results.forEach((result: any) => {
       const [e] = result;
       if (contentInputRef.current) {

@@ -1,8 +1,6 @@
 import { beforeEach, expect, test } from "vitest";
 import { Code } from "../../../../core/Common/Code";
-import { VLIW } from "../../../../core/VLIW/VLIW";
 import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
-import { VLIWError } from "../../../../core/VLIW/VLIWError";
 
 const context: { code: VLIWCode; superscalarCode: Code } = {
   code: null as any,
@@ -14,7 +12,7 @@ beforeEach(() => {
   context.superscalarCode = new Code();
 });
 
-test("Loop.pla is loaded properly", (t) => {
+test("Loop.pla is loaded properly", () => {
   const inputVLIW = `15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
@@ -49,12 +47,10 @@ LOOP:
   context.superscalarCode.load(inputSuperscalar);
   context.code.load(inputVLIW, context.superscalarCode);
 
-  const error = `Bad instruction number parsed, expected 15, got ${context.code.getLargeInstructionNumber()}`;
-
   expect(context.code.getLargeInstructionNumber()).toBe(15);
 });
 
-test("Loop.pla without lines number is loaded properly", (t) => {
+test("Loop.pla without lines number is loaded properly", () => {
   const inputVLIW = `    2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0
     1	5 4 0 0
@@ -90,7 +86,7 @@ LOOP:
   expect(context.code.getLargeInstructionNumber()).toBe(15);
 });
 
-test("Loop.pla with extra \\n at the end does not throws error", (t) => {
+test("Loop.pla with extra \\n at the end does not throws error", () => {
   const inputVLIW = `15
     2	0 0 0 0	2 0 1 0
     3	1 0 0 0	4 0 1 0	3 4 0 0

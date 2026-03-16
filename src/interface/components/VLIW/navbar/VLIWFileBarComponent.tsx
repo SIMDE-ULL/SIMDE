@@ -6,7 +6,6 @@ import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import {
   toggleLoadModal,
   toggleAuthorModal,
-  toggleOptionsModal,
   toggleVliwConfigModal,
   toggleBatchModal,
   toggleVliwLoadContentModal,

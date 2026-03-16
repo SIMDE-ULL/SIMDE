@@ -1,7 +1,6 @@
 export const NEXT_REORDER_BUFFER_CYCLE = 'NEXT_REORDER_BUFFER_CYCLE';
 export const COLOR_CELL = 'COLOR_CELL';
 
-import { stageToString } from '../../core/Superscalar/SuperscalarEnums';
 import { ReorderBuffer } from '../../core/Superscalar/ReorderBuffer';
 
 export function nextReorderBufferCycle(data: ReorderBuffer) {

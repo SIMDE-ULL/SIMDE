@@ -13,7 +13,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('Interger Sum has a correct latency', t => {
+test('Interger Sum has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n ADDI R1 R0 #0");
     context.code.load("1\n 1  0 0 0 0", context.superscalarCode);
@@ -28,7 +28,7 @@ test('Interger Sum has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(3);
 })
 
-test('Interger Multiply has a correct latency', t => {
+test('Interger Multiply has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n MULT R1 R0 R0");
     context.code.load("1\n 1  0 1 0 0", context.superscalarCode);
@@ -44,7 +44,7 @@ test('Interger Multiply has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(4);
 })
 
-test('FLoating Sum has a correct latency', t => {
+test('FLoating Sum has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n ADDF F1 F0 F0");
     context.code.load("1\n 1  0 2 0 0", context.superscalarCode);
@@ -59,7 +59,7 @@ test('FLoating Sum has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(6);
 })
 
-test('FLoating Multiply has a correct latency', t => {
+test('FLoating Multiply has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n MULTF F1 F0 F0");
     context.code.load("1\n 1  0 3 0 0", context.superscalarCode);
@@ -74,7 +74,7 @@ test('FLoating Multiply has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(8);
 })
 
-test('Memory has a correct latency', t => {
+test('Memory has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n LF F1 0(R0)");
     context.code.load("1\n 1  0 4 0 0", context.superscalarCode);
@@ -89,7 +89,7 @@ test('Memory has a correct latency', t => {
     expect(context.machine.status.cycle).toBe(6);
 })
 
-test('Jump has a correct latency', t => {
+test('Jump has a correct latency', () => {
     // Execute code
     context.superscalarCode.load("1\n NOLOOP: BNE R0 R0 NOLOOP");
     context.code.load("1\n 1  0 5 0 0 1 1 2", context.superscalarCode);

@@ -2,13 +2,12 @@
 import { useDrag } from 'react-dnd';
 
 import { OpcodesNames } from '../../../core/Common/Opcodes';
-import { Instruction } from '../../../core/Common/Instruction';
 
 
 function InstructionComponent(props: any) {
     let loc = props.loc;
 
-    const [{ isDragging }, drag] = useDrag(() => ({
+    const [, drag] = useDrag(() => ({
         type: 'INSTRUCTION',
         item: { loc },
 

@@ -15,7 +15,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('Bucle.pla is executed properly', t => {
+test('Bucle.pla is executed properly', () => {
     // Load code
     context.code.load(codeInput);
     context.machine.code = context.code;
@@ -43,7 +43,7 @@ test('Bucle.pla is executed properly', t => {
 
 })
 
-test('Buclesoft.pla is executed properly', t => {
+test('Buclesoft.pla is executed properly', () => {
     // Load code
     context.code.load(softCodeInput);
     context.machine.code = context.code;
@@ -71,7 +71,7 @@ test('Buclesoft.pla is executed properly', t => {
 
 })
 
-test('Bucledoble.pla is executed properly', t => {
+test('Bucledoble.pla is executed properly', () => {
     // Load code
     context.code.load(doubleCodeInput);
     context.machine.code = context.code;

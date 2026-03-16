@@ -59,7 +59,7 @@ export class SuperscalarIntegration extends MachineIntegration {
     * If a step parameter is provided, components use
     * their history to set the appropriate content.
     */
-    dispatchAllSuperscalarActions = (step?: number) => {
+    dispatchAllSuperscalarActions = (_step?: number) => {
         // Code is only set on the first iteration
         let robMap = this.superscalar.reorderBuffer.getVisualInstructionMap();
         store.dispatch(
@@ -211,7 +211,6 @@ export class SuperscalarIntegration extends MachineIntegration {
         if (speed) {
             this.executionLoop(speed);
         } else {
-            // tslint:disable-next-line:no-empty
             while (this.superscalar.tic() !== SuperscalarStatus.SUPER_ENDEXE) {
                 this.collectStats();
             }
@@ -242,8 +241,7 @@ export class SuperscalarIntegration extends MachineIntegration {
                 this.setMemory(this.contentIntegration.MEMContent);
             }
 
-            // tslint:disable-next-line:no-empty
-            while (this.superscalar.tic() !== SuperscalarStatus.SUPER_ENDEXE) { 
+            while (this.superscalar.tic() !== SuperscalarStatus.SUPER_ENDEXE) {
                 this.collectStats();
             }
             this.collectStats();

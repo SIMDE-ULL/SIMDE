@@ -8,7 +8,7 @@ beforeEach(() => {
   memory = new Memory(100);
 });
 
-test("DirectCache doesn't alter memory writes", (t) => {
+test("DirectCache doesn't alter memory writes", () => {
   const directCache = new DirectCache(10, 100);
   const randomPosition = Math.floor(Math.random() * 100);
 
@@ -24,7 +24,7 @@ test("DirectCache doesn't alter memory writes", (t) => {
   expect(directCache.success).toBe(true);
 });
 
-test("RandomCache faults the random percentage and returns the memory data", (t) => {
+test("RandomCache faults the random percentage and returns the memory data", () => {
   const randomCache = new RandomCache(0.5);
 
   // fill memory with random data
@@ -55,7 +55,7 @@ test("RandomCache faults the random percentage and returns the memory data", (t)
   expect(faults).toBeLessThan(600);
 });
 
-test("DirectCache with one big block the same length as memory never faults and returns the memory data", (t) => {
+test("DirectCache with one big block the same length as memory never faults and returns the memory data", () => {
   const directCache = new DirectCache(1, 100);
 
   // fill memory with random data
@@ -79,7 +79,7 @@ test("DirectCache with one big block the same length as memory never faults and 
   }
 });
 
-test("DirectCache with as many blocks as positions should fail only on the first read", (t) => {
+test("DirectCache with as many blocks as positions should fail only on the first read", () => {
   const directCache = new DirectCache(100, 100);
 
   // proxy the memory
@@ -99,7 +99,7 @@ test("DirectCache with as many blocks as positions should fail only on the first
   }
 });
 
-test("DirectCache should always fault on reading alternatively from blocks with the same position", (t) => {
+test("DirectCache should always fault on reading alternatively from blocks with the same position", () => {
   // create a cache with one block and smaller than memory, so the first and last address will have a different block
   const directCache = new DirectCache(1, 10);
 

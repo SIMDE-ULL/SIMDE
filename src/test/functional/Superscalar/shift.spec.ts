@@ -13,7 +13,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('despl.pla is executed properly', t => {
+test('despl.pla is executed properly', () => {
     // Execute code
     context.code.load(codeInput);
     context.machine.code = context.code;

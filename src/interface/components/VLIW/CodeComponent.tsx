@@ -16,7 +16,6 @@ interface CodeComponentProps {
 export const CodeComponent: FC<CodeComponentProps> = ({
   code,
   colorBasicBlocks,
-  toggleBreakPoint,
 }) => {
   const { t } = useTranslation();
 

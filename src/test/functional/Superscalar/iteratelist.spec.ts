@@ -14,7 +14,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('recorrelista.pla is executed properly', t => {
+test('recorrelista.pla is executed properly', () => {
     // Load code
     context.code.load(codeInput);
     context.machine.code = context.code;

@@ -13,7 +13,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('Speculative execution has no side effects', t => {
+test('Speculative execution has no side effects', () => {
     // Execute code
     context.code.load(codeInput);
     context.machine.code = context.code;

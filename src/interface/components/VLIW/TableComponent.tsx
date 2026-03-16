@@ -5,7 +5,7 @@ import VLIWOperationComponent from './VLIWOperationComponent';
 
 
 export function TableComponent(props: any) {
-    const [t, i18n] = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <div className="smd-table_component panel panel-default">

@@ -14,7 +14,7 @@ beforeEach(() => {
     context.machine.init(true);
 });
 
-test('multiwayvliw.pla is executed properly with first parameter', t => {
+test('multiwayvliw.pla is executed properly with first parameter', () => {
     // Load code
     context.superscalarCode.load(codeInput);
     context.code.load(vliwCodeInput, context.superscalarCode);
@@ -39,7 +39,7 @@ test('multiwayvliw.pla is executed properly with first parameter', t => {
     expect(context.machine.status.cycle).toBe(16);
 });
 
-test('multiwayvliw.pla is executed properly with second parameter', t => {
+test('multiwayvliw.pla is executed properly with second parameter', () => {
     // Load code
     context.superscalarCode.load(codeInput);
     context.code.load(vliwCodeInput, context.superscalarCode);
@@ -64,7 +64,7 @@ test('multiwayvliw.pla is executed properly with second parameter', t => {
     expect(context.machine.status.cycle).toBe(16);
 });
 
-test('multiwayvliw.pla is executed properly with third parameter', t => {
+test('multiwayvliw.pla is executed properly with third parameter', () => {
     // Load code
     context.superscalarCode.load(codeInput);
     context.code.load(vliwCodeInput, context.superscalarCode);

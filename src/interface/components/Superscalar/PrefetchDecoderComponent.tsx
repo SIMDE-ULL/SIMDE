@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 export function PrefetchDecoderComponent(props: any) {
-    const [t, i18n] = useTranslation();
+    const { t } = useTranslation();
 
     return (
             <div className='panel panel-default smd-prefetch_decoder'>

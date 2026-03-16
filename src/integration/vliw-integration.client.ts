@@ -51,7 +51,7 @@ export class VLIWIntegration extends MachineIntegration {
     * their history to set the appropriate content.
     */
 
-    dispatchAllVLIWActions = (step?: number) => {
+    dispatchAllVLIWActions = (_step?: number) => {
         // Code is only set on the first iteration
         store.dispatch(
             batchActions(
@@ -201,7 +201,6 @@ export class VLIWIntegration extends MachineIntegration {
         if (speed) {
             this.executionLoop(speed);
         } else {
-            // tslint:disable-next-line:no-empty
             // TODO: Consider displaying VLIWErrors and stopping execution.
             let err = VLIWError.OK;
             while (err !== VLIWError.ENDEXE) {
@@ -237,7 +236,6 @@ export class VLIWIntegration extends MachineIntegration {
                 this.setMemory(this.contentIntegration.MEMContent);
             }
 
-            // tslint:disable-next-line:no-empty
             // TODO: Consider displaying VLIWErrors and stopping execution.
             let err = VLIWError.OK;
             while (err !== VLIWError.ENDEXE) {

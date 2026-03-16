@@ -331,7 +331,7 @@ export class VLIW extends Machine {
         return newPC;
     }
 
-    private checkDependencies(row: number, id: number) {
+    private checkDependencies(row: number, _id: number) {
         let checkGPR: Check[] = new Array(Machine.NGP);
         let checkFPR: Check[] = new Array(Machine.NFP);
 
@@ -351,7 +351,6 @@ export class VLIW extends Machine {
             }
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (!DependencyChecker.checkSourceOperands(instruction.getOperation(j), checkGPR, checkFPR)) {
-                    id = instruction.getOperation(j).id;
                     throw VLIWError.ERRRAW; // VLIW_ERRRA;
                 }
             }
@@ -369,7 +368,7 @@ export class VLIW extends Machine {
         throw VLIWError.ERRNO; // VLIW_ERRNO;
     }
 
-    private checkPredicate(row: number, id: number) {
+    private checkPredicate(row: number, _id: number) {
         let controlCheckList: Check[] = []; // list<TChequeo> checkPredicate;
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             let index = 0;
@@ -402,14 +401,12 @@ export class VLIW extends Machine {
                         }
                     }
                     if (index === controlCheckList.length) {
-                        id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;
                             controlCheckList[i].register = 0;
                         }
                         throw VLIWError.ERRPRED; // VLIW_ERRPRED;
                     } else if (this.functionalUnit[instruction.getOperation(j).getFunctionalUnitType()].length < controlCheckList[index].latency) {
-                        id = instruction.getOperation(j).id;
                         for (let i = 0; i < controlCheckList.length; i++) {
                             controlCheckList[i].latency = 0;
                             controlCheckList[i].register = 0;

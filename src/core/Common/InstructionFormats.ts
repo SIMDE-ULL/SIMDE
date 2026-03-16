@@ -1,5 +1,3 @@
-import { Opcodes } from "./Opcodes";
-
 export enum Formats {
   TwoGeneralRegisters = 0, // OP R1, R2, R3
   TwoFloatingRegisters, // OP F1, F2, F3

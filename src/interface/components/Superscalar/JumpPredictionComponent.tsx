@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
 export function JumpPredictionComponent(props: any) {
-    const [t, i18n] = useTranslation();
+    const { t } = useTranslation();
 
     return (
         <div className="smd-jump_prediction panel panel-default">
