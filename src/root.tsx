@@ -11,22 +11,12 @@ import { Suspense, useEffect } from "react";
 
 import { store } from "./store";
 import i18n from "./i18n";
-import { ClientOnly } from "./interface/components/Common/ClientOnly";
 import "./main.scss";
-
-import type { Route } from "./+types/root";
-
-/** Detects the preferred locale from the Accept-Language header. */
-export function loader({ request }: Route.LoaderArgs) {
-  const acceptLang = request.headers.get("Accept-Language") ?? "";
-  const locale = acceptLang.startsWith("es") ? "es" : "en";
-  return { locale };
-}
 
 /**
  * HTML document shell shared by the app, error boundary, and hydration fallback.
- * I18nextProvider runs on both server and client. Redux Provider is client-only
- * because the simulation state has no server-side representation.
+ * Redux Provider is always rendered since pre-rendered routes don't execute
+ * component code at build time (only loaders run). The store is a singleton.
  */
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -49,13 +39,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </noscript>
         <I18nextProvider i18n={i18n}>
           <Suspense fallback={<div>Loading...</div>}>
-            <ClientOnly fallback={children}>
-              {() => (
-                <Provider store={store}>
-                  {children}
-                </Provider>
-              )}
-            </ClientOnly>
+            <Provider store={store}>
+              {children}
+            </Provider>
           </Suspense>
         </I18nextProvider>
         <ScrollRestoration />
@@ -66,18 +52,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 /** Root route — renders the matched child route via Outlet. */
-export default function Root({ loaderData }: Route.ComponentProps) {
+export default function Root() {
   useEffect(() => {
-    if (loaderData?.locale) {
-      i18n.changeLanguage(loaderData.locale);
-    }
-  }, [loaderData?.locale]);
+    const lng = navigator?.language?.startsWith("es") ? "es" : "en";
+    i18n.changeLanguage(lng);
+  }, []);
 
   return <Outlet />;
 }
 
 /**
- * Displayed while client-side JavaScript loads during SSR hydration.
+ * Displayed while client-side JavaScript loads during hydration.
  * Prevents a blank screen while the bundle loads.
  */
 export function HydrateFallback() {
