@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export function JumpPredictionComponent(props) {
+export function JumpPredictionComponent(props: any) {
     const [t, i18n] = useTranslation();
 
     return (
@@ -8,7 +8,7 @@ export function JumpPredictionComponent(props) {
             <div className="panel-heading">{t(props.title)}</div>
             <div className="smd-jump_prediction-body panel-body">
                 <div className="smd-table">
-                    {props.jumpPrediction.map((row, i) => (
+                    {props.jumpPrediction.map((row: any, i: number) => (
                         <div
                             className="smd-table_row"
                             key={`${props.title + i}`}

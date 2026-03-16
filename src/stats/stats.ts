@@ -36,74 +36,74 @@ export class Stats {
       this._unitUsageAtCycle.set(unitName, new Map());
     }
 
-    this._unitUsageAtCycle.get(unitName).set(this._currentCycle, usage);
+    this._unitUsageAtCycle.get(unitName)!.set(this._currentCycle, usage);
   }
 
   public collectDecodeUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).decodeCycles++;
+      this._instrEntries.get(uid)!.decodeCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).decodeNumber += uids.length;
+    this._statusesAtCycle.get(this._currentCycle)!.decodeNumber += uids.length;
   }
 
   public collectPrefetchUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).prefetchCycles++;
+      this._instrEntries.get(uid)!.prefetchCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).prefetchNumber +=
+    this._statusesAtCycle.get(this._currentCycle)!.prefetchNumber +=
       uids.length;
   }
 
   public collectIssuedUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).issueCycles++;
+      this._instrEntries.get(uid)!.issueCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).issueNumber += uids.length;
+    this._statusesAtCycle.get(this._currentCycle)!.issueNumber += uids.length;
   }
 
   public collectExecutingUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).executeCycles++;
+      this._instrEntries.get(uid)!.executeCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).executeNumber += uids.length;
+    this._statusesAtCycle.get(this._currentCycle)!.executeNumber += uids.length;
   }
 
   public collectWriteBackUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).writeBackCycles++;
+      this._instrEntries.get(uid)!.writeBackCycles++;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).writeBackNumber +=
+    this._statusesAtCycle.get(this._currentCycle)!.writeBackNumber +=
       uids.length;
   }
 
   public collectCommitUids(uids: number[]) {
     for (let uid of uids) {
       this.createEntryIfNotExists(uid);
-      this._instrEntries.get(uid).commited = true;
+      this._instrEntries.get(uid)!.commited = true;
     }
 
     this.createStatusesIfNotExists();
-    this._statusesAtCycle.get(this._currentCycle).commitNumber += uids.length;
+    this._statusesAtCycle.get(this._currentCycle)!.commitNumber += uids.length;
   }
 
   public associateUidWithInstruction(uid: number, instructionId: number) {
     this.createEntryIfNotExists(uid);
-    this._instrEntries.get(uid).instructionId = instructionId;
+    this._instrEntries.get(uid)!.instructionId = instructionId;
   }
 
   public advanceCycle() {
@@ -138,17 +138,17 @@ export class Stats {
         total.set(entry.instructionId, 0);
         commited.set(entry.instructionId, 0);
       }
-      total.set(entry.instructionId, total.get(entry.instructionId) + 1);
+      total.set(entry.instructionId, total.get(entry.instructionId)! + 1);
       if (entry.commited) {
         commited.set(
           entry.instructionId,
-          commited.get(entry.instructionId) + 1
+          commited.get(entry.instructionId)! + 1
         );
       }
     }
 
     for (let [instructionId, commitedCount] of commited) {
-      commited.set(instructionId, commitedCount / total.get(instructionId));
+      commited.set(instructionId, commitedCount / total.get(instructionId)!);
     }
     return commited;
   }
@@ -171,22 +171,22 @@ export class Stats {
       }
 
       if (entry.commited) {
-        average.get(entry.instructionId).prefetchCycles += entry.prefetchCycles;
-        average.get(entry.instructionId).decodeCycles += entry.decodeCycles;
-        average.get(entry.instructionId).issueCycles += entry.issueCycles;
-        average.get(entry.instructionId).executeCycles += entry.executeCycles;
-        average.get(entry.instructionId).writeBackCycles +=
+        average.get(entry.instructionId)!.prefetchCycles += entry.prefetchCycles;
+        average.get(entry.instructionId)!.decodeCycles += entry.decodeCycles;
+        average.get(entry.instructionId)!.issueCycles += entry.issueCycles;
+        average.get(entry.instructionId)!.executeCycles += entry.executeCycles;
+        average.get(entry.instructionId)!.writeBackCycles +=
           entry.writeBackCycles;
-        count.set(entry.instructionId, count.get(entry.instructionId) + 1);
+        count.set(entry.instructionId, count.get(entry.instructionId)! + 1);
       }
     }
 
     for (let [instructionId, entry] of average) {
-      entry.prefetchCycles /= count.get(instructionId);
-      entry.decodeCycles /= count.get(instructionId);
-      entry.issueCycles /= count.get(instructionId);
-      entry.executeCycles /= count.get(instructionId);
-      entry.writeBackCycles /= count.get(instructionId);
+      entry.prefetchCycles /= count.get(instructionId)!;
+      entry.decodeCycles /= count.get(instructionId)!;
+      entry.issueCycles /= count.get(instructionId)!;
+      entry.executeCycles /= count.get(instructionId)!;
+      entry.writeBackCycles /= count.get(instructionId)!;
     }
     return average;
   }
@@ -198,14 +198,14 @@ export class Stats {
         if (!count.has(status)) {
           count.set(status, []);
         }
-        count.get(status).push(value);
+        count.get(status)!.push(value);
       }
     }
     return count;
   }
 
   public exportStats(): object {
-    let unitUsage = {};
+    let unitUsage: Record<string, object> = {};
     for (let [unitName, usageAtCycle] of this._unitUsageAtCycle) {
       unitUsage[unitName] = Object.fromEntries(usageAtCycle);
     }

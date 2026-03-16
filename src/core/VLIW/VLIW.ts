@@ -68,7 +68,7 @@ export class VLIW extends Machine {
     //TODO: These checks functions are never used
     public checkCode() {
         for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
-            let instruction = this._code.getLargeInstruction(i);
+            let instruction = this._code.getLargeInstruction(i)!;
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 let operation = instruction.getOperation(j);
                 if (operation.getFunctionalUnitIndex() >= this.functionalUnit[operation.getFunctionalUnitType()].length) {
@@ -170,7 +170,7 @@ export class VLIW extends Machine {
                   const execution = this.functionalUnit[i][
                     j
                   ].executeReadyInstruction(firstOperand, secondOperand);
-                  this.runOperation(execution, this.functionalUnit[i][j]);
+                  this.runOperation(execution!, this.functionalUnit[i][j]);
                 }
 
                 this.functionalUnit[i][j].tic();
@@ -344,7 +344,7 @@ export class VLIW extends Machine {
         }
 
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
-            let instruction = this._code.getLargeInstruction(row);
+            let instruction = this._code.getLargeInstruction(row)!;
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 //TODO
                 //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
@@ -370,7 +370,7 @@ export class VLIW extends Machine {
     }
 
     private checkPredicate(row: number, id: number) {
-        let controlCheckList: Check[]; // list<TChequeo> checkPredicate;
+        let controlCheckList: Check[] = []; // list<TChequeo> checkPredicate;
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
             let index = 0;
             while (index < controlCheckList.length) {
@@ -381,11 +381,11 @@ export class VLIW extends Machine {
                     index++;
                 }
             }
-            let instruction = this._code.getLargeInstruction(row);
+            let instruction = this._code.getLargeInstruction(row)!;
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (instruction.getOperation(j).getFunctionalUnitType() === FunctionalUnitType.JUMP) {
-                    let check1: Check;
-                    let check2: Check;
+                    let check1: Check = { latency: 0, register: 0 };
+                    let check2: Check = { latency: 0, register: 0 };
                     check1.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
                     check2.latency = this.functionalUnit[FunctionalUnitType.JUMP].length;
                     check1.register = instruction.getOperation(j).getPredTrue();
@@ -394,10 +394,10 @@ export class VLIW extends Machine {
                     controlCheckList.push(check2);
                 }
             }
-            for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
-                if (instruction.getOperation(j).getPred() !== 0) {
+            for (let j = 0; j < instruction!.getVLIWOperationsNumber(); j++) {
+                if (instruction!.getOperation(j).getPred() !== 0) {
                     for (index = 0; index < controlCheckList.length; index++) {
-                        if (instruction.getOperation(j).getPred() === controlCheckList[index].register) {
+                        if (instruction!.getOperation(j).getPred() === controlCheckList[index].register) {
                             break;
                         }
                     }

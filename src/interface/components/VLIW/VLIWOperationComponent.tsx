@@ -2,14 +2,14 @@
 import { useDrop } from 'react-dnd';
 
 
-function VLIWOperationComponent(props) {
+function VLIWOperationComponent(props: any) {
     const [{ canDrop, isOver }, drop] = useDrop(() => ({
         accept: 'INSTRUCTION',
         drop: (item, monitor) => {
             try {
                 props.onDropInstruction(item, props.pos);
             } catch(e) {
-                console.log(e.message);
+                console.log((e as Error).message);
             }
         },
 

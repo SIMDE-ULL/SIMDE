@@ -25,16 +25,16 @@ export class Machine {
   public static NGP: number = MACHINE_REGISTER_SIZE;
   public static NFP: number = MACHINE_REGISTER_SIZE;
 
-  protected _memoryFailLatency: number;
+  protected _memoryFailLatency!: number;
 
-  protected _gpr: Register;
-  protected _fpr: Register;
+  protected _gpr!: Register;
+  protected _fpr!: Register;
 
-  protected _functionalUnit: FunctionalUnit[][];
-  protected _memory: Memory;
-  protected _cache: Cache;
-  protected _pc: number;
-  protected _status: MachineStatus;
+  protected _functionalUnit!: FunctionalUnit[][];
+  protected _memory!: Memory;
+  protected _cache!: Cache | null;
+  protected _pc!: number;
+  protected _status!: MachineStatus;
 
   public get memoryFailLatency(): number {
     return this._memoryFailLatency;
@@ -60,11 +60,11 @@ export class Machine {
     this._memory = value;
   }
 
-  public get cache(): Cache {
+  public get cache(): Cache | null {
     return this._cache;
   }
 
-  public set cache(value: Cache) {
+  public set cache(value: Cache | null) {
     this._cache = value;
     // Proxy the memory access to the cache
     this.resetContent();
@@ -108,10 +108,10 @@ export class Machine {
     this._gpr = new Register(Machine.NGP);
     this._fpr = new Register(Machine.NFP, true); // F0 is writable, not always 0
     this.functionalUnit = new Array(FUNCTIONALUNITTYPESQUANTITY);
-    this.functionalUnit.fill(null);
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
-      this.functionalUnit[i] = new Array(FunctionalUnitNumbers[i]);
-      for (let j = 0; j < FunctionalUnitNumbers[i]; j++) {
+      const fuType = i as FunctionalUnitType;
+      this.functionalUnit[i] = new Array(FunctionalUnitNumbers[fuType]);
+      for (let j = 0; j < FunctionalUnitNumbers[fuType]; j++) {
         this.functionalUnit[i][j] = new FunctionalUnit(i);
       }
     }

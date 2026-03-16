@@ -309,7 +309,7 @@ export class SuperscalarIntegration extends MachineIntegration {
             return;
         }
         Object.keys(data).forEach(key => {
-            this.superscalar.fpr.setContent(+key, data[key], false);
+            this.superscalar.fpr.setContent(+key, data[+key], false);
         });
     }
 
@@ -318,11 +318,11 @@ export class SuperscalarIntegration extends MachineIntegration {
             return;
         }
         Object.keys(data).forEach(key => {
-            this.superscalar.gpr.setContent(+key, data[key], false);
+            this.superscalar.gpr.setContent(+key, data[+key], false);
         });
     }
 
-    executionLoop = (speed) => {
+    executionLoop = (speed: number) => {
         if (!this.stopCondition) {
             setTimeout(() => {
                 let machineStatus = this.stepForward();
@@ -343,7 +343,7 @@ export class SuperscalarIntegration extends MachineIntegration {
         }
     }
 
-    saveSuperConfig = (superConfig) => {
+    saveSuperConfig = (superConfig: Record<string, any>) => {
         this.superscalar.changeFunctionalUnitNumber(
           FunctionalUnitType.INTEGERSUM,
           +superConfig.integerSumQuantity,

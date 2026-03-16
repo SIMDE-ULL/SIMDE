@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export function FunctionalUnitComponent(props) {
+export function FunctionalUnitComponent(props: any) {
   const [t, i18n] = useTranslation();
 
     return (
@@ -11,7 +11,7 @@ export function FunctionalUnitComponent(props) {
                     {
                         <div className="smd-table-header">
                             {props.header &&
-                                props.header.map((element, i) => (
+                                props.header.map((element: any, i: number) => (
                                     <div
                                         className="smd-table-header_title"
                                         key={props.title + 'FUTitle' + i}
@@ -23,12 +23,12 @@ export function FunctionalUnitComponent(props) {
                     }
                     <div className="smd-table-body">
                         {props.content &&
-                            props.content.map((element, i) => (
+                            props.content.map((element: any, i: number) => (
                                 <div
                                     className="smd-table_row"
                                     key={props.title + 'FU' + i}
                                 >
-                                    {element.map((content, j) => (
+                                    {element.map((content: any, j: number) => (
                                         <div
                                             className="smd-table_cell"
                                             title={content.value}

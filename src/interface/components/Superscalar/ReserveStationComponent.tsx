@@ -1,7 +1,7 @@
 
 import { useTranslation } from 'react-i18next';
 
-export function ReserveStationComponent(props) {
+export function ReserveStationComponent(props: any) {
     const [t, i18n] = useTranslation();
 
     return (
@@ -20,7 +20,7 @@ export function ReserveStationComponent(props) {
                     </div>
                     <div className="smd-table-body">
                         {props.data &&
-                            props.data.map((row, i) => (
+                            props.data.map((row: any, i: number) => (
                                 <div
                                     className="smd-table_row"
                                     title={row.instruction.value}

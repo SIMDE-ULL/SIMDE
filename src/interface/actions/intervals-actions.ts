@@ -10,42 +10,42 @@ export const REMOVE_FLOATING_REGISTERS_INTERVAL =
     'REMOVE_FLOATING_REGISTERS_INTERVAL';
 
 
-export function addMemoryInterval(data) {
+export function addMemoryInterval(data: number[]) {
     return {
         type: ADD_MEMORY_INTERVAL,
         value: data
     };
 }
 
-export function addGeneralRegistersInterval(data) {
+export function addGeneralRegistersInterval(data: number[]) {
     return {
         type: ADD_GENERAL_REGISTERS_INTERVAL,
         value: data
     };
 }
 
-export function addFloatingRegistersInterval(data) {
+export function addFloatingRegistersInterval(data: number[]) {
     return {
         type: ADD_FLOATING_REGISTERS_INTERVAL,
         value: data
     };
 }
 
-export function removeMemoryInterval(data) {
+export function removeMemoryInterval(data: number[]) {
     return {
         type: REMOVE_MEMORY_INTERVAL,
         value: new Set(data)
     };
 }
 
-export function removeGeneralRegistersInterval(data) {
+export function removeGeneralRegistersInterval(data: number[]) {
     return {
         type: REMOVE_GENERAL_REGISTERS_INTERVAL,
         value: new Set(data)
     };
 }
 
-export function removeFloatingRegistersInterval(data) {
+export function removeFloatingRegistersInterval(data: number[]) {
     return {
         type: REMOVE_FLOATING_REGISTERS_INTERVAL,
         value: new Set(data)

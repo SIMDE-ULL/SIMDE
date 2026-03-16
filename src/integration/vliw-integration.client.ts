@@ -62,9 +62,9 @@ export class VLIWIntegration extends MachineIntegration {
                 nextMemoryCycle(Array.from(this.vliw.memory)),
                 nextCycle(this.vliw.status.cycle),
                 currentPC(this.vliw.pc),
-                nextNatFprCycle(this.vliw.getNaTFP()),
-                nextNatGprCycle(this.vliw.getNaTGP()),
-                nextPredicateCycle(this.vliw.getPredReg()),
+                nextNatFprCycle(this.vliw.getNaTFP() as boolean[]),
+                nextNatGprCycle(this.vliw.getNaTGP() as boolean[]),
+                nextPredicateCycle(this.vliw.getPredReg() as boolean[]),
                 nextUnitsUsage(this.stats.getUnitsUsage()),
                 pushHistory()
             )
@@ -125,7 +125,7 @@ export class VLIWIntegration extends MachineIntegration {
         store.dispatch(superscalarLoad(vliwCode.superscalarCode.instructions));
     }
 
-    setOperation = (codeInstructionIdx, position: [number, number]) => {
+    setOperation = (codeInstructionIdx: { loc: number }, position: [number, number]) => {
         // Block VLIW operation setting if machine is executing
         if (this.vliw.status.cycle > 0) {
             throw new Error('Cannot set operations in the middle of an execution');
@@ -155,7 +155,7 @@ export class VLIWIntegration extends MachineIntegration {
             functionalUnitIdx += this.vliw.functionalUnitNumbers[i];
         }
 
-        let operation = new VLIWOperation(null,
+        let operation = new VLIWOperation(undefined,
             this.vliw.code.superscalarCode.instructions[loc],
             functionalUnitType, functionalUnitIdx
         );
@@ -304,7 +304,7 @@ export class VLIWIntegration extends MachineIntegration {
             return;
         }
         Object.keys(data).forEach(key => {
-            this.vliw.fpr.setContent(+key, data[key], false);
+            this.vliw.fpr.setContent(+key, data[+key], false);
         });
     }
 
@@ -313,11 +313,11 @@ export class VLIWIntegration extends MachineIntegration {
             return;
         }
         Object.keys(data).forEach(key => {
-            this.vliw.gpr.setContent(+key, data[key], false);
+            this.vliw.gpr.setContent(+key, data[+key], false);
         });
     }
 
-    executionLoop = (speed) => {
+    executionLoop = (speed: number) => {
         if (!this.stopCondition) {
             setTimeout(() => {
                 let machineStatus = this.stepForward();
@@ -335,7 +335,7 @@ export class VLIWIntegration extends MachineIntegration {
                         if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
                         break;
                     default:
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus]);
+                        if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus!]);
                         break;
                 }
 
@@ -348,7 +348,7 @@ export class VLIWIntegration extends MachineIntegration {
         }
     }
 
-    saveVliwConfig = (vliwConfig) => {
+    saveVliwConfig = (vliwConfig: Record<string, any>) => {
         this.vliw.changeFunctionalUnitNumber(
           FunctionalUnitType.INTEGERSUM,
           +vliwConfig.integerSumQuantity,

@@ -6,9 +6,9 @@ import { VLIWError } from "../../../core/VLIW/VLIWError";
 import { codeInput, vliwCodeInput, resultContent } from "../code/despl";
 
 const context: { code: VLIWCode; superscalarCode: Code; machine: VLIW } = {
-  code: null,
-  superscalarCode: null,
-  machine: null,
+  code: null as any,
+  superscalarCode: null as any,
+  machine: null as any,
 };
 
 beforeEach(() => {

@@ -5,7 +5,7 @@ import { Code } from '../../../core/Common/Code';
 import { VLIWError } from '../../../core/VLIW/VLIWError';
 import { codeInput, vliwCodeInput } from "../code/multiwayvliw1";
 
-const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null, superscalarCode: null, machine: null };
+const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null as any, superscalarCode: null as any, machine: null as any };
 
 beforeEach(() => {
     context.code = new VLIWCode();

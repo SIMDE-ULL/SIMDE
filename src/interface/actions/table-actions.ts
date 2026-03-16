@@ -1,4 +1,4 @@
-import { FunctionalUnit, FunctionalUnitType } from '../../core/Common/FunctionalUnit';
+import { FunctionalUnitType } from '../../core/Common/FunctionalUnit';
 export const HEADER_TABLE_CYCLE = 'HEADER_TABLE_CYCLE';
 export const TABLE_CYCLE = 'TABLE_CYCLE';
 
@@ -9,16 +9,24 @@ export function nextVLIWHeaderTableCycle(functionalUnitNumbers: number[]) {
     };
 }
 
-export function nextVLIWExecutionTableCycle(data, functionalUnitNumbers: number[]) {
+interface LargeInstructionLike {
+    getVLIWOperationsNumber(): number;
+    getOperation(i: number): {
+        id: number;
+        getFunctionalUnitType(): FunctionalUnitType;
+        getFunctionalUnitIndex(): number;
+    };
+}
+
+export function nextVLIWExecutionTableCycle(data: LargeInstructionLike[], functionalUnitNumbers: number[]) {
     return {
         type: TABLE_CYCLE,
         value: data.map(element => mapVLIWTableData(element, functionalUnitNumbers))
     };
 }
 
-function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
-    const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
-    let headers = new Array();
+function mapVLIWHeaderTable(functionalUnitNumbers: number[]): { translateKey?: string; extraValue: string | number }[] {
+    let headers: { translateKey?: string; extraValue: string | number }[] = [];
 
     headers.push({
         extraValue: '#'
@@ -35,11 +43,11 @@ function mapVLIWHeaderTable(functionalUnitNumbers: number[]): any {
     return headers;
 }
 
-function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
+function mapVLIWTableData(data: LargeInstructionLike, functionalUnitNumbers: number[]): (number | string)[] {
 
     const functionalUnitAmount = functionalUnitNumbers.reduce((accumulator, current) => accumulator + current);
 
-    let cols = new Array(functionalUnitAmount);
+    let cols: (number | null)[] = new Array(functionalUnitAmount);
     cols.fill(null);
 
     for (let i = 0; i < data.getVLIWOperationsNumber(); i++) { // numero de instrucciones cortas en la instrucción larga
@@ -86,7 +94,7 @@ function mapVLIWTableData(data, functionalUnitNumbers: number[]): any {
     // data.getOperation(0).getFunctionalUnitIndex; // numero de unidad funcional a la que se asignara
 }
 
-const functionalUnitTranslateKeys = {
+const functionalUnitTranslateKeys: Record<number, string> = {
     0: 'functionalUnits.intAdd',
     1: 'functionalUnits.intMult',
     2: 'functionalUnits.floatAdd',

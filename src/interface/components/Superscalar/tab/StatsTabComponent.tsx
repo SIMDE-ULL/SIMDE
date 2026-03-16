@@ -47,7 +47,7 @@ export const StatsTabComponent: FC = () => {
               yAxis: { type: "value" },
               series:
                 statusesCount &&
-                Array.from(statusesCount.keys()).map((statusName: string) => ({
+                (Array.from(statusesCount.keys()) as string[]).map((statusName) => ({
                   name: t("stats.statuses." + statusName),
                   type: "bar",
                   stack: "statuses",
@@ -86,7 +86,7 @@ export const StatsTabComponent: FC = () => {
               yAxis: { type: "value", max: 100, axisLabel: { formatter: "{value}%" } },
               series:
                 unitsUsage &&
-                Array.from(unitsUsage.keys()).map((unitName: string) => ({
+                (Array.from(unitsUsage.keys()) as string[]).map((unitName) => ({
                   name: t("stats.units." + unitName),
                   type: "line",
                   data: unitsUsage.get(unitName).map((value: number) => value * 100),

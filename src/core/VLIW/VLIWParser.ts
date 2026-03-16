@@ -40,7 +40,7 @@ const tokenizer = buildLexer([
 
 const functionalUnitTypeParser = apply(
   tok(Tokens.Number),
-  (num: Token<Tokens.Number>): FunctionalUnitType => {
+  (num: Token<Tokens>): FunctionalUnitType => {
     const type = +num.text;
     if (type > FUNCTIONALUNITTYPESQUANTITY - 1) {
       throw new TokenError(num.pos, `Invalid functional unit type ${type}`);
@@ -59,7 +59,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
   // This parses depends on the code, so we moved it here
   const indexParser = apply(
     tok(Tokens.Number),
-    (num: Token<Tokens.Number>): IndexParsed => {
+    (num: Token<Tokens>): IndexParsed => {
       const index = +num.text;
       // Check if index is not out of bounds
       if (index >= code.instructions.length) {
@@ -75,7 +75,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
 
   // This other parsers depends on the previous one, so we need to declare it here also
 
-  let currentIndex: IndexParsed = null; // This is a ugly hack, but unfortunately combine consumes the index that we need in operationParser
+  let currentIndex: IndexParsed = null!; // This is a ugly hack, but unfortunately combine consumes the index that we need in operationParser
   const operationCombiner = combine(indexParser, (indexParsed: IndexParsed) => {
     currentIndex = indexParsed;
     const numOfElements = indexParsed.isJump ? 5 : 2;
@@ -114,7 +114,7 @@ export function Parse(input: string, code: Code): LargeInstruction[] {
       }
 
       const operation = new VLIWOperation(
-        null,
+        undefined,
         code.instructions[index],
         functionalUnitType,
         functionalUnitIndex,
@@ -175,7 +175,7 @@ export function ExportAsString(
   _instructionNumber: number,
   _instructions: LargeInstruction[],
 ): string {
-  let outputString: string;
+  let outputString: string = "";
   outputString += _instructionNumber;
 
   for (let i = 0; i < _instructionNumber; i++) {

@@ -1,13 +1,14 @@
 export const NEXT_RESERVE_STATION_CYCLE = 'NEXT_RESERVE_STATION_CYCLE';
 
-export function nextReserveStationCycle(data) {
+export function nextReserveStationCycle(data: unknown[]) {
     return {
         type: NEXT_RESERVE_STATION_CYCLE,
         value: data.map(element => mapReserveStationEntry(element))
     };
 }
 
-function mapReserveStationEntry(content: { data: any, size: number }): any {
+function mapReserveStationEntry(element: unknown): unknown[] {
+    const content = element as { data: any; size: number };
     let data = content.data;
     let toReturn = [];
     let i;

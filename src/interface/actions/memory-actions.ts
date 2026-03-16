@@ -1,6 +1,6 @@
 export const NEXT_MEMORY_CYCLE = 'NEXT_MEMORY_CYCLE';
 
-export function nextMemoryCycle(data) {
+export function nextMemoryCycle(data: unknown) {
     return {
         type: NEXT_MEMORY_CYCLE,
         value: data

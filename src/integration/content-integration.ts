@@ -27,7 +27,7 @@ const tokenizer = buildLexer([
 
 const numberParser = apply(
     seq(opt_sc(tok(Tokens.NumberSign)), opt_sc(tok(Tokens.NumberHex)), tok(Tokens.Number), opt_sc(tok(Tokens.NumberDecimal))),
-    (num: [Token<Tokens.NumberSign>, Token<Tokens.NumberHex>, Token<Tokens.Number>, Token<Tokens.NumberDecimal>]) => {
+    (num: [Token<Tokens> | undefined, Token<Tokens> | undefined, Token<Tokens>, Token<Tokens> | undefined]) => {
         // Check the number base (hex or decimal)
         let base = 10;
         if (num[1]) {
@@ -57,7 +57,7 @@ const numberParser = apply(
 
 const contentParser = apply(
     rep_sc(seq(tok(Tokens.Pos), rep_sc(numberParser))),
-    (content: [Token<Tokens.Pos>, number[]][]) => {
+    (content: [Token<Tokens>, number[]][]) => {
         let result: { [k: number]: number } = {};
         for (let i = 0; i < content.length; i++) {
             var j = 0;
@@ -141,15 +141,15 @@ export class ContentIntegration {
         result.forEach(section => {
             switch (section[0].text) {
                 case '#FPR':
-                    this.FPRContent = section[1];
+                    this.FPRContent = section[1] ?? {};
                     this.checkBounds('#FPR', this.FPRContent, Machine.NFP);
                     break;
                 case '#GPR':
-                    this.GPRContent = section[1];
+                    this.GPRContent = section[1] ?? {};
                     this.checkBounds('#GPR', this.GPRContent, Machine.NGP);
                     break;
                 case '#MEM':
-                    this.MEMContent = section[1];
+                    this.MEMContent = section[1] ?? {};
                     this.checkBounds('#MEM', this.MEMContent, Machine.MEMORY_SIZE);
                     break;
                 default:

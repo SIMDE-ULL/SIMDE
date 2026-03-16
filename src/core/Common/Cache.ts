@@ -89,7 +89,7 @@ export class DirectCache extends Cache {
   }
 
   public applyToSetData(
-    target: typeof Memory.prototype.getData,
+    target: typeof Memory.prototype.setData,
     thisArg: any,
     args: any[],
   ) {

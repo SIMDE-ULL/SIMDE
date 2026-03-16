@@ -5,7 +5,7 @@ import { OpcodesNames } from '../../../core/Common/Opcodes';
 import { Instruction } from '../../../core/Common/Instruction';
 
 
-function InstructionComponent(props) {
+function InstructionComponent(props: any) {
     let loc = props.loc;
 
     const [{ isDragging }, drag] = useDrag(() => ({

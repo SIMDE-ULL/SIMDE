@@ -6,42 +6,42 @@ export const NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES =
   "NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES";
 export const SET_CYCLES_PER_REPLICATION = "SET_CYCLES_PER_REPLICATION";
 
-export function nextInstructionsStatusesAverageCycles(data) {
+export function nextInstructionsStatusesAverageCycles(data: unknown) {
   return {
     type: NEXT_INSTRUCTIONS_STATUSES_AVERAGE_CYCLES,
     value: data,
   };
 }
 
-export function nextStatusesCount(data) {
+export function nextStatusesCount(data: unknown) {
   return {
     type: NEXT_STATUSES_COUNT,
     value: data,
   };
 }
 
-export function nextUnitsUsage(data) {
+export function nextUnitsUsage(data: unknown) {
   return {
     type: NEXT_UNITS_OCUPATION,
     value: data,
   };
 }
 
-export function nextTotalCommited(data) {
+export function nextTotalCommited(data: { commited: number; discarded: number }) {
   return {
     type: NEXT_TOTAL_COMMITED,
     value: data,
   };
 }
 
-export function nextInstructionsCommited(data) {
+export function nextInstructionsCommited(data: unknown) {
   return {
     type: NEXT_INSTRUCTIONS_COMMITED,
     value: data,
   };
 }
 
-export function setCyclesPerReplication(data) {
+export function setCyclesPerReplication(data: number[]) {
   return {
     type: SET_CYCLES_PER_REPLICATION,
     value: data,

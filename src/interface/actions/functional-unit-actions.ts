@@ -2,22 +2,22 @@ import { FunctionalUntitVisualEntry } from "../../core/Common/FunctionalUnit";
 
 export const FUNCTIONAL_UNIT_CYCLE = 'FUNCTIONAL_UNIT_CYCLE';
 
-export function nextFunctionalUnitCycle(data) {
+export function nextFunctionalUnitCycle(data: unknown[][]) {
     return {
         type: FUNCTIONAL_UNIT_CYCLE,
         value: data.map(element => mapFunctionalUnitData(element))
     };
 }
-function mapFunctionalUnitData(data): any {
-    let toReturnObject = {
+function mapFunctionalUnitData(data: unknown[]): { content: unknown[]; header: string[] } {
+    let toReturnObject: { content: unknown[]; header: string[] } = {
         content: [],
         header: []
     };
-    let content = new Array();
+    let content: unknown[] = [];
     if (data != null && data[0] != null) {
-        let aux = [];
+        let aux: unknown[] = [];
         for (let j = 0; j < data.length; j++) {
-            let instrsEntries: FunctionalUntitVisualEntry[] = data[j].getVisualData();
+            let instrsEntries: FunctionalUntitVisualEntry[] = (data[j] as { getVisualData(): FunctionalUntitVisualEntry[] }).getVisualData();
 
             for (let entry of instrsEntries) {
                 if (entry.id !== -1) {
@@ -45,8 +45,8 @@ function mapFunctionalUnitData(data): any {
     return toReturnObject;
 }
 
-function generateFunctionalUnitHeader(data): string[] {
-    let toReturn = [];
+function generateFunctionalUnitHeader(data: unknown[]): string[] {
+    let toReturn: string[] = [];
     if (data != null) {
         for (let i = 0; i < data.length; i++) {
             toReturn.push(`#${i}`);

@@ -4,7 +4,7 @@ import { CodeParser } from "./CodeParser";
 import { Machine } from "./Machine";
 
 export class Code {
-  private _lines: number;
+  private _lines: number = 0;
   private readonly _instructions: Instruction[] = new Array();
   private _numberOfBlocks: number = 0;
 

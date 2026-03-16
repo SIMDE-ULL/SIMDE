@@ -4,7 +4,7 @@ export const COLOR_CELL = 'COLOR_CELL';
 import { stageToString } from '../../core/Superscalar/SuperscalarEnums';
 import { ReorderBuffer } from '../../core/Superscalar/ReorderBuffer';
 
-export function nextReorderBufferCycle(data) {
+export function nextReorderBufferCycle(data: ReorderBuffer) {
     return {
         type: NEXT_REORDER_BUFFER_CYCLE,
         value: mapReorderBufferData(data)
@@ -15,7 +15,7 @@ export function mapReorderBufferData(unit: ReorderBuffer) {
     return unit.getVisualData();
 }
 
-export function colorCell(instructionUid, color) {
+export function colorCell(instructionUid: number, color: string) {
     return {
         type: COLOR_CELL,
         value: [instructionUid, color]

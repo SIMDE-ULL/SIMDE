@@ -6,7 +6,7 @@ import { FunctionalUnitType } from '../../../core/Common/FunctionalUnit';
 import { codeInput, memContent } from "../code/recorrelista";
 
 
-const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null as any, machine: null as any };
 
 beforeEach(() => {
     context.code = new Code();

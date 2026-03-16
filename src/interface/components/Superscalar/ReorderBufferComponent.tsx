@@ -31,7 +31,7 @@ export const ReorderBufferComponent: FC = () => {
   };
 
   const onColorAccept = () => {
-    dispatch(colorCell(pickerState.instructionUid, pickerState.selectedColor));
+    dispatch(colorCell(pickerState.instructionUid!, pickerState.selectedColor));
     setPickerState({
       displayColorPicker: false,
       instructionUid: null,

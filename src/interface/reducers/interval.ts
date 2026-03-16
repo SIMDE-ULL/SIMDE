@@ -1,12 +1,17 @@
-export function addInterval(state, field, interval) {
+import type { initialState } from './machine';
 
+type MachineState = typeof initialState;
+
+export function addInterval(state: MachineState, field: string, interval: number[]): MachineState {
+
+    const currentField = state[field as keyof MachineState] as { visibleRangeValues: number[]; data: unknown[] };
     const newVisibleRangeValues = Array.from(
-        new Set([...state[field].visibleRangeValues, ...interval])
+        new Set([...currentField.visibleRangeValues, ...interval])
     ).sort((a, b) => +a - +b);
 
     let newState = {
         ...state,
-        history : state.history.map(historyEntry => {
+        history : state.history.map((historyEntry: any) => {
             const newHistoryEntry = {
                 ...historyEntry
             };
@@ -17,23 +22,24 @@ export function addInterval(state, field, interval) {
             return newHistoryEntry;
         })
     };
-    newState[field] = {
-        ...state[field],
+    (newState as any)[field] = {
+        ...currentField,
         visibleRangeValues: Array.from(
-            new Set([...state[field].visibleRangeValues, ...interval])
+            new Set([...currentField.visibleRangeValues, ...interval])
         ).sort((a, b) => +a - +b)
     };
 
     return newState;
 }
 
-export function removeInterval(state, field, interval) {
-    const newVisibleRangeValues = state[field].visibleRangeValues.filter(
-        x => !interval.has(x)
+export function removeInterval(state: MachineState, field: string, interval: Set<number>): MachineState {
+    const currentField = state[field as keyof MachineState] as { visibleRangeValues: number[]; data: unknown[] };
+    const newVisibleRangeValues = currentField.visibleRangeValues.filter(
+        (x: number) => !interval.has(x)
     );
     let newState = {
         ...state,
-        history : state.history.map(historyEntry => {
+        history : state.history.map((historyEntry: any) => {
             const newHistoryEntry = {
                 ...historyEntry
             };
@@ -45,12 +51,12 @@ export function removeInterval(state, field, interval) {
         })
     };
 
-    newState[field] = {
-        ...state[field],
-        visibleRangeValues: state[field].visibleRangeValues.filter(
-            x => !interval.has(x)
+    (newState as any)[field] = {
+        ...currentField,
+        visibleRangeValues: currentField.visibleRangeValues.filter(
+            (x: number) => !interval.has(x)
         )
     };
 
-    return (state = newState);
+    return newState;
 }

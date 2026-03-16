@@ -29,7 +29,7 @@ export const initialState = {
     batchStatsResults: {}
 };
 
-export function UiReducers(state = initialState, action) {
+export function UiReducers(state = initialState, action: { type: string; value?: any }) {
     switch (action.type) {
         case TOGGLE_LOAD_MODAL:
             return (state = {

@@ -5,8 +5,8 @@ import { VLIWCode } from "../../../../core/VLIW/VLIWCode";
 import { VLIWError } from "../../../../core/VLIW/VLIWError";
 
 const context: { code: VLIWCode; superscalarCode: Code } = {
-  code: null,
-  superscalarCode: null,
+  code: null as any,
+  superscalarCode: null as any,
 };
 
 beforeEach(() => {

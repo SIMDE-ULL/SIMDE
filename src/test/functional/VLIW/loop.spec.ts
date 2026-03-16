@@ -11,7 +11,7 @@ import { codeInput as doubleCodeInput, vliwCodeInput as doubleVliwCodeInput } fr
 import { codeInput as softCodeInput, vliwCodeInput as softVliwCodeInput } from "../code/buclesoft";
 import { codeInput as softCodeInput2, vliwCodeInput as softVliwCodeInput2 } from "../code/buclesoft2";
 
-const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null, superscalarCode: null, machine: null };
+const context: { code: VLIWCode, superscalarCode: Code, machine: VLIW } = { code: null as any, superscalarCode: null as any, machine: null as any };
 
 beforeEach(() => {
     context.code = new VLIWCode();

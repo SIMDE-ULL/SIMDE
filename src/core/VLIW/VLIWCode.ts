@@ -7,7 +7,7 @@ export class VLIWCode {
   public instructions: LargeInstruction[];
 
   private _largeInstructionNumber: number;
-  private _superscalarCode: Code;
+  private _superscalarCode!: Code;
 
   constructor(n?: number) {
     if (n) {
@@ -24,7 +24,7 @@ export class VLIWCode {
     return this._largeInstructionNumber;
   }
 
-  public getLargeInstruction(index: number): LargeInstruction {
+  public getLargeInstruction(index: number): LargeInstruction | null {
     if (index < 0 || index >= this._largeInstructionNumber) {
       return null;
     }
@@ -58,7 +58,7 @@ export class VLIWCode {
   }
 
   public clear() {
-    this.instructions = null;
+    this.instructions = [];
     this._largeInstructionNumber = 0;
   }
 

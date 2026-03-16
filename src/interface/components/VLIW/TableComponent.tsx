@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import VLIWOperationComponent from './VLIWOperationComponent';
 
 
-export function TableComponent(props) {
+export function TableComponent(props: any) {
     const [t, i18n] = useTranslation();
 
     return (
@@ -15,7 +15,7 @@ export function TableComponent(props) {
                     <div className="smd-table-header">
                         <div className="smd-table_row">
                         {props.header &&
-                            props.header.map((header, i) => (
+                            props.header.map((header: any, i: number) => (
                                 <div className="smd-table_cell smd-table_cell--title" key={`'VLIWHeader'${i}`}> 
                                         { `${t(header.translateKey)} ${header.extraValue}` } 
                                 </div>
@@ -24,12 +24,12 @@ export function TableComponent(props) {
                     </div>
                     <div className="smd-table-body">
                         {props.data &&
-                            props.data.map((row, i) => (
+                            props.data.map((row: any, i: number) => (
                                 <div className="smd-table_row" key={`${'VliwCode' + i}`} style={{background: (i === props.pc)? "grey" : ""}} >
                                     <div className="smd-table_cell"> 
                                             { i } 
                                     </div>
-                                    {row.map((col, j) => (
+                                    {row.map((col: any, j: number) => (
                                         <VLIWOperationComponent op={col}
                                             pos={[i, j]} key={`${'VliwCode' + i + '-' + j}`}
                                             onDropInstruction={props.onDropInstruction} />

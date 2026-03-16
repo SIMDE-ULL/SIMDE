@@ -24,10 +24,10 @@ export class Superscalar extends Machine {
 
   private static ISSUE_DEF = 4;
 
-  private _issue: number;
-  private _code: Code;
+  private _issue!: number;
+  private _code!: Code;
 
-  private _reserveStations: Map<FunctionalUnitType, ReserveStation>;
+  private _reserveStations: Record<number, ReserveStation>;
   private _reorderBuffer: ReorderBuffer;
   private _prefetchUnit: PrefetchUnit;
   private _decoder: PrefetchUnit;
@@ -83,7 +83,7 @@ export class Superscalar extends Machine {
     this.issue = Superscalar.ISSUE_DEF;
 
     this._jumpPrediction = new JumpPredictor(Superscalar.PREDTABLESIZE);
-    this._reserveStations = new Map<FunctionalUnitType, ReserveStation>();
+    this._reserveStations = {} as Record<number, ReserveStation>;
     let total = 0; //  total ROB size
     for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
       let size = this.getReserveStationSize(i);
@@ -94,7 +94,7 @@ export class Superscalar extends Machine {
     this._prefetchUnit = new PrefetchUnit(this.issue * 2);
     this._decoder = new PrefetchUnit(this.issue);
 
-    this._code = null;
+    this._code = new Code();
 
     this._aluMem = new Array(FunctionalUnitNumbers[FunctionalUnitType.MEMORY]);
 
@@ -242,7 +242,7 @@ export class Superscalar extends Machine {
     this._reorderBuffer = new ReorderBuffer(this._reorderBuffer.size);
     this._decoder = new PrefetchUnit(this._decoder.size);
     this._prefetchUnit = new PrefetchUnit(this._prefetchUnit.size);
-    this._code = null;
+    this._code = new Code();
 
     for (let j = 0; j < this.aluMem.length; j++) {
       this.aluMem[j] = new FunctionalUnit(
@@ -475,7 +475,7 @@ export class Superscalar extends Machine {
   }
 
   writeInstruction(type: FunctionalUnitType, num: number) {
-    let resul;
+    let resul: number | undefined;
     let instUid = this.functionalUnit[type][num].getReadyInstructionUid();
     if (instUid !== -1) {
       let inst = this._reorderBuffer.getInstruction(instUid);
@@ -511,7 +511,7 @@ export class Superscalar extends Machine {
         // we dont do anything at this stage with stores
         // in fact, stores cant enter a functional unit
       } else {
-        resul = execution.result;
+        resul = execution!.result;
       }
 
       // Finish the instruction execution
@@ -520,12 +520,12 @@ export class Superscalar extends Machine {
       // (jumps dont return a value for instructions, so we skip them)
       if (!inst.isJumpInstruction()) {
         for (let j = 0; j < FUNCTIONALUNITTYPESQUANTITY; j++) {
-          this._reserveStations[j].setROBValue(instUid, resul);
+          this._reserveStations[j].setROBValue(instUid, resul!);
         }
       }
 
       // update the reorder buffer with the result
-      this._reorderBuffer.writeResultValue(instUid, resul);
+      this._reorderBuffer.writeResultValue(instUid, resul!);
 
       // Remove the instruction entry from the reserve station
       this._reserveStations[type].removeInstruction(instUid);

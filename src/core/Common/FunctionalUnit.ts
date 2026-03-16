@@ -137,7 +137,7 @@ export class FunctionalUnit {
     return this.getReadyInstruction()?.uid || -1;
   }
 
-  public getReadyInstruction(): Instruction {
+  public getReadyInstruction(): Instruction | null {
     return this._instructions.length > 0 &&
       this._instructions[0].blankTimeUnitsAhead === 0
       ? this._instructions[0].instruction
@@ -148,7 +148,7 @@ export class FunctionalUnit {
   public executeReadyInstruction(
     firstValue: number = 0,
     secondValue: number = 0,
-  ): FunctionalUnitResult {
+  ): FunctionalUnitResult | null {
     if (
       this._instructions.length == 0 ||
       this._instructions[0].blankTimeUnitsAhead > 0
@@ -228,7 +228,7 @@ export class FunctionalUnit {
     return ref;
   }
 
-  public getInstruction(id: number): Instruction {
+  public getInstruction(id: number): Instruction | null {
     for (let i = 0; i < this._instructions.length; i++) {
       if (this._instructions[i].instruction.id === id) {
         return this._instructions[i].instruction;

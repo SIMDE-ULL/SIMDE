@@ -55,7 +55,7 @@ export function generateIntervalFromImput(input: string, max: number): number[] 
     return Array.from(newInterval);
 }
 
-export function generateRangeArray(size) {
+export function generateRangeArray(size: number) {
     if (size < 0) {
         throw new Error('Invalid array range');
     }

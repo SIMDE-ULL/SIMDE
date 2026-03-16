@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export function PrefetchDecoderComponent(props) {
+export function PrefetchDecoderComponent(props: any) {
     const [t, i18n] = useTranslation();
 
     return (
@@ -10,7 +10,7 @@ export function PrefetchDecoderComponent(props) {
                 <div className='panel-body'>
                     <div className='smd-table'>
                     {
-                        props.data && props.data.map((element, i) =>
+                        props.data && props.data.map((element: any, i: number) =>
                         <div className='smd-table_row' key={props.title + 'row' + i}>
                                 <div className='smd-table_cell' title={element.value} key={props.title + i} style={{background: props.colors.uidColors[element.uid]}}>{element != null ? element.id : `&nbsp;`}</div>
                         </div>)

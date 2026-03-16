@@ -1,6 +1,6 @@
 export const VIEW_BASIC_BLOCKS = 'VIEW_BASIC_BLOCKS';
 
-export function viewBasicBlocks(toggle) {
+export function viewBasicBlocks(toggle: boolean) {
     return {
         type: VIEW_BASIC_BLOCKS,
         value: toggle

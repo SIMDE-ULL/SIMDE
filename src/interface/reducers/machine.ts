@@ -50,10 +50,10 @@ export const MAX_HISTORY_SIZE = 10;
 export const PREDICATE_SIZE = 64;
 
 export const initialState = {
-    prefetchUnit: [],
-    decoder: [],
-    jumpPrediction: [],
-    history: [],
+    prefetchUnit: [] as any[],
+    decoder: [] as any[],
+    jumpPrediction: [] as any[],
+    history: [] as any[],
     functionalUnitIntAdd: {},
     functionalUnitIntSub: {},
     functionalUnitFloAdd: {},
@@ -61,61 +61,61 @@ export const initialState = {
     functionalUnitMemory: {},
     functionalUnitJump: {},
     functionalUnitAluMem: {},
-    reserveStationIntAdd: [],
-    reserveStationIntSub: [],
-    reserveStationFloAdd: [],
-    reserveStationFloSub: [],
-    reserveStationMemory: [],
-    reserveStationJump: [],
+    reserveStationIntAdd: [] as any[],
+    reserveStationIntSub: [] as any[],
+    reserveStationFloAdd: [] as any[],
+    reserveStationFloSub: [] as any[],
+    reserveStationMemory: [] as any[],
+    reserveStationJump: [] as any[],
     ROBGpr: {
         data: {}
     },
     ROBFpr: {
         data: {}
     },
-    reorderBuffer: [],
+    reorderBuffer: [] as any[],
     generalRegisters: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(Machine.NGP)
     },
     floatingRegisters: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(Machine.NFP)
     },
     memory: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(Machine.MEMORY_SIZE)
     },
     predicate: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     natGpr: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     natFpr: {
-        data: [],
+        data: [] as any[],
         visibleRangeValues: generateRangeArray(PREDICATE_SIZE)
     },
     stats: {
         commited: 0,
         discarded: 0,
-        commitedPerInstr: [],
+        commitedPerInstr: [] as any[],
         unitsUsage: new Map(),
         statusesCount: new Map(),
         instructionsStatusesAverageCycles: new Map()
     },
     cycle: 0,
     pc: 0,
-    code: [],
-    vliwCode: [],
-    vliwExecutionHeaderTable: [],
-    vliwExecutionTable: [],
+    code: [] as any[],
+    vliwCode: [] as any[],
+    vliwExecutionHeaderTable: [] as any[],
+    vliwExecutionTable: [] as any[],
     colorBasicBlocks: false
 };
 
-export function MachineReducers(state = initialState, action): typeof initialState {
+export function MachineReducers(state = initialState, action: { type: string; value?: any }): typeof initialState {
     switch (action.type) {
         case NEXT_PREFETCH_CYCLE:
             return (state = { ...state, prefetchUnit: action.value });

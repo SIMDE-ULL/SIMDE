@@ -5,7 +5,7 @@ import { SuperscalarStatus } from '../../../core/Superscalar/SuperscalarEnums';
 import { codeInput, resultContent } from "../code/despl";
 
 
-const context: { code: Code, machine: Superscalar } = { code: null, machine: null };
+const context: { code: Code, machine: Superscalar } = { code: null as any, machine: null as any };
 
 beforeEach(() => {
     context.code = new Code();

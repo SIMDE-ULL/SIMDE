@@ -4,11 +4,11 @@ import { Opcodes } from '../Common/Opcodes';
 
 export class VLIWOperation extends Instruction {
 
-    private _functionalUnitType: FunctionalUnitType;
-    private _functionalUnitIndex: number;
-    private _predicate: number;
-    private _predicateTrue: number;
-    private _predicateFalse: number;
+    private _functionalUnitType!: FunctionalUnitType;
+    private _functionalUnitIndex!: number;
+    private _predicate!: number;
+    private _predicateTrue!: number;
+    private _predicateFalse!: number;
 
     constructor(operation?: VLIWOperation, instruction?: Instruction, type?: FunctionalUnitType, functionalUnitIndex?: number) {
         if (operation) {
@@ -33,9 +33,9 @@ export class VLIWOperation extends Instruction {
         this._predicateFalse = operation._predicateFalse;
     }
 
-    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType, functionalUnitIndex: number) {
-        this._functionalUnitType = functionalUnitType;
-        this._functionalUnitIndex = functionalUnitIndex;
+    buildFromInstruction(instruction: Instruction, functionalUnitType: FunctionalUnitType | undefined, functionalUnitIndex: number | undefined) {
+        this._functionalUnitType = functionalUnitType!;
+        this._functionalUnitIndex = functionalUnitIndex ?? 0;
         this._predicate = 0;
         this._predicateTrue = 0;
         this._predicateFalse = 0;

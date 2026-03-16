@@ -19,7 +19,7 @@ export enum SuperscalarStatus {
 }
 
 export function stageToString(index: number): string {
-  const stages = {
+  const stages: Record<number, string> = {
     0: "ISSUE",
     1: "EXECUTE",
     2: "WRITE",

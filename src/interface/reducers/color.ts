@@ -5,7 +5,7 @@ export const initialState = {
     IidColors: {}
 }
 
-export function ColorReducers(state = initialState, action) {
+export function ColorReducers(state = initialState, action: { type: string; value?: any }) {
     switch (action.type) {
         case COLOR_CELL:
             return (state = {

@@ -41,7 +41,7 @@ export const StatsTabComponent: FC = () => {
               },
               series:
                 unitsUsage &&
-                Array.from(unitsUsage.keys()).map((unitName: string) => ({
+                (Array.from(unitsUsage.keys()) as string[]).map((unitName) => ({
                   name: t("stats.units." + unitName),
                   type: "line",
                   data: unitsUsage

@@ -3,16 +3,16 @@ import { FunctionalUnitType } from "./FunctionalUnit";
 import { opcodeToFunctionalUnit } from "./Opcodes";
 
 export class Instruction {
-  public id: number;
-  public basicBlock: number;
-  public opcode: number;
+  public id: number = 0;
+  public basicBlock: number = 0;
+  public opcode: number = 0;
   protected _operands: number[] = new Array(3);
   protected _operandsString: string[] = new Array(3);
-  protected _label: string;
+  protected _label: string = "";
   protected _breakPoint: boolean = false;
 
   public get uid(): number {
-    return this._uid;
+    return this._uid ?? 0;
   }
 
   public get breakPoint(): boolean {
@@ -35,7 +35,7 @@ export class Instruction {
     return this._operandsString;
   }
 
-  constructor(from?: Instruction, protected _uid?: number) {
+  constructor(from?: Instruction, protected _uid: number = 0) {
     if (from) {
       this.id = from.id;
       this.basicBlock = from.basicBlock;

@@ -73,7 +73,7 @@ export class StatsAgregator {
         if (!result.has(key)) {
           result.set(key, 0);
         }
-        result.set(key, result.get(key) + value);
+        result.set(key, result.get(key)! + value);
       }
     }
 
@@ -99,7 +99,7 @@ export class StatsAgregator {
           //iterate over the properties of the object
           for (let prop in value) {
             if (value.hasOwnProperty(prop)) {
-              result.get(key)[prop] += value[prop];
+              (result.get(key) as any)[prop] += (value as any)[prop];
             }
           }
         }
@@ -109,7 +109,7 @@ export class StatsAgregator {
     for (let [, value] of result) {
       for (let prop in value) {
         if (value.hasOwnProperty(prop)) {
-          value[prop] = value[prop] / this._stats.length;
+          (value as any)[prop] = (value as any)[prop] / this._stats.length;
         }
       }
     }

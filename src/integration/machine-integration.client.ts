@@ -7,7 +7,7 @@ import { ContentIntegration } from './content-integration';
  */
 export abstract class MachineIntegration {
 
-    public contentIntegration: ContentIntegration;
+    public contentIntegration!: ContentIntegration;
 
     /** Speed value sourced from UI. Set by components before calling play(). */
     public speedValue: number = 0;
@@ -26,11 +26,11 @@ export abstract class MachineIntegration {
 
     abstract stepForward: () => void;
 
-    abstract setBatchMode: (...config) => void;
+    abstract setBatchMode: (replications: number) => void;
 
-    abstract setMemory: (data: number[]) => void;
-    abstract setFpr: (data: number[]) => void;
-    abstract setGpr: (data: number[]) => void;
+    abstract setMemory: (data: { [k: number]: number }) => void;
+    abstract setFpr: (data: { [k: number]: number }) => void;
+    abstract setGpr: (data: { [k: number]: number }) => void;
 
     /**
      * Calculates the execution delay from the speed value.
@@ -42,7 +42,7 @@ export abstract class MachineIntegration {
         return this.speedValue ? defaultStep / this.speedValue : 0;
     }
 
-    calculateStandardDeviation(average, values): number {
+    calculateStandardDeviation(average: number, values: number[]): number {
         const diffs = values.map((value) => value - average);
         const squareDiffs = diffs.map(diff => diff * diff);
 

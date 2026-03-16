@@ -36,7 +36,7 @@ export class PrefetchUnit {
   }
 
   public get(): Instruction {
-    return this._entries.shift();
+    return this._entries.shift()!;
   }
 
   public getId(): number {

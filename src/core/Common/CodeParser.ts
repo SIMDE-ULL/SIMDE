@@ -71,14 +71,14 @@ const tokenizer = buildLexer([
 
 const inmParser = apply(
   tok(Tokens.Inmediate),
-  (num: Token<Tokens.Inmediate>) => {
+  (num: Token<Tokens>) => {
     return +num.text.slice(1);
   },
 );
 
 const regParser = apply(
   alt_sc(tok(Tokens.RegFP), tok(Tokens.RegGP)),
-  (reg: Token<Tokens.RegFP> | Token<Tokens.RegGP>) => {
+  (reg: Token<Tokens>) => {
     let type = RegType.GP;
     if (reg.kind === Tokens.RegFP) {
       type = RegType.FP;
@@ -101,10 +101,10 @@ const addressParser = apply(
   ),
   (
     address: [
-      Token<Tokens.Number>,
-      Token<Tokens.BraketOpen>,
+      Token<Tokens> | undefined,
+      Token<Tokens>,
       Reg,
-      Token<Tokens.BraketClose>,
+      Token<Tokens>,
     ],
   ) => {
     if (address[2].type === RegType.FP) {
@@ -119,7 +119,7 @@ const addressParser = apply(
 
 const opcodeParser = apply(
   tok(Tokens.Id),
-  (opcodeTok: Token<Tokens.Id>): OpcodeToken => {
+  (opcodeTok: Token<Tokens>): OpcodeToken => {
     const opcode: number = OpcodesNames.indexOf(opcodeTok.text);
     if (opcode !== -1) {
       return { opcode: opcode, pos: opcodeTok.pos };
@@ -204,9 +204,9 @@ export class CodeParser {
           | [OpcodeToken, Reg, Reg, Reg]
           | [OpcodeToken, Reg, Reg, number]
           | [OpcodeToken, Reg, Address]
-          | [OpcodeToken, Reg, Reg, Token<Tokens.Id>],
+          | [OpcodeToken, Reg, Reg, Token<Tokens>],
       ) => {
-        let type: Formats;
+        let type: Formats = Formats.Noop;
         const instruction: Instruction = new Instruction();
         let pos: TokenPosition;
 
@@ -306,7 +306,7 @@ export class CodeParser {
 
             instruction.setOperand(0, operation[1].num, operation[1].text);
             instruction.setOperand(1, operation[2].num, operation[2].text);
-            instruction.setOperand(2, undefined, operation[3].text);
+            instruction.setOperand(2, 0, operation[3].text);
           }
         } else if (operation.length === 3) {
           if (operation[1].type === RegType.FP) {
