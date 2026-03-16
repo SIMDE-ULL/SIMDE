@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
 
@@ -14,7 +13,7 @@ interface RegisterComponentProps {
 }
 
 /** Displays a bank of CPU registers with add/remove interval controls. */
-export const RegisterComponent: React.FC<RegisterComponentProps> = ({
+export const RegisterComponent: FC<RegisterComponentProps> = ({
   title,
   data,
   visibleRange,

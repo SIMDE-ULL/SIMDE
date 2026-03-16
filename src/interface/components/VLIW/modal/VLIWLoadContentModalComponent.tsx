@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState, type FC } from "react";
 import FileReaderInput from "../../Common/FileReaderInput";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -9,7 +8,7 @@ import VLIWIntegration from "../../../../integration/vliw-integration.client";
 import { ContentIntegration } from "../../../../integration/content-integration";
 
 /** VLIW content loading modal with textarea and file upload. */
-export const VLIWLoadContentModalComponent: React.FC = () => {
+export const VLIWLoadContentModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isVliwLoadContentModalOpen = useAppSelector(

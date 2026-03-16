@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
@@ -7,7 +6,7 @@ import { toggleBatchModal } from "../../../actions/modals";
 import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 
 /** Superscalar batch execution configuration modal. */
-export const BatchModalComponent: React.FC = () => {
+export const BatchModalComponent: FC = () => {
   const [replications, setReplications] = useState(10);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -17,7 +16,7 @@ export const BatchModalComponent: React.FC = () => {
     dispatch(toggleBatchModal(false));
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setReplications(Number(event.target.value));
   };
 

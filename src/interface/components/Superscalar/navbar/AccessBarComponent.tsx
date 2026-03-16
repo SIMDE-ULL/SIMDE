@@ -1,11 +1,10 @@
-import * as React from "react";
-import { useRef } from "react";
+import { useRef, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
 import SuperscalarIntegration from "../../../../integration/superscalar-integration.client";
 
 /** Superscalar playback control bar with play/pause/stop/step and speed controls. */
-export const AccessBarComponent: React.FC = () => {
+export const AccessBarComponent: FC = () => {
   const { t } = useTranslation();
   const cycle = useAppSelector((state) => state.Machine.cycle);
   const speedRef = useRef<HTMLInputElement>(null);

@@ -1,11 +1,11 @@
-import * as React from "react";
+import { type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { closeBatchResults } from "../../../actions/modals";
 
 /** VLIW batch execution results modal showing statistics. */
-export const BatchResultsModalComponent: React.FC = () => {
+export const BatchResultsModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isBatchResultsModalOpen = useAppSelector(

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
@@ -36,7 +35,7 @@ SF	F2 1(R3)
 `.trim();
 
 /** Superscalar code loading modal with inline editor and file upload. */
-export const LoadModalComponent: React.FC = () => {
+export const LoadModalComponent: FC = () => {
   const [modalError, setModalError] = useState("");
   const [modalCode, setModalCode] = useState(DEFAULT_MODAL_CODE);
   const { t } = useTranslation();

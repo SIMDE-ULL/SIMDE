@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 
 /** Props for the ROB mapper display component. */
 interface ROBMapperComponentProps {
@@ -7,7 +7,7 @@ interface ROBMapperComponentProps {
 }
 
 /** Displays the reorder buffer to register mapping table. */
-export const ROBMapperComponent: React.FC<ROBMapperComponentProps> = ({
+export const ROBMapperComponent: FC<ROBMapperComponentProps> = ({
   title,
   data,
 }) => {

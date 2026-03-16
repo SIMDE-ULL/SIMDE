@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
@@ -7,7 +6,7 @@ import { toggleBatchModal } from "../../../actions/modals";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
 
 /** VLIW batch execution modal for configuring replication count. */
-export const BatchModalComponent: React.FC = () => {
+export const BatchModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isBatchModalOpen = useAppSelector(

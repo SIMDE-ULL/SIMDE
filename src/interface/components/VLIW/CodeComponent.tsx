@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Instruction } from "../../../core/Common/Instruction";
@@ -13,7 +13,7 @@ interface CodeComponentProps {
 }
 
 /** VLIW code listing with optional basic block coloring. */
-export const CodeComponent: React.FC<CodeComponentProps> = ({
+export const CodeComponent: FC<CodeComponentProps> = ({
   code,
   colorBasicBlocks,
   toggleBreakPoint,

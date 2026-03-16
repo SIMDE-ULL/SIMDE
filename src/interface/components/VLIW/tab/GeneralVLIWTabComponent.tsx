@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { superscalarLoad } from "../../../actions";
@@ -19,7 +19,7 @@ import { PREDICATE_SIZE } from "../../../reducers/machine";
 import VLIWIntegration from "../../../../integration/vliw-integration.client";
 
 /** Main VLIW simulation view tab showing pipeline stages and functional units. */
-export const GeneralVLIWTabComponent: React.FC = () => {
+export const GeneralVLIWTabComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 

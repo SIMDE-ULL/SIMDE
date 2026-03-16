@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type CSSProperties, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { HexColorPicker } from "react-colorful";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
@@ -12,7 +11,7 @@ interface ColorPickerState {
 }
 
 /** Displays the reorder buffer entries with color-coded instruction tracking. */
-export const ReorderBufferComponent: React.FC = () => {
+export const ReorderBufferComponent: FC = () => {
   const [pickerState, setPickerState] = useState<ColorPickerState>({
     displayColorPicker: false,
     instructionUid: null,
@@ -48,7 +47,7 @@ export const ReorderBufferComponent: React.FC = () => {
     });
   };
 
-  const popover: React.CSSProperties = {
+  const popover: CSSProperties = {
     position: "absolute",
     zIndex: 2,
     top: "50%",

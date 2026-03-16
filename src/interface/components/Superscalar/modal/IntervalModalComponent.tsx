@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { generateIntervalFromImput } from "../../../utils/interval";
@@ -14,7 +13,7 @@ interface IntervalModalComponentProps {
 }
 
 /** Modal dialog for entering register/memory index intervals (e.g. "0-15,32"). */
-export const IntervalModalComponent: React.FC<IntervalModalComponentProps> = ({
+export const IntervalModalComponent: FC<IntervalModalComponentProps> = ({
   title,
   onAccept,
   max,
@@ -25,7 +24,7 @@ export const IntervalModalComponent: React.FC<IntervalModalComponentProps> = ({
   const [error, setError] = useState("");
   const { t } = useTranslation();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     setError("");
   };

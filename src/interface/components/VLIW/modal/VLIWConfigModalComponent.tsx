@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import {
   Alert,
   Button,
@@ -60,7 +59,7 @@ const DEFAULT_CONFIG: VliwConfig = {
 };
 
 /** VLIW machine configuration modal for functional units, cache, and parameters. */
-export const VLIWConfigModalComponent: React.FC = () => {
+export const VLIWConfigModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isVliwConfigModalOpen = useAppSelector(
@@ -73,11 +72,11 @@ export const VLIWConfigModalComponent: React.FC = () => {
     closeModal();
   };
 
-  const updateNumConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateNumConfig = (event: ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, [event.target.name]: Number(event.target.value) });
   };
 
-  const updateStrConfig = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const updateStrConfig = (event: ChangeEvent<HTMLSelectElement>) => {
     setConfig({ ...config, [event.target.name]: event.target.value });
   };
 

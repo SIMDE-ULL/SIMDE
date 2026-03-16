@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
@@ -9,7 +8,7 @@ import SuperscalarIntegration from "../../../../integration/superscalar-integrat
 import { ContentIntegration } from "../../../../integration/content-integration";
 
 /** Modal for loading initial register/memory content into the superscalar simulator. */
-export const SuperscalarLoadContentModalComponent: React.FC = () => {
+export const SuperscalarLoadContentModalComponent: FC = () => {
   const [error, setError] = useState("");
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const { t } = useTranslation();

@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import IntervalModalComponent from "./modal/IntervalModalComponent";
 
@@ -13,7 +12,7 @@ interface RegisterComponentProps {
 }
 
 /** VLIW register bank display with interval add/remove modals. */
-export const RegisterComponent: React.FC<RegisterComponentProps> = ({
+export const RegisterComponent: FC<RegisterComponentProps> = ({
   title,
   data,
   visibleRange,

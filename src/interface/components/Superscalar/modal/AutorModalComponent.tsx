@@ -1,11 +1,11 @@
-import * as React from "react";
+import { type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { toggleAuthorModal } from "../../../actions/modals";
 
 /** About/author information modal. */
-export const AutorModalComponent: React.FC = () => {
+export const AutorModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isAuthorModalOpen = useAppSelector(

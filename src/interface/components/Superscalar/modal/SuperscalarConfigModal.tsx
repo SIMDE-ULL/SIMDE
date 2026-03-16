@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import {
   Alert,
   Button,
@@ -61,7 +60,7 @@ const DEFAULT_CONFIG: SuperscalarConfig = {
 };
 
 /** Modal for configuring superscalar functional units, issue grade, and cache. */
-export const SuperscalarConfigModal: React.FC = () => {
+export const SuperscalarConfigModal: FC = () => {
   const [config, setConfig] = useState<SuperscalarConfig>(DEFAULT_CONFIG);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -74,11 +73,11 @@ export const SuperscalarConfigModal: React.FC = () => {
     closeModal();
   };
 
-  const updateNumConfig = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const updateNumConfig = (event: ChangeEvent<HTMLInputElement>) => {
     setConfig({ ...config, [event.target.name]: Number(event.target.value) });
   };
 
-  const updateStrConfig = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const updateStrConfig = (event: ChangeEvent<HTMLSelectElement>) => {
     setConfig({ ...config, [event.target.name]: event.target.value });
   };
 

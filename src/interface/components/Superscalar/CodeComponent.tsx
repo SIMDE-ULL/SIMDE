@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { OpcodesNames } from "../../../core/Common/Opcodes";
 import { Instruction } from "../../../core/Common/Instruction";
@@ -15,7 +14,7 @@ interface CodeComponentProps {
 const COLOR_PALETTE = ["blue", "green", "yellow", "pink"];
 
 /** Displays the loaded program code with breakpoint toggling and basic block coloring. */
-export const CodeComponent: React.FC<CodeComponentProps> = ({
+export const CodeComponent: FC<CodeComponentProps> = ({
   code,
   toggleBreakPoint,
   colorBasicBlocks,

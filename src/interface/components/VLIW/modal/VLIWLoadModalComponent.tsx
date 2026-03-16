@@ -1,8 +1,7 @@
 import { Code } from "@/core/Common/Code";
 import { VLIWCode } from "@/core/VLIW/VLIWCode";
 import FileReaderInput from "@/interface/components/Common/FileReaderInput";
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { Alert, Button, Form, Modal, Stack } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
@@ -42,7 +41,7 @@ const DEFAULT_MODAL_VLIW_CODE = `2	0 0 0 0	2 0 1 0
 `;
 
 /** VLIW code loading modal with general and VLIW code text areas. */
-export const VLIWLoadModalComponent: React.FC = () => {
+export const VLIWLoadModalComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const isLoadModalOpen = useAppSelector((state) => state.Ui.isLoadModalOpen);

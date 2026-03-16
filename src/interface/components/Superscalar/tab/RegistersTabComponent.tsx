@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 import RegisterComponent from "../RegisterComponent";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import {
@@ -12,7 +12,7 @@ import {
 import { Machine } from "../../../../core/Common/Machine";
 
 /** Tab displaying memory, general purpose, and floating point register banks. */
-export const RegisterTabComponent: React.FC = () => {
+export const RegisterTabComponent: FC = () => {
   const dispatch = useAppDispatch();
   const memory = useAppSelector((state) => state.Machine.memory);
   const generalRegisters = useAppSelector((state) => state.Machine.generalRegisters);

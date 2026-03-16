@@ -1,11 +1,10 @@
-import * as React from "react";
-import { useRef } from "react";
+import { useRef, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
 import VliwIntegration from "../../../../integration/vliw-integration.client";
 
 /** VLIW playback control bar with play/pause/stop/step and speed controls. */
-export const VLIWAccessBarComponent: React.FC = () => {
+export const VLIWAccessBarComponent: FC = () => {
   const { t } = useTranslation();
   const cycle = useAppSelector((state) => state.Machine.cycle);
   const speedRef = useRef<HTMLInputElement>(null);

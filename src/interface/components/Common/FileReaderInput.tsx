@@ -1,20 +1,19 @@
-import * as React from "react";
-import { useRef } from "react";
+import { useRef, type CSSProperties, type ChangeEvent, type FC, type ReactNode } from "react";
 
 /** Props for the file reader input wrapper component. */
 interface FileReaderInputProps {
   /** Format to read the file as. Defaults to 'url'. */
   as?: "binary" | "buffer" | "text" | "url";
-  children?: React.ReactNode;
+  children?: ReactNode;
   /** Callback receiving the original event and an array of [FileReader result, File] tuples. */
-  onChange: (event: React.ChangeEvent<HTMLInputElement>, results: [ProgressEvent<FileReader>, File][]) => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>, results: [ProgressEvent<FileReader>, File][]) => void;
   /** File input accept attribute (e.g. ".pla", ".vliw"). */
   accept: string;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
 /** Wraps a hidden file input so any child element can trigger file selection and reading. */
-export const FileReaderInput: React.FC<FileReaderInputProps> = ({
+export const FileReaderInput: FC<FileReaderInputProps> = ({
   as: readFormat,
   children,
   onChange,
@@ -23,7 +22,7 @@ export const FileReaderInput: React.FC<FileReaderInputProps> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const readAs = (readFormat || "url").toLowerCase();
 
@@ -62,7 +61,7 @@ export const FileReaderInput: React.FC<FileReaderInputProps> = ({
     inputRef.current?.click();
   };
 
-  const hiddenInputStyle: React.CSSProperties = children
+  const hiddenInputStyle: CSSProperties = children
     ? { position: "absolute", top: "-9999px" }
     : {};
 

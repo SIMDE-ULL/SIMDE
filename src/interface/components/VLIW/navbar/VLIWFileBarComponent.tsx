@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { DropdownButton } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -17,7 +16,7 @@ import { downloadJsonFile, downloadTextFile } from "../../../utils/Downloader";
 import vliwIntegration from "../../../../integration/vliw-integration.client";
 
 /** VLIW menu bar with file, view, config, experimentation, and help menus. */
-export const VLIWFileBarComponent: React.FC = () => {
+export const VLIWFileBarComponent: FC = () => {
   const [color, setColor] = useState(false);
   const { t } = useTranslation();
   const dispatch = useAppDispatch();

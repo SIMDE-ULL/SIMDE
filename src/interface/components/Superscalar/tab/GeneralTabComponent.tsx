@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
 import { superscalarLoad } from "../../../actions";
@@ -12,7 +12,7 @@ import ReorderBufferComponent from "../ReorderBufferComponent";
 import JumpPredictionComponent from "../JumpPredictionComponent";
 
 /** Main simulation view tab showing all superscalar pipeline stages. */
-export const GeneralTabComponent: React.FC = () => {
+export const GeneralTabComponent: FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 

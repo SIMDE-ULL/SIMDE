@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { generateIntervalFromImput } from "../../../utils/interval";
@@ -13,7 +12,7 @@ interface IntervalModalComponentProps {
 }
 
 /** VLIW interval input modal for adding/removing register display ranges. */
-export const IntervalModalComponent: React.FC<IntervalModalComponentProps> = ({
+export const IntervalModalComponent: FC<IntervalModalComponentProps> = ({
   title,
   onAccept,
   max,
@@ -24,7 +23,7 @@ export const IntervalModalComponent: React.FC<IntervalModalComponentProps> = ({
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     setError("");
   };

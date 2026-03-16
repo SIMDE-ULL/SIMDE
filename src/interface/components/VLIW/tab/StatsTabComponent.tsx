@@ -1,10 +1,10 @@
-import * as React from "react";
+import { type FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../store/hooks";
 import ReactECharts from "echarts-for-react";
 
 /** VLIW statistics visualization tab with unit usage and cycle charts. */
-export const StatsTabComponent: React.FC = () => {
+export const StatsTabComponent: FC = () => {
   const { t } = useTranslation();
 
   const unitsUsage = useAppSelector((state) => state.Machine.stats.unitsUsage);
