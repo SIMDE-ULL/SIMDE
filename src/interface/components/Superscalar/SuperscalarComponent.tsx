@@ -19,12 +19,14 @@ import BatchModalComponent from "../Common/Modal/BatchModalComponent";
 import BatchResultsModalComponent from "../Common/Modal/BatchResultsModalComponent";
 
 import SuperscalarIntegration from "../../../integration/superscalar-integration.client";
+import ExecutionNotification from "../Common/ExecutionNotification";
 
 /** Superscalar simulation page with tabbed views and modal dialogs. */
 const SuperscalarComponent = () => {
     const { t } = useTranslation();
     return (
         <div className='smd'>
+            <ExecutionNotification />
             <div className='navigation-bars'>
                 <FileBarComponent />
                 <AccessBarComponent />

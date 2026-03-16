@@ -34,6 +34,7 @@ import i18n from '../i18n';
 import { Code } from '../core/Common/Code';
 import { createCache } from '../core/Common/Cache';
 import { SuperscalarStatus } from '../core/Superscalar/SuperscalarEnums';
+import { showNotification, clearNotification } from '../interface/reducers/notification';
 
 
 import { Stats } from '../stats/stats';
@@ -217,7 +218,7 @@ export class SuperscalarIntegration extends MachineIntegration {
             this.collectStats();
             this.dispatchAllSuperscalarActions();
             this.finishedExecution = true;
-            if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
+            store.dispatch(showNotification(i18n.t('execution.finished')));
         }
     }
 
@@ -267,6 +268,7 @@ export class SuperscalarIntegration extends MachineIntegration {
     pause = () => {
         this.stopCondition = ExecutionStatus.PAUSE;
         this.executing = false;
+        store.dispatch(clearNotification());
     }
 
     stop = () => {
@@ -276,6 +278,7 @@ export class SuperscalarIntegration extends MachineIntegration {
         // During normal execution, a semaphore prevents the asynchronous
         // interval callback from re-entering the execution loop.
         this.stopCondition = ExecutionStatus.STOP;
+        store.dispatch(clearNotification());
 
         if (!this.executing) {
             this.executing = false;
@@ -328,11 +331,10 @@ export class SuperscalarIntegration extends MachineIntegration {
                     this.executionLoop(speed);
                 } else {
                     if (machineStatus === SuperscalarStatus.SUPER_BREAKPOINT) {
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.stopped'));
+                        store.dispatch(showNotification(i18n.t('execution.stopped')));
                     } else if (machineStatus === SuperscalarStatus.SUPER_ENDEXE) {
                         this.finishedExecution = true;
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
-                        
+                        store.dispatch(showNotification(i18n.t('execution.finished')));
                     }
                 }
             }, speed);

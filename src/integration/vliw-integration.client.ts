@@ -31,6 +31,7 @@ import { displayBatchResults } from '../interface/actions/modals';
 import { Stats } from '../stats/stats';
 import { StatsAgregator } from '../stats/aggregator';
 import { FunctionalUnitType } from '@/core/Common/FunctionalUnit';
+import { showNotification, clearNotification } from '../interface/reducers/notification';
 
 export class VLIWIntegration extends MachineIntegration {
     // Global objects for binding React to the View
@@ -207,14 +208,14 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[err]);
+                    store.dispatch(showNotification(i18n.t('execution.error') + ": " + VLIWError[err]));
                     err = VLIWError.ENDEXE;
                 }
             }
             this.collectStats();
             this.dispatchAllVLIWActions();
             this.finishedExecution = true;
-            if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
+            store.dispatch(showNotification(i18n.t('execution.finished')));
         }
     }
 
@@ -242,7 +243,7 @@ export class VLIWIntegration extends MachineIntegration {
                 err = this.vliw.tic();
                 this.collectStats();
                 if (err !== VLIWError.OK && err !== VLIWError.ENDEXE && err !== VLIWError.PCOUTOFRANGE) {
-                    if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[err]);
+                    store.dispatch(showNotification(i18n.t('execution.error') + ": " + VLIWError[err]));
                     err = VLIWError.ENDEXE;
                 }
             }
@@ -263,6 +264,7 @@ export class VLIWIntegration extends MachineIntegration {
     pause = () => {
         this.stopCondition = ExecutionStatus.PAUSE;
         this.executing = false;
+        store.dispatch(clearNotification());
     }
 
     stop = () => {
@@ -272,6 +274,7 @@ export class VLIWIntegration extends MachineIntegration {
         // During normal execution, a semaphore prevents the asynchronous
         // interval callback from re-entering the execution loop.
         this.stopCondition = ExecutionStatus.STOP;
+        store.dispatch(clearNotification());
 
         if (!this.executing) {
             this.executing = false;
@@ -326,14 +329,14 @@ export class VLIWIntegration extends MachineIntegration {
                         stop = false;
                         break;
                     case VLIWError.BREAKPOINT:
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.stopped'));
+                        store.dispatch(showNotification(i18n.t('execution.stopped')));
                         break;
                     case VLIWError.ENDEXE:
                         this.finishedExecution = true;
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.finished'));
+                        store.dispatch(showNotification(i18n.t('execution.finished')));
                         break;
                     default:
-                        if (typeof window !== 'undefined') alert(i18n.t('execution.error') + ": " + VLIWError[machineStatus!]);
+                        store.dispatch(showNotification(i18n.t('execution.error') + ": " + VLIWError[machineStatus!]));
                         break;
                 }
 

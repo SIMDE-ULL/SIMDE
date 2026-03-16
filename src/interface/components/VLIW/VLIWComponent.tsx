@@ -21,13 +21,14 @@ import VLIWLoadModalComponent from "./modal/VLIWLoadModalComponent";
 import VLIWAccessBarComponent from "./navbar/VLIWAccessBarComponent";
 
 import VLIWLoadContentModalComponent from "./modal/VLIWLoadContentModalComponent";
-
+import ExecutionNotification from "../Common/ExecutionNotification";
 
 /** VLIW simulation page with tabbed views and modal dialogs. */
 const VLIWComponent = () => {
     const { t } = useTranslation();
     return (
         <div className='smd'>
+            <ExecutionNotification />
             <div className='navigation-bars'>
                 <VLIWFileBarComponent />
                 <VLIWAccessBarComponent />
