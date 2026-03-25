@@ -1,0 +1,33 @@
+[package]
+name = "SIMDE"
+version = "0.1.0"
+description = "Educational computer simulator on a mission to 'superscale' the study of computer architecture fundamentals"
+authors = [
+  "Iván Castilla Rodríguez <icasrod@ull.es>",
+  "Adrián Abreu González <adrianabreugonzalez@outlook.com>",
+  "Melissa Díaz Arteaga",
+  "Óscar Carrasco Benítez <me@oxca.be>",
+  "Francesco La Spina <endes@disroot.org>",
+  "Domenico Goya <wh0crypt@computer.org>"
+
+]
+license-file = "../LICENSE"
+repository = "https://github.com/SIMDE-ULL/SIMDE"
+edition = "2021"
+rust-version = "1.77.2"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.5.6", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.10.3", features = [] }
+tauri-plugin-log = "2"
