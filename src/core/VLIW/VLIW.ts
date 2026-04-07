@@ -1,10 +1,10 @@
 import { Machine } from '../Common/Machine';
 import { Opcodes } from '../Common/Opcodes';
 import { VLIWCode } from './VLIWCode';
-import { FunctionalUnit, FunctionalUnitResult, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
-import { DependencyChecker, Check } from './DependencyChecker';
+import { type FunctionalUnit, type FunctionalUnitResult, FunctionalUnitType, FUNCTIONALUNITTYPESQUANTITY } from '../Common/FunctionalUnit';
+import { DependencyChecker, type Check } from './DependencyChecker';
 import { VLIWError } from './VLIWError';
-import { VLIWOperation } from './VLIWOperation';
+import type { VLIWOperation } from './VLIWOperation';
 
 export class VLIW extends Machine {
 
@@ -15,7 +15,7 @@ export class VLIW extends Machine {
     private _code: VLIWCode;
 
     public get functionalUnitNumbers(): number[] {
-        let numbers: number[] = [];
+        const numbers: number[] = [];
         for (let i = 0; i < FUNCTIONALUNITTYPESQUANTITY; i++) {
             numbers.push(this.functionalUnit[i].length);
         }
@@ -68,9 +68,9 @@ export class VLIW extends Machine {
     //TODO: These checks functions are never used
     public checkCode() {
         for (let i = 0; i < this._code.getLargeInstructionNumber(); i++) {
-            let instruction = this._code.getLargeInstruction(i);
+            const instruction = this._code.getLargeInstruction(i);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
-                let operation = instruction.getOperation(j);
+                const operation = instruction.getOperation(j);
                 if (operation.getFunctionalUnitIndex() >= this.functionalUnit[operation.getFunctionalUnitType()].length) {
                     throw VLIWError.ERRHARD; // VLIW_ERRHARD;
                 }
@@ -107,7 +107,7 @@ export class VLIW extends Machine {
 
         let i;
         let j;
-        let pending: boolean = false;
+        let pending = false;
         this.status.cycle++;
 
         if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isEmpty()) {
@@ -116,8 +116,8 @@ export class VLIW extends Machine {
 
         if (!this.functionalUnit[FunctionalUnitType.JUMP][0].isStalled()) {
 
-            let execution = this.functionalUnit[FunctionalUnitType.JUMP][0].executeReadyInstruction();
-            let operation: any = (execution != null) ? execution.instruction : null;
+            const execution = this.functionalUnit[FunctionalUnitType.JUMP][0].executeReadyInstruction();
+            const operation: any = (execution != null) ? execution.instruction : null;
             if (operation != null) {
                 if (this._predR[operation.getPred()]) {
                     this.pc = this.runJump(operation);
@@ -180,7 +180,7 @@ export class VLIW extends Machine {
         this._gpr.tic();
         this._fpr.tic();
 
-        let instruction = this._code.getLargeInstruction(this.pc);
+        const instruction = this._code.getLargeInstruction(this.pc);
 
         if (!instruction) {
             if (pending) {
@@ -191,8 +191,8 @@ export class VLIW extends Machine {
         }
 
         for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
-            let type = instruction.getOperation(i).getFunctionalUnitType();
-            let index = instruction.getOperation(i).getFunctionalUnitIndex();
+            const type = instruction.getOperation(i).getFunctionalUnitType();
+            const index = instruction.getOperation(i).getFunctionalUnitIndex();
 
             // Check if the functional unit exists or if this operation is out of bounds
             if (index >= this.functionalUnit[type].length) {
@@ -209,7 +209,7 @@ export class VLIW extends Machine {
 
 
         for (i = 0; i < instruction.getVLIWOperationsNumber(); i++) {
-            let operation = instruction.getOperation(i);
+            const operation = instruction.getOperation(i);
             this.functionalUnit[operation.getFunctionalUnitType()][operation.getFunctionalUnitIndex()].addInstruction(operation);
 
             if (operation.opcode === Opcodes.LW) {
@@ -298,42 +298,45 @@ export class VLIW extends Machine {
     private runJump(operation: VLIWOperation): number {
 
         let newPC = this.pc;
-        if (operation.opcode === Opcodes.BEQ) {
-            if (this._gpr.content[operation.getOperand(0)] === this._gpr.content[operation.getOperand(1)]) {
-                newPC = operation.getOperand(2);
-                this._predR[operation.getPredTrue()] = true;
-                this._predR[operation.getPredFalse()] = false;
-            } else {
-                this._predR[operation.getPredTrue()] = false;
-                this._predR[operation.getPredFalse()] = true;
-            }
-        } else if (operation.opcode === Opcodes.BNE) {
-            if (this._gpr.content[operation.getOperand(0)] !== this._gpr.content[operation.getOperand(1)]) {
-                newPC = operation.getOperand(2);
-                this._predR[operation.getPredTrue()] = true;
-                this._predR[operation.getPredFalse()] = false;
-            } else {
-                this._predR[operation.getPredTrue()] = false;
-                this._predR[operation.getPredFalse()] = true;
-            }
-        } else if (operation.opcode === Opcodes.BGT) {
-            if (this._gpr.content[operation.getOperand(0)] > this._gpr.content[operation.getOperand(1)]) {
-                newPC = operation.getOperand(2);
-                this._predR[operation.getPredTrue()] = true;
-                this._predR[operation.getPredFalse()] = false;
-            } else {
-                this._predR[operation.getPredTrue()] = false;
-                this._predR[operation.getPredFalse()] = true;
-            }
-        } else {
-            throw new Error("Invalid jump operation: " + operation.opcode);
+
+        const isFloat = [Opcodes.BEQF, Opcodes.BNEF, Opcodes.BGTF].includes(operation.opcode);
+        const registerFile = isFloat ? this._fpr : this._gpr;
+        const val0 = registerFile.content[operation.getOperand(0)];
+        const val1 = registerFile.content[operation.getOperand(1)];
+
+        let conditionMet: boolean;
+        switch (operation.opcode) {
+            case Opcodes.BEQ:
+            case Opcodes.BEQF:
+                conditionMet = val0 === val1;
+                break;
+            case Opcodes.BNE:
+            case Opcodes.BNEF:
+                conditionMet = val0 !== val1;
+                break;
+            case Opcodes.BGT:
+            case Opcodes.BGTF:
+                conditionMet = val0 > val1;
+                break;
+            default:
+                throw new Error("Invalid jump operation: " + operation.opcode);
         }
+
+        if (conditionMet) {
+            newPC = operation.getOperand(2);
+            this._predR[operation.getPredTrue()] = true;
+            this._predR[operation.getPredFalse()] = false;
+        } else {
+            this._predR[operation.getPredTrue()] = false;
+            this._predR[operation.getPredFalse()] = true;
+        }
+
         return newPC;
     }
 
     private checkDependencies(row: number, id: number) {
-        let checkGPR: Check[] = new Array(Machine.NGP);
-        let checkFPR: Check[] = new Array(Machine.NFP);
+        const checkGPR: Check[] = new Array(Machine.NGP);
+        const checkFPR: Check[] = new Array(Machine.NFP);
 
         for (let i = 0; i < Machine.NGP; i++) {
             checkGPR[i].latency = 0;
@@ -344,7 +347,7 @@ export class VLIW extends Machine {
         }
 
         for (row = 0; row < this._code.getLargeInstructionNumber(); row++) {
-            let instruction = this._code.getLargeInstruction(row);
+            const instruction = this._code.getLargeInstruction(row);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 //TODO
                 //DependencyChecker.checkTargetOperation(instruction.getOperation(j), checkGPR, checkFPR, this._functionalUnitLatencies);
@@ -381,7 +384,7 @@ export class VLIW extends Machine {
                     index++;
                 }
             }
-            let instruction = this._code.getLargeInstruction(row);
+            const instruction = this._code.getLargeInstruction(row);
             for (let j = 0; j < instruction.getVLIWOperationsNumber(); j++) {
                 if (instruction.getOperation(j).getFunctionalUnitType() === FunctionalUnitType.JUMP) {
                     let check1: Check;

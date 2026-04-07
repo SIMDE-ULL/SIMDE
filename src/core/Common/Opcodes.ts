@@ -3,30 +3,33 @@ import { Formats } from "./InstructionFormats";
 
 export enum Opcodes {
   NOP = 0,
-  ADD,
-  ADDI,
-  SUB,
-  ADDF,
-  SUBF,
-  MULT,
-  MULTF,
-  OR,
-  AND,
-  XOR,
-  NOR,
-  SLLV,
-  SRLV,
-  SW,
-  SF,
-  LW,
-  LF,
-  BNE,
-  BEQ,
-  BGT,
-  OPERROR,
+  ADD = 1,
+  ADDI = 2,
+  SUB = 3,
+  ADDF = 4,
+  SUBF = 5,
+  MULT = 6,
+  MULTF = 7,
+  OR = 8,
+  AND = 9,
+  XOR = 10,
+  NOR = 11,
+  SLLV = 12,
+  SRLV = 13,
+  SW = 14,
+  SF = 15,
+  LW = 16,
+  LF = 17,
+  BNE = 18,
+  BEQ = 19,
+  BGT = 20,
+  BEQF = 21,
+  BNEF = 22,
+  BGTF = 23,
+  OPERROR = 24,
 }
 
-export let OpcodesNames: string[] = [
+export const OpcodesNames: string[] = [
   "NOP",
   "ADD",
   "ADDI",
@@ -48,6 +51,9 @@ export let OpcodesNames: string[] = [
   "BNE",
   "BEQ",
   "BGT",
+  "BEQF",
+  "BNEF",
+  "BGTF",
 ];
 
 export function opcodeToFunctionalUnit(opcode: Opcodes): FunctionalUnitType {
@@ -77,6 +83,9 @@ export function opcodeToFunctionalUnit(opcode: Opcodes): FunctionalUnitType {
     case Opcodes.BGT:
     case Opcodes.BNE:
     case Opcodes.BEQ:
+    case Opcodes.BEQF:
+    case Opcodes.BNEF:
+    case Opcodes.BGTF:
       return FunctionalUnitType.JUMP;
     default:
       throw new Error(
@@ -116,6 +125,10 @@ export function opcodeToFormat(opcode: Opcodes): Formats {
     case Opcodes.BEQ:
     case Opcodes.BGT:
       return Formats.Jump;
+    case Opcodes.BEQF:
+    case Opcodes.BNEF:
+    case Opcodes.BGTF:
+      return Formats.JumpFloat;
     default:
       throw new Error("Invalid opcode: " + opcode);
   }

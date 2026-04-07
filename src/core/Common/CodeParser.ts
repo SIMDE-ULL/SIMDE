@@ -292,7 +292,7 @@ export class CodeParser {
             instruction.setOperand(1, operation[2].num, operation[2].text);
             instruction.setOperand(2, operation[3].num, operation[3].text);
           } else if ("pos" in operation[3]) {
-            type = Formats.Jump;
+            type = operation[1].type === RegType.FP ? Formats.JumpFloat : Formats.Jump;
 
             // Check that the registers are in bounds
             this.assertRegisterIndexBoundaries(

@@ -76,3 +76,24 @@ BEQ Ro1, Ro2, Etiqueta
 Si (Ro1 == Ro2)
 	Saltar a instrucción apuntada por Etiqueta
 Se opera en la UF de Salto
+
+	BEQF
+Salta si igual (Punto Flotante)
+BEQF Fo1, Fo2, Etiqueta
+Si (Fo1 == Fo2)
+	Saltar a instrucción apuntada por Etiqueta
+Se opera en la UF de Salto
+
+	BNEF
+Salta si distinto (Punto Flotante)
+BNEF Fo1, Fo2, Etiqueta
+Si (Fo1 != Fo2)
+	Saltar a instrucción apuntada por Etiqueta
+Se opera en la UF de Salto
+
+	BGTF
+Salta si mayor (Punto Flotante)
+BGTF Fo1, Fo2, Etiqueta
+Si (Fo1 > Fo2)
+	Saltar a instrucción apuntada por Etiqueta
+Se opera en la UF de Salto
