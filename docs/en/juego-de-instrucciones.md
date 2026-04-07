@@ -133,3 +133,24 @@ BGT Ro1, Ro2, Label
 If (Ro1 > Ro2)
 	Jump to instruction labeled with "Label"
 It uses the Branch FU.
+
+### BEQF
+Branch if equal (FP)
+BEQF Fo1, Fo2, Label
+If (Fo1 == Fo2)
+	Jump to instruction labeled with "Label"
+It uses the Branch FU.
+
+### BNEF
+Branch if not equal (FP)
+BNEF Fo1, Fo2, Label
+If (Fo1 != Fo2)
+	Jump to instruction labeled with "Label"
+It uses the Branch FU.
+
+### BGTF
+Branch if greater (FP)
+BGTF Fo1, Fo2, Label
+If (Fo1 > Fo2)
+	Jump to instruction labeled with "Label"
+It uses the Branch FU.
