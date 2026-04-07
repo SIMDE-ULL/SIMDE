@@ -105,7 +105,7 @@ test("Parsing operand errors are being thrown", (t) => {
         `;
   const code: Code = new Code();
   expect(() => code.load(input)).toThrowError(
-    '{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got Jump format or similar',
+    '{"index":43,"rowBegin":4,"columnBegin":9,"rowEnd":4,"columnEnd":13}: Invalid instruction format for ADDF. Expected TwoFloatingRegisters format, got JumpFloat format or similar',
   );
 });
 
@@ -520,6 +520,76 @@ FIN:
 	ADDI	R0 R0 #0`;
   const code: Code = new Code();
   expect(() => code.load(input)).not.toThrowError();
+});
+
+test("FP branch BGTF parses successfully", () => {
+  const input = `LF F1 (R0)
+LF F2 1(R0)
+BGTF F1 F2 END
+ADDF F3 F1 F2
+END:
+SF F3 2(R0)
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
+  expect(code.lines).toBe(5);
+});
+
+test("FP branch BEQF parses successfully", () => {
+  const input = `LF F0 (R0)
+LF F31 1(R0)
+BEQF F0 F31 DONE
+ADDF F1 F0 F31
+DONE:
+SF F1 2(R0)
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
+  expect(code.lines).toBe(5);
+});
+
+test("FP branch BNEF parses successfully", () => {
+  const input = `LF F3 (R0)
+LF F4 1(R0)
+BNEF F3 F4 SKIP
+ADDF F5 F3 F4
+SKIP:
+SF F5 2(R0)
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).not.toThrowError();
+  expect(code.lines).toBe(5);
+});
+
+test("FP branch BEQF rejects GP registers", () => {
+  const input = `BEQF R1 R2 DONE
+DONE:
+ADDI R0 R0 #0
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    "Invalid instruction format for BEQF. Expected JumpFloat format, got Jump format or similar",
+  );
+});
+
+test("Integer branch BEQ rejects FP registers", () => {
+  const input = `BEQ F1 F2 DONE
+DONE:
+ADDI R0 R0 #0
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError(
+    "Invalid instruction format for BEQ. Expected Jump format, got JumpFloat format or similar",
+  );
+});
+
+test("FP branch BEQF rejects mixed register types", () => {
+  const input = `BEQF F1 R2 DONE
+DONE:
+ADDI R0 R0 #0
+`;
+  const code: Code = new Code();
+  expect(() => code.load(input)).toThrowError("mistmatch");
 });
 
 test("should not error on CRLF newlines", () => {
