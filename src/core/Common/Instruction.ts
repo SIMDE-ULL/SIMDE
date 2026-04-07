@@ -1,5 +1,5 @@
 import { OpcodesNames, Opcodes } from "./Opcodes";
-import { FunctionalUnitType } from "./FunctionalUnit";
+import type { FunctionalUnitType } from "./FunctionalUnit";
 import { opcodeToFunctionalUnit } from "./Opcodes";
 
 export class Instruction {
@@ -9,7 +9,7 @@ export class Instruction {
   protected _operands: number[] = new Array(3);
   protected _operandsString: string[] = new Array(3);
   protected _label: string;
-  protected _breakPoint: boolean = false;
+  protected _breakPoint = false;
 
   public get uid(): number {
     return this._uid;
@@ -47,7 +47,7 @@ export class Instruction {
   }
 
   toString(): string {
-    let aux: string = "";
+    let aux = "";
     if (this._operandsString[1]) {
       aux += " " + this._operandsString[1];
     }
@@ -70,7 +70,7 @@ export class Instruction {
    * isJumpInstruction - this method checks if the instruction is a jump instruction
    */
   public isJumpInstruction(): boolean {
-    return [Opcodes.BNE, Opcodes.BEQ, Opcodes.BGT].includes(this.opcode);
+    return [Opcodes.BNE, Opcodes.BEQ, Opcodes.BGT, Opcodes.BEQF, Opcodes.BNEF, Opcodes.BGTF].includes(this.opcode);
   }
 
   /**
@@ -141,7 +141,7 @@ export class Instruction {
    * isFirstOperandFloat
    */
   public isFirstOperandFloat(): boolean {
-    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.SF].includes(
+    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.SF, Opcodes.BEQF, Opcodes.BNEF, Opcodes.BGTF].includes(
       this.opcode
     );
   }
@@ -170,6 +170,9 @@ export class Instruction {
       case Opcodes.BEQ:
       case Opcodes.BNE:
       case Opcodes.BGT:
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
         return this.operands[0];
       default:
         return -1;
@@ -180,7 +183,7 @@ export class Instruction {
    * isSecondOperandFloat
    */
   public isSecondOperandFloat(): boolean {
-    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF].includes(this.opcode);
+    return [Opcodes.ADDF, Opcodes.SUBF, Opcodes.MULTF, Opcodes.BEQF, Opcodes.BNEF, Opcodes.BGTF].includes(this.opcode);
   }
 
   /**
@@ -208,6 +211,9 @@ export class Instruction {
       case Opcodes.BEQ:
       case Opcodes.BNE:
       case Opcodes.BGT:
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
         return this.operands[1];
 
       default:
@@ -228,6 +234,9 @@ export class Instruction {
       case Opcodes.BEQ:
       case Opcodes.BNE:
       case Opcodes.BGT:
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
         return this.operands[2];
       default:
         return -1;

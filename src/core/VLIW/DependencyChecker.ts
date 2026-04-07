@@ -110,6 +110,9 @@ export class DependencyChecker {
       case Opcodes.BEQ:
       case Opcodes.BNE:
       case Opcodes.BGT:
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
         break;
       default:
         throw new Error(
@@ -204,6 +207,18 @@ export class DependencyChecker {
           result = false;
         }
         break;
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
+        if (
+          (checkFPR[operation.getOperand(0)].latency > 0 &&
+            checkFPR[operation.getOperand(0)].register < operation.id) ||
+          (checkFPR[operation.getOperand(1)].latency > 0 &&
+            checkFPR[operation.getOperand(1)].register < operation.id)
+        ) {
+          result = false;
+        }
+        break;
       default:
         throw new Error(
           `Error at checkSourceOperands, unknown opcode: ${Opcodes[operation.opcode]}`,
@@ -257,6 +272,12 @@ export class DependencyChecker {
       case Opcodes.BGT:
         result =
           NaTGP[operation.getOperand(0)] || NaTGP[operation.getOperand(1)];
+        break;
+      case Opcodes.BEQF:
+      case Opcodes.BNEF:
+      case Opcodes.BGTF:
+        result =
+          NaTFP[operation.getOperand(0)] || NaTFP[operation.getOperand(1)];
         break;
       default:
         throw new Error(
