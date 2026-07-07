@@ -6,7 +6,8 @@
             "exportCode": "Exportar código ensamblador",
             "exportMemory": "Exportar memoria (JSON)",
             "exportContent": "Exportar contenido \"Memoria - Registros\"",
-            "exportStats": "Exportar estadísticas (JSON)"
+            "exportStats": "Exportar estadísticas (JSON)",
+            "schedule": "Planificar VLIW"
         },
         "view": {
             "name": "Ver",

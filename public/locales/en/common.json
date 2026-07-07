@@ -6,7 +6,8 @@
             "exportCode": "Export assembly code",
             "exportMemory": "Export memory (JSON)",
             "exportContent": "Export \"Memory - Registers\" content",
-            "exportStats": "Export stats (JSON)"
+            "exportStats": "Export stats (JSON)",
+            "schedule": "Schedule VLIW"
         },
         "view": {
             "name": "View",
