@@ -203,6 +203,9 @@ export const VLIWLoadModalComponent = ({
           <Button className="btn btn-primary" onClick={loadCode}>
             {t("loadModal.load")}
           </Button>
+          <Button className="btn btn-primary">
+            {t("loadModal.schedule")}
+          </Button>
         </div>
       </Modal.Footer>
     </Modal>

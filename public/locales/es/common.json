@@ -54,7 +54,8 @@
     },
     "loadModal": {
         "title": "Carga de código",
-        "load": "Cargar"
+        "load": "Cargar",
+        "schedule": "Schedule"
     },
     "loadContentModal": {
         "title": "Carga de contenido Memoria - Registros",

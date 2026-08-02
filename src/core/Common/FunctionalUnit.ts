@@ -149,6 +149,8 @@ export class FunctionalUnit {
     firstValue = 0,
     secondValue = 0,
   ): FunctionalUnitResult {
+    console.log("blankTimeUnitsAhead: %i", this._instructions[0].blankTimeUnitsAhead);
+    console.log("instructions length: %l", this._instructions.length);
     if (
       this._instructions.length == 0 ||
       this._instructions[0].blankTimeUnitsAhead > 0
@@ -213,6 +215,7 @@ export class FunctionalUnit {
     }
 
     this._hasExectutedInstBeforeTick = true;
+    console.log("resul: %r", resul);
 
     return { instruction: instruction, result: resul, ref: ref };
   }
@@ -220,11 +223,13 @@ export class FunctionalUnit {
   // return instruction reference (TODO: use instruction uid)
   public addInstruction(instruction: Instruction): number {
     const ref = this._nextRef++;
+    console.log("blankTimeUnitsAhead (addInstruction) (before) = %b", this._currentBlankTimeUnits); 
     const blankTimeUnitsAhead =
       this._currentBlankTimeUnits > 0 ? this._currentBlankTimeUnits : 0;
+    console.log("blankTimeUnitsAhead (addInstruction) = %b", this._currentBlankTimeUnits); 
     this._instructions.push({
-      instruction: instruction,
       ref: ref,
+      instruction: instruction,
       blankTimeUnitsAhead: blankTimeUnitsAhead,
     });
     this._currentBlankTimeUnits = -1; // hack: -1 because it will be incremented to 0, as tic() should be called after this

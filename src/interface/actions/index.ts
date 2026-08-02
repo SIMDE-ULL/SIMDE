@@ -9,6 +9,7 @@ export * from './reorder-buffer-mapper-actions';
 export * from './reserve-station-actions';
 export * from './table-actions';
 export * from './stats-actions';
+export * from './pipelined-load';
 
 export * from './load';
 export * from './basic-blocks-actions';
