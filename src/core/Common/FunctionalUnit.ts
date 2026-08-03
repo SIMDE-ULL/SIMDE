@@ -215,7 +215,8 @@ export class FunctionalUnit {
     }
 
     this._hasExectutedInstBeforeTick = true;
-    console.log("resul: %r", resul);
+    console.log("resul:", resul);
+    console.log("opcode:", opcode);
 
     return { instruction: instruction, result: resul, ref: ref };
   }

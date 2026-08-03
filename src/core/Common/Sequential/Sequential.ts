@@ -20,8 +20,7 @@ export class Sequential extends Machine {
       this._status.cycle++;
       this.functionalUnit[instruction?.getFunctionalUnitType()][0].tic(); 
     }
-    let result = this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(instruction.getFirstOperandRegister(), 
-                                                                                                     instruction.getSecondOperandRegister()).result;
+    let result = null;
     this._status.cycle++;
     //TODO: Reuse code
     switch (instruction.opcode) {
@@ -60,8 +59,12 @@ export class Sequential extends Machine {
       case Opcodes.SW:
         this.memory.setData(instruction.getAddressOperand(), this.getGpr(instruction.getDestinyRegister()));
         break;
-      case Opcodes.ADD:
       case Opcodes.ADDI:
+        result = this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(instruction.getFirstOperandRegister(), 
+                                                                                                     instruction?.getImmediateOperand()).result;
+        this._gpr.setContent(instruction.getDestinyRegister(), result, false);
+        break;
+      case Opcodes.ADD:
       case Opcodes.AND:
       case Opcodes.MULT:
       case Opcodes.NOR:
@@ -70,11 +73,15 @@ export class Sequential extends Machine {
       case Opcodes.SRLV:
       case Opcodes.SUB:
       case Opcodes.XOR:
+        result = this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(instruction.getFirstOperandRegister(), 
+                                                                                                     instruction?.getSecondOperandRegister()).result;
         this._gpr.setContent(instruction.getDestinyRegister(), result, false);
         break;
       case Opcodes.ADDF:
       case Opcodes.MULTF:
       case Opcodes.SUBF:
+        result = this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(instruction.getFirstOperandRegister(), 
+                                                                                                     instruction?.getSecondOperandRegister()).result;
         this._fpr.setContent(instruction.getDestinyRegister(), result, false);
         break;
       default:
