@@ -149,8 +149,6 @@ export class FunctionalUnit {
     firstValue = 0,
     secondValue = 0,
   ): FunctionalUnitResult {
-    console.log("blankTimeUnitsAhead: %i", this._instructions[0].blankTimeUnitsAhead);
-    console.log("instructions length: %l", this._instructions.length);
     if (
       this._instructions.length == 0 ||
       this._instructions[0].blankTimeUnitsAhead > 0
@@ -215,8 +213,6 @@ export class FunctionalUnit {
     }
 
     this._hasExectutedInstBeforeTick = true;
-    console.log("resul:", resul);
-    console.log("opcode:", opcode);
 
     return { instruction: instruction, result: resul, ref: ref };
   }
@@ -224,10 +220,8 @@ export class FunctionalUnit {
   // return instruction reference (TODO: use instruction uid)
   public addInstruction(instruction: Instruction): number {
     const ref = this._nextRef++;
-    console.log("blankTimeUnitsAhead (addInstruction) (before) = %b", this._currentBlankTimeUnits); 
     const blankTimeUnitsAhead =
       this._currentBlankTimeUnits > 0 ? this._currentBlankTimeUnits : 0;
-    console.log("blankTimeUnitsAhead (addInstruction) = %b", this._currentBlankTimeUnits); 
     this._instructions.push({
       ref: ref,
       instruction: instruction,

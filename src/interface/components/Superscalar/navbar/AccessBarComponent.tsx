@@ -46,7 +46,7 @@ class AccessBarComponent extends React.Component<any, any> {
                     <i className="fa fa-play" aria-hidden="true" />
                 </a>
                 <a onClick={this.playSequential}>
-                    <i className="fa fa-play" aria-hidden="true" />
+                    <i className="fa fa-list" aria-hidden="true" color=''  />
                 </a>
                 <a onClick={this.pause}>
                     <i className="fa fa-pause" aria-hidden="true" />
