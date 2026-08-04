@@ -51,6 +51,7 @@ export class Sequential extends Machine {
         break;
       case Opcodes.LF: 
         let address = instruction.getAddressOperand() + this.gpr.content[instruction.getSecondOperandRegister()];
+        this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(1,1); 
         console.log("getaddressoperand = ", instruction.getAddressOperand());
         console.log("getsecondoperandregister = ",  instruction.getSecondOperandRegister());
         console.log("getsecondoperand = ",  this.gpr.content[instruction.getSecondOperandRegister()]);
@@ -66,6 +67,7 @@ export class Sequential extends Machine {
       
       case Opcodes.LW: {
         let address = instruction.getAddressOperand() + this.getGpr(instruction?.getSecondOperandRegister());
+        this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(1,1); 
         console.log("address = ", address);
         if (address !== -1 && address < this.memory.size) {
           let value = this.memory.getData(address);
@@ -76,9 +78,11 @@ export class Sequential extends Machine {
       }
       case Opcodes.SF:
         this.memory.setData(instruction.getAddressOperand() + this.getGpr(instruction?.getSecondOperandRegister()), this.getFpr(instruction?.getFirstOperandRegister()));
+        this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(1,1); 
         console.log("data stored = %v", this.getFpr(instruction?.getFirstOperandRegister()));
         break;
       case Opcodes.SW:
+        this.functionalUnit[instruction.getFunctionalUnitType()][0].executeReadyInstruction(1,1); 
         this.memory.setData(instruction.getAddressOperand() + this.getGpr(instruction?.getSecondOperandRegister()), this.getGpr(instruction?.getFirstOperandRegister()));
         console.log("data stored = %v", this.getGpr(instruction?.getFirstOperandRegister()));
         break;

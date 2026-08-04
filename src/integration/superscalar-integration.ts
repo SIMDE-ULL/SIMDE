@@ -229,13 +229,15 @@ export class SuperscalarIntegration extends MachineIntegration {
     }
 
     playSequential = () => {
+        let code = Object.assign(new Code(), this.superscalar.code);
+        this.superscalar.code = code;
         this.sequential.init(true);
         if (this.contentIntegration) {
             this.setFpr(this.contentIntegration.FPRContent);
             this.setGpr(this.contentIntegration.GPRContent);
             this.setMemory(this.contentIntegration.MEMContent);
         }
-        this.executionLoopSequential(this.calculateSpeed());
+        this.executionLoopSequential();
         for (let i = 0; i < this.sequential.memory.size; i++) {
             console.log("final memory ", i, this.sequential.memory.getData(i));
         }
@@ -344,12 +346,12 @@ export class SuperscalarIntegration extends MachineIntegration {
         });
     }
     
-    executionLoopSequential = (speed) => {
+    executionLoopSequential = () => {
         let machineStatus = this.sequential.tic();
         this.collectStats();
         this.dispatchAllSuperscalarActions();
         if (!(machineStatus === SequentialStatus.SEQ_ENDEXE)) {
-            this.executionLoopSequential(speed);
+            this.executionLoopSequential();
         } else {
             if (machineStatus === SequentialStatus.SEQ_ENDEXE) {
                 this.finishedExecution = true;

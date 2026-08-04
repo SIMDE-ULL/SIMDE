@@ -30,16 +30,6 @@ const LandingPageComponent = () => {
               <div className="thumbnail">
                 <img src="" alt=""></img>
                 <div className="caption">
-                  <h3>{t('landingPage.pipelined')}</h3>
-                  <p>{t('landingPage.pipelined_description')}</p>
-                  <div className="pagebtngroup">
-                    <Link className="btn btn-primary" to="/pipelined">{t('landingPage.go')}</Link><a className="pagebtn btn btn-light" href="https://etsiiull.gitbooks.io/simde/">{t('landingPage.read')}</a>
-                  </div>
-                </div>
-              </div>
-              <div className="thumbnail">
-                <img src="" alt=""></img>
-                <div className="caption">
                   <h3>{t('landingPage.superscalar')}</h3>
                   <p>{t('landingPage.superscalar_description')}</p>
                   <div className="pagebtngroup">

@@ -48,7 +48,6 @@ class VLIWFileBarComponent extends React.Component<any, any> {
                         <Dropdown.Item eventKey="3" onClick={() => { this.downloadContentFile(); }}>{this.props.t('fileBar.file.exportContent')}</Dropdown.Item>
                         <Dropdown.Item eventKey="4" onClick={() => { this.downloadCodeFile(); }}>{this.props.t('fileBar.file.exportCode')}</Dropdown.Item>
                         <Dropdown.Item eventKey="5" onClick={() => { downloadJsonFile('stats.json', vliwIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.exportStats')}</Dropdown.Item>
-                        <Dropdown.Item eventKey="6" onClick={() => { downloadJsonFile('stats.json', vliwIntegration.stats.exportStats()); }}>{this.props.t('fileBar.file.schedule')}</Dropdown.Item>
                     </DropdownButton>
                     <DropdownButton
                         title={this.props.t('fileBar.view.name')}
