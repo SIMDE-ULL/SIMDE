@@ -1,0 +1,33 @@
+@import '../base/variables';
+
+.smd-schedule_modal {
+    textarea {
+        width: 100%;
+        height: 70vh;
+
+        font-family: 'Courier New', Courier, monospace;
+    }
+     
+    .btn.btn-primary {
+        background: $color-brand;
+    }
+
+    &-footer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &-actions {
+        flex: 1 0 auto;
+    }
+
+    &-file_input {
+        flex: 0 0 auto;
+    }
+
+    &-errors {
+        .smd-forms_error {
+            padding: 0;
+        }
+    }
+}

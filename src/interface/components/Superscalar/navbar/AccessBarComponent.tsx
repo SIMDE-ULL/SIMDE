@@ -12,6 +12,7 @@ class AccessBarComponent extends React.Component<any, any> {
         this.play = this.play.bind(this);
         this.pause = this.pause.bind(this);
         this.stop = this.stop.bind(this);
+        this.playSequential = this.playSequential.bind(this);
     }
 
     stepForward() {
@@ -24,6 +25,10 @@ class AccessBarComponent extends React.Component<any, any> {
 
     play() {
         SuperscalarIntegration.play();
+    }
+
+    playSequential() {
+        SuperscalarIntegration.playSequential();
     }
 
     pause() {
@@ -39,6 +44,9 @@ class AccessBarComponent extends React.Component<any, any> {
             <div className="smd-access_bar">
                 <a onClick={this.play}>
                     <i className="fa fa-play" aria-hidden="true" />
+                </a>
+                <a onClick={this.playSequential}>
+                    <i className="fa fa-list" aria-hidden="true" color=''  />
                 </a>
                 <a onClick={this.pause}>
                     <i className="fa fa-pause" aria-hidden="true" />
@@ -57,6 +65,10 @@ class AccessBarComponent extends React.Component<any, any> {
                         {this.props.t('accessBar.cycle')}
                     </label>
                     <span className="smd-cycle_value">{this.props.cycle}</span>
+                    <label htmlFor="cycles sequential" className="smd-cycle_label_sequential">
+                        {this.props.t('sequential')}
+                    </label>
+                    <span className="smd-cycle_value_seq">{this.props.sequentialCycles}</span>
                 </div>
                 <span className="smd-speed">
                     <label className="smd-speed_label" htmlFor="velocidad">
@@ -77,7 +89,8 @@ class AccessBarComponent extends React.Component<any, any> {
 }
 const mapStateToProps = state => {
     return {
-        cycle: state.Machine.cycle
+        cycle: state.Machine.cycle,
+        sequentialCycles: SuperscalarIntegration.sequential.status.cycle,
     };
 };
 export default connect(mapStateToProps)(withTranslation()(AccessBarComponent));

@@ -38,6 +38,13 @@ export function toggleSuperscalarLoadContentModal(value) {
     };
 }
 
+export function togglePipelinedLoadContentModal(value) {
+    return {
+        type: TOGGLE_PIPELINED_LOAD_CONTENT_MODAL,
+        value: value
+    };
+}
+
 export function toggleVliwLoadContentModal(value) {
     return {
         type: TOGGLE_VLIW_LOAD_CONTENT_MODAL,

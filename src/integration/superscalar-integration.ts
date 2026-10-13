@@ -41,9 +41,14 @@ import { StatsAgregator } from '../stats/aggregator';
 
 import { MachineIntegration } from './machine-integration';
 
+import { Sequential } from '../core/Common/Sequential/Sequential';
+import { SequentialStatus } from '../core/Common/Sequential/SequentialEnums';
+import { machine } from 'os';
+
 export class SuperscalarIntegration extends MachineIntegration {
     // Global objects for binding React to the View
     superscalar = new Superscalar();
+    sequential = new Sequential();
     codeLoaded = false;
     interval = null;
     backStep = 0;
@@ -176,6 +181,7 @@ export class SuperscalarIntegration extends MachineIntegration {
     loadCode = (code: Code) => {
         this.superscalar.code = code;
         this.resetMachine();
+        this.sequential.code = code;
         // There is no need to update the code with the rest,
         // it should remain the same during all the program execution
         store.dispatch(superscalarLoad(code.instructions));
@@ -219,6 +225,21 @@ export class SuperscalarIntegration extends MachineIntegration {
             this.dispatchAllSuperscalarActions();
             this.finishedExecution = true;
             alert(t('execution.finished'));
+        }
+    }
+
+    playSequential = () => {
+        let code = Object.assign(new Code(), this.superscalar.code);
+        this.superscalar.code = code;
+        this.sequential.init(true);
+        if (this.contentIntegration) {
+            this.setFpr(this.contentIntegration.FPRContent);
+            this.setGpr(this.contentIntegration.GPRContent);
+            this.setMemory(this.contentIntegration.MEMContent);
+        }
+        this.executionLoopSequential();
+        for (let i = 0; i < this.sequential.memory.size; i++) {
+            console.log("final memory ", i, this.sequential.memory.getData(i));
         }
     }
 
@@ -301,6 +322,7 @@ export class SuperscalarIntegration extends MachineIntegration {
 
         for (const key in data) {
             this.superscalar.memory.setData(+key, data[key]);
+            this.sequential.memory.setData(+key, data[key]);
         }
     }
 
@@ -310,6 +332,7 @@ export class SuperscalarIntegration extends MachineIntegration {
         }
         Object.keys(data).forEach(key => {
             this.superscalar.fpr.setContent(+key, data[key], false);
+            this.sequential.fpr.setContent(+key, data[key], false);
         });
     }
 
@@ -319,7 +342,22 @@ export class SuperscalarIntegration extends MachineIntegration {
         }
         Object.keys(data).forEach(key => {
             this.superscalar.gpr.setContent(+key, data[key], false);
+            this.sequential.gpr.setContent(+key, data[key], false);
         });
+    }
+    
+    executionLoopSequential = () => {
+        let machineStatus = this.sequential.tic();
+        this.collectStats();
+        this.dispatchAllSuperscalarActions();
+        if (!(machineStatus === SequentialStatus.SEQ_ENDEXE)) {
+            this.executionLoopSequential();
+        } else {
+            if (machineStatus === SequentialStatus.SEQ_ENDEXE) {
+                this.finishedExecution = true;
+                alert(t('execution.finished'));
+            }
+        }
     }
 
     executionLoop = (speed) => {

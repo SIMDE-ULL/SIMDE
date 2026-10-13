@@ -2,6 +2,7 @@ import * as React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import VliwIntegration from '../../../../integration/vliw-integration';
+import superscalarIntegration from '../../../../integration/superscalar-integration';
 
 class VLIWAccessBarComponent extends React.Component<any, any> {
     constructor(props: any) {
@@ -61,6 +62,12 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
                     </label>
                     <span className="smd-cycle_value">{this.props.cycle}</span>
                 </div>
+                <div className="smd-cycle-sequential">
+                    <label htmlFor="cycle-seq" className="smd-cycle_label-seq">
+                        {this.props.t('accessBar.seqcycle')}
+                    </label>
+                    <span className="smd-seq-cycle_value">{this.props.sequentialCycles}</span>
+                </div>
                 <span className="smd-speed">
                     <label className="smd-speed_label" htmlFor="velocidad">
                         {this.props.t('accessBar.speed')}
@@ -80,7 +87,7 @@ class VLIWAccessBarComponent extends React.Component<any, any> {
 }
 const mapStateToProps = state => {
     return {
-        cycle: state.Machine.cycle
+        cycle: state.Machine.cycle,
     };
 };
 export default connect(mapStateToProps)(withTranslation()(VLIWAccessBarComponent));

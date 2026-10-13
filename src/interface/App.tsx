@@ -5,6 +5,7 @@ import ProjectPage from "./components/LandingPage/ProjectPageComponent";
 
 import SuperscalarComponent from "./components/Superscalar/SuperscalarComponent";
 import VLIWComponent from "./components/VLIW/VLIWComponent";
+import PipelinedComponent from "./components/Pipelined/SuperscalarComponent";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
                     <Route path="/superscalar" element={<SuperscalarComponent />} />
                     <Route path="/vliw" element={<VLIWComponent />} />
                     <Route path="/project" element={<ProjectPage />} />
+                    <Route path="/pipelined" element={<PipelinedComponent />} />
                 </Routes>
             </React.Suspense>
             </div>

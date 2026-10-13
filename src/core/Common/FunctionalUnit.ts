@@ -223,8 +223,8 @@ export class FunctionalUnit {
     const blankTimeUnitsAhead =
       this._currentBlankTimeUnits > 0 ? this._currentBlankTimeUnits : 0;
     this._instructions.push({
-      instruction: instruction,
       ref: ref,
+      instruction: instruction,
       blankTimeUnitsAhead: blankTimeUnitsAhead,
     });
     this._currentBlankTimeUnits = -1; // hack: -1 because it will be incremented to 0, as tic() should be called after this
